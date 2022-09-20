@@ -1,0 +1,30 @@
+
+import React from 'react';
+import { Outlet } from 'react-router-dom';
+import HeaderComponent from './partials/header';
+import SidebarComponent from './partials/sidebar';
+
+
+const AppMain = ( props ) => {
+    console.log('App Main');
+    return (
+        <>
+            <div id="app">
+                <div className="main-wrapper">
+                    <div className="navbar-bg"></div>
+                    <HeaderComponent />
+                    <SidebarComponent />
+                    <Outlet />
+                    <footer className="main-footer" style={{ width: '100%', position: 'fixed', bottom: 0, right: 0, }}>
+                        <div className="footer-left">
+                            Copyright &copy; 2018 <div className="bullet"></div> Design By <a href="https://multinity.com/">Multinity</a>
+                        </div>
+                        <div className="footer-right"></div>
+                    </footer>
+                </div>
+            </div>
+        </>
+    )
+};
+
+export default AppMain;
