@@ -35,12 +35,16 @@ function CreateTipoRol( props ) {
                                                 label="Descripción"
                                                 value={tipoRol.descripcion}
                                                 onChange={ (value) => props.setDescripcion(tipoRol, value) }
+                                                error={tipoRol.error.descripcion}
+                                                message={tipoRol.message.descripcion}
                                             />
                                         </div>
                                     </div>
                                 </div>
                                 <div className="card-footer">
-                                    <ButtonComponent>
+                                    <ButtonComponent
+                                        onClick={ () => props.onStore(tipoRol) }
+                                    >
                                         Guardar
                                     </ButtonComponent>
                                     <ButtonComponent
@@ -65,6 +69,7 @@ const mapStateToProps = ( state ) => ( {
 const mapDispatchToProps = {
     initData: TipoRolActions.initData,
     setDescripcion: TipoRolActions.setDescripcion,
+    onStore: TipoRolActions.onGrabar,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( CreateTipoRol );

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SidebarComponent() {
     const navigate = useNavigate();
@@ -27,88 +27,83 @@ export default function SidebarComponent() {
                         <a href="index.html"><i className="ion ion-speedometer"></i><span>Dashboard</span></a>
                     </li>
 
-                    <li className="menu-header">Components</li>
+                    <li className="menu-header">Componentes</li>
                     <li>
-                        <a href="#" className="has-dropdown"><i className="ion ion-ios-albums-outline"></i><span>Components</span></a>
+                        <a href="#" className="has-dropdown"><i className="ion ion-ios-albums-outline"></i><span>Admin</span></a>
                         <ul className="menu-dropdown">
-                            <li><a href="general.html"><i className="ion ion-ios-circle-outline"></i> Basic</a></li>
-                            <li><a href="components.html"><i className="ion ion-ios-circle-outline"></i> Main Components</a></li>
-                            <li><a href="buttons.html"><i className="ion ion-ios-circle-outline"></i> Buttons</a></li>
-                            <li><a href="toastr.html"><i className="ion ion-ios-circle-outline"></i> Toastr</a></li>
+                            <li>
+                                <Link to={"/unidadnegocio/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Unidad Negocio
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/ofertaacademica/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Oferta Academica
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/nivelacademico/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Nivel Academico
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/modalidadacademica/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Modalidad Academica
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/periodo/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Periodo
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/materia/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Materia
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/tipomateria/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Materia
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/ciudad/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Ciudad
+                                </Link>
+                            </li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="#" className="has-dropdown"><i className="ion ion-flag"></i><span>Icons</span></a>
-                        <ul className="menu-dropdown">
-                            <li><a href="ion-icons.html"><i className="ion ion-ios-circle-outline"></i> Ion Icons</a></li>
-                            <li><a href="fontawesome.html"><i className="ion ion-ios-circle-outline"></i> Font Awesome</a></li>
-                            <li><a href="flag.html"><i className="ion ion-ios-circle-outline"></i> Flag</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="table.html"><i className="ion ion-clipboard"></i><span>Tables</span></a>
-                    </li>
-                    <li>
-                        <a href="chartjs.html"><i className="ion ion-stats-bars"></i><span>Chart.js</span></a>
-                    </li>
-                    <li>
-                        <a href="simple.html"><i className="ion ion-ios-location-outline"></i><span>Google Maps</span></a>
                     </li>
                     <li>
                         <a href="#" className="has-dropdown"><i className="ion ion-ios-copy-outline"></i><span>Seguridad</span></a>
                         <ul className="menu-dropdown">
                             <li>
-                                <a href="#" onClick={(evt) => {
-                                    evt.preventDefault();
-                                    navigate('/rol/index');
-                                } }>
-                                    <i className="ion ion-ios-circle-outline"></i> Rol
-                                </a>
+                                <Link to={"/usuario/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Usuario
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" onClick={(evt) => {
-                                    evt.preventDefault();
-                                    navigate('/tipo_rol/index');
-                                } }>
+                                <Link to={"/rol/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Rol
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/tipo_rol/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Tipo Rol
-                                </a>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/permiso/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Permiso
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/tipo_permiso/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Permiso
+                                </Link>
                             </li>
                         </ul>
-                    </li>
-
-                    <li className="menu-header">More</li>
-                    <li>
-                        <a href="#" className="has-dropdown"><i className="ion ion-ios-nutrition"></i> Click Me</a>
-                        <ul className="menu-dropdown">
-                            <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Menu 1</a></li>
-                            <li><a href="#" className="has-dropdown"><i className="ion ion-ios-circle-outline"></i> Menu 2</a>
-                                <ul className="menu-dropdown">
-                                    <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Child Menu 1</a></li>
-                                    <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Child Menu 2</a></li>
-                                    <li><a href="#" className="has-dropdown"><i className="ion ion-ios-circle-outline"></i> Child Menu 3</a>
-                                        <ul className="menu-dropdown">
-                                            <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Child Menu 1</a></li>
-                                            <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Child Menu 2</a></li>
-                                            <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Child Menu 3</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#"><i className="ion ion-ios-circle-outline"></i> Child Menu 4</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><i className="ion ion-heart"></i> Badges <div className="badge badge-primary">10</div></a>
-                    </li>
-                    <li>
-                        <a href="credits.html"><i className="ion ion-ios-information-outline"></i> Credits</a>
-                    </li>          
+                    </li>        
                 </ul>
-                <div className="p-3 mt-4 mb-4">
-                    <a href="http://stisla.multinity.com/" className="btn btn-danger btn-shadow btn-round has-icon has-icon-nofloat btn-block">
-                        <i className="ion ion-help-buoy"></i> <div>Go PRO!</div>
-                    </a>
-                </div>
             </aside>
         </div>
     );

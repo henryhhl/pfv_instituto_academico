@@ -1,9 +1,9 @@
 
-import TipoRol from "../models/tipoRol";
+import Rol from "../models/rol";
 import Constants from "../constants/constans";
 import { Functions } from "../../utils/functions";
 
-const inititalState = TipoRol;
+const inititalState = Rol;
 
 export const RolReducer = ( state = inititalState, action ) => {
 

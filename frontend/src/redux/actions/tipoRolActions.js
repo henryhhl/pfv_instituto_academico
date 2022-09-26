@@ -1,5 +1,6 @@
 
 import Constants from "../constants/constans";
+import { TipoRolService } from "../services/tipoRolServices";
 
 const setInit = () => ( {
     type: Constants.tipoRol_setInit,
@@ -17,6 +18,14 @@ const onChange = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const getAllTipoRol = () => {
+    return ( dispatch ) => {
+        // TipoRolService.getAllTipoRol().then( (respta) => {
+        //     console.log(respta);
+        // } ).finally( () => {} );
     };
 };
 
@@ -53,10 +62,32 @@ const setISDelete = (tipoRol, value) => {
     };
 };
 
+const onGrabar = ( tipoRol ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( tipoRol ) ) {
+            dispatch( onChange( tipoRol ) );
+            return;
+        }
+        console.log(tipoRol);
+    };
+};
+
+function onValidate( data ) {
+    let bandera = true;
+    if ( data.descripcion.toString().trim().length === 0 ) {
+        data.error.descripcion   = true;
+        data.message.descripcion = "Campo requerido.";
+        bandera = false;
+    }
+    return bandera;
+};
+
 export const TipoRolActions = {
     initData,
+    getAllTipoRol,
     onLimpiar,
     setDescripcion,
     setEstado,
     setISDelete,
+    onGrabar,
 };

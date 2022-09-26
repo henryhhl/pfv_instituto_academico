@@ -1,12 +1,32 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Button, Tag, Tooltip } from 'antd';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { TipoRolActions } from '../../../../redux/actions/tipoRolActions';
  
-function IndexTipoRol() {
+function IndexTipoRol(props) {
     const navigate = useNavigate();
+
+    useEffect(() => {
+      props.getAllTipoRol();
+    //   return () => {};
+    }, [])
+    
 
     function onCreate() {
         navigate('/tipo_rol/create');
+    }
+
+    function onEdit(tipoRol) {
+        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
+        navigate(`/tipo_rol/edit/1`);
+    }
+
+    function onShow(tipoRol) {
+        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
+        navigate(`/tipo_rol/show/1`);
     }
 
     return (
@@ -24,61 +44,145 @@ function IndexTipoRol() {
                     <div className="row">
                         <div className="col-12">
                             <div className="card">
-                            <div className="card-header">
-                                <div className="float-right">
-                                    <form>
-                                        <div className="input-group">
-                                            <input type="text" className="form-control" placeholder="Search" />
-                                        <div className="input-group-btn">
-                                            <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
-                                        </div>
-                                        </div>
-                                    </form>
+                                <div className="card-header">
+                                    <div className="float-right">
+                                        <form>
+                                            <div className="input-group">
+                                                <input type="text" className="form-control" placeholder="Search" />
+                                            <div className="input-group-btn">
+                                                <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
+                                            </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <h4>Advanced Table</h4>
                                 </div>
-                                <h4>Advanced Table</h4>
-                            </div>
-                            <div className="card-body">
-                                <div className="table-responsive">
-                                <table className="table table-striped">
-                                    <tbody>
-                                        <tr>
-                                            <th className="text-center">
-                                                <div className="custom-checkbox custom-control">
-                                                    <input type="checkbox" data-checkboxes="mygroup" data-checkbox-role="dad" className="custom-control-input" id="checkbox-all" />
-                                                    <label htmlFor="checkbox-all" className="custom-control-label"></label>
-                                                </div>
-                                            </th>
-                                            <th>Task Name</th>
-                                            <th>Progress</th>
-                                            <th>Members</th>
-                                            <th>Due Date</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        <tr>
-                                            <td width="40">
-                                                <div className="custom-checkbox custom-control">
-                                                    <input type="checkbox" data-checkboxes="mygroup" className="custom-control-input" id="checkbox-1" />
-                                                    <label htmlFor="checkbox-1" className="custom-control-label"></label>
-                                                </div>
-                                            </td>
-                                            <td>Create a mobile app</td>
-                                            <td className="align-middle">
-                                                <div className="progress" style={{height: 4,}} data-toggle="tooltip" title="" data-original-title="100%">
-                                                    <div className="progress-bar bg-success" style={{ width: '100%',}}></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img alt="image" src="/assets/dist/img/avatar/avatar-5.jpeg" className="rounded-circle" width="35" data-toggle="title" title="Wildan Ahdian" />
-                                            </td>
-                                            <td>2018-01-20</td>
-                                            <td><div className="badge badge-success">Completed</div></td>
-                                            <td><a href="#" className="btn btn-action btn-secondary">Detail</a></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <div className="card-body">
+                                    <div className="table-responsive">
+                                        <table className="table table-striped table-bordered table-hover table-sm">
+                                            <tbody>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Descripción</th>
+                                                    <th>Estado</th>
+                                                    <th>Concurrencia</th>
+                                                    <th>Opción</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Es SuperAdmin</td>
+                                                    <td>
+                                                        <Tag color={"geekblue"}>Activo</Tag>
+                                                    </td>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <Tooltip placement="top" title={"Ver"}>
+                                                            <Button 
+                                                                onClick={onShow}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <EyeOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip placement="top" title={"Editar"}>
+                                                            <Button 
+                                                                onClick={onEdit}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <EditOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip placement="top" title={"Eliminar"}>
+                                                            <Button 
+                                                                onClick={onEdit}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <DeleteOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Es Admin</td>
+                                                    <td>
+                                                        <Tag color={"geekblue"}>Activo</Tag>
+                                                    </td>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <Tooltip placement="top" title={"Ver"}>
+                                                            <Button 
+                                                                onClick={onShow}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <EyeOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip placement="top" title={"Editar"}>
+                                                            <Button 
+                                                                onClick={onEdit}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <EditOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip placement="top" title={"Eliminar"}>
+                                                            <Button 
+                                                                onClick={onEdit}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <DeleteOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Es Invitado</td>
+                                                    <td>
+                                                        <Tag>InActivo</Tag>
+                                                    </td>
+                                                    <td>1</td>
+                                                    <td>
+                                                        <Tooltip placement="top" title={"Ver"}>
+                                                            <Button 
+                                                                onClick={onShow}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <EyeOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip placement="top" title={"Editar"}>
+                                                            <Button 
+                                                                onClick={onEdit}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <EditOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                        <Tooltip placement="top" title={"Eliminar"}>
+                                                            <Button 
+                                                                onClick={onEdit}
+                                                                size={"small"}
+                                                                style={{ marginLeft: 1, marginRight: 1, }}
+                                                            >
+                                                                <DeleteOutlined />
+                                                            </Button>
+                                                        </Tooltip>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -88,4 +192,12 @@ function IndexTipoRol() {
     );
 };
 
-export default IndexTipoRol;
+const mapStateToProps = ( state ) => ( {
+} );
+
+const mapDispatchToProps = {
+    getAllTipoRol: TipoRolActions.getAllTipoRol,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(IndexTipoRol);

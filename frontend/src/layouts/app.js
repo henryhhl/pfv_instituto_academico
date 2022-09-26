@@ -10,12 +10,12 @@ const AppMain = ( props ) => {
     return (
         <>
             <div id="app">
-                <div className="main-wrapper">
+                <div className="main-wrapper position-relative">
                     <div className="navbar-bg"></div>
                     <HeaderComponent />
                     <SidebarComponent />
                     <Outlet />
-                    <footer className="main-footer" style={{ width: '100%', position: 'fixed', bottom: 0, right: 0, }}>
+                    <footer className="main-footer card card-body" style={{ width: '100%', position: 'fixed', bottom: -30, right: 0, zIndex: 10, }}>
                         <div className="footer-left">
                             Copyright &copy; 2018 <div className="bullet"></div> Design By <a href="https://multinity.com/">Multinity</a>
                         </div>

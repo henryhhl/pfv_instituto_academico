@@ -46,7 +46,7 @@ ButtonComponent.defaultProps = {
     className: "",
     htmlType: "button",
     type: "primary",
-    size: "",
+    size: "small",
     onClick: null,
     style: {},
 }

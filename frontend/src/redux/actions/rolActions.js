@@ -39,8 +39,8 @@ const setFKIDTipoRol = (rol, tipoRol) => {
     return ( dispatch ) => {
         rol.fkidtiporol = tipoRol.idtiporol;
         rol.tiporol = tipoRol.descripcion;
-        rol.error.descripcion = false;
-        rol.message.descripcion = "";
+        rol.error.fkidtiporol = false;
+        rol.message.fkidtiporol = "";
         dispatch( onChange(rol) );
     };
 };
@@ -70,6 +70,31 @@ const setISDelete = (rol, value) => {
     };
 };
 
+const onGrabar = ( rol ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( rol ) ) {
+            dispatch( onChange( rol ) );
+            return;
+        }
+        console.log(rol);
+    };
+};
+
+function onValidate( data ) {
+    let bandera = true;
+    if ( data.descripcion.toString().trim().length === 0 ) {
+        data.error.descripcion   = true;
+        data.message.descripcion = "Campo requerido.";
+        bandera = false;
+    }
+    if ( data.fkidtiporol.toString().trim().length === 0 ) {
+        data.error.fkidtiporol   = true;
+        data.message.fkidtiporol = "Campo requerido.";
+        bandera = false;
+    }
+    return bandera;
+};
+
 export const RolActions = {
     initData,
     onLimpiar,
@@ -78,4 +103,5 @@ export const RolActions = {
     setNota,
     setEstado,
     setISDelete,
+    onGrabar,
 };
