@@ -1,8 +1,9 @@
 
-const linkBackend = 'http://localhost:5000/';
+const linkBackend = 'http://localhost:5000';
 
 const module = {
-    seguridad: linkBackend + 'seguridad',
+    // seguridad: linkBackend + '/seguridad',
+    seguridad: linkBackend + '',
 };
 
 const apiServices = {

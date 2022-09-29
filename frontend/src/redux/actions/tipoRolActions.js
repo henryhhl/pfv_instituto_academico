@@ -23,9 +23,9 @@ const initData = () => {
 
 const getAllTipoRol = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllTipoRol().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        TipoRolService.getAllTipoRol().then( (respta) => {
+            // console.log(respta);
+        } ).finally( () => {} );
     };
 };
 
