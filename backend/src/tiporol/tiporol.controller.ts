@@ -13,22 +13,22 @@ export class TipoRolController {
 
     @Get('/index')
     getAllTipoRol() {
-        return {
-            resp: 1,
-            error: false,
-            message: 'Servicio realizado exitosamente.',
-            arrayTipoRol: this.tipoRolService.getAll(),
-        };
-    }
-
-    @Get('/edit/:idtiporol')
-    getTipoRolById( @Param('idtiporol', ParseUUIDPipe) id: string ) {
-        return this.tipoRolService.findTipoRolById(id);
+        return this.tipoRolService.getAll();
     }
 
     @Post('/store')
     storeTipoRol( @Body() request: CreateTipoRolDto ) {
         return this.tipoRolService.storeTipoRol(request);
+    }
+
+    @Get('/show/:idtiporol')
+    showTipoPermiso( @Param('idtiporol', ParseUUIDPipe) id: string ) {
+        return this.tipoRolService.showTipoRol(id);
+    }
+
+    @Get('/edit/:idtiporol')
+    getTipoPermisoById( @Param('idtiporol', ParseUUIDPipe) id: string ) {
+        return this.tipoRolService.editTipoRol(id);
     }
 
     @Put('/update/:idtiporol')

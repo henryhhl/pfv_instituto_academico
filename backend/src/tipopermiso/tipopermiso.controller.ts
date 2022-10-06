@@ -13,17 +13,28 @@ export class TipoPermisoController {
 
     @Get('/index')
     getAllTipoPermiso() {
-        return this.tipoPermisoService.getAll();
-    }
-
-    @Get('/edit/:idtipopermiso')
-    getTipoPermisoById( @Param('idtipopermiso', ParseUUIDPipe) id: string ) {
-        return this.tipoPermisoService.findTipoPermisoById(id);
+        let listTipoPermiso = this.tipoPermisoService.getAll();
+        return {
+            resp: 1,
+            error: false,
+            message: 'Servicio realizado exitosamente.',
+            arrayTipoPermiso: listTipoPermiso,
+        };
     }
 
     @Post('/store')
     storeTipoPermiso( @Body() request: CreateTipoPermisoDto ) {
         return this.tipoPermisoService.storeTipoPermiso(request);
+    }
+
+    @Get('/show/:idtipopermiso')
+    showTipoPermiso( @Param('idtipopermiso', ParseUUIDPipe) id: string ) {
+        return this.tipoPermisoService.showTipoPermiso(id);
+    }
+
+    @Get('/edit/:idtipopermiso')
+    getTipoPermisoById( @Param('idtipopermiso', ParseUUIDPipe) id: string ) {
+        return this.tipoPermisoService.editTipoPermiso(id);
     }
 
     @Put('/update/:idtipopermiso')

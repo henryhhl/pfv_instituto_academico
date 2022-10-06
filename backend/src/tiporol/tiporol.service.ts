@@ -8,7 +8,13 @@ export class TipoRolService {
     private listTipoRol: TipoRol[] = [];
 
     getAll() {
-        return this.listTipoRol;
+        const listTipoRol = this.listTipoRol;
+        return {
+            resp: 1,
+            error: false,
+            message: 'Servicio realizado exitosamente.',
+            arrayTipoRol: listTipoRol,
+        };
     }
 
     findTipoRolById( idtiporol:string ) {
@@ -27,11 +33,44 @@ export class TipoRolService {
             concurrencia: 1,
             isdelete: 'A',
             created_at: '',
-            updated_at: '',
-            deleted_at: '',
         };
         this.listTipoRol.push(tipoRol);
-        return tipoRol;
+        return {
+            resp: 1,
+            error: false,
+            message: 'Tipo Rol registrado éxitosamente.',
+            tipoRol: tipoRol,
+        };
+    }
+
+    editTipoRol( idtiporol: string ) {
+        const tipoRol = this.listTipoRol.find( tipoRol => tipoRol.idtiporol === idtiporol );
+        if ( tipoRol ) {
+            return {
+                resp: 1, error: false,
+                message: 'Servicio realizado exitosamente.',
+                tipoRol: tipoRol,
+            };
+        }
+        return {
+            resp: 0, error: false,
+            message: 'Tipo Rol no existe.',
+        };
+    }
+
+    showTipoRol( idtiporol: string ) {
+        const tipoRol = this.listTipoRol.find( tipoRol => tipoRol.idtiporol === idtiporol );
+        if ( tipoRol ) {
+            return {
+                resp: 1, error: false,
+                message: 'Servicio realizado exitosamente.',
+                tipoRol: tipoRol,
+            };
+        }
+        return {
+            resp: 0, error: false,
+            message: 'Tipo Rol no existe.',
+        };
     }
 
     updateTipoRol( idtiporol: string, request : UpdateTipoRolDto ) {
@@ -42,17 +81,34 @@ export class TipoRolService {
                     ...tipoRolById,
                     ...request,
                     idtiporol,
+                    concurrencia: tipoRol.concurrencia + 1,
                 };
                 return tipoRolById;
             }
             return tipoRol;
         } );
-        return tipoRolById;
+        return {
+            resp: 1,
+            error: false,
+            message: 'Tipo Rol registrado éxitosamente.',
+            tipoRol: tipoRolById,
+        };
     }
 
     deleteTipoRol( idtiporol: string ) {
         let tipoRolById = this.findTipoRolById(idtiporol);
+        if ( tipoRolById === null ) {
+            return {
+                resp: 0, error: false,
+                message: 'Tipo Rol no existe.',
+            };
+        }
         this.listTipoRol = this.listTipoRol.filter( tiporol => tiporol.idtiporol !== idtiporol );
+        return {
+            resp: 1, error: false,
+            message: 'Tipo Permiso eliminado éxitosamente.',
+            tipoRol: tipoRolById,
+        };
     }
 
     fillTipoRolSeedData( listTipoRol: TipoRol[] ) {

@@ -6,20 +6,24 @@ import { IsString, MinLength, IsOptional } from 'class-validator';
 
 export class UpdateRolDto {
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo ID Tipo Rol es requerido.', } )
     @IsOptional()
     readonly fkidtiporol: string;
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo tipo rol es requerido.', } )
     readonly tiporol: string;
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo descripción es requerido.', } )
     @MinLength(2)
     @IsOptional()
     readonly descripcion: string;
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo nota es requerido.', } )
     @IsOptional()
     readonly nota: string;
+
+    @IsString( { message: 'Campo estado es requerido.', } )
+    @IsOptional()
+    readonly estado: string;
 
 }

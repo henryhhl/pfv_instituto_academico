@@ -10,7 +10,17 @@ export class TipoMateriaService {
 
   private listTipoMateria: TipoMateria[] = [];
 
-  create(createTipoMateriaDto: CreateTipoMateriaDto) {
+  findAll() {
+    const listTipoMateria = this.listTipoMateria;
+    return {
+      resp: 1,
+      error: false,
+      message: 'Servicio realizado exitosamente.',
+      arrayTipoMateria: listTipoMateria,
+    };
+  }
+
+  store(createTipoMateriaDto: CreateTipoMateriaDto) {
     let tipoMateria: TipoMateria = {
       idtipomateria: uuid(),
       sigla: createTipoMateriaDto.sigla,
@@ -23,23 +33,60 @@ export class TipoMateriaService {
 
     this.listTipoMateria.push(tipoMateria);
 
-    return tipoMateria;
-  }
-
-  findAll() {
-    return this.listTipoMateria;
+    return {
+      resp: 1,
+      error: false,
+      message: 'Tipo Materia registrado éxitosamente.',
+      tipoMateria: tipoMateria,
+    };
   }
 
   findOne(idtipomateria: string) {
     const tipoMateria = this.listTipoMateria.find( (tipoMateria) => tipoMateria.idtipomateria === idtipomateria );
-    if ( !tipoMateria ) {
-      throw new NotFoundException('Tipo Materia with id not found');
-    }
+    // if ( !tipoMateria ) {
+    //   throw new NotFoundException('Tipo Materia with id not found');
+    // }
     return tipoMateria;
+  }
+
+  edit( idtipomateria: string ) {
+    const tipoMateria = this.findOne(idtipomateria);
+    if ( tipoMateria ) {
+        return {
+            resp: 1, error: false,
+            message: 'Servicio realizado exitosamente.',
+            tipoMateria: tipoMateria,
+        };
+    }
+    return {
+        resp: 0, error: false,
+        message: 'Tipo Materia no existe.',
+    };
+  }
+
+  show( idtipomateria: string ) {
+    const tipoMateria = this.findOne(idtipomateria);
+    if ( tipoMateria ) {
+        return {
+            resp: 1, error: false,
+            message: 'Servicio realizado exitosamente.',
+            tipoMateria: tipoMateria,
+        };
+    }
+    return {
+        resp: 0, error: false,
+        message: 'Tipo Materia no existe.',
+    };
   }
 
   update(id: string, updateTipoMateriaDto: UpdateTipoMateriaDto) {
     let tipoMateriaDB = this.findOne(id);
+    if ( tipoMateriaDB === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Tipo Materia no existe.',
+      };
+    }
 
     this.listTipoMateria = this.listTipoMateria.map( (tipoMateria) => {
       if ( tipoMateria.idtipomateria === id ) {
@@ -48,16 +95,34 @@ export class TipoMateriaService {
           ...tipoMateriaDB,
           ...updateTipoMateriaDto,
           idtipomateria: id,
+          concurrencia: tipoMateria.concurrencia + 1,
         };
         return tipoMateriaDB;
       }
       return tipoMateria;
     } );
-    return tipoMateriaDB;
+    return {
+      resp: 1,
+      error: false,
+      message: 'Tipo Materia actualizado éxitosamente.',
+      tipoMateria: tipoMateriaDB,
+    };
   }
 
   remove(id: string) {
+    let tipoMateriaDB = this.findOne(id);
+    if ( tipoMateriaDB === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Tipo Materia no existe.',
+      };
+    }
     this.listTipoMateria = this.listTipoMateria.filter( (tipoMateria) => tipoMateria.idtipomateria !== id );
+    return {
+      resp: 1, error: false,
+      message: 'Tipo Materia eliminado éxitosamente.',
+      tipoMateria: tipoMateriaDB,
+    };
   }
 
   fillTipoMateriaSeedData( listTipoMateria: TipoMateria[] ) {

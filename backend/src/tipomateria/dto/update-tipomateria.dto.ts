@@ -7,13 +7,17 @@ import { IsString, IsOptional, MinLength } from 'class-validator';
 
 export class UpdateTipoMateriaDto {
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo sigla es requerido.', } )
     @MinLength(1)
     @IsOptional()
-    readonly sigla: string;
+    readonly sigla?: string;
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo descripción es requerido.', } )
     @MinLength(2)
     @IsOptional()
-    readonly descripcion: string;
+    readonly descripcion?: string;
+
+    @IsString( { message: 'Campo estado es requerido.', } )
+    @IsOptional()
+    readonly estado?: string;
 }

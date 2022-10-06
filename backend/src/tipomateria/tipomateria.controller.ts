@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Put } from '@nestjs/common';
 import { TipoMateriaService } from './tipomateria.service';
 import { CreateTipoMateriaDto } from './dto/create-tipomateria.dto';
 import { UpdateTipoMateriaDto } from './dto/update-tipomateria.dto';
@@ -7,28 +7,33 @@ import { UpdateTipoMateriaDto } from './dto/update-tipomateria.dto';
 export class TipoMateriaController {
   constructor(private readonly tipomateriaService: TipoMateriaService) {}
 
-  @Post('/store')
-  create(@Body() createTipoMateriaDto: CreateTipoMateriaDto) {
-    return this.tipomateriaService.create(createTipoMateriaDto);
-  }
-
   @Get('/index')
   findAll() {
     return this.tipomateriaService.findAll();
   }
 
-  @Get('/edit/:id')
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.tipomateriaService.findOne(id);
+  @Post('/store')
+  store(@Body() createTipoMateriaDto: CreateTipoMateriaDto) {
+    return this.tipomateriaService.store(createTipoMateriaDto);
   }
 
-  @Patch('/update/:id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() updateTipomateriaDto: UpdateTipoMateriaDto) {
+  @Get('/edit/:idtipomateria')
+  edit(@Param('idtipomateria', ParseUUIDPipe) id: string) {
+    return this.tipomateriaService.edit(id);
+  }
+
+  @Get('/show/:idtipomateria')
+  show(@Param('idtipomateria', ParseUUIDPipe) id: string) {
+    return this.tipomateriaService.show(id);
+  }
+
+  @Put('/update/:idtipomateria')
+  update(@Param('idtipomateria', ParseUUIDPipe) id: string, @Body() updateTipomateriaDto: UpdateTipoMateriaDto) {
     return this.tipomateriaService.update(id, updateTipomateriaDto);
   }
 
-  @Delete('/delete/:id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
+  @Delete('/delete/:idtipomateria')
+  remove(@Param('idtipomateria', ParseUUIDPipe) id: string) {
     return this.tipomateriaService.remove(id);
   }
 }

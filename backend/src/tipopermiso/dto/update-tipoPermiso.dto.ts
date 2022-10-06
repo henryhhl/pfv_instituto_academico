@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsUUID, MinLength } from "class-validator";
+import { IsOptional, IsString, IsUUID, MinLength,  } from "class-validator";
 
 export class UpdateTipoPermisoDto {
 
@@ -7,9 +7,13 @@ export class UpdateTipoPermisoDto {
     @IsOptional()
     readonly idtipopermiso?: string;
 
-    @IsString( { message: 'La descripción es requerido.', } )
+    @IsString( { message: 'Campo descripción es requerido.', } )
     @MinLength(2)
     @IsOptional()
     readonly descripcion?: string;
+
+    @IsString( { message: 'Campo estado es requerido.', } )
+    @IsOptional()
+    readonly estado?: string;
 
 }
