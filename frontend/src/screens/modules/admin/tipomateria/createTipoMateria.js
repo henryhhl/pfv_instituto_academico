@@ -9,7 +9,13 @@ function CreateTipoMateria( props ) {
     const { tipoMateria } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -52,7 +58,7 @@ function CreateTipoMateria( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(tipoMateria) }
+                                        onClick={ () => props.onStore(tipoMateria, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -76,7 +82,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoMateriaActions.initData,
+    onLimpiar: TipoMateriaActions.onLimpiar,
+    onCreate: TipoMateriaActions.onCreate,
     setSigla: TipoMateriaActions.setSigla,
     setDescripcion: TipoMateriaActions.setDescripcion,
     onStore: TipoMateriaActions.onGrabar,

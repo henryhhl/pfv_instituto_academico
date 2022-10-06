@@ -9,7 +9,13 @@ function CreateUsuario( props ) {
     const { usuario } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -65,7 +71,7 @@ function CreateUsuario( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(usuario) }
+                                        onClick={ () => props.onStore(usuario, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -89,10 +95,11 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: UsuarioActions.initData,
+    onLimpiar: UsuarioActions.onLimpiar,
     setEmail: UsuarioActions.setEmail,
     setLogin: UsuarioActions.setLogin,
     setPassword: UsuarioActions.setPassword,
+    onCreate: UsuarioActions.onCreate,
     onStore: UsuarioActions.onGrabar,
 };
 

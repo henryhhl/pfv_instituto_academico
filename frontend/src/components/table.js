@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip } from 'antd';
+import { Button, Tag, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 
 export default function TableComponent( props ) {
@@ -12,11 +12,18 @@ export default function TableComponent( props ) {
                 <table className="table table-striped table-bordered table-hover table-sm">
                     <tbody>
                         <tr>
+                            <th align='left' style={{ width: 35, }}>
+                                #
+                            </th>
                             { props.columns.map( ( column, index ) => {
                                 return (
-                                    <th key={index} 
-                                        align={`${column.numeric ? 'right' : 'left'}`}
-                                        style={{ width: column.width ? 'auto' : column.width }}
+                                    <th key={index}
+                                        style={{ 
+                                            width: column.width ? 'auto' : column.width,
+                                            textAlign: `${column.numeric ? 'right' : 'left'}`,
+                                            paddingRight: 10,
+                                            paddingLeft: 10,
+                                        }}
                                     >
                                         { column.label }
                                     </th>
@@ -29,16 +36,28 @@ export default function TableComponent( props ) {
                         { props.dataSource.map( ( row, index ) => {
                             return (
                                 <tr key={index}>
+                                    <td>
+                                        { index + 1 }
+                                    </td>
                                     { props.columns.map( ( column, index ) => {
                                         return (
-                                            <th key={index}
-                                                align={`${column.numeric ? 'right' : 'left'}`}
+                                            <td key={index}
+                                                style={{
+                                                    textAlign: `${column.numeric ? 'right' : 'left'}`,
+                                                    paddingRight: 10,
+                                                    paddingLeft: 10,
+                                                }}
                                             >
-                                                { row[column.id] }
-                                            </th>
+                                                { column.state ? 
+                                                    <Tag color={`${ row[column.id] === 'A' ? 'geekblue' : '' }`}>
+                                                        { `${ row[column.id] === 'A' ? 'Activo' : 'InActivo' }` }
+                                                    </Tag> : 
+                                                    row[column.id] 
+                                                }
+                                            </td>
                                         );
                                     } ) }
-                                    <th>
+                                    <td>
                                         <Tooltip placement="top" title={"Ver"}>
                                             <Button 
                                                 onClick={ () => props.onShow( row ) }
@@ -66,7 +85,7 @@ export default function TableComponent( props ) {
                                                 <DeleteOutlined />
                                             </Button>
                                         </Tooltip>
-                                    </th>
+                                    </td>
                                 </tr>
                             );
                         } ) }

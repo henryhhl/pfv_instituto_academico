@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { ModalidadAcademicaActions } from '../../../../redux/actions/modalidadAcademicaActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowModalidadAcademica( props ) {
     const { modalidadAcademica } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idmodalidadacademica );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -45,6 +52,16 @@ function ShowModalidadAcademica( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className='row'>
+                                        <div className='form-group col-4'></div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( modalidadAcademica.estado ) }
+                                                readOnly={true}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
@@ -67,7 +84,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: ModalidadAcademicaActions.initData,
+    onLimpiar: ModalidadAcademicaActions.onLimpiar,
+    onShow: ModalidadAcademicaActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowModalidadAcademica );

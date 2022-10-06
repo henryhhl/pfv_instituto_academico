@@ -9,7 +9,14 @@ function CreateTipoPermiso( props ) {
     const { tipoPermiso } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+    
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -23,7 +30,7 @@ function CreateTipoPermiso( props ) {
                     </h1>
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                            <div className="card">
+                            <div className="card card-primary">
                                 <div className="card-header">
                                     <h4>Nuevo Tipo Permiso</h4>
                                 </div>
@@ -43,7 +50,7 @@ function CreateTipoPermiso( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(tipoPermiso) }
+                                        onClick={ () => props.onStore(tipoPermiso, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -67,7 +74,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoPermisoActions.initData,
+    onCreate: TipoPermisoActions.onCreate,
+    onLimpiar: TipoPermisoActions.onLimpiar,
     setDescripcion: TipoPermisoActions.setDescripcion,
     onStore: TipoPermisoActions.onGrabar,
 };

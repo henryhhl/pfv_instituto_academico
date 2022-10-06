@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowTipoPermiso( props ) {
     const { tipoPermiso } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idtipopermiso );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -29,11 +36,18 @@ function ShowTipoPermiso( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-3"></div>
-                                        <div className="form-group col-6">
+                                        <div className="form-group col-2"></div>
+                                        <div className="form-group col-4">
                                             <InputComponent
                                                 label="Descripción"
                                                 value={tipoPermiso.descripcion}
+                                                readOnly={true}
+                                            />
+                                        </div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( tipoPermiso.estado ) }
                                                 readOnly={true}
                                             />
                                         </div>
@@ -60,7 +74,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoPermisoActions.initData,
+    onLimpiar: TipoPermisoActions.onLimpiar,
+    onShow: TipoPermisoActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowTipoPermiso );

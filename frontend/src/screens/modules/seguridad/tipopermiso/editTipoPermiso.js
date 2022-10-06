@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
 
 function EditTipoPermiso( props ) {
     const { tipoPermiso } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onEdit( params.idtipopermiso );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -29,8 +36,8 @@ function EditTipoPermiso( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-3"></div>
-                                        <div className="form-group col-6">
+                                        <div className="form-group col-2"></div>
+                                        <div className="form-group col-4">
                                             <InputComponent
                                                 label="Descripción"
                                                 value={tipoPermiso.descripcion}
@@ -39,11 +46,21 @@ function EditTipoPermiso( props ) {
                                                 message={tipoPermiso.message.descripcion}
                                             />
                                         </div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={tipoPermiso.estado}
+                                                onChange={ (value) => props.setEstado(tipoPermiso, value) }
+                                                error={tipoPermiso.error.estado}
+                                                message={tipoPermiso.message.estado}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(tipoPermiso) }
+                                        onClick={ () => props.onUpdate(tipoPermiso, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -67,9 +84,11 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoPermisoActions.initData,
+    onEdit: TipoPermisoActions.onEdit,
+    onLimpiar: TipoPermisoActions.onLimpiar,
     setDescripcion: TipoPermisoActions.setDescripcion,
-    onStore: TipoPermisoActions.onGrabar,
+    setEstado: TipoPermisoActions.setEstado,
+    onUpdate: TipoPermisoActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditTipoPermiso );

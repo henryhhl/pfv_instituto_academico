@@ -2,19 +2,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
+import { ButtonComponent ,InputComponent, ModalComponent, TextAreaComponent } from '../../../../components/components';
 import { RolActions } from '../../../../redux/actions/rolActions';
 
 function CreateRol( props ) {
     const { rol } = props;
     const navigate = useNavigate();
 
+    const [ visibleTipoRol, setVisibleTipoRol ] = React.useState( false );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
+    function onComponentTipoRol() {
+        if ( !visibleTipoRol ) return null;
+        return (
+            <ModalComponent
+                visible={visibleTipoRol}
+                footer={null}
+                width={350}
+                centered={true}
+            >
+                Hola
+            </ModalComponent>
+        );
+    };
+
     return (
         <>
+            { onComponentTipoRol() }
             <div className="main-content">
                 <section className="section">
                     <h1 className="section-header">
@@ -41,12 +59,14 @@ function CreateRol( props ) {
                                         </div>
                                         <div className="form-group col-4">
                                             <InputComponent
-                                                label="Tipo Rol"
+                                                label="Tipo"
                                                 value={rol.tiporol}
-                                                onChange={ (value) => props.setFKIDTipoRol(rol, value) }
+                                                onClick={ () => setVisibleTipoRol(true) }
+                                                // onChange={ (value) => props.setFKIDTipoRol(rol, value) }
                                                 error={rol.error.fkidtiporol}
                                                 message={rol.message.fkidtiporol}
                                                 readOnly
+                                                style={{ background: 'white', cursor: 'pointer', }}
                                             />
                                         </div>
                                     </div>
@@ -86,7 +106,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: RolActions.initData,
+    onLimpiar: RolActions.onLimpiar,
     setDescripcion: RolActions.setDescripcion,
     setFKIDTipoRol: RolActions.setFKIDTipoRol,
     setNota: RolActions.setNota,

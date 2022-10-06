@@ -27,6 +27,12 @@ const cleanObejct = ( object = {} ) => {
     }
 };
 
+const getValueEstado = ( estado ) => {
+    if ( estado === 'A' ) return 'Activo';
+    return 'InActivo';
+};
+
 export const Functions = {
     cleanObejct,
+    getValueEstado,
 };

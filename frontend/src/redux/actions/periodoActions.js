@@ -1,6 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { PeriodoService } from "../services/periodo.service";
 
 const setInit = () => ( {
     type: Constants.periodo_setInit,
@@ -15,6 +16,20 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.periodo_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.periodo_onShow,
+    payload: data,
+} );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
@@ -23,9 +38,15 @@ const initData = () => {
 
 const getAllPeriodo = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllPeriodo().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        PeriodoService.getAllPeriodo().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listPeriodo',
+                    value: result.arrayPeriodo,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -71,13 +92,71 @@ const setISDelete = (periodo, value) => {
     };
 };
 
-const onGrabar = ( periodo ) => {
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idperiodo ) => {
+    return ( dispatch ) => {
+        PeriodoService.onShow( idperiodo ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.periodo ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idperiodo ) => {
+    return ( dispatch ) => {
+        PeriodoService.onEdit( idperiodo ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.periodo ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( periodo, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( periodo ) ) {
             dispatch( onChange( periodo ) );
             return;
         }
-        console.log(periodo);
+        let onStore = () => {
+            PeriodoService.onStore(periodo).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Periodo", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( periodo, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( periodo ) ) {
+            dispatch( onChange( periodo ) );
+            return;
+        }
+        let onUpdate = () => {
+            PeriodoService.onUpdate(periodo).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Periodo", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -93,7 +172,28 @@ function onValidate( data ) {
         data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( periodo ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            PeriodoService.onDelete(periodo).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllPeriodo() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Periodo", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const PeriodoActions = {
@@ -104,5 +204,10 @@ export const PeriodoActions = {
     setDescripcion,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onShow,
+    onEdit,
+    onUpdate,
+    onDelete,
 };

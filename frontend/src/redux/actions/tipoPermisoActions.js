@@ -1,6 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { TipoPermisoService } from "../services/tipoPermisoServices";
 
 const setInit = () => ( {
     type: Constants.tipoPermiso_setInit,
@@ -15,17 +16,23 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.tipoPermiso_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.tipoPermiso_onShow,
+    payload: data,
+} );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
-    };
-};
-
-const getAllTipoPermiso = () => {
-    return ( dispatch ) => {
-        // TipoRolService.getAllTipoPermiso().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
     };
 };
 
@@ -62,13 +69,85 @@ const setISDelete = (tipoPermiso, value) => {
     };
 };
 
-const onGrabar = ( tipoPermiso ) => {
+const getAllTipoPermiso = () => {
+    return ( dispatch ) => {
+        TipoPermisoService.getAllTipoPermiso().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listTipoPermiso',
+                    value: result.arrayTipoPermiso,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idtipopermiso ) => {
+    return ( dispatch ) => {
+        TipoPermisoService.onShow( idtipopermiso ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.tipoPermiso ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idtipopermiso ) => {
+    return ( dispatch ) => {
+        TipoPermisoService.onEdit( idtipopermiso ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.tipoPermiso ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( tipoPermiso, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( tipoPermiso ) ) {
             dispatch( onChange( tipoPermiso ) );
             return;
         }
-        console.log(tipoPermiso);
+        let onStore = () => {
+            TipoPermisoService.onStore(tipoPermiso).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Tipo Permiso", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( tipoPermiso, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( tipoPermiso ) ) {
+            dispatch( onChange( tipoPermiso ) );
+            return;
+        }
+        let onUpdate = () => {
+            TipoPermisoService.onUpdate(tipoPermiso).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Tipo Permiso", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -79,7 +158,28 @@ function onValidate( data ) {
         data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( tipoPermiso ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            TipoPermisoService.onDelete(tipoPermiso).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllTipoPermiso() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Tipo Permiso", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const TipoPermisoActions = {
@@ -89,5 +189,10 @@ export const TipoPermisoActions = {
     setDescripcion,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onEdit,
+    onShow,
+    onUpdate,
+    onDelete,
 };

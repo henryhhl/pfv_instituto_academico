@@ -2,16 +2,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, Tag, Tooltip } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { PeriodoActions } from '../../../../redux/actions/periodoActions';
+import TableComponent from '../../../../components/table';
  
 function IndexPeriodo(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
+      props.getAllPeriodo();
+      return () => {};
     }, [])
     
 
@@ -19,14 +18,12 @@ function IndexPeriodo(props) {
         navigate('/periodo/create');
     }
 
-    function onEdit(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/periodo/edit/1`);
+    function onEdit(periodo) {
+        navigate(`/periodo/edit/${periodo.idperiodo}`);
     }
 
-    function onShow(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/periodo/show/1`);
+    function onShow(periodo) {
+        navigate(`/periodo/show/${periodo.idperiodo}`);
     }
 
     return (
@@ -58,134 +55,13 @@ function IndexPeriodo(props) {
                                     <h4>Advanced Table</h4>
                                 </div>
                                 <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-striped table-bordered table-hover table-sm">
-                                            <tbody>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Sigla</th>
-                                                    <th>Descripción</th>
-                                                    <th>Estado</th>
-                                                    <th>Concurrencia</th>
-                                                    <th>Opción</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>SEM</td>
-                                                    <td>Semestral</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>TRIM</td>
-                                                    <td>Trimestral</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>BIM</td>
-                                                    <td>Bimestral</td>
-                                                    <td>
-                                                        <Tag>InActivo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <TableComponent 
+                                        columns={props.columnPeriodo}
+                                        dataSource={props.listPeriodo}
+                                        onShow={ ( periodo ) => onShow(periodo) }
+                                        onEditar={ ( periodo ) => onEdit(periodo) }
+                                        onDelete={ ( periodo ) => props.onDelete(periodo) }
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -197,10 +73,13 @@ function IndexPeriodo(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
+    columnPeriodo: state.ColumnModule.columnPeriodo,
+    listPeriodo: state.ListModule.listPeriodo,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    getAllPeriodo: PeriodoActions.getAllPeriodo,
+    onDelete: PeriodoActions.onDelete,
 };
 
 

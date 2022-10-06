@@ -9,7 +9,13 @@ function CreateTipoRol( props ) {
     const { tipoRol } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -43,7 +49,7 @@ function CreateTipoRol( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(tipoRol) }
+                                        onClick={ () => props.onStore(tipoRol, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -67,7 +73,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoRolActions.initData,
+    onLimpiar: TipoRolActions.onLimpiar,
+    onCreate: TipoRolActions.onCreate,
     setDescripcion: TipoRolActions.setDescripcion,
     onStore: TipoRolActions.onGrabar,
 };

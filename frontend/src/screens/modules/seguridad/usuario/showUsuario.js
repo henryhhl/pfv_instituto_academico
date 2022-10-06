@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { UsuarioActions } from '../../../../redux/actions/usuarioActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowUsuario( props ) {
     const { usuario } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idusuario );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -49,10 +56,9 @@ function ShowUsuario( props ) {
                                         </div>
                                         <div className="form-group col-4">
                                             <InputComponent
-                                                label="Contraseña"
-                                                type='password'
-                                                value={usuario.password}
-                                                readOnly
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( usuario.estado ) }
+                                                readOnly={true}
                                             />
                                         </div>
                                     </div>
@@ -78,7 +84,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: UsuarioActions.initData,
+    onLimpiar: UsuarioActions.onLimpiar,
+    onShow: UsuarioActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowUsuario );

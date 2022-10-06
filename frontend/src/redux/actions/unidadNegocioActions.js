@@ -1,6 +1,6 @@
 
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { UnidadNegocioService } from "../services/unidadNegocioServices";
 
 const setInit = () => ( {
     type: Constants.unidadNegocio_setInit,
@@ -15,22 +15,31 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
-const onChangeListModules = ( obj ) => ( {
+const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
-    payload: { name: 'listUnidadNegocio', value: obj, },
+    payload: data,
 } );
 
-const initData = () => {
-    return ( dispatch ) => {
-        dispatch( setInit() );
-    };
-};
+const setCreate = () => ( {
+    type: Constants.unidadNegocio_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.unidadNegocio_onShow,
+    payload: data,
+} );
 
 const getAllUnidadNegocio = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllUnidadNegocio().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        UnidadNegocioService.getAllUnidadNegocio().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listUnidadNegocio',
+                    value: result.arrayUnidadNegocio,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -76,13 +85,39 @@ const setISDelete = (unidadNegocio, value) => {
     };
 };
 
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idunidadnegocio ) => {
+    return ( dispatch ) => {
+        UnidadNegocioService.onShow( idunidadnegocio ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.unidadNegocio ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idunidadnegocio ) => {
+    return ( dispatch ) => {
+        UnidadNegocioService.onEdit( idunidadnegocio ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.unidadNegocio ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
 const onGrabar = ( unidadNegocio ) => {
     return ( dispatch ) => {
         if ( !onValidate( unidadNegocio ) ) {
             dispatch( onChange( unidadNegocio ) );
             return;
         }
-        dispatch( onChangeListModules(unidadNegocio) );
+        // dispatch( onChangeListModules(unidadNegocio) );
     };
 };
 
@@ -102,12 +137,15 @@ function onValidate( data ) {
 };
 
 export const UnidadNegocioActions = {
-    initData,
+    // initData,
     getAllUnidadNegocio,
     onLimpiar,
     setSigla,
     setDescripcion,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onEdit,
+    onShow,
 };

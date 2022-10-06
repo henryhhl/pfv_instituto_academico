@@ -1,6 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { TipoMateriaService } from "../services/tipoMateria.service";
 
 const setInit = () => ( {
     type: Constants.tipoMateria_setInit,
@@ -15,6 +16,19 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.tipoMateria_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.tipoMateria_onShow,
+    payload: data,
+} );
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
@@ -23,9 +37,15 @@ const initData = () => {
 
 const getAllTipoMateria = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllTipoMateria().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        TipoMateriaService.getAllTipoMateria().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listTipoMateria',
+                    value: result.arrayTipoMateria,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -71,13 +91,71 @@ const setISDelete = (tipoMateria, value) => {
     };
 };
 
-const onGrabar = ( tipoMateria ) => {
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idtipomateria ) => {
+    return ( dispatch ) => {
+        TipoMateriaService.onShow( idtipomateria ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.tipoMateria ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idtipomateria ) => {
+    return ( dispatch ) => {
+        TipoMateriaService.onEdit( idtipomateria ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.tipoMateria ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( tipoMateria, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( tipoMateria ) ) {
             dispatch( onChange( tipoMateria ) );
             return;
         }
-        console.log(tipoMateria);
+        let onStore = () => {
+            TipoMateriaService.onStore(tipoMateria).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Tipo Materia", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( tipoMateria, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( tipoMateria ) ) {
+            dispatch( onChange( tipoMateria ) );
+            return;
+        }
+        let onUpdate = () => {
+            TipoMateriaService.onUpdate(tipoMateria).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Tipo Materia", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -93,7 +171,28 @@ function onValidate( data ) {
         data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( tipoMateria ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            TipoMateriaService.onDelete(tipoMateria).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllTipoMateria() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Tipo Materia", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const TipoMateriaActions = {
@@ -104,5 +203,10 @@ export const TipoMateriaActions = {
     setDescripcion,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onShow,
+    onEdit,
+    onUpdate,
+    onDelete,
 };

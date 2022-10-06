@@ -25,9 +25,9 @@ const hourToString = ( date = new Date() ) => {
 export const httpRequest = async ( method = "", uri, data = {} ) => {
 
     let data_aditional = {
-        x_fecha: dateToString(),
-        x_hora:  hourToString(),
-        x_datetime: `${dateToString()} ${hourToString()}`,
+        // x_fecha: dateToString(),
+        // x_hora:  hourToString(),
+        // x_datetime: `${dateToString()} ${hourToString()}`,
     };
     const body = Object.assign( data, data_aditional );
     let config = {
@@ -52,17 +52,18 @@ export const httpRequest = async ( method = "", uri, data = {} ) => {
     }
 
     return await axios( config ).then( (respta) => {
-        if ( respta.status === 200 ) {
+        console.log(respta)
+        if ( respta.status === 200 || respta.status === 201 ) {
             return respta.data;
         }
         if (respta.status === 401) {}
         if (respta.status === 404) {}
         if (respta.status === 500) {}
-        return respta.data;
+        return { resp: -5, };
     } ).catch( (error) => {
         if ( error.response.status === 401 ) {}
         if ( error.response.status === 404 ) {}
         if ( error.response.status === 500 ) {}
-        return { response: -5, error: error };
+        return { resp: -5, error: error };
     } );
 };

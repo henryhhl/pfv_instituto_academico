@@ -2,8 +2,8 @@
 import apiServices from "../../utils/apiservices";
 import { httpRequest } from "../../utils/httpRequest";
 
-const getAllTipoRol = async (search = "") => {
-    return await httpRequest('get', apiServices.apiseguridadtiporol_index, {
+const getAllPeriodo = async (search = "") => {
+    return await httpRequest('get', apiServices.apiadminperiodo_index, {
         search: search,
     } ).then( (respta) => {
         return respta;
@@ -11,29 +11,31 @@ const getAllTipoRol = async (search = "") => {
 };
 
 const onStore = async (body) => {
-    return await httpRequest('post', apiServices.apiseguridadtiporol_store, {
+    return await httpRequest('post', apiServices.apiadminperiodo_store, {
+        sigla: body.sigla,
         descripcion: body.descripcion,
     } ).then( (respta) => {
         return respta;
     } );
 };
 
-const onShow = async (idtiporol) => {
-    return await httpRequest('get', apiServices.apiseguridadtiporol_show + `/${idtiporol}`, {
+const onShow = async (idperiodo) => {
+    return await httpRequest('get', apiServices.apiadminperiodo_show + `/${idperiodo}`, {
     } ).then( (respta) => {
         return respta;
     } );
 };
 
-const onEdit = async (idtiporol) => {
-    return await httpRequest('get', apiServices.apiseguridadtiporol_edit + `/${idtiporol}`, {
+const onEdit = async (idperiodo) => {
+    return await httpRequest('get', apiServices.apiadminperiodo_edit + `/${idperiodo}`, {
     } ).then( (respta) => {
         return respta;
     } );
 };
 
 const onUpdate = async (body) => {
-    return await httpRequest('put', apiServices.apiseguridadtiporol_update + `/${body.idtiporol}`, {
+    return await httpRequest('put', apiServices.apiadminperiodo_update + `/${body.idperiodo}`, {
+        sigla: body.sigla,
         descripcion: body.descripcion,
         estado: body.estado,
     } ).then( (respta) => {
@@ -42,14 +44,14 @@ const onUpdate = async (body) => {
 };
 
 const onDelete = async (body) => {
-    return await httpRequest('delete', apiServices.apiseguridadtiporol_delete + `/${body.idtiporol}`, {
+    return await httpRequest('delete', apiServices.apiadminperiodo_delete + `/${body.idperiodo}`, {
     } ).then( (respta) => {
         return respta;
     } );
 };
 
-export const TipoRolService = {
-    getAllTipoRol,
+export const PeriodoService = {
+    getAllPeriodo,
     onStore,
     onEdit,
     onShow,

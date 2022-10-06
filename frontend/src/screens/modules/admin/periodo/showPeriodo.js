@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { PeriodoActions } from '../../../../redux/actions/periodoActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowPeriodo( props ) {
     const { periodo } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idperiodo );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -45,6 +52,16 @@ function ShowPeriodo( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className='row'>
+                                        <div className='form-group col-4'></div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( periodo.estado ) }
+                                                readOnly={true}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
@@ -67,7 +84,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: PeriodoActions.initData,
+    onLimpiar: PeriodoActions.onLimpiar,
+    onShow: PeriodoActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowPeriodo );

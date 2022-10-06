@@ -13,9 +13,11 @@ import { TipoMateriaReducer } from '../reducers/tipoMateriaReducers';
 import { MateriaReducer } from '../reducers/materiaReducers';
 import { OfertaAcademicaReducer } from '../reducers/ofertaAcademicaReducers';
 import { UnidadNegocioReducer } from '../reducers/unidadNegocioReducers';
+import { ColumnModuleReducer } from '../reducers/columnModulesReducers';
 
 const RootReducer = combineReducers( {
-    ListModules: ListModuleReducer,
+    ListModule: ListModuleReducer,
+    ColumnModule: ColumnModuleReducer,
     TipoRol: TipoRolReducer,
     TipoPermiso: TipoPermisoReducer,
     Rol: RolReducer,

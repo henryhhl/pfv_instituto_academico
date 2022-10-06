@@ -9,7 +9,13 @@ function CreatePeriodo( props ) {
     const { periodo } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -52,7 +58,7 @@ function CreatePeriodo( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(periodo) }
+                                        onClick={ () => props.onStore(periodo, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -76,7 +82,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: PeriodoActions.initData,
+    onLimpiar: PeriodoActions.onLimpiar,
+    onCreate: PeriodoActions.onCreate,
     setSigla: PeriodoActions.setSigla,
     setDescripcion: PeriodoActions.setDescripcion,
     onStore: PeriodoActions.onGrabar,

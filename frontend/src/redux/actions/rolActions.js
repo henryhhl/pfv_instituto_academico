@@ -1,5 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
+import { RolService } from "../services/rolServices";
 
 const setInit = () => ( {
     type: Constants.rol_setInit,
@@ -14,9 +16,37 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.rol_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.rol_onShow,
+    payload: data,
+} );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const getAllRol = () => {
+    return ( dispatch ) => {
+        RolService.getAllRol().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listRol',
+                    value: result.arrayRol,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -70,13 +100,71 @@ const setISDelete = (rol, value) => {
     };
 };
 
-const onGrabar = ( rol ) => {
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idrol ) => {
+    return ( dispatch ) => {
+        RolService.onShow( idrol ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.rol ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idrol ) => {
+    return ( dispatch ) => {
+        RolService.onEdit( idrol ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.rol ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( rol, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( rol ) ) {
             dispatch( onChange( rol ) );
             return;
         }
-        console.log(rol);
+        let onStore = () => {
+            RolService.onStore(rol).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Rol", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( rol, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( rol ) ) {
+            dispatch( onChange( rol ) );
+            return;
+        }
+        let onUpdate = () => {
+            RolService.onUpdate(rol).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Rol", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -92,16 +180,43 @@ function onValidate( data ) {
         data.message.fkidtiporol = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( rol ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            RolService.onDelete(rol).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllRol() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Rol", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const RolActions = {
     initData,
+    getAllRol,
     onLimpiar,
     setDescripcion,
     setFKIDTipoRol,
     setNota,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onShow,
+    onEdit,
+    onUpdate,
+    onDelete,
 };

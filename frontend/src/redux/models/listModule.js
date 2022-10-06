@@ -5,8 +5,12 @@ const ListModules = {
     listNivelAcademico: [],
     listModalidadAcademica: [],
     listPeriodo: [],
-    listMateria: [],
     listTipoMateria: [],
+    listMateria: [],
+    listTipoPermiso: [],
+    listTipoRol: [],
+    listRol: [],
+    listUsuario: [],
 };
 
 export default ListModules;

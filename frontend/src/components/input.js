@@ -16,6 +16,8 @@ export default function InputComponent( props ) {
                     }
                 } }
                 readOnly={props.readOnly}
+                style={props.style}
+                onClick={props.onClick}
             />
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
                 { props.message }
@@ -32,6 +34,8 @@ InputComponent.propTypes = {
     type: PropTypes.string,
     value: PropTypes.any,
     onChange: PropTypes.func,
+    onClick: PropTypes.func,
+    style: PropTypes.object,
 }
 
 InputComponent.defaultProps = {
@@ -42,4 +46,5 @@ InputComponent.defaultProps = {
     type: "text",
     value: null,
     onChange: null,
+    style: {},
 }

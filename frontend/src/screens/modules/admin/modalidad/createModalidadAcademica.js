@@ -9,7 +9,13 @@ function CreateModalidadAcademica( props ) {
     const { modalidadAcademica } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -52,7 +58,7 @@ function CreateModalidadAcademica( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(modalidadAcademica) }
+                                        onClick={ () => props.onStore(modalidadAcademica, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -76,7 +82,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: ModalidadAcademicaActions.initData,
+    onLimpiar: ModalidadAcademicaActions.onLimpiar,
+    onCreate: ModalidadAcademicaActions.onCreate,
     setSigla: ModalidadAcademicaActions.setSigla,
     setDescripcion: ModalidadAcademicaActions.setDescripcion,
     onStore: ModalidadAcademicaActions.onGrabar,

@@ -5,20 +5,12 @@ import ColumnModules from "../models/columnModule";
 
 const inititalState = ColumnModules;
 
-export const ListModuleReducer = ( state = inititalState, action ) => {
+export const ColumnModuleReducer = ( state = inititalState, action ) => {
 
     switch ( action.type ) {
-        case Constants.modalidad_setInit:
+        case 'Modules':
             Functions.cleanObejct(state);
             state = Object.assign( {}, state );
-            return state;
-
-        case Constants.listModules_onChange:
-            state = Object.assign( {}, action.payload );
-            return state;
-
-        case Constants.modalidad_onLimpiar:
-            state = Object.assign( {}, Functions.cleanObejct(state) );
             return state;
     
         default:

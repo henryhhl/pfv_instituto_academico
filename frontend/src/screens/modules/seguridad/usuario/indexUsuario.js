@@ -2,16 +2,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, Tag, Tooltip } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { UsuarioActions } from '../../../../redux/actions/usuarioActions';
+import TableComponent from '../../../../components/table';
  
 function IndexUsuario(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
+      props.getAllUsuario();
+      return () => {};
     }, [])
     
 
@@ -19,14 +18,12 @@ function IndexUsuario(props) {
         navigate('/usuario/create');
     }
 
-    function onEdit(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/usuario/edit/1`);
+    function onEdit(usuario) {
+        navigate(`/usuario/edit/${usuario.idusuario}`);
     }
 
-    function onShow(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/usuario/show/1`);
+    function onShow(usuario) {
+        navigate(`/usuario/show/${usuario.idusuario}`);
     }
 
     return (
@@ -48,7 +45,7 @@ function IndexUsuario(props) {
                                     <div className="float-right">
                                         <form>
                                             <div className="input-group">
-                                                <input type="text" className="form-control" placeholder="Search" />
+                                                <input type="text" className="form-control" placeholder="Buscar..." />
                                             <div className="input-group-btn">
                                                 <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
                                             </div>
@@ -58,99 +55,13 @@ function IndexUsuario(props) {
                                     <h4>Advanced Table</h4>
                                 </div>
                                 <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-striped table-bordered table-hover table-sm">
-                                            <tbody>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Rol</th>
-                                                    <th>Login</th>
-                                                    <th>Email</th>
-                                                    <th>Estado</th>
-                                                    <th>Concurrencia</th>
-                                                    <th>Opción</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Rol 1</td>
-                                                    <td>Login 1</td>
-                                                    <td>Email 1</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Rol 2</td>
-                                                    <td>Login 2</td>
-                                                    <td>Email 2</td>
-                                                    <td>
-                                                        <Tag>InActivo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <TableComponent 
+                                        columns={props.columnUsuario}
+                                        dataSource={props.listUsuario}
+                                        onShow={ ( usuario ) => onShow(usuario) }
+                                        onEditar={ ( usuario ) => onEdit(usuario) }
+                                        onDelete={ ( usuario ) => props.onDelete(usuario) }
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -162,10 +73,13 @@ function IndexUsuario(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
+    columnUsuario: state.ColumnModule.columnUsuario,
+    listUsuario: state.ListModule.listUsuario,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    getAllUsuario: UsuarioActions.getAllUsuario,
+    onDelete: UsuarioActions.onDelete,
 };
 
 

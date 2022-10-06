@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 import { TipoMateriaActions } from '../../../../redux/actions/tipoMateriaActions';
 
 function EditTipoMateria( props ) {
     const { tipoMateria } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onEdit( params.idtipomateria );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -49,10 +56,23 @@ function EditTipoMateria( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={tipoMateria.estado}
+                                                onChange={ (value) => props.setEstado(tipoMateria, value) }
+                                                error={tipoMateria.error.estado}
+                                                message={tipoMateria.message.estado}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(tipoMateria) }
+                                        onClick={ () => props.onUpdate(tipoMateria, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -76,10 +96,12 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoMateriaActions.initData,
+    onLimpiar: TipoMateriaActions.onLimpiar,
     setSigla: TipoMateriaActions.setSigla,
     setDescripcion: TipoMateriaActions.setDescripcion,
-    onStore: TipoMateriaActions.onGrabar,
+    setEstado: TipoMateriaActions.setEstado,
+    onEdit: TipoMateriaActions.onEdit,
+    onUpdate: TipoMateriaActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditTipoMateria );

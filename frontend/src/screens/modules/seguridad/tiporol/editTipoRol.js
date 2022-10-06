@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TipoRolActions } from '../../../../redux/actions/tipoRolActions';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 
 function EditTipoRol( props ) {
     const { tipoRol } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onEdit( params.idtiporol );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -29,8 +36,8 @@ function EditTipoRol( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-3"></div>
-                                        <div className="form-group col-6">
+                                        <div className="form-group col-2"></div>
+                                        <div className="form-group col-4">
                                             <InputComponent
                                                 label="Descripción"
                                                 value={tipoRol.descripcion}
@@ -39,11 +46,21 @@ function EditTipoRol( props ) {
                                                 message={tipoRol.message.descripcion}
                                             />
                                         </div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={tipoRol.estado}
+                                                onChange={ (value) => props.setEstado(tipoRol, value) }
+                                                error={tipoRol.error.estado}
+                                                message={tipoRol.message.estado}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(tipoRol) }
+                                        onClick={ () => props.onUpdate(tipoRol, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -67,9 +84,11 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoRolActions.initData,
+    onLimpiar: TipoRolActions.onLimpiar,
+    onEdit: TipoRolActions.onEdit,
     setDescripcion: TipoRolActions.setDescripcion,
-    onStore: TipoRolActions.onGrabar,
+    setEstado: TipoRolActions.setEstado,
+    onUpdate: TipoRolActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditTipoRol );

@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 import { UsuarioActions } from '../../../../redux/actions/usuarioActions';
 
 function EditUsuario( props ) {
     const { usuario } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onEdit( params.idusuario );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -62,10 +69,23 @@ function EditUsuario( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={usuario.estado}
+                                                onChange={ (value) => props.setEstado(usuario, value) }
+                                                error={usuario.error.estado}
+                                                message={usuario.message.estado}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(usuario) }
+                                        onClick={ () => props.onUpdate(usuario, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -89,11 +109,13 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: UsuarioActions.initData,
+    onLimpiar: UsuarioActions.onLimpiar,
     setEmail: UsuarioActions.setEmail,
     setLogin: UsuarioActions.setLogin,
     setPassword: UsuarioActions.setPassword,
-    onStore: UsuarioActions.onGrabar,
+    setEstado: UsuarioActions.setEstado,
+    onEdit: UsuarioActions.onEdit,
+    onUpdate: UsuarioActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditUsuario );

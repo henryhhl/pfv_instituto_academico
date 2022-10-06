@@ -2,8 +2,8 @@
 import apiServices from "../../utils/apiservices";
 import { httpRequest } from "../../utils/httpRequest";
 
-const getAllTipoRol = async (search = "") => {
-    return await httpRequest('get', apiServices.apiseguridadtiporol_index, {
+const getAllTipoPermiso = async (search = "") => {
+    return await httpRequest('get', apiServices.apiseguridadtipopermiso_index, {
         search: search,
     } ).then( (respta) => {
         return respta;
@@ -11,29 +11,29 @@ const getAllTipoRol = async (search = "") => {
 };
 
 const onStore = async (body) => {
-    return await httpRequest('post', apiServices.apiseguridadtiporol_store, {
+    return await httpRequest('post', apiServices.apiseguridadtipopermiso_store, {
         descripcion: body.descripcion,
     } ).then( (respta) => {
         return respta;
     } );
 };
 
-const onShow = async (idtiporol) => {
-    return await httpRequest('get', apiServices.apiseguridadtiporol_show + `/${idtiporol}`, {
+const onShow = async (idtipopermiso) => {
+    return await httpRequest('get', apiServices.apiseguridadtipopermiso_show + `/${idtipopermiso}`, {
     } ).then( (respta) => {
         return respta;
     } );
 };
 
-const onEdit = async (idtiporol) => {
-    return await httpRequest('get', apiServices.apiseguridadtiporol_edit + `/${idtiporol}`, {
+const onEdit = async (idtipopermiso) => {
+    return await httpRequest('get', apiServices.apiseguridadtipopermiso_edit + `/${idtipopermiso}`, {
     } ).then( (respta) => {
         return respta;
     } );
 };
 
 const onUpdate = async (body) => {
-    return await httpRequest('put', apiServices.apiseguridadtiporol_update + `/${body.idtiporol}`, {
+    return await httpRequest('put', apiServices.apiseguridadtipopermiso_update + `/${body.idtipopermiso}`, {
         descripcion: body.descripcion,
         estado: body.estado,
     } ).then( (respta) => {
@@ -42,14 +42,14 @@ const onUpdate = async (body) => {
 };
 
 const onDelete = async (body) => {
-    return await httpRequest('delete', apiServices.apiseguridadtiporol_delete + `/${body.idtiporol}`, {
+    return await httpRequest('delete', apiServices.apiseguridadtipopermiso_delete + `/${body.idtipopermiso}`, {
     } ).then( (respta) => {
         return respta;
     } );
 };
 
-export const TipoRolService = {
-    getAllTipoRol,
+export const TipoPermisoService = {
+    getAllTipoPermiso,
     onStore,
     onEdit,
     onShow,

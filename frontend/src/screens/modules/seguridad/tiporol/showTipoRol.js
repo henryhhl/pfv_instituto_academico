@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { TipoRolActions } from '../../../../redux/actions/tipoRolActions';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { Functions } from '../../../../utils/functions';
 
 function ShowTipoRol( props ) {
     const { tipoRol } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idtiporol );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -29,11 +36,18 @@ function ShowTipoRol( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-3"></div>
-                                        <div className="form-group col-6">
+                                        <div className="form-group col-2"></div>
+                                        <div className="form-group col-4">
                                             <InputComponent
                                                 label="Descripción"
                                                 value={tipoRol.descripcion}
+                                                readOnly={true}
+                                            />
+                                        </div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( tipoRol.estado ) }
                                                 readOnly={true}
                                             />
                                         </div>
@@ -60,7 +74,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: TipoRolActions.initData,
+    onLimpiar: TipoRolActions.onLimpiar,
+    onShow: TipoRolActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowTipoRol );

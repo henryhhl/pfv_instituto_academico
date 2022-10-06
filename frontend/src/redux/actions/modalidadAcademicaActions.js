@@ -1,6 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { ModalidadAcademicaService } from "../services/modalidadAcademica.service";
 
 const setInit = () => ( {
     type: Constants.modalidad_setInit,
@@ -15,6 +16,20 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.modalidad_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.modalidad_onShow,
+    payload: data,
+} );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
@@ -23,9 +38,15 @@ const initData = () => {
 
 const getAllModalidadAcademica = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllModalidadAcademica().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        ModalidadAcademicaService.getAllModalidadAcademica().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listModalidadAcademica',
+                    value: result.arrayModalidadAcademica,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -71,13 +92,71 @@ const setISDelete = (modalidadAcademica, value) => {
     };
 };
 
-const onGrabar = ( modalidadAcademica ) => {
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idmodalidadacademica ) => {
+    return ( dispatch ) => {
+        ModalidadAcademicaService.onShow( idmodalidadacademica ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.modalidadAcademica ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idmodalidadacademica ) => {
+    return ( dispatch ) => {
+        ModalidadAcademicaService.onEdit( idmodalidadacademica ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.modalidadAcademica ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( modalidadAcademica, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( modalidadAcademica ) ) {
             dispatch( onChange( modalidadAcademica ) );
             return;
         }
-        console.log(modalidadAcademica);
+        let onStore = () => {
+            ModalidadAcademicaService.onStore(modalidadAcademica).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Modalidad Academica", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( modalidadAcademica, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( modalidadAcademica ) ) {
+            dispatch( onChange( modalidadAcademica ) );
+            return;
+        }
+        let onUpdate = () => {
+            ModalidadAcademicaService.onUpdate(modalidadAcademica).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Modalidad Academica", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -93,7 +172,28 @@ function onValidate( data ) {
         data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( modalidadAcademica ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            ModalidadAcademicaService.onDelete(modalidadAcademica).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllModalidadAcademica() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Modalidad Academica", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const ModalidadAcademicaActions = {
@@ -104,5 +204,10 @@ export const ModalidadAcademicaActions = {
     setDescripcion,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onShow,
+    onEdit,
+    onUpdate,
+    onDelete,
 };
