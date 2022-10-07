@@ -11,6 +11,8 @@ import { NivelacademicoModule } from './nivelacademico/nivelacademico.module';
 import { ModalidadacademicaModule } from './modalidadacademica/modalidadacademica.module';
 import { PeriodoModule } from './periodo/periodo.module';
 import { MateriaModule } from './materia/materia.module';
+import { CiudadModule } from './ciudad/ciudad.module';
+import { PermisoModule } from './permiso/permiso.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -25,7 +27,7 @@ import { MateriaModule } from './materia/materia.module';
   imports: [
     TipoRolModule, TipoPermisoModule, TipoMateriaModule, SeedModule, RolModule, 
     UsuarioModule, UnidadNegocioModule, OfertaacademicaModule, NivelacademicoModule, 
-    ModalidadacademicaModule, PeriodoModule, MateriaModule,
+    ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule,
   ],
   controllers: [],
   providers: [],

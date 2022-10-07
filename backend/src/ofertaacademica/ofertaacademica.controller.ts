@@ -19,12 +19,12 @@ export class OfertaAcademicaController {
 
   @Get('/edit/:idofertaacademica')
   edit(@Param('idofertaacademica') id: string) {
-    return this.ofertaacademicaService.findOne(id);
+    return this.ofertaacademicaService.edit(id);
   }
 
   @Get('/show/:idofertaacademica')
   show(@Param('idofertaacademica') id: string) {
-    return this.ofertaacademicaService.findOne(id);
+    return this.ofertaacademicaService.show(id);
   }
 
   @Put('/update/:idofertaacademica')

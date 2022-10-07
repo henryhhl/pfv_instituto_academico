@@ -9,7 +9,13 @@ function CreateNivelAcademico( props ) {
     const { nivelAcademico } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -52,7 +58,7 @@ function CreateNivelAcademico( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(nivelAcademico) }
+                                        onClick={ () => props.onStore(nivelAcademico, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -76,7 +82,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: NivelAcademicoActions.initData,
+    onLimpiar: NivelAcademicoActions.onLimpiar,
+    onCreate: NivelAcademicoActions.onCreate,
     setSigla: NivelAcademicoActions.setSigla,
     setDescripcion: NivelAcademicoActions.setDescripcion,
     onStore: NivelAcademicoActions.onGrabar,

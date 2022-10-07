@@ -9,7 +9,13 @@ function CreateUnidadNegocio( props ) {
     const { unidadNegocio } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -52,7 +58,7 @@ function CreateUnidadNegocio( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(unidadNegocio) }
+                                        onClick={ () => props.onStore(unidadNegocio, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -76,7 +82,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: UnidadNegocioActions.initData,
+    onLimpiar: UnidadNegocioActions.onLimpiar,
+    onCreate: UnidadNegocioActions.onCreate,
     setSigla: UnidadNegocioActions.setSigla,
     setDescripcion: UnidadNegocioActions.setDescripcion,
     onStore: UnidadNegocioActions.onGrabar,

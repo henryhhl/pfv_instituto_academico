@@ -1,6 +1,8 @@
 
 const Materia = {
     idmateria: "",
+    fkidtipomateria: "",
+    tipomateria: "",
     codigo:"",
     sigla:"",
     nombrelargo: "",
@@ -15,6 +17,7 @@ const Materia = {
     deleted_at: "",
 
     error: {
+        fkidtipomateria: false,
         codigo: false,
         sigla: false,
         nombrelargo: false,
@@ -26,6 +29,7 @@ const Materia = {
     },
 
     message: {
+        fkidtipomateria: "",
         codigo: "",
         sigla: "",
         nombrelargo: "",

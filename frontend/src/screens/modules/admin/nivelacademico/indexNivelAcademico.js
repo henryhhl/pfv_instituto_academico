@@ -4,14 +4,15 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, Tag, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { NivelAcademicoActions } from '../../../../redux/actions/nivelAcademicoActions';
+import TableComponent from '../../../../components/table';
  
 function IndexNivelAcademico(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
+      props.getAllNivelAcademico();
+      return () => {};
     }, [])
     
 
@@ -19,14 +20,12 @@ function IndexNivelAcademico(props) {
         navigate('/nivelacademico/create');
     }
 
-    function onEdit(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/nivelacademico/edit/1`);
+    function onEdit(nivelAcademico) {
+        navigate(`/nivelacademico/edit/${nivelAcademico.idnivelacademico}`);
     }
 
-    function onShow(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/nivelacademico/show/1`);
+    function onShow(nivelAcademico) {
+        navigate(`/nivelacademico/show/${nivelAcademico.idnivelacademico}`);
     }
 
     return (
@@ -48,7 +47,7 @@ function IndexNivelAcademico(props) {
                                     <div className="float-right">
                                         <form>
                                             <div className="input-group">
-                                                <input type="text" className="form-control" placeholder="Search" />
+                                                <input type="text" className="form-control" placeholder="Buscar..." />
                                             <div className="input-group-btn">
                                                 <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
                                             </div>
@@ -58,96 +57,13 @@ function IndexNivelAcademico(props) {
                                     <h4>Advanced Table</h4>
                                 </div>
                                 <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-striped table-bordered table-hover table-sm">
-                                            <tbody>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Sigla</th>
-                                                    <th>Descripción</th>
-                                                    <th>Estado</th>
-                                                    <th>Concurrencia</th>
-                                                    <th>Opción</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>LIC</td>
-                                                    <td>Licenciatura</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>DIP</td>
-                                                    <td>Diplomado</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <TableComponent 
+                                        columns={props.columnNivelAcademico}
+                                        dataSource={props.listNivelAcademico}
+                                        onShow={ ( nivelAcademico ) => onShow(nivelAcademico) }
+                                        onEditar={ ( nivelAcademico ) => onEdit(nivelAcademico) }
+                                        onDelete={ ( nivelAcademico ) => props.onDelete(nivelAcademico) }
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -159,10 +75,13 @@ function IndexNivelAcademico(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
+    columnNivelAcademico: state.ColumnModule.columnNivelAcademico,
+    listNivelAcademico: state.ListModule.listNivelAcademico,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    getAllNivelAcademico: NivelAcademicoActions.getAllNivelAcademico,
+    onDelete: NivelAcademicoActions.onDelete,
 };
 
 

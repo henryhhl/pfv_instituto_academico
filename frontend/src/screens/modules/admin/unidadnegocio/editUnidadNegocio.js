@@ -1,13 +1,19 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 import { UnidadNegocioActions } from '../../../../redux/actions/unidadNegocioActions';
 
 function EditUnidadNegocio( props ) {
     const { unidadNegocio } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onEdit( params.idunidadnegocio );
+    }, [] );
 
     function onBack() {
         navigate(-1);
@@ -49,10 +55,23 @@ function EditUnidadNegocio( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={unidadNegocio.estado}
+                                                onChange={ (value) => props.setEstado(unidadNegocio, value) }
+                                                error={unidadNegocio.error.estado}
+                                                message={unidadNegocio.message.estado}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(unidadNegocio) }
+                                        onClick={ () => props.onUpdate(unidadNegocio, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -76,10 +95,12 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: UnidadNegocioActions.initData,
+    onLimpiar: UnidadNegocioActions.onLimpiar,
+    onEdit: UnidadNegocioActions.onEdit,
     setSigla: UnidadNegocioActions.setSigla,
     setDescripcion: UnidadNegocioActions.setDescripcion,
-    onStore: UnidadNegocioActions.onGrabar,
+    setEstado: UnidadNegocioActions.setEstado,
+    onUpdate: UnidadNegocioActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditUnidadNegocio );

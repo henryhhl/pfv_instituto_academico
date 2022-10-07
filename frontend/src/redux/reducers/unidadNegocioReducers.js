@@ -35,7 +35,8 @@ export const UnidadNegocioReducer = ( state = inititalState, action ) => {
             return state;
 
         case Constants.unidadNegocio_onLimpiar:
-            state = Object.assign( {}, Functions.cleanObejct(state) );
+            Functions.cleanObejct(state)
+            state = Object.assign( {}, state );
             return state;
     
         default:

@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { MateriaActions } from '../../../../redux/actions/materiaActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowMateria( props ) {
     const { materia } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idmateria );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -29,7 +36,6 @@ function ShowMateria( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-2"></div>
                                         <div className="form-group col-4">
                                             <InputComponent
                                                 label="Código"
@@ -41,6 +47,13 @@ function ShowMateria( props ) {
                                             <InputComponent
                                                 label="Sigla"
                                                 value={materia.sigla}
+                                                readOnly
+                                            />
+                                        </div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Tipo"
+                                                value={materia.tipomateria}
                                                 readOnly
                                             />
                                         </div>
@@ -69,12 +82,19 @@ function ShowMateria( props ) {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-2"></div>
                                         <div className="form-group col-4">
                                             <InputComponent
                                                 label="Créditos"
                                                 value={materia.creditos}
                                                 readOnly
+                                            />
+                                        </div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( materia.estado ) }
+                                                readOnly={true}
                                             />
                                         </div>
                                     </div>
@@ -100,7 +120,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: MateriaActions.initData,
+    onLimpiar: MateriaActions.onLimpiar,
+    onShow: MateriaActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowMateria );

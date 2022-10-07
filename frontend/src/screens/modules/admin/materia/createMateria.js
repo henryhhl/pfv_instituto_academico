@@ -4,17 +4,40 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { MateriaActions } from '../../../../redux/actions/materiaActions';
+import ListadoTipoMateriaModal from '../tipomateria/modal/listado.modal';
 
 function CreateMateria( props ) {
     const { materia } = props;
     const navigate = useNavigate();
+    const [ visibleTipoMateria, setVisibleTipoMateria ] = React.useState( false );
+
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
+    function onComponentTipoMateria() {
+        if ( !visibleTipoMateria ) return null;
+        return (
+            <ListadoTipoMateriaModal
+                visible={visibleTipoMateria}
+                onClose={ () => setVisibleTipoMateria(false) }
+                onSelect={ (tipoMateria) => {
+                    props.setFKIDTipoMateria(materia, tipoMateria);
+                    setVisibleTipoMateria(false);
+                } }
+            />
+        );
+    };
+
     return (
         <>
+            { onComponentTipoMateria() }
             <div className="main-content">
                 <section className="section">
                     <h1 className="section-header">
@@ -29,7 +52,6 @@ function CreateMateria( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-2"></div>
                                         <div className="form-group col-4">
                                             <InputComponent
                                                 label="Código"
@@ -46,6 +68,17 @@ function CreateMateria( props ) {
                                                 onChange={ (value) => props.setSigla(materia, value) }
                                                 error={materia.error.sigla}
                                                 message={materia.message.sigla}
+                                            />
+                                        </div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Tipo"
+                                                value={materia.tipomateria}
+                                                onClick={ () => setVisibleTipoMateria(true) }
+                                                error={materia.error.fkidtipomateria}
+                                                message={materia.message.fkidtipomateria}
+                                                readOnly
+                                                style={{ background: 'white', cursor: 'pointer', }}
                                             />
                                         </div>
                                     </div>
@@ -93,7 +126,7 @@ function CreateMateria( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(materia) }
+                                        onClick={ () => props.onStore(materia, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -117,7 +150,9 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: MateriaActions.initData,
+    onLimpiar: MateriaActions.onLimpiar,
+    onCreate: MateriaActions.onCreate,
+    setFKIDTipoMateria: MateriaActions.setFKIDTipoMateria,
     setCodigo: MateriaActions.setCodigo,
     setSigla: MateriaActions.setSigla,
     setNombreLargo: MateriaActions.setNombreLargo,

@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
 import { RolActions } from '../../../../redux/actions/rolActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowRol( props ) {
     const { rol } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idrol );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -23,7 +30,7 @@ function ShowRol( props ) {
                     </h1>
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                            <div className="card">
+                            <div className="card" style={{ marginBottom: 80, }}>
                                 <div className="card-header">
                                     <h4>Detalle Rol</h4>
                                 </div>
@@ -54,6 +61,16 @@ function ShowRol( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( rol.estado ) }
+                                                readOnly={true}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
@@ -76,7 +93,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: RolActions.initData,
+    onLimpiar: RolActions.onLimpiar,
+    onShow: RolActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowRol );

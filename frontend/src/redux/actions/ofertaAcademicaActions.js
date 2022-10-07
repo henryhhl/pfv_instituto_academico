@@ -1,6 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { OfertaAcademicaService } from "../services/ofertaAcademica.service";
 
 const setInit = () => ( {
     type: Constants.ofertaAcademica_setInit,
@@ -15,6 +16,20 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.ofertaAcademica_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.ofertaAcademica_onShow,
+    payload: data,
+} );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
@@ -23,9 +38,15 @@ const initData = () => {
 
 const getAllOfertaAcademica = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllOfertaAcademica().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        OfertaAcademicaService.getAllOfertaAcademica().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listOfertaAcademica',
+                    value: result.arrayOfertaAcademica,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -71,13 +92,71 @@ const setISDelete = (ofertaAcademica, value) => {
     };
 };
 
-const onGrabar = ( ofertaAcademica ) => {
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idofertaacademica ) => {
+    return ( dispatch ) => {
+        OfertaAcademicaService.onShow( idofertaacademica ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.ofertaAcademica ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idofertaacademica ) => {
+    return ( dispatch ) => {
+        OfertaAcademicaService.onEdit( idofertaacademica ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.ofertaAcademica ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( ofertaAcademica, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( ofertaAcademica ) ) {
             dispatch( onChange( ofertaAcademica ) );
             return;
         }
-        console.log(ofertaAcademica);
+        let onStore = () => {
+            OfertaAcademicaService.onStore(ofertaAcademica).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Oferta Academica", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( ofertaAcademica, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( ofertaAcademica ) ) {
+            dispatch( onChange( ofertaAcademica ) );
+            return;
+        }
+        let onUpdate = () => {
+            OfertaAcademicaService.onUpdate(ofertaAcademica).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Oferta Academica", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -93,7 +172,28 @@ function onValidate( data ) {
         data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( ofertaAcademica ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            OfertaAcademicaService.onDelete(ofertaAcademica).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllOfertaAcademica() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Oferta Academica", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const OfertaAcademicaActions = {
@@ -104,5 +204,10 @@ export const OfertaAcademicaActions = {
     setDescripcion,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onShow,
+    onEdit,
+    onUpdate,
+    onDelete,
 };

@@ -20,7 +20,7 @@ export default function TableComponent( props ) {
                                     <th key={index}
                                         style={{ 
                                             width: column.width ? 'auto' : column.width,
-                                            textAlign: `${column.numeric ? 'right' : 'left'}`,
+                                            textAlign: `${column.numeric === true ? 'right' : 'left'}`,
                                             paddingRight: 10,
                                             paddingLeft: 10,
                                         }}
@@ -29,13 +29,24 @@ export default function TableComponent( props ) {
                                     </th>
                                 );
                             } ) }
-                            <th align='left'>
-                                Opción
-                            </th>
+                            { props.option === true &&
+                                <th align='left'>
+                                    Opción
+                                </th>
+                            }
                         </tr>
                         { props.dataSource.map( ( row, index ) => {
+                            let style = {};
+                            if ( props.select === true ) style = { cursor: 'pointer', };
                             return (
-                                <tr key={index}>
+                                <tr key={index}
+                                    onClick={ () => {
+                                        if ( props.select === true ) {
+                                            props.onSelect(row);
+                                        }
+                                    } }
+                                    style={style}
+                                >
                                     <td>
                                         { index + 1 }
                                     </td>
@@ -43,12 +54,12 @@ export default function TableComponent( props ) {
                                         return (
                                             <td key={index}
                                                 style={{
-                                                    textAlign: `${column.numeric ? 'right' : 'left'}`,
+                                                    textAlign: `${column.numeric === true ? 'right' : 'left'}`,
                                                     paddingRight: 10,
                                                     paddingLeft: 10,
                                                 }}
                                             >
-                                                { column.state ? 
+                                                { column.state === true ? 
                                                     <Tag color={`${ row[column.id] === 'A' ? 'geekblue' : '' }`}>
                                                         { `${ row[column.id] === 'A' ? 'Activo' : 'InActivo' }` }
                                                     </Tag> : 
@@ -57,35 +68,37 @@ export default function TableComponent( props ) {
                                             </td>
                                         );
                                     } ) }
-                                    <td>
-                                        <Tooltip placement="top" title={"Ver"}>
-                                            <Button 
-                                                onClick={ () => props.onShow( row ) }
-                                                size={"small"}
-                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                            >
-                                                <EyeOutlined />
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip placement="top" title={"Editar"}>
-                                            <Button 
-                                                onClick={() => props.onEditar( row )}
-                                                size={"small"}
-                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                            >
-                                                <EditOutlined />
-                                            </Button>
-                                        </Tooltip>
-                                        <Tooltip placement="top" title={"Eliminar"}>
-                                            <Button 
-                                                onClick={() => props.onDelete( row )}
-                                                size={"small"}
-                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                            >
-                                                <DeleteOutlined />
-                                            </Button>
-                                        </Tooltip>
-                                    </td>
+                                    { props.option === true &&
+                                        <td>
+                                            <Tooltip placement="top" title={"Ver"}>
+                                                <Button 
+                                                    onClick={ () => props.onShow( row ) }
+                                                    size={"small"}
+                                                    style={{ marginLeft: 1, marginRight: 1, }}
+                                                >
+                                                    <EyeOutlined />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip placement="top" title={"Editar"}>
+                                                <Button 
+                                                    onClick={() => props.onEditar( row )}
+                                                    size={"small"}
+                                                    style={{ marginLeft: 1, marginRight: 1, }}
+                                                >
+                                                    <EditOutlined />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip placement="top" title={"Eliminar"}>
+                                                <Button 
+                                                    onClick={() => props.onDelete( row )}
+                                                    size={"small"}
+                                                    style={{ marginLeft: 1, marginRight: 1, }}
+                                                >
+                                                    <DeleteOutlined />
+                                                </Button>
+                                            </Tooltip>
+                                        </td>
+                                    }
                                 </tr>
                             );
                         } ) }
@@ -109,6 +122,9 @@ TableComponent.propTypes = {
     onEditar: PropTypes.func,
     onDelete: PropTypes.func,
     onReport: PropTypes.func,
+    onSelect: PropTypes.func,
+    option: PropTypes.bool,
+    select: PropTypes.bool,
 }
 
 TableComponent.defaultProps = {
@@ -118,4 +134,7 @@ TableComponent.defaultProps = {
     onEditar: () => {},
     onDelete: () => {},
     onReport: () => {},
+    onSelect: () => {},
+    option: true,
+    select: false,
 }

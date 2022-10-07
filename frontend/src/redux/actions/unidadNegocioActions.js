@@ -1,4 +1,5 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
 import { UnidadNegocioService } from "../services/unidadNegocioServices";
 
@@ -28,6 +29,12 @@ const setShowData = ( data ) => ( {
     type: Constants.unidadNegocio_onShow,
     payload: data,
 } );
+
+const initData = () => {
+    return ( dispatch ) => {
+        dispatch( setInit() );
+    };
+};
 
 const getAllUnidadNegocio = () => {
     return ( dispatch ) => {
@@ -111,13 +118,45 @@ const onEdit = ( idunidadnegocio ) => {
     };
 };
 
-const onGrabar = ( unidadNegocio ) => {
+const onGrabar = ( unidadNegocio, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( unidadNegocio ) ) {
             dispatch( onChange( unidadNegocio ) );
             return;
         }
-        // dispatch( onChangeListModules(unidadNegocio) );
+        let onStore = () => {
+            UnidadNegocioService.onStore(unidadNegocio).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Unidad Negocio", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( unidadNegocio, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( unidadNegocio ) ) {
+            dispatch( onChange( unidadNegocio ) );
+            return;
+        }
+        let onUpdate = () => {
+            UnidadNegocioService.onUpdate(unidadNegocio).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Unidad Negocio", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
@@ -133,11 +172,32 @@ function onValidate( data ) {
         data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
 };
 
+const onDelete = ( unidadNegocio ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            UnidadNegocioService.onDelete(unidadNegocio).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllUnidadNegocio() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Unidad Negocio", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
+};
+
 export const UnidadNegocioActions = {
-    // initData,
+    initData,
     getAllUnidadNegocio,
     onLimpiar,
     setSigla,
@@ -148,4 +208,6 @@ export const UnidadNegocioActions = {
     onGrabar,
     onEdit,
     onShow,
+    onUpdate,
+    onDelete,
 };

@@ -9,7 +9,13 @@ function CreateOfertaAcademica( props ) {
     const { ofertaAcademica } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
+
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -52,7 +58,7 @@ function CreateOfertaAcademica( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(ofertaAcademica) }
+                                        onClick={ () => props.onStore(ofertaAcademica, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -76,7 +82,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: OfertaAcademicaActions.initData,
+    onLimpiar: OfertaAcademicaActions.onLimpiar,
+    onCreate: OfertaAcademicaActions.onCreate,
     setSigla: OfertaAcademicaActions.setSigla,
     setDescripcion: OfertaAcademicaActions.setDescripcion,
     onStore: OfertaAcademicaActions.onGrabar,

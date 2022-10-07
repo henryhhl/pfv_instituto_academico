@@ -1,8 +1,109 @@
 
 const ColumnModules = {
-    columnUnidadNegocio: [],
-    columnOfertaAcademica: [],
-    columnNivelAcademico: [],
+    columnUnidadNegocio: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+        {
+            id: 'concurrencia',
+            label: 'Concurrencia',
+            numeric: true,
+            visible: true,
+            width: null,
+            state: false,
+        },
+    ],
+
+    columnOfertaAcademica: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+        {
+            id: 'concurrencia',
+            label: 'Concurrencia',
+            numeric: true,
+            visible: true,
+            width: null,
+            state: false,
+        },
+    ],
+
+    columnNivelAcademico: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+        {
+            id: 'concurrencia',
+            label: 'Concurrencia',
+            numeric: true,
+            visible: true,
+            width: null,
+            state: false,
+        },
+    ],
 
     columnModalidadAcademica: [
         {
@@ -74,7 +175,56 @@ const ColumnModules = {
         },
     ],
 
-    columnMateria: [],
+    columnMateria: [
+        {
+            id: 'codigo',
+            label: 'Código',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'nombrecorto',
+            label: 'Nombre Corto',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'nombrelargo',
+            label: 'Nombre Largo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+        {
+            id: 'concurrencia',
+            label: 'Concurrencia',
+            numeric: true,
+            visible: true,
+            width: null,
+            state: false,
+        },
+    ],
 
     columnTipoMateria: [
         {

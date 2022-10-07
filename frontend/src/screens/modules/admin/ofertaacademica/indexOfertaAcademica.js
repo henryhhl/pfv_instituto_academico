@@ -2,16 +2,15 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, Tag, Tooltip } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { OfertaAcademicaActions } from '../../../../redux/actions/ofertaAcademicaActions';
+import TableComponent from '../../../../components/table';
  
 function IndexOfertaAcademica(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
+      props.getAllOfertaAcademica();
+      return () => {};
     }, [])
     
 
@@ -19,14 +18,12 @@ function IndexOfertaAcademica(props) {
         navigate('/ofertaacademica/create');
     }
 
-    function onEdit(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/ofertaacademica/edit/1`);
+    function onEdit(ofertaAcademica) {
+        navigate(`/ofertaacademica/edit/${ofertaAcademica.idofertaacademica}`);
     }
 
-    function onShow(tipoRol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/ofertaacademica/show/1`);
+    function onShow(ofertaAcademica) {
+        navigate(`/ofertaacademica/show/${ofertaAcademica.idofertaacademica}`);
     }
 
     return (
@@ -48,7 +45,7 @@ function IndexOfertaAcademica(props) {
                                     <div className="float-right">
                                         <form>
                                             <div className="input-group">
-                                                <input type="text" className="form-control" placeholder="Search" />
+                                                <input type="text" className="form-control" placeholder="Buscar..." />
                                             <div className="input-group-btn">
                                                 <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
                                             </div>
@@ -58,96 +55,13 @@ function IndexOfertaAcademica(props) {
                                     <h4>Advanced Table</h4>
                                 </div>
                                 <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-striped table-bordered table-hover table-sm">
-                                            <tbody>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Sigla</th>
-                                                    <th>Descripción</th>
-                                                    <th>Estado</th>
-                                                    <th>Concurrencia</th>
-                                                    <th>Opción</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>OF-SEMESTRAL</td>
-                                                    <td>SEMESTRALIZADO</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>OF-ANUAL</td>
-                                                    <td>ANUALIZADO</td>
-                                                    <td>
-                                                        <Tag color={"geekblue"}>Activo</Tag>
-                                                    </td>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Button 
-                                                                onClick={onShow}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EyeOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <EditOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Button 
-                                                                onClick={onEdit}
-                                                                size={"small"}
-                                                                style={{ marginLeft: 1, marginRight: 1, }}
-                                                            >
-                                                                <DeleteOutlined />
-                                                            </Button>
-                                                        </Tooltip>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <TableComponent 
+                                        columns={props.columnOfertaAcademica}
+                                        dataSource={props.listOfertaAcademica}
+                                        onShow={ ( ofertaAcademica ) => onShow(ofertaAcademica) }
+                                        onEditar={ ( ofertaAcademica ) => onEdit(ofertaAcademica) }
+                                        onDelete={ ( ofertaAcademica ) => props.onDelete(ofertaAcademica) }
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -159,10 +73,13 @@ function IndexOfertaAcademica(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
+    columnOfertaAcademica: state.ColumnModule.columnOfertaAcademica,
+    listOfertaAcademica: state.ListModule.listOfertaAcademica,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    getAllOfertaAcademica: OfertaAcademicaActions.getAllOfertaAcademica,
+    onDelete: OfertaAcademicaActions.onDelete,
 };
 
 

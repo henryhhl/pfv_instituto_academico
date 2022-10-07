@@ -4,12 +4,17 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, ModalComponent, TextAreaComponent } from '../../../../components/components';
 import { RolActions } from '../../../../redux/actions/rolActions';
+import ListadoTipoRolModal from '../tiporol/modal/listado.modal';
 
 function CreateRol( props ) {
     const { rol } = props;
     const navigate = useNavigate();
-
     const [ visibleTipoRol, setVisibleTipoRol ] = React.useState( false );
+
+    React.useEffect( () => {
+        props.onCreate();
+        return () => {};
+    }, [] );
 
     function onBack() {
         props.onLimpiar();
@@ -19,14 +24,14 @@ function CreateRol( props ) {
     function onComponentTipoRol() {
         if ( !visibleTipoRol ) return null;
         return (
-            <ModalComponent
+            <ListadoTipoRolModal
                 visible={visibleTipoRol}
-                footer={null}
-                width={350}
-                centered={true}
-            >
-                Hola
-            </ModalComponent>
+                onClose={ () => setVisibleTipoRol(false) }
+                onSelect={ (tipoRol) => {
+                    props.setFKIDTipoRol(rol, tipoRol);
+                    setVisibleTipoRol(false);
+                } }
+            />
         );
     };
 
@@ -41,7 +46,7 @@ function CreateRol( props ) {
                     </h1>
                     <div className="row">
                         <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                            <div className="card">
+                            <div className="card" style={{ marginBottom: 80, }}>
                                 <div className="card-header">
                                     <h4>Nuevo Rol</h4>
                                 </div>
@@ -62,7 +67,6 @@ function CreateRol( props ) {
                                                 label="Tipo"
                                                 value={rol.tiporol}
                                                 onClick={ () => setVisibleTipoRol(true) }
-                                                // onChange={ (value) => props.setFKIDTipoRol(rol, value) }
                                                 error={rol.error.fkidtiporol}
                                                 message={rol.message.fkidtiporol}
                                                 readOnly
@@ -82,7 +86,7 @@ function CreateRol( props ) {
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(rol) }
+                                        onClick={ () => props.onStore(rol, onBack) }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -106,6 +110,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onCreate: RolActions.onCreate,
     onLimpiar: RolActions.onLimpiar,
     setDescripcion: RolActions.setDescripcion,
     setFKIDTipoRol: RolActions.setFKIDTipoRol,

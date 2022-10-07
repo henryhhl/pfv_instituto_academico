@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { OfertaAcademicaActions } from '../../../../redux/actions/ofertaAcademicaActions';
+import { Functions } from '../../../../utils/functions';
 
 function ShowOfertaAcademica( props ) {
     const { ofertaAcademica } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onShow( params.idofertaacademica );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -45,6 +52,16 @@ function ShowOfertaAcademica( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className='row'>
+                                        <div className='form-group col-4'></div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Estado"
+                                                value={ Functions.getValueEstado( ofertaAcademica.estado ) }
+                                                readOnly={true}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
@@ -67,7 +84,8 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: OfertaAcademicaActions.initData,
+    onLimpiar: OfertaAcademicaActions.onLimpiar,
+    onShow: OfertaAcademicaActions.onShow,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( ShowOfertaAcademica );

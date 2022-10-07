@@ -65,6 +65,10 @@ import CreateUnidadNegocio from '../screens/modules/admin/unidadnegocio/createUn
 import EditUnidadNegocio from '../screens/modules/admin/unidadnegocio/editUnidadNegocio';
 import ShowUnidadNegocio from '../screens/modules/admin/unidadnegocio/showUnidadNegocio';
 
+import IndexUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/indexUnidadAdministrativa';
+
+import IndexUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidadacademica.index';
+
 const HomeRoute = (props) => {
     return (
         <>
@@ -131,6 +135,10 @@ const HomeRoute = (props) => {
                     <Route index path="/unidadnegocio/create" element={ <CreateUnidadNegocio { ...props } /> }  />
                     <Route index path="/unidadnegocio/edit/:idunidadnegocio" element={ <EditUnidadNegocio { ...props } /> }  />
                     <Route index path="/unidadnegocio/show/:idunidadnegocio" element={ <ShowUnidadNegocio { ...props } /> }  />
+
+                    <Route index path="/unidadadministrativa/index" element={ <IndexUnidadAdministrativa { ...props } /> }  />
+
+                    <Route index path="/unidadacademica/index" element={ <IndexUnidadAcademica { ...props } /> }  />
 
                     <Route
                         path='*'

@@ -1,15 +1,22 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 import { NivelAcademicoActions } from '../../../../redux/actions/nivelAcademicoActions';
 
 function EditNivelAcademico( props ) {
     const { nivelAcademico } = props;
     const navigate = useNavigate();
+    const params = useParams();
+
+    React.useEffect( () => {
+        props.onEdit( params.idnivelacademico );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
 
@@ -49,10 +56,23 @@ function EditNivelAcademico( props ) {
                                             />
                                         </div>
                                     </div>
+                                    <div className="row">
+                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={nivelAcademico.estado}
+                                                onChange={ (value) => props.setEstado(nivelAcademico, value) }
+                                                error={nivelAcademico.error.estado}
+                                                message={nivelAcademico.message.estado}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(nivelAcademico) }
+                                        onClick={ () => props.onUpdate(nivelAcademico, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -76,10 +96,12 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: NivelAcademicoActions.initData,
+    onLimpiar: NivelAcademicoActions.onLimpiar,
+    onEdit: NivelAcademicoActions.onEdit,
     setSigla: NivelAcademicoActions.setSigla,
     setDescripcion: NivelAcademicoActions.setDescripcion,
-    onStore: NivelAcademicoActions.onGrabar,
+    setEstado: NivelAcademicoActions.setEstado,
+    onUpdate: NivelAcademicoActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditNivelAcademico );

@@ -1,17 +1,40 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
 import { MateriaActions } from '../../../../redux/actions/materiaActions';
+import ListadoTipoMateriaModal from '../tipomateria/modal/listado.modal';
 
 function EditMateria( props ) {
     const { materia } = props;
     const navigate = useNavigate();
+    const params = useParams();
+    const [ visibleTipoMateria, setVisibleTipoMateria ] = React.useState( false );
+
+    React.useEffect( () => {
+        props.onEdit( params.idmateria );
+    }, [] );
 
     function onBack() {
+        props.onLimpiar();
         navigate(-1);
     }
+
+    function onComponentTipoMateria() {
+        if ( !visibleTipoMateria ) return null;
+        return (
+            <ListadoTipoMateriaModal
+                visible={visibleTipoMateria}
+                onClose={ () => setVisibleTipoMateria(false) }
+                onSelect={ (tipoMateria) => {
+                    props.setFKIDTipoMateria(materia, tipoMateria);
+                    setVisibleTipoMateria(false);
+                } }
+            />
+        );
+    };
 
     return (
         <>
@@ -29,7 +52,6 @@ function EditMateria( props ) {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="form-group col-2"></div>
                                         <div className="form-group col-4">
                                             <InputComponent
                                                 label="Código"
@@ -46,6 +68,17 @@ function EditMateria( props ) {
                                                 onChange={ (value) => props.setSigla(materia, value) }
                                                 error={materia.error.sigla}
                                                 message={materia.message.sigla}
+                                            />
+                                        </div>
+                                        <div className="form-group col-4">
+                                            <InputComponent
+                                                label="Tipo"
+                                                value={materia.tipomateria}
+                                                onClick={ () => setVisibleTipoMateria(true) }
+                                                error={materia.error.fkidtipomateria}
+                                                message={materia.message.fkidtipomateria}
+                                                readOnly
+                                                style={{ background: 'white', cursor: 'pointer', }}
                                             />
                                         </div>
                                     </div>
@@ -79,7 +112,7 @@ function EditMateria( props ) {
                                         </div>
                                     </div>
                                     <div className="row">
-                                        <div className="form-group col-4"></div>
+                                        <div className="form-group col-2"></div>
                                         <div className="form-group col-4">
                                             <InputComponent
                                                 label="Créditos"
@@ -89,11 +122,21 @@ function EditMateria( props ) {
                                                 message={materia.message.creditos}
                                             />
                                         </div>
+                                        <div className="form-group col-4">
+                                            <SelectComponent 
+                                                data={EstadoData}
+                                                label={"Estado"}
+                                                value={materia.estado}
+                                                onChange={ (value) => props.setEstado(materia, value) }
+                                                error={materia.error.estado}
+                                                message={materia.message.estado}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="card-footer">
                                     <ButtonComponent
-                                        onClick={ () => props.onStore(materia) }
+                                        onClick={ () => props.onUpdate(materia, onBack) }
                                     >
                                         Editar
                                     </ButtonComponent>
@@ -117,14 +160,17 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
-    initData: MateriaActions.initData,
+    onLimpiar: MateriaActions.onLimpiar,
+    onEdit: MateriaActions.onEdit,
+    setFKIDTipoMateria: MateriaActions.setFKIDTipoMateria,
     setCodigo: MateriaActions.setCodigo,
     setSigla: MateriaActions.setSigla,
     setNombreLargo: MateriaActions.setNombreLargo,
     setNombreCorto: MateriaActions.setNombreCorto,
     setNombreAlternativo: MateriaActions.setNombreAlternativo,
     setCredito: MateriaActions.setCredito,
-    onStore: MateriaActions.onGrabar,
+    setEstado: MateriaActions.setEstado,
+    onUpdate: MateriaActions.onUpdate,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( EditMateria );

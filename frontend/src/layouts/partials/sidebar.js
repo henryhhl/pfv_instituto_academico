@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function SidebarComponent() {
-    const navigate = useNavigate();
     return (
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
@@ -29,7 +28,32 @@ export default function SidebarComponent() {
 
                     <li className="menu-header">Componentes</li>
                     <li>
-                        <a href="#" className="has-dropdown"><i className="ion ion-ios-albums-outline"></i><span>Admin</span></a>
+                        <a href="#" className="has-dropdown"
+                            onClick={ (evt) => evt.preventDefault() }
+                        >
+                            <i className="ion ion-ios-albums-outline"></i>
+                            <span>Estructura Academica</span>
+                        </a>
+                        <ul className="menu-dropdown">
+                            <li>
+                                <Link to={"/unidadadministrativa/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Unidad Administrativa
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/unidadacademica/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Unidad Academica
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" className="has-dropdown"
+                            onClick={ (evt) => evt.preventDefault() }
+                        >
+                            <i className="ion ion-ios-albums-outline"></i>
+                            <span>Parametros</span>
+                        </a>
                         <ul className="menu-dropdown">
                             <li>
                                 <Link to={"/unidadnegocio/index"}>
@@ -74,7 +98,12 @@ export default function SidebarComponent() {
                         </ul>
                     </li>
                     <li>
-                        <a href="#" className="has-dropdown"><i className="ion ion-ios-copy-outline"></i><span>Seguridad</span></a>
+                        <a href="#" className="has-dropdown"
+                            onClick={ (evt) => evt.preventDefault() }
+                        >
+                            <i className="ion ion-ios-copy-outline"></i>
+                            <span>Seguridad</span>
+                        </a>
                         <ul className="menu-dropdown">
                             <li>
                                 <Link to={"/usuario/index"}>

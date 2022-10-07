@@ -1,6 +1,7 @@
 
+import ConfirmationComponent from "../../components/confirmation";
 import Constants from "../constants/constans";
-// import { TipoRolService } from "../services/tipoRolServices";
+import { MateriaService } from "../services/materia.service";
 
 const setInit = () => ( {
     type: Constants.materia_setInit,
@@ -15,6 +16,20 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onListModule = ( data ) => ( {
+    type: Constants.listModules_onChange,
+    payload: data,
+} );
+
+const setCreate = () => ( {
+    type: Constants.materia_onCreate,
+} );
+
+const setShowData = ( data ) => ( {
+    type: Constants.materia_onShow,
+    payload: data,
+} );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
@@ -23,15 +38,31 @@ const initData = () => {
 
 const getAllMateria = () => {
     return ( dispatch ) => {
-        // TipoRolService.getAllMateria().then( (respta) => {
-        //     console.log(respta);
-        // } ).finally( () => {} );
+        MateriaService.getAllMateria().then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    name: 'listMateria',
+                    value: result.arrayMateria,
+                };
+                dispatch( onListModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
 const onLimpiar = () => {
     return ( dispatch ) => {
         dispatch( setLimpiar() );
+    };
+};
+
+const setFKIDTipoMateria = (materia, tipoMateria) => {
+    return ( dispatch ) => {
+        materia.fkidtipomateria = tipoMateria.idtipomateria;
+        materia.tipomateria = tipoMateria.descripcion;
+        materia.error.fkidtipomateria = false;
+        materia.message.fkidtipomateria = "";
+        dispatch( onChange(materia) );
     };
 };
 
@@ -107,18 +138,81 @@ const setISDelete = (materia, value) => {
     };
 };
 
-const onGrabar = ( materia ) => {
+const onCreate = () => {
+    return ( dispatch ) => {
+        dispatch( setCreate() );
+    };
+};
+
+const onShow = ( idmateria ) => {
+    return ( dispatch ) => {
+        MateriaService.onShow( idmateria ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.materia ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onEdit = ( idmateria ) => {
+    return ( dispatch ) => {
+        MateriaService.onEdit( idmateria ).then( (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setShowData( result.materia ) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
+const onGrabar = ( materia, onBack ) => {
     return ( dispatch ) => {
         if ( !onValidate( materia ) ) {
             dispatch( onChange( materia ) );
             return;
         }
-        console.log(materia);
+        let onStore = () => {
+            MateriaService.onStore(materia).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Registrar Materia", onOk: onStore,
+            okType: "primary", content: "Estás seguro de registrar información?",
+        } );
+    };
+};
+
+const onUpdate = ( materia, onBack ) => {
+    return ( dispatch ) => {
+        if ( !onValidate( materia ) ) {
+            dispatch( onChange( materia ) );
+            return;
+        }
+        let onUpdate = () => {
+            MateriaService.onUpdate(materia).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( onLimpiar() );
+                    onBack();
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Editar Materia", onOk: onUpdate,
+            okType: "primary", content: "Estás seguro de actualizar información?",
+        } );
     };
 };
 
 function onValidate( data ) {
     let bandera = true;
+    if ( data.fkidtipomateria.toString().trim().length === 0 ) {
+        data.error.fkidtipomateria   = true;
+        data.message.fkidtipomateria = "Campo requerido.";
+        bandera = false;
+    }
     if ( data.codigo.toString().trim().length === 0 ) {
         data.error.codigo   = true;
         data.message.codigo = "Campo requerido.";
@@ -149,13 +243,35 @@ function onValidate( data ) {
         data.message.creditos = "Campo requerido.";
         bandera = false;
     }
+    if ( data.estado.toString().trim().length === 0 ) {
+        data.error.estado   = true;
+        data.message.estado = "Campo requerido.";
+        bandera = false;
+    }
     return bandera;
+};
+
+const onDelete = ( materia ) => {
+    return ( dispatch ) => {
+        let onDelete = () => {
+            MateriaService.onDelete(materia).then( (result) => {
+                if ( result.resp === 1 ) {
+                    dispatch( getAllMateria() );
+                }
+            } ).finally( () => {} );
+        };
+        ConfirmationComponent( {
+            title: "Eliminar Materia", onOk: onDelete,
+            content: "Estás seguro de eliminar información?",
+        } );
+    };
 };
 
 export const MateriaActions = {
     initData,
     getAllMateria,
     onLimpiar,
+    setFKIDTipoMateria,
     setCodigo,
     setSigla,
     setNombreLargo,
@@ -164,5 +280,10 @@ export const MateriaActions = {
     setCredito,
     setEstado,
     setISDelete,
+    onCreate,
     onGrabar,
+    onShow,
+    onEdit,
+    onUpdate,
+    onDelete,
 };

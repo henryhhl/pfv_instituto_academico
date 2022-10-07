@@ -28,6 +28,8 @@ const Constants = {
 
     nivelAcademico_setInit: "[SET INIT] Nivel Academico",
     nivelAcademico_onChange: "[ON CHANGE] Nivel Academico",
+    nivelAcademico_onCreate: "[ON CREATE] Nivel Academico",
+    nivelAcademico_onShow: "[ON SHOW] Nivel Academico",
     nivelAcademico_onLimpiar: "[ON LIMPIAR] Nivel Academico",
 
     modalidad_setInit: "[SET INIT] Modalidad",
@@ -50,10 +52,14 @@ const Constants = {
 
     materia_setInit: "[SET INIT] Materia",
     materia_onChange: "[ON CHANGE] Materia",
+    materia_onCreate: "[ON CREATE] Materia",
+    materia_onShow: "[ON SHOW] Materia",
     materia_onLimpiar: "[ON LIMPIAR] Materia",
 
     ofertaAcademica_setInit: "[SET INIT] Oferta Academica",
     ofertaAcademica_onChange: "[ON CHANGE] Oferta Academica",
+    ofertaAcademica_onCreate: "[ON CREATE] Oferta Academica",
+    ofertaAcademica_onShow: "[ON SHOW] Oferta Academica",
     ofertaAcademica_onLimpiar: "[ON LIMPIAR] Oferta Academica",
 
     unidadNegocio_setInit: "[SET INIT] Unidad Negocio",

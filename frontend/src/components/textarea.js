@@ -16,6 +16,7 @@ export default function TextAreaComponent( props ) {
                     }
                 } }
                 readOnly={props.readOnly}
+                rows={4}
             />
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
                 { props.message }
