@@ -10,8 +10,6 @@ export const TIPOPERMISO_SEED: TipoPermiso[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
     {
         idtipopermiso: uuid(),
@@ -20,8 +18,6 @@ export const TIPOPERMISO_SEED: TipoPermiso[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
     {
         idtipopermiso: uuid(),
@@ -30,7 +26,5 @@ export const TIPOPERMISO_SEED: TipoPermiso[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
 ];

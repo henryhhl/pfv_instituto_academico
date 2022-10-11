@@ -45,6 +45,21 @@ export default function SidebarComponent() {
                                     <i className="ion ion-ios-circle-outline"></i> Unidad Academica
                                 </Link>
                             </li>
+                            <li>
+                                <Link to={"/programaanalitico/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Programa Analitico
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/pensum/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Pensum
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/responsable/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Responsable
+                                </Link>
+                            </li>
                         </ul>
                     </li>
                     <li>

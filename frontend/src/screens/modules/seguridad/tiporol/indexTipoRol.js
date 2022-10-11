@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { TipoRolActions } from '../../../../redux/actions/tipoRolActions';
+import { TipoRolActions } from '../../../../redux/actions/seguridad/tipoRol.action';
 import TableComponent from '../../../../components/table';
  
 function IndexTipoRol(props) {

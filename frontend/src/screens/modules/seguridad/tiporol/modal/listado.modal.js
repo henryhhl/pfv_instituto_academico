@@ -17,7 +17,7 @@ export default function ListadoTipoRolModal( props ) {
     function get_data() {
         httpRequest( 'get', apiServices.apiseguridadtiporol_index, {
         } ) . then( (result) => {
-            if ( result.resp == 1 ) {
+            if ( result.resp === 1 ) {
                 setArrayData( result.arrayTipoRol );
             };
         } );

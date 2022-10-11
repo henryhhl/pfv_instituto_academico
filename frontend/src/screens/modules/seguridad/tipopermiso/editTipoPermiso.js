@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
 
 function EditTipoPermiso( props ) {
     const { tipoPermiso } = props;

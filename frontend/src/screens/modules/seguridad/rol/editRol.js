@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import { RolActions } from '../../../../redux/actions/rolActions';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 import ListadoTipoRolModal from '../tiporol/modal/listado.modal';
 
 function EditRol( props ) {

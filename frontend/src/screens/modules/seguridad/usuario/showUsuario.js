@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import { UsuarioActions } from '../../../../redux/actions/usuarioActions';
+import { UsuarioActions } from '../../../../redux/actions/seguridad/usuario.action';
 import { Functions } from '../../../../utils/functions';
 
 function ShowUsuario( props ) {

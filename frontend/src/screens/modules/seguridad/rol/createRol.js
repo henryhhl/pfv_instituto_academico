@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, ModalComponent, TextAreaComponent } from '../../../../components/components';
-import { RolActions } from '../../../../redux/actions/rolActions';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 import ListadoTipoRolModal from '../tiporol/modal/listado.modal';
 
 function CreateRol( props ) {

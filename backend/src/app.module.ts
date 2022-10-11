@@ -11,8 +11,10 @@ import { NivelacademicoModule } from './nivelacademico/nivelacademico.module';
 import { ModalidadacademicaModule } from './modalidadacademica/modalidadacademica.module';
 import { PeriodoModule } from './periodo/periodo.module';
 import { MateriaModule } from './materia/materia.module';
-import { CiudadModule } from './ciudad/ciudad.module';
-import { PermisoModule } from './permiso/permiso.module';
+import { CiudadclasificacionModule } from './module/estructuraacademica/ciudadclasificacion/ciudadclasificacion.module';
+import { UnidadadministrativaModule } from './module/estructuraacademica/unidadadministrativa/unidadadministrativa.module';
+import { CiudadModule } from './module/parametro/ciudad/ciudad.module';
+import { PermisoModule } from './module/seguridad/permiso/permiso.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -27,7 +29,8 @@ import { PermisoModule } from './permiso/permiso.module';
   imports: [
     TipoRolModule, TipoPermisoModule, TipoMateriaModule, SeedModule, RolModule, 
     UsuarioModule, UnidadNegocioModule, OfertaacademicaModule, NivelacademicoModule, 
-    ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule,
+    ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
+    CiudadclasificacionModule, UnidadadministrativaModule,
   ],
   controllers: [],
   providers: [],

@@ -10,8 +10,6 @@ export const TIPOROL_SEED: TipoRol[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
     {
         idtiporol: uuid(),
@@ -20,7 +18,5 @@ export const TIPOROL_SEED: TipoRol[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
 ];

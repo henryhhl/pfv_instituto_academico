@@ -5,6 +5,7 @@ const module = {
     // seguridad: linkBackend + '/seguridad',
     seguridad: linkBackend + '',
     admin: linkBackend + '',
+    parametros: linkBackend + '',
 };
 
 const apiServices = {
@@ -31,6 +32,14 @@ const apiServices = {
     apiseguridadtipopermiso_show:   `${module.seguridad}/tipopermiso/show`,
     apiseguridadtipopermiso_update: `${module.seguridad}/tipopermiso/update`,
     apiseguridadtipopermiso_delete: `${module.seguridad}/tipopermiso/delete`,
+
+    apiseguridadpermiso_index:  `${module.seguridad}/permiso/index`,
+    apiseguridadpermiso_create: `${module.seguridad}/permiso/create`,
+    apiseguridadpermiso_store:  `${module.seguridad}/permiso/store`,
+    apiseguridadpermiso_edit:   `${module.seguridad}/permiso/edit`,
+    apiseguridadpermiso_show:   `${module.seguridad}/permiso/show`,
+    apiseguridadpermiso_update: `${module.seguridad}/permiso/update`,
+    apiseguridadpermiso_delete: `${module.seguridad}/permiso/delete`,
 
     apiseguridadusuario_index:  `${module.seguridad}/usuario/index`,
     apiseguridadusuario_create: `${module.seguridad}/usuario/create`,
@@ -95,6 +104,14 @@ const apiServices = {
     apiadminmateria_show:   `${module.admin}/materia/show`,
     apiadminmateria_update: `${module.admin}/materia/update`,
     apiadminmateria_delete: `${module.admin}/materia/delete`,
+
+    apiparametrosadminciudad_index:  `${module.parametros}/ciudad/index`,
+    apiparametrosadminciudad_create: `${module.parametros}/ciudad/create`,
+    apiparametrosadminciudad_store:  `${module.parametros}/ciudad/store`,
+    apiparametrosadminciudad_edit:   `${module.parametros}/ciudad/edit`,
+    apiparametrosadminciudad_show:   `${module.parametros}/ciudad/show`,
+    apiparametrosadminciudad_update: `${module.parametros}/ciudad/update`,
+    apiparametrosadminciudad_delete: `${module.parametros}/ciudad/delete`,
 };
 
 export default apiServices;

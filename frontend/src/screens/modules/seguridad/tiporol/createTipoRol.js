@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { TipoRolActions } from '../../../../redux/actions/tipoRolActions';
+import { TipoRolActions } from '../../../../redux/actions/seguridad/tipoRol.action';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 
 function CreateTipoRol( props ) {

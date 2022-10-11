@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Button, Tag, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
 import { MateriaActions } from '../../../../redux/actions/materiaActions';
 import TableComponent from '../../../../components/table';
  

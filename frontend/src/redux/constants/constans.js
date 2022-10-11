@@ -20,6 +20,12 @@ const Constants = {
     rol_onShow: "[ON SHOW] Rol",
     rol_onLimpiar: "[ON LIMPIAR] Rol",
 
+    permiso_setInit: "[SET INIT] Permiso",
+    permiso_onChange: "[ON CHANGE] Permiso",
+    permiso_onCreate: "[ON CREATE] Permiso",
+    permiso_onShow: "[ON SHOW] Permiso",
+    permiso_onLimpiar: "[ON LIMPIAR] Permiso",
+
     usuario_setInit: "[SET INIT] Usuario",
     usuario_onChange: "[ON CHANGE] Usuario",
     usuario_onCreate: "[ON CREATE] Usuario",
@@ -67,6 +73,12 @@ const Constants = {
     unidadNegocio_onShow: "[ON SHOW] Unidad Negocio",
     unidadNegocio_onChange: "[ON CHANGE] Unidad Negocio",
     unidadNegocio_onLimpiar: "[ON LIMPIAR] Unidad Negocio",
+
+    ciudad_setInit: "[SET INIT] Ciudad",
+    ciudad_onChange: "[ON CHANGE] Ciudad",
+    ciudad_onCreate: "[ON CREATE] Ciudad",
+    ciudad_onShow: "[ON SHOW] Ciudad",
+    ciudad_onLimpiar: "[ON LIMPIAR] Ciudad",
 };
 
 export default Constants;

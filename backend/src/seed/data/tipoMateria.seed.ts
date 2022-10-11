@@ -11,8 +11,6 @@ export const TIPOMATERIA_SEED: TipoMateria[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
     {
         idtipomateria: uuid(),
@@ -22,8 +20,6 @@ export const TIPOMATERIA_SEED: TipoMateria[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
     {
         idtipomateria: uuid(),
@@ -33,7 +29,5 @@ export const TIPOMATERIA_SEED: TipoMateria[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
 ];

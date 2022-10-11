@@ -6,6 +6,6 @@ export interface TipoPermiso {
     concurrencia: number;
     isdelete: string;
     created_at: string;
-    updated_at: string;
-    deleted_at: string;
+    updated_at?: string;
+    deleted_at?: string;
 }

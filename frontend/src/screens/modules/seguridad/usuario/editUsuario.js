@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import { UsuarioActions } from '../../../../redux/actions/usuarioActions';
+import { UsuarioActions } from '../../../../redux/actions/seguridad/usuario.action';
 
 function EditUsuario( props ) {
     const { usuario } = props;

@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
-import { RolActions } from '../../../../redux/actions/rolActions';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 import { Functions } from '../../../../utils/functions';
 
 function ShowRol( props ) {

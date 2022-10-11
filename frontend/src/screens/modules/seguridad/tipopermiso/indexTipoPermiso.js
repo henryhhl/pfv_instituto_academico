@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
 import TableComponent from '../../../../components/table';
  
 function IndexTipoPermiso(props) {

@@ -1,5 +1,6 @@
 
 const ListModules = {
+    listCiudad: [],
     listUnidadNegocio: [],
     listOfertaAcademica: [],
     listNivelAcademico: [],
@@ -7,10 +8,12 @@ const ListModules = {
     listPeriodo: [],
     listTipoMateria: [],
     listMateria: [],
-    listTipoPermiso: [],
-    listTipoRol: [],
+
     listRol: [],
+    listPermiso: [],
+    listTipoRol: [],
     listUsuario: [],
+    listTipoPermiso: [],
 };
 
 export default ListModules;

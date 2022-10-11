@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import { UsuarioActions } from '../../../../redux/actions/usuarioActions';
+import { UsuarioActions } from '../../../../redux/actions/seguridad/usuario.action';
 
 function CreateUsuario( props ) {
     const { usuario } = props;

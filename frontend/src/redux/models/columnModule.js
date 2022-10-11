@@ -25,14 +25,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
 
     columnOfertaAcademica: [
@@ -59,14 +51,6 @@ const ColumnModules = {
             visible: true,
             width: null,
             state: true,
-        },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
         },
     ],
 
@@ -95,14 +79,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
 
     columnModalidadAcademica: [
@@ -130,14 +106,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
     
     columnPeriodo: [
@@ -164,14 +132,6 @@ const ColumnModules = {
             visible: true,
             width: null,
             state: true,
-        },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
         },
     ],
 
@@ -216,14 +176,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
 
     columnTipoMateria: [
@@ -251,14 +203,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
 
     columnTipoPermiso: [
@@ -278,14 +222,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
 
     columnTipoRol: [
@@ -304,14 +240,6 @@ const ColumnModules = {
             visible: true,
             width: null,
             state: true,
-        },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
         },
     ],
 
@@ -340,14 +268,6 @@ const ColumnModules = {
             width: null,
             state: true,
         },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
-        },
     ],
 
     columnUsuario: [
@@ -374,14 +294,6 @@ const ColumnModules = {
             visible: true,
             width: null,
             state: true,
-        },
-        {
-            id: 'concurrencia',
-            label: 'Concurrencia',
-            numeric: true,
-            visible: true,
-            width: null,
-            state: false,
         },
     ],
 };

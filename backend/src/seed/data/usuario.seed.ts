@@ -12,8 +12,6 @@ export const USUARIO_SEED: Usuario[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
     {
         idusuario: uuid(),
@@ -24,7 +22,5 @@ export const USUARIO_SEED: Usuario[] = [
         concurrencia: 1,
         isdelete: 'A',
         created_at: '',
-        updated_at: '',
-        deleted_at: '',
     },
 ];

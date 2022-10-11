@@ -1,46 +1,107 @@
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Tag, Tooltip, Tree } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined, PlusOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { CiudadActions } from '../../../../redux/actions/parametros/ciudad.action';
+import ModalComponent from '../../../../components/modal';
+import TreeComponent from '../../../../components/tree';
+import CreateCiudad from './ciudad.create';
+import ShowCiudad from './ciudad.show';
+import EditCiudad from './ciudad.edit';
  
 function IndexCiudad(props) {
-    const navigate = useNavigate();
+    const [ visibleCreate, setVisibleCreate ] = React.useState( false );
+    const [ visibleShow, setVisibleShow ] = React.useState( false );
+    const [ visibleEdit, setVisibleEdit ] = React.useState( false );
 
     useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
+      props.getAllCiudad();
+      return () => {};
     }, [])
     
 
     function onCreate() {
-        navigate('/rol/create');
+        props.onCreate( );
+        setTimeout(() => {
+            setVisibleCreate( true );
+        }, 500);
     }
 
-    function onEdit(rol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/rol/edit/1`);
-    }
+    function onCloseCreate() {
+        props.onLimpiar();
+        setVisibleCreate( false );
+    };
 
-    function onShow(rol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/rol/show/1`);
-    }
+    function onComponentCreate() {
+        if ( !visibleCreate ) return null;
+        return (
+            <ModalComponent
+                visible={visibleCreate}
+                onClose={ onCloseCreate }
+                footer={null} width={450} centered
+                title={"CREAR CIUDAD"}
+            >
+                <CreateCiudad 
+                    onClose={ onCloseCreate }
+                />
+            </ModalComponent>
+        );
+    };
 
-    const onSelect = (keys, info) => {
-        console.log('Trigger Select', keys, info);
+    function onCloseShow() {
+        props.onLimpiar();
+        setVisibleShow( false );
+    };
+
+    function onComponentShow() {
+        if ( !visibleShow ) return null;
+        return (
+            <ModalComponent
+                visible={visibleShow}
+                onClose={ onCloseShow }
+                footer={null} width={450} centered
+                title={"DETALLE CIUDAD"}
+            >
+                <ShowCiudad 
+                    onClose={ onCloseShow }
+                />
+            </ModalComponent>
+        );
+    };
+
+    function onCloseEdit() {
+        props.onLimpiar();
+        setVisibleEdit( false );
+    };
+
+    function onComponentEdit() {
+        if ( !visibleEdit ) return null;
+        return (
+            <ModalComponent
+                visible={visibleEdit}
+                onClose={ onCloseEdit }
+                footer={null} width={450} centered
+                title={"EDITAR CIUDAD"}
+            >
+                <EditCiudad 
+                    onClose={ onCloseEdit }
+                />
+            </ModalComponent>
+        );
     };
 
     return (
         <>
+            { onComponentCreate() }
+            { onComponentShow() }
+            { onComponentEdit() }
             <div className="main-content">
                 <section className="section">
                     <h1 className="section-header">
                         <div>Ciudad</div>
                         <div className='float-right'>
-                            <button type='button' className='btn btn-sm btn-primary'>
+                            <button type='button' className='btn btn-sm btn-primary'
+                                onClick={onCreate}
+                            >
                                 Nuevo
                             </button>
                         </div>
@@ -52,158 +113,28 @@ function IndexCiudad(props) {
                                     <h4>Advanced Table</h4>
                                 </div>
                                 <div className="card-body">
-                                    <Tree 
-                                        onSelect={onSelect}
-                                        style={{ width: '100%', maxWidth: '100%', }}
-                                        showIcon={true}
-                                        showLine={true}
-                                        multiple={true}
-                                        defaultExpandAll={true}
-                                        blockNode
-                                        draggable
-                                        checkable={false}
-                                        height={400}
-                                        selectable={true}
-                                        treeData={
-                                            [
-                                                {
-                                                    title: <span style={{ position: 'relative', }}>
-                                                        {'Santa Cruz de la Sierra'} 
-                                                        <Tooltip placement="top" title={"Agregar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="processing">
-                                                                <PlusOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="green">
-                                                                <EyeOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="geekblue">
-                                                                <EditOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="red">
-                                                                <DeleteOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                    </span>,
-                                                    key: '0-0',
-                                                    children: [
-                                                        {
-                                                            title: <span style={{ position: 'relative', }}>
-                                                                {'Andres Ibañez'} 
-                                                                <Tooltip placement="top" title={"Agregar"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="processing">
-                                                                        <PlusOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                                <Tooltip placement="top" title={"Ver"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="green">
-                                                                        <EyeOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                                <Tooltip placement="top" title={"Editar"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="geekblue">
-                                                                        <EditOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                                <Tooltip placement="top" title={"Eliminar"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="red">
-                                                                        <DeleteOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                            </span>,
-                                                            key: '0-0-0',
-                                                            children: [],
-                                                        },
-                                                        {
-                                                            title: <span style={{ position: 'relative', }}>
-                                                                {'Montero'} 
-                                                                <Tooltip placement="top" title={"Agregar"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="processing">
-                                                                        <PlusOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                                <Tooltip placement="top" title={"Ver"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="green">
-                                                                        <EyeOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                                <Tooltip placement="top" title={"Editar"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="geekblue">
-                                                                        <EditOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                                <Tooltip placement="top" title={"Eliminar"}>
-                                                                    <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="red">
-                                                                        <DeleteOutlined />
-                                                                    </Tag>
-                                                                </Tooltip>
-                                                            </span>,
-                                                            key: '0-0-1',
-                                                            children: [],
-                                                        },
-                                                    ],
-                                                },
-                                                {
-                                                    title: <span style={{ position: 'relative', }}>
-                                                        {'La Paz'} 
-                                                        <Tooltip placement="top" title={"Agregar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="processing">
-                                                                <PlusOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="green">
-                                                                <EyeOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="geekblue">
-                                                                <EditOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="red">
-                                                                <DeleteOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                    </span>,
-                                                    key: '0-1',
-                                                    children: []
-                                                },
-                                                {
-                                                    title: <span style={{ position: 'relative', }}>
-                                                        {'Cochabamba'} 
-                                                        <Tooltip placement="top" title={"Agregar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="processing">
-                                                                <PlusOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Ver"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="green">
-                                                                <EyeOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Editar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="geekblue">
-                                                                <EditOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                        <Tooltip placement="top" title={"Eliminar"}>
-                                                            <Tag style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} color="red">
-                                                                <DeleteOutlined />
-                                                            </Tag>
-                                                        </Tooltip>
-                                                    </span>,
-                                                    key: '0-2',
-                                                    children: []
-                                                },
-                                            ]
-                                        }
+                                    <TreeComponent 
+                                        treeData={props.listCiudad}
+                                        option={ {
+                                            title: "descripcion",
+                                            value: "idciudad",
+                                            fkidpadre: "fkidciudadpadre",
+                                        } }
+                                        onCreate={ ( ciudad ) => {
+                                            props.onCreate( ciudad.idciudad );
+                                            setTimeout(() => {
+                                                setVisibleCreate( true );
+                                            }, 500);
+                                        } }
+                                        onShow={ ( ciudad ) => {
+                                            props.onShow( ciudad.idciudad );
+                                            setVisibleShow( true );
+                                        } }
+                                        onEdit={ ( ciudad ) => {
+                                            props.onEdit( ciudad.idciudad );
+                                            setVisibleEdit( true );
+                                        } }
+                                        onDelete={ ( ciudad ) => props.onDelete(ciudad) }
                                     />
                                 </div>
                             </div>
@@ -216,10 +147,17 @@ function IndexCiudad(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
+    listCiudad: state.ListModule.listCiudad,
+    ciudad: state.Ciudad,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    getAllCiudad: CiudadActions.getAllCiudad,
+    onLimpiar: CiudadActions.onLimpiar,
+    onCreate: CiudadActions.onCreate,
+    onEdit: CiudadActions.onEdit,
+    onShow: CiudadActions.onShow,
+    onDelete: CiudadActions.onDelete,
 };
 
 

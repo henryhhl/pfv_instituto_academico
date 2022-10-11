@@ -1,43 +1,110 @@
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Tree } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { PermisoActions } from '../../../../redux/actions/seguridad/permiso.action';
+import TreeComponent from '../../../../components/tree';
+import ModalComponent from '../../../../components/modal';
+import CreatePermiso from './permiso.create';
+import ShowPermiso from'./permiso.show';
+import EditPermiso from './permiso.edit';
  
 function IndexPermiso(props) {
-    const navigate = useNavigate();
+    const [ visibleCreate, setVisibleCreate ] = React.useState( false );
+    const [ visibleShow, setVisibleShow ] = React.useState( false );
+    const [ visibleEdit, setVisibleEdit ] = React.useState( false );
 
     useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
+      props.getAllPermiso();
+      return () => {};
     }, [])
     
 
     function onCreate() {
-        navigate('/rol/create');
+        props.onCreate();
+        setTimeout(() => {
+            setVisibleCreate( true );
+        }, 500);
     }
 
-    function onEdit(rol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/rol/edit/1`);
-    }
+    function onCloseCreate() {
+        props.onLimpiar();
+        setVisibleCreate( false );
+    };
 
-    function onShow(rol) {
-        // navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-        navigate(`/rol/show/1`);
-    }
+    function onComponentCreate() {
+        if ( !visibleCreate ) return null;
+        return (
+            <ModalComponent
+                visible={visibleCreate}
+                onClose={ onCloseCreate }
+                footer={null} width={450} centered
+                title={"CREAR PERMISO"}
+            >
+                <CreatePermiso 
+                    onClose={ onCloseCreate }
+                />
+            </ModalComponent>
+        );
+    };
 
-    const onSelect = (keys, info) => {
-        console.log('Trigger Select', keys, info);
+    function onCloseShow() {
+        props.onLimpiar();
+        setVisibleShow( false );
+    };
+
+    function onComponentShow() {
+        if ( !visibleShow ) return null;
+        return (
+            <ModalComponent
+                visible={visibleShow}
+                onClose={ onCloseShow }
+                footer={null} width={450} centered
+                title={"DETALLE PERMISO"}
+            >
+                <ShowPermiso 
+                    onClose={ onCloseShow }
+                />
+            </ModalComponent>
+        );
+    };
+
+    function onCloseEdit() {
+        props.onLimpiar();
+        setVisibleEdit( false );
+    };
+
+    function onComponentEdit() {
+        if ( !visibleEdit ) return null;
+        return (
+            <ModalComponent
+                visible={visibleEdit}
+                onClose={ onCloseEdit }
+                footer={null} width={450} centered
+                title={"EDITAR PERMISO"}
+            >
+                <EditPermiso 
+                    onClose={ onCloseEdit }
+                />
+            </ModalComponent>
+        );
     };
 
     return (
         <>
+            { onComponentCreate() }
+            { onComponentShow() }
+            { onComponentEdit() }
             <div className="main-content">
                 <section className="section">
                     <h1 className="section-header">
                         <div>Permisos</div>
+                        <div className='float-right'>
+                            <button type='button' className='btn btn-sm btn-primary'
+                                onClick={onCreate}
+                            >
+                                Nuevo
+                            </button>
+                        </div>
                     </h1>
                     <div className="row">
                         <div className="col-12" style={{ marginBottom: 50, }}>
@@ -46,82 +113,28 @@ function IndexPermiso(props) {
                                     <h4>Advanced Table</h4>
                                 </div>
                                 <div className="card-body">
-                                    <Tree 
-                                        onSelect={onSelect}
-                                        style={{ width: '100%', maxWidth: '100%', }}
-                                        showIcon={true}
-                                        showLine={true}
-                                        multiple={true}
-                                        defaultExpandAll={true}
-                                        blockNode
-                                        draggable
-                                        checkable={false}
-                                        height={400}
-                                        treeData={
-                                            [
-                                                {
-                                                    title: 'Seguridad',
-                                                    key: '0-0',
-                                                    children: [
-                                                        {
-                                                            title: 'Rol',
-                                                            key: '0-0-0',
-                                                            children: [
-                                                                { title: 'Crear', key: '0-0-0-0', },
-                                                                {
-                                                                    title: 'Editar',
-                                                                    key: '0-0-0-1',
-                                                                },
-                                                                { title: 'Ver', key: '0-0-0-2', },
-                                                            ],
-                                                        },
-                                                        {
-                                                            title: 'Tipo Rol',
-                                                            key: '0-0-1',
-                                                            children: [{ title: 'Crear', key: '0-0-1-0', }],
-                                                        },
-                                                    ],
-                                                },
-                                                {
-                                                    title: 'Administración',
-                                                    key: '0-1',
-                                                    children: [
-                                                        {
-                                                            title: 'Materia',
-                                                            key: '0-1-0',
-                                                            children: [
-                                                                { title: 'Crear', key: '0-1-0-0', },
-                                                                { title: 'Editar', key: '0-1-0-1', },
-                                                            ],
-                                                        },
-                                                        {
-                                                            title: 'Nivel Academico',
-                                                            key: '0-2-0',
-                                                            children: [
-                                                                { title: 'Crear', key: '0-2-0-0', },
-                                                                { title: 'Editar', key: '0-2-0-1', },
-                                                            ],
-                                                        },
-                                                        {
-                                                            title: 'Modalidad Academica',
-                                                            key: '0-3-0',
-                                                            children: [
-                                                                { title: 'Crear', key: '0-3-0-0', },
-                                                                { title: 'Editar', key: '0-3-0-1', },
-                                                            ],
-                                                        },
-                                                        {
-                                                            title: 'Periodo',
-                                                            key: '0-4-0',
-                                                            children: [
-                                                                { title: 'Crear', key: '0-4-0-0', },
-                                                                { title: 'Editar', key: '0-4-0-1', },
-                                                            ],
-                                                        },
-                                                    ]
-                                                }
-                                            ]
-                                        }
+                                    <TreeComponent 
+                                        treeData={props.listPermiso}
+                                        option={ {
+                                            title: "descripcion",
+                                            value: "idpermiso",
+                                            fkidpadre: "fkidpermisopadre",
+                                        } }
+                                        onCreate={ ( permiso ) => {
+                                            props.onCreate( permiso.idpermiso );
+                                            setTimeout(() => {
+                                                setVisibleCreate( true );
+                                            }, 500);
+                                        } }
+                                        onShow={ ( permiso ) => {
+                                            props.onShow( permiso.idpermiso );
+                                            setVisibleShow( true );
+                                        } }
+                                        onEdit={ ( permiso ) => {
+                                            props.onEdit( permiso.idpermiso );
+                                            setVisibleEdit( true );
+                                        } }
+                                        onDelete={ ( permiso ) => props.onDelete(permiso) }
                                     />
                                 </div>
                             </div>
@@ -134,10 +147,17 @@ function IndexPermiso(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
+    listPermiso: state.ListModule.listPermiso,
+    permiso: state.Permiso,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    getAllPermiso: PermisoActions.getAllPermiso,
+    onLimpiar: PermisoActions.onLimpiar,
+    onCreate: PermisoActions.onCreate,
+    onEdit: PermisoActions.onEdit,
+    onShow: PermisoActions.onShow,
+    onDelete: PermisoActions.onDelete,
 };
 
 

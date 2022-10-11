@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RolActions } from '../../../../redux/actions/rolActions';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 import TableComponent from '../../../../components/table';
  
 function IndexRol(props) {

@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import { TipoPermisoActions } from '../../../../redux/actions/tipoPermisoActions';
+import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
 import { Functions } from '../../../../utils/functions';
 
 function ShowTipoPermiso( props ) {

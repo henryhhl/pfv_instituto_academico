@@ -68,14 +68,14 @@ export class TipoMateriaService {
     const tipoMateria = this.findOne(idtipomateria);
     if ( tipoMateria ) {
         return {
-            resp: 1, error: false,
-            message: 'Servicio realizado exitosamente.',
-            tipoMateria: tipoMateria,
+          resp: 1, error: false,
+          message: 'Servicio realizado exitosamente.',
+          tipoMateria: tipoMateria,
         };
     }
     return {
-        resp: 0, error: false,
-        message: 'Tipo Materia no existe.',
+      resp: 0, error: false,
+      message: 'Tipo Materia no existe.',
     };
   }
 
