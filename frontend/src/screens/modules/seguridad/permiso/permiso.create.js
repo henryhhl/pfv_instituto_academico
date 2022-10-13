@@ -6,6 +6,7 @@ import ButtonComponent from '../../../../components/button';
 import InputComponent from '../../../../components/input';
 import { PermisoActions } from '../../../../redux/actions/seguridad/permiso.action';
 import ListadoTipoPermisoModal from '../tipopermiso/modal/listadoPermiso.modal';
+import CardComponent from '../../../../components/card';
 
 function CreatePermiso( props ) {
     const { permiso } = props;
@@ -28,50 +29,48 @@ function CreatePermiso( props ) {
     return (
         <>
             { onComponentTipoPermiso() }
-            <div className="row">
-                <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <InputComponent
-                                        label="Tipo"
-                                        value={permiso.tipopermiso}
-                                        onClick={ () => setVisibleTipoPermiso(true) }
-                                        error={permiso.error.fkidtipopermiso}
-                                        message={permiso.message.fkidtipopermiso}
-                                        readOnly
-                                        style={{ background: 'white', cursor: 'pointer', }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <InputComponent
-                                        label="Descripción"
-                                        value={permiso.descripcion}
-                                        onChange={ (value) => props.setDescripcion(permiso, value) }
-                                        error={permiso.error.descripcion}
-                                        message={permiso.message.descripcion}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card-footer">
-                            <ButtonComponent
-                                onClick={ () => props.onStore(permiso, props.onClose) }
-                            >
-                                Guardar
-                            </ButtonComponent>
-                            <ButtonComponent
-                                type='danger' onClick={props.onClose}
-                            >
-                                Cancelar
-                            </ButtonComponent>
-                        </div>
+            <CardComponent
+                style={{ marginTop:10, }} isHeader={false}
+                footer={
+                    <>
+                        <ButtonComponent
+                            onClick={ () => props.onStore(permiso, props.onClose) }
+                        >
+                            Guardar
+                        </ButtonComponent>
+                        <ButtonComponent
+                            type='danger' onClick={props.onClose}
+                        >
+                            Cancelar
+                        </ButtonComponent>
+                    </>
+                }
+            >
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
+                            label="Tipo"
+                            value={permiso.tipopermiso}
+                            onClick={ () => setVisibleTipoPermiso(true) }
+                            error={permiso.error.fkidtipopermiso}
+                            message={permiso.message.fkidtipopermiso}
+                            readOnly
+                            style={{ background: 'white', cursor: 'pointer', }}
+                        />
                     </div>
                 </div>
-            </div>
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
+                            label="Descripción"
+                            value={permiso.descripcion}
+                            onChange={ (value) => props.setDescripcion(permiso, value) }
+                            error={permiso.error.descripcion}
+                            message={permiso.message.descripcion}
+                        />
+                    </div>
+                </div>
+            </CardComponent>
         </>
     );
 };

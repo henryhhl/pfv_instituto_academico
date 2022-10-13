@@ -114,6 +114,19 @@ export class PermisoService {
         message: 'Permiso no existe.',
       };
     }
+    let cont = 0;
+    for (let index = 0; index < this.listPermiso.length; index++) {
+      const element = this.listPermiso[index];
+      if ( permispoDB.idpermiso === element.fkidpermisopadre ) {
+        cont++;
+      }
+    }
+    if ( cont > 0 ) {
+      return {
+        resp: 0, error: false,
+        message: 'Error al eliminar Permiso.',
+      };
+    }
     this.listPermiso = this.listPermiso.filter( (permiso) => permiso.idpermiso !== id );
     return {
       resp: 1, error: false,

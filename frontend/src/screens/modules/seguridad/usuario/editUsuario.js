@@ -2,7 +2,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import CardComponent from '../../../../components/card';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import PaperComponent from '../../../../components/paper';
 import { EstadoData } from '../../../../data/estado.data';
 import { UsuarioActions } from '../../../../redux/actions/seguridad/usuario.action';
 
@@ -22,84 +24,73 @@ function EditUsuario( props ) {
 
     return (
         <>
-            <div className="main-content">
-                <section className="section">
-                    <h1 className="section-header">
-                        <div>
-                        </div>
-                    </h1>
+            <PaperComponent>
+                <CardComponent
+                    header={"Editar Usuario"}
+                    footer={
+                        <>
+                            <ButtonComponent
+                                onClick={ () => props.onUpdate(usuario, onBack) }
+                            >
+                                Editar
+                            </ButtonComponent>
+                            <ButtonComponent
+                                type='danger' onClick={onBack}
+                            >
+                                Cancelar
+                            </ButtonComponent>
+                        </>
+                    }
+                >
                     <div className="row">
-                        <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                            <div className="card">
-                                <div className="card-header">
-                                    <h4>Editar Usuario</h4>
-                                </div>
-                                <div className="card-body">
-                                    <div className="row">
-                                        <div className="form-group col-3"></div>
-                                        <div className="form-group col-6">
-                                            <InputComponent
-                                                label="Email"
-                                                value={usuario.email}
-                                                onChange={ (value) => props.setEmail(usuario, value) }
-                                                error={usuario.error.email}
-                                                message={usuario.message.email}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="form-group col-2"></div>
-                                        <div className="form-group col-4">
-                                            <InputComponent
-                                                label="Login"
-                                                value={usuario.login}
-                                                onChange={ (value) => props.setLogin(usuario, value) }
-                                                error={usuario.error.login}
-                                                message={usuario.message.login}
-                                            />
-                                        </div>
-                                        <div className="form-group col-4">
-                                            <InputComponent
-                                                label="Contraseña"
-                                                type='password'
-                                                value={usuario.password}
-                                                onChange={ (value) => props.setPassword(usuario, value) }
-                                                error={usuario.error.password}
-                                                message={usuario.message.password}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="form-group col-4"></div>
-                                        <div className="form-group col-4">
-                                            <SelectComponent 
-                                                data={EstadoData}
-                                                label={"Estado"}
-                                                value={usuario.estado}
-                                                onChange={ (value) => props.setEstado(usuario, value) }
-                                                error={usuario.error.estado}
-                                                message={usuario.message.estado}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="card-footer">
-                                    <ButtonComponent
-                                        onClick={ () => props.onUpdate(usuario, onBack) }
-                                    >
-                                        Editar
-                                    </ButtonComponent>
-                                    <ButtonComponent
-                                        type='danger' onClick={onBack}
-                                    >
-                                        Cancelar
-                                    </ButtonComponent>
-                                </div>
-                            </div>
+                        <div className="form-group col-3"></div>
+                        <div className="form-group col-6">
+                            <InputComponent
+                                label="Email"
+                                value={usuario.email}
+                                onChange={ (value) => props.setEmail(usuario, value) }
+                                error={usuario.error.email}
+                                message={usuario.message.email}
+                            />
                         </div>
                     </div>
-                </section>
-            </div>
+                    <div className="row">
+                        <div className="form-group col-2"></div>
+                        <div className="form-group col-4">
+                            <InputComponent
+                                label="Login"
+                                value={usuario.login}
+                                onChange={ (value) => props.setLogin(usuario, value) }
+                                error={usuario.error.login}
+                                message={usuario.message.login}
+                            />
+                        </div>
+                        <div className="form-group col-4">
+                            <InputComponent
+                                label="Contraseña"
+                                type='password'
+                                value={usuario.password}
+                                onChange={ (value) => props.setPassword(usuario, value) }
+                                error={usuario.error.password}
+                                message={usuario.message.password}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="form-group col-4"></div>
+                        <div className="form-group col-4">
+                            <SelectComponent 
+                                data={EstadoData}
+                                label={"Estado"}
+                                value={usuario.estado}
+                                onChange={ (value) => props.setEstado(usuario, value) }
+                                error={usuario.error.estado}
+                                message={usuario.message.estado}
+                            />
+                        </div>
+                    </div>
+                </CardComponent>
+            </PaperComponent>
         </>
     );
 }

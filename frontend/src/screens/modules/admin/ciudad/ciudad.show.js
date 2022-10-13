@@ -6,54 +6,51 @@ import ButtonComponent from '../../../../components/button';
 import InputComponent from '../../../../components/input';
 import { CiudadActions } from '../../../../redux/actions/parametros/ciudad.action';
 import { Functions } from '../../../../utils/functions';
+import CardComponent from '../../../../components/card';
 
 function ShowCiudad( props ) {
     const { ciudad } = props;
     
     return (
         <>
-            <div className="row">
-                <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <InputComponent
-                                        label="Sigla"
-                                        value={ciudad.sigla}
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <InputComponent
-                                        label="Descripción"
-                                        value={ciudad.descripcion}
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <InputComponent
-                                        label="Estado"
-                                        value={Functions.getValueEstado( ciudad.estado )}
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card-footer">
-                            <ButtonComponent
-                                onClick={props.onClose}
-                            >
-                                Aceptar
-                            </ButtonComponent>
-                        </div>
+            <CardComponent
+                style={{ marginTop: 10, }} isHeader={false}
+                footer={
+                    <ButtonComponent
+                        onClick={props.onClose}
+                    >
+                        Aceptar
+                    </ButtonComponent>
+                }
+            >
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
+                            label="Sigla"
+                            value={ciudad.sigla}
+                            readOnly
+                        />
                     </div>
                 </div>
-            </div>
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
+                            label="Descripción"
+                            value={ciudad.descripcion}
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
+                            label="Estado"
+                            value={Functions.getValueEstado( ciudad.estado )}
+                            readOnly
+                        />
+                    </div>
+                </div>
+            </CardComponent>
         </>
     );
 };

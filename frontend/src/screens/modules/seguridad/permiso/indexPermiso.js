@@ -7,6 +7,8 @@ import ModalComponent from '../../../../components/modal';
 import CreatePermiso from './permiso.create';
 import ShowPermiso from'./permiso.show';
 import EditPermiso from './permiso.edit';
+import PaperComponent from '../../../../components/paper';
+import CardComponent from '../../../../components/card';
  
 function IndexPermiso(props) {
     const [ visibleCreate, setVisibleCreate ] = React.useState( false );
@@ -94,54 +96,37 @@ function IndexPermiso(props) {
             { onComponentCreate() }
             { onComponentShow() }
             { onComponentEdit() }
-            <div className="main-content">
-                <section className="section">
-                    <h1 className="section-header">
-                        <div>Permisos</div>
-                        <div className='float-right'>
-                            <button type='button' className='btn btn-sm btn-primary'
-                                onClick={onCreate}
-                            >
-                                Nuevo
-                            </button>
-                        </div>
-                    </h1>
-                    <div className="row">
-                        <div className="col-12" style={{ marginBottom: 50, }}>
-                            <div className="card">
-                                <div className="card-header">
-                                    <h4>Advanced Table</h4>
-                                </div>
-                                <div className="card-body">
-                                    <TreeComponent 
-                                        treeData={props.listPermiso}
-                                        option={ {
-                                            title: "descripcion",
-                                            value: "idpermiso",
-                                            fkidpadre: "fkidpermisopadre",
-                                        } }
-                                        onCreate={ ( permiso ) => {
-                                            props.onCreate( permiso.idpermiso );
-                                            setTimeout(() => {
-                                                setVisibleCreate( true );
-                                            }, 500);
-                                        } }
-                                        onShow={ ( permiso ) => {
-                                            props.onShow( permiso.idpermiso );
-                                            setVisibleShow( true );
-                                        } }
-                                        onEdit={ ( permiso ) => {
-                                            props.onEdit( permiso.idpermiso );
-                                            setVisibleEdit( true );
-                                        } }
-                                        onDelete={ ( permiso ) => props.onDelete(permiso) }
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+            <PaperComponent
+                title={"Permisos"}
+                create
+                onCreate={onCreate}
+            >
+                <CardComponent>
+                    <TreeComponent 
+                        treeData={props.listPermiso}
+                        option={ {
+                            title: "descripcion",
+                            value: "idpermiso",
+                            fkidpadre: "fkidpermisopadre",
+                        } }
+                        onCreate={ ( permiso ) => {
+                            props.onCreate( permiso.idpermiso );
+                            setTimeout(() => {
+                                setVisibleCreate( true );
+                            }, 500);
+                        } }
+                        onShow={ ( permiso ) => {
+                            props.onShow( permiso.idpermiso );
+                            setVisibleShow( true );
+                        } }
+                        onEdit={ ( permiso ) => {
+                            props.onEdit( permiso.idpermiso );
+                            setVisibleEdit( true );
+                        } }
+                        onDelete={ ( permiso ) => props.onDelete(permiso) }
+                    />
+                </CardComponent>
+            </PaperComponent>
         </>
     );
 };

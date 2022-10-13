@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { TipoRolActions } from '../../../../redux/actions/seguridad/tipoRol.action';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import PaperComponent from '../../../../components/paper';
+import CardComponent from '../../../../components/card';
 
 function CreateTipoRol( props ) {
     const { tipoRol } = props;
@@ -21,49 +23,38 @@ function CreateTipoRol( props ) {
 
     return (
         <>
-            <div className="main-content">
-                <section className="section">
-                    <h1 className="section-header">
-                        <div>
-                        </div>
-                    </h1>
+            <PaperComponent>
+                <CardComponent
+                    header={"Nuevo Tipo Rol"}
+                    footer={
+                        <>
+                            <ButtonComponent
+                                onClick={ () => props.onStore(tipoRol, onBack) }
+                            >
+                                Guardar
+                            </ButtonComponent>
+                            <ButtonComponent
+                                type='danger' onClick={onBack}
+                            >
+                                Cancelar
+                            </ButtonComponent>
+                        </>
+                    }
+                >
                     <div className="row">
-                        <div className="col-lg-12 col-md-12 col-12 col-sm-12">
-                            <div className="card">
-                                <div className="card-header">
-                                    <h4>Nuevo Tipo Rol</h4>
-                                </div>
-                                <div className="card-body">
-                                    <div className="row">
-                                        <div className="form-group col-3"></div>
-                                        <div className="form-group col-6">
-                                            <InputComponent
-                                                label="Descripción"
-                                                value={tipoRol.descripcion}
-                                                onChange={ (value) => props.setDescripcion(tipoRol, value) }
-                                                error={tipoRol.error.descripcion}
-                                                message={tipoRol.message.descripcion}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="card-footer">
-                                    <ButtonComponent
-                                        onClick={ () => props.onStore(tipoRol, onBack) }
-                                    >
-                                        Guardar
-                                    </ButtonComponent>
-                                    <ButtonComponent
-                                        type='danger' onClick={onBack}
-                                    >
-                                        Cancelar
-                                    </ButtonComponent>
-                                </div>
-                            </div>
+                        <div className="form-group col-3"></div>
+                        <div className="form-group col-6">
+                            <InputComponent
+                                label="Descripción"
+                                value={tipoRol.descripcion}
+                                onChange={ (value) => props.setDescripcion(tipoRol, value) }
+                                error={tipoRol.error.descripcion}
+                                message={tipoRol.message.descripcion}
+                            />
                         </div>
                     </div>
-                </section>
-            </div>
+                </CardComponent>
+            </PaperComponent>
         </>
     );
 }

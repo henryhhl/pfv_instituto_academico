@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { UnidadNegocioActions } from '../../../../redux/actions/unidadNegocioActions';
 import TableComponent from '../../../../components/table';
+import PaperComponent from '../../../../components/paper';
+import CardComponent from '../../../../components/card';
  
 function IndexUnidadNegocio(props) {
     const navigate = useNavigate();
@@ -28,46 +30,23 @@ function IndexUnidadNegocio(props) {
 
     return (
         <>
-            <div className="main-content">
-                <section className="section">
-                    <h1 className="section-header">
-                        <div>Listado Unidad Negocio</div>
-                        <div className='float-right'>
-                            <button type='button' className='btn btn-sm btn-primary' onClick={onCreate}>
-                                Nuevo
-                            </button>
-                        </div>
-                    </h1>
-                    <div className="row">
-                        <div className="col-12">
-                            <div className="card">
-                                <div className="card-header">
-                                    <div className="float-right">
-                                        <form>
-                                            <div className="input-group">
-                                                <input type="text" className="form-control" placeholder="Buscar..." />
-                                            <div className="input-group-btn">
-                                                <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
-                                            </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <h4>Advanced Table</h4>
-                                </div>
-                                <div className="card-body">
-                                    <TableComponent 
-                                        columns={props.columnUnidadNegocio}
-                                        dataSource={props.listUnidadNegocio}
-                                        onShow={ ( unidadNegocio ) => onShow(unidadNegocio) }
-                                        onEditar={ ( unidadNegocio ) => onEdit(unidadNegocio) }
-                                        onDelete={ ( unidadNegocio ) => props.onDelete(unidadNegocio) }
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+            <PaperComponent
+                title={"Listado Unidad Negocio"}
+                create
+                onCreate={onCreate}
+            >
+                <CardComponent
+                    isSearch
+                >
+                    <TableComponent 
+                        columns={props.columnUnidadNegocio}
+                        dataSource={props.listUnidadNegocio}
+                        onShow={ ( unidadNegocio ) => onShow(unidadNegocio) }
+                        onEditar={ ( unidadNegocio ) => onEdit(unidadNegocio) }
+                        onDelete={ ( unidadNegocio ) => props.onDelete(unidadNegocio) }
+                    />
+                </CardComponent>
+            </PaperComponent>
         </>
     );
 };
