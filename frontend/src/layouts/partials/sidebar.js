@@ -126,6 +126,16 @@ export default function SidebarComponent() {
                                 </Link>
                             </li>
                             <li>
+                                <Link to={"/asignar_rol"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Asignar Rol
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/asignar_permiso"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Asignar Permiso
+                                </Link>
+                            </li>
+                            <li>
                                 <Link to={"/rol/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Rol
                                 </Link>

@@ -32,7 +32,7 @@ export default function CardComponent( props ) {
                         </h4>
                     </div>
                 }
-                <div className="card-body">
+                <div className="card-body pt-1">
                     { props.children }
                 </div>
                 <div className="card-footer">

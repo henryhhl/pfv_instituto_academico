@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 export default function InputComponent( props ) {
     return (
         <>
-            <label className={`${props.error && 'text-danger'}`}>
-                { props.label }
-            </label>
+            { props.label &&
+                <label className={`${props.error && 'text-danger'}`}>
+                    { props.label }
+                </label>
+            }
             <input type={props.type} className={`form-control ${props.error && 'border-danger'}`} 
                 value={ props.value ? props.value : ""}
                 onChange={ (evt) => {
@@ -18,6 +20,7 @@ export default function InputComponent( props ) {
                 readOnly={props.readOnly}
                 style={props.style}
                 onClick={props.onClick}
+                placeholder={props.placeholder}
             />
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
                 { props.message }
@@ -32,6 +35,7 @@ InputComponent.propTypes = {
     error: PropTypes.bool,
     readOnly: PropTypes.bool,
     type: PropTypes.string,
+    placeholder: PropTypes.string,
     value: PropTypes.any,
     onChange: PropTypes.func,
     onClick: PropTypes.func,
@@ -39,7 +43,7 @@ InputComponent.propTypes = {
 }
 
 InputComponent.defaultProps = {
-    label: "",
+    placeholder: "",
     message: "Campo requerido.",
     error: false,
     readOnly: false,

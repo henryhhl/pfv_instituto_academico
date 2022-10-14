@@ -61,6 +61,7 @@ export const httpRequest = async ( method = "", uri, data = {} ) => {
         if (respta.status === 500) {}
         return { resp: -5, };
     } ).catch( (error) => {
+        console.log(error);
         if ( error.response.status === 401 ) {}
         if ( error.response.status === 404 ) {}
         if ( error.response.status === 500 ) {}

@@ -22,6 +22,7 @@ import EditRol from '../screens/modules/seguridad/rol/editRol';
 import ShowRol from '../screens/modules/seguridad/rol/showRol';
 
 import IndexPermiso from '../screens/modules/seguridad/permiso/indexPermiso';
+import AsignarRol from '../screens/modules/seguridad/asignar_rol';
 
 import IndexUsuario from '../screens/modules/seguridad/usuario/indexUsuario';
 import CreateUsuario from '../screens/modules/seguridad/usuario/createUsuario';
@@ -93,6 +94,7 @@ const HomeRoute = (props) => {
                     <Route index path="/rol/show/:idrol" element={ <ShowRol { ...props } /> }  />
 
                     <Route index path="/permiso/index" element={ <IndexPermiso { ...props } /> }  />
+                    <Route index path="/asignar_rol" element={ <AsignarRol { ...props } /> }  />
 
                     <Route index path="/usuario/index" element={ <IndexUsuario { ...props } /> }  />
                     <Route index path="/usuario/create" element={ <CreateUsuario { ...props } /> }  />

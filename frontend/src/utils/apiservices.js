@@ -41,6 +41,10 @@ const apiServices = {
     apiseguridadpermiso_update: `${module.seguridad}/permiso/update`,
     apiseguridadpermiso_delete: `${module.seguridad}/permiso/delete`,
 
+    apiseguridadusuarioroldetalle_rolusuario:  `${module.seguridad}/usuarioroldetalle/rol_usuario`,
+    apiseguridadusuarioroldetalle_store:  `${module.seguridad}/usuarioroldetalle/store`,
+    apiseguridadusuarioroldetalle_delete:  `${module.seguridad}/usuarioroldetalle/delete`,
+
     apiseguridadusuario_index:  `${module.seguridad}/usuario/index`,
     apiseguridadusuario_create: `${module.seguridad}/usuario/create`,
     apiseguridadusuario_store:  `${module.seguridad}/usuario/store`,

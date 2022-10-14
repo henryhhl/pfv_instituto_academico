@@ -16,9 +16,10 @@ export default function ButtonComponent( props ) {
         return (
             <button 
                 type={props.htmlType} 
-                className={`btn ${size} btn-${props.type} mr-1 ${props.className}`} 
+                className={`btn ${size} btn-${props.type} mr-1 ${props.className} ${props.fullWidth && 'btn-block'}`} 
                 onClick={props.onClick}
                 style={props.style}
+                disabled={props.disabled}
             >
                 { props.children }
             </button>
@@ -40,6 +41,8 @@ ButtonComponent.propTypes = {
     className: PropTypes.string,
     onClick: PropTypes.func,
     style: PropTypes.object,
+    fullWidth: PropTypes.bool,
+    disabled: PropTypes.bool,
 }
 
 ButtonComponent.defaultProps = {
@@ -49,4 +52,6 @@ ButtonComponent.defaultProps = {
     size: "small",
     onClick: null,
     style: {},
+    fullWidth: false,
+    disabled: false,
 }
