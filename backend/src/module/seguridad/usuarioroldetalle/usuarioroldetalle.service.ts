@@ -15,6 +15,10 @@ export class UsuarioRolDetalleService {
     private readonly usuarioService: UsuarioService,
   ) {}
 
+  getRolPermisoDetalle() {
+    
+  }
+
   findAll() {
     const listUsuarioRolDetalle = this.listUsuarioRolDetalle;
     return {
@@ -27,8 +31,8 @@ export class UsuarioRolDetalleService {
 
   rolUsuario(idusuario: String) {
     let listRol = this.listUsuarioRolDetalle.filter( 
-        (usuariorol) => usuariorol.fkidusuario === idusuario 
-     );
+      (usuariorol) => usuariorol.fkidusuario === idusuario 
+    );
     return {
       resp: 1,
       error: false,

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UnidadadministrativaService } from './unidadadministrativa.service';
+import { UnidadAdministrativaService } from './unidadadministrativa.service';
 import { UnidadadministrativaController } from './unidadadministrativa.controller';
 
 @Module({
   controllers: [UnidadadministrativaController],
-  providers: [UnidadadministrativaService]
+  providers: [UnidadAdministrativaService]
 })
-export class UnidadadministrativaModule {}
+export class UnidadAdministrativaModule {}

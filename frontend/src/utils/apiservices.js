@@ -1,11 +1,12 @@
 
-const linkBackend = 'http://localhost:5000';
+const linkBackend = 'http://localhost:5000/api/v1';
 
 const module = {
     // seguridad: linkBackend + '/seguridad',
     seguridad: linkBackend + '',
     admin: linkBackend + '',
     parametros: linkBackend + '',
+    estructuraacademica: linkBackend + '',
 };
 
 const apiServices = {
@@ -116,6 +117,22 @@ const apiServices = {
     apiparametrosadminciudad_show:   `${module.parametros}/ciudad/show`,
     apiparametrosadminciudad_update: `${module.parametros}/ciudad/update`,
     apiparametrosadminciudad_delete: `${module.parametros}/ciudad/delete`,
+
+    apiestructuraacademicaunidadadministrativa_index:  `${module.estructuraacademica}/unidadadministrativa/index`,
+    apiestructuraacademicaunidadadministrativa_create: `${module.estructuraacademica}/unidadadministrativa/create`,
+    apiestructuraacademicaunidadadministrativa_store:  `${module.estructuraacademica}/unidadadministrativa/store`,
+    apiestructuraacademicaunidadadministrativa_edit:   `${module.estructuraacademica}/unidadadministrativa/edit`,
+    apiestructuraacademicaunidadadministrativa_show:   `${module.estructuraacademica}/unidadadministrativa/show`,
+    apiestructuraacademicaunidadadministrativa_update: `${module.estructuraacademica}/unidadadministrativa/update`,
+    apiestructuraacademicaunidadadministrativa_delete: `${module.estructuraacademica}/unidadadministrativa/delete`,
+
+    apiestructuraacademicaunidadacademica_index:  `${module.estructuraacademica}/unidadacademica/index`,
+    apiestructuraacademicaunidadacademica_create: `${module.estructuraacademica}/unidadacademica/create`,
+    apiestructuraacademicaunidadacademica_store:  `${module.estructuraacademica}/unidadacademica/store`,
+    apiestructuraacademicaunidadacademica_edit:   `${module.estructuraacademica}/unidadacademica/edit`,
+    apiestructuraacademicaunidadacademica_show:   `${module.estructuraacademica}/unidadacademica/show`,
+    apiestructuraacademicaunidadacademica_update: `${module.estructuraacademica}/unidadacademica/update`,
+    apiestructuraacademicaunidadacademica_delete: `${module.estructuraacademica}/unidadacademica/delete`,
 };
 
 export default apiServices;

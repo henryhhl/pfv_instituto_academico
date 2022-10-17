@@ -1,34 +1,44 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { UnidadadministrativaService } from './unidadadministrativa.service';
-import { CreateUnidadadministrativaDto } from './dto/create-unidadadministrativa.dto';
-import { UpdateUnidadadministrativaDto } from './dto/update-unidadadministrativa.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { UnidadAdministrativaService } from './unidadadministrativa.service';
+import { CreateUnidadAdministrativaDto } from './dto/create-unidadadministrativa.dto';
+import { UpdateUnidadAdministrativaDto } from './dto/update-unidadadministrativa.dto';
 
 @Controller('unidadadministrativa')
 export class UnidadadministrativaController {
-  constructor(private readonly unidadadministrativaService: UnidadadministrativaService) {}
+  constructor(private readonly unidadadministrativaService: UnidadAdministrativaService) {}
 
-  @Post()
-  create(@Body() createUnidadadministrativaDto: CreateUnidadadministrativaDto) {
-    return this.unidadadministrativaService.create(createUnidadadministrativaDto);
-  }
-
-  @Get()
+  @Get('/index')
   findAll() {
     return this.unidadadministrativaService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.unidadadministrativaService.findOne(+id);
+  @Post('/store')
+  create(@Body() createUnidadadministrativaDto: CreateUnidadAdministrativaDto) {
+    return this.unidadadministrativaService.store(createUnidadadministrativaDto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUnidadadministrativaDto: UpdateUnidadadministrativaDto) {
-    return this.unidadadministrativaService.update(+id, updateUnidadadministrativaDto);
+  @Get('/edit/:idunidadnegocio')
+  edit(@Param('idunidadnegocio') id: string) {
+    return this.unidadadministrativaService.edit(id);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.unidadadministrativaService.remove(+id);
+  @Get('/show/:idunidadnegocio')
+  show(@Param('idunidadnegocio') id: string) {
+    return this.unidadadministrativaService.show(id);
+  }
+
+  @Patch('/update/:idunidadnegocio')
+  updatePatch(@Param('idunidadnegocio') id: string, @Body() updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto) {
+    return this.unidadadministrativaService.update(id, updateUnidadadministrativaDto);
+  }
+
+  @Put('/update/:idunidadnegocio')
+  updatePut(@Param('idunidadnegocio') id: string, @Body() updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto) {
+    return this.unidadadministrativaService.update(id, updateUnidadadministrativaDto);
+  }
+
+  @Delete('/delete/:idunidadnegocio')
+  remove(@Param('idunidadnegocio') id: string) {
+    return this.unidadadministrativaService.remove(id);
   }
 }

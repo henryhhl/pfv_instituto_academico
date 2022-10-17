@@ -28,7 +28,7 @@ export default function RolListadoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={500} centered
+                footer={null} width={550} centered
                 title={"LISTA DE ROL"}
             >
                 <div className="row">

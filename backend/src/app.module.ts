@@ -1,4 +1,12 @@
+import { join } from 'path';
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule } from '@nestjs/config';
+
+import { EnvConfiguration } from './config/env.config';
+import { JoiValidationSchema } from './config/joi.validation';
+
 import { TipoRolModule } from './tiporol/tiporol.module';
 import { TipoPermisoModule } from './tipopermiso/tipopermiso.module';
 import { TipoMateriaModule } from './tipomateria/tipomateria.module';
@@ -12,10 +20,12 @@ import { ModalidadacademicaModule } from './modalidadacademica/modalidadacademic
 import { PeriodoModule } from './periodo/periodo.module';
 import { MateriaModule } from './materia/materia.module';
 import { CiudadclasificacionModule } from './module/estructuraacademica/ciudadclasificacion/ciudadclasificacion.module';
-import { UnidadadministrativaModule } from './module/estructuraacademica/unidadadministrativa/unidadadministrativa.module';
+import { UnidadAdministrativaModule } from './module/estructuraacademica/unidadadministrativa/unidadadministrativa.module';
 import { CiudadModule } from './module/parametro/ciudad/ciudad.module';
 import { PermisoModule } from './module/seguridad/permiso/permiso.module';
 import { UsuarioRolDetalleModule } from './module/seguridad/usuarioroldetalle/usuarioroldetalle.module';
+import { RolPermisoDetalleModule } from './module/seguridad/rolpermisodetalle/rolpermisodetalle.module';
+import { UnidadacademicaModule } from './module/estructuraacademica/unidadacademica/unidadacademica.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -28,10 +38,22 @@ import { UsuarioRolDetalleModule } from './module/seguridad/usuarioroldetalle/us
 
 @Module({
   imports: [
+    ConfigModule.forRoot( {
+      load: [ EnvConfiguration ],
+      validationSchema: JoiValidationSchema,
+    } ),
+
+    ServeStaticModule.forRoot( {
+      rootPath: join(__dirname, '..', 'public'),
+    } ),
+
+    // MongooseModule.forRoot( process.env.MONGO_DB || 'mongodb://localhost:27017/instituto-academico' ),
+
     TipoRolModule, TipoPermisoModule, TipoMateriaModule, SeedModule, RolModule, 
     UsuarioModule, UnidadNegocioModule, OfertaacademicaModule, NivelacademicoModule, 
     ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
-    CiudadclasificacionModule, UnidadadministrativaModule, UsuarioRolDetalleModule,
+    CiudadclasificacionModule, UnidadAdministrativaModule, UsuarioRolDetalleModule, 
+    RolPermisoDetalleModule, UnidadacademicaModule,
   ],
   controllers: [],
   providers: [],

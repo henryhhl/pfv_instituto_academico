@@ -14,6 +14,9 @@ const ListModules = {
     listTipoRol: [],
     listUsuario: [],
     listTipoPermiso: [],
+
+    listUnidadAdministrativa: [],
+    listUnidadAcademica: [],
 };
 
 export default ListModules;

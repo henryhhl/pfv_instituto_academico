@@ -23,6 +23,7 @@ import ShowRol from '../screens/modules/seguridad/rol/showRol';
 
 import IndexPermiso from '../screens/modules/seguridad/permiso/indexPermiso';
 import AsignarRol from '../screens/modules/seguridad/asignar_rol';
+import AsignarPermiso from '../screens/modules/seguridad/asignar_permiso';
 
 import IndexUsuario from '../screens/modules/seguridad/usuario/indexUsuario';
 import CreateUsuario from '../screens/modules/seguridad/usuario/createUsuario';
@@ -66,9 +67,15 @@ import CreateUnidadNegocio from '../screens/modules/admin/unidadnegocio/createUn
 import EditUnidadNegocio from '../screens/modules/admin/unidadnegocio/editUnidadNegocio';
 import ShowUnidadNegocio from '../screens/modules/admin/unidadnegocio/showUnidadNegocio';
 
-import IndexUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/indexUnidadAdministrativa';
+import IndexUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/unidad_administrativa.index';
+import CreateUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/unidad_administrativa.create';
+import ShowUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/unidad_administrativa.show';
+import EditUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/unidad_administrativa.edit';
 
 import IndexUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidadacademica.index';
+import CreateUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidad_academica.create';
+import ShowUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidad_academica.show';
+import EditUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidad_academica.edit';
 
 const HomeRoute = (props) => {
     return (
@@ -95,6 +102,7 @@ const HomeRoute = (props) => {
 
                     <Route index path="/permiso/index" element={ <IndexPermiso { ...props } /> }  />
                     <Route index path="/asignar_rol" element={ <AsignarRol { ...props } /> }  />
+                    <Route index path="/asignar_permiso" element={ <AsignarPermiso { ...props } /> }  />
 
                     <Route index path="/usuario/index" element={ <IndexUsuario { ...props } /> }  />
                     <Route index path="/usuario/create" element={ <CreateUsuario { ...props } /> }  />
@@ -139,8 +147,14 @@ const HomeRoute = (props) => {
                     <Route index path="/unidadnegocio/show/:idunidadnegocio" element={ <ShowUnidadNegocio { ...props } /> }  />
 
                     <Route index path="/unidadadministrativa/index" element={ <IndexUnidadAdministrativa { ...props } /> }  />
+                    <Route index path="/unidadadministrativa/create" element={ <CreateUnidadAdministrativa { ...props } /> }  />
+                    <Route index path="/unidadadministrativa/edit/:idunidadadministrativa" element={ <EditUnidadAdministrativa { ...props } /> }  />
+                    <Route index path="/unidadadministrativa/show/:idunidadadministrativa" element={ <ShowUnidadAdministrativa { ...props } /> }  />
 
                     <Route index path="/unidadacademica/index" element={ <IndexUnidadAcademica { ...props } /> }  />
+                    <Route index path="/unidadacademica/create" element={ <CreateUnidadAcademica { ...props } /> }  />
+                    <Route index path="/unidadacademica/edit/:idunidadacademica" element={ <EditUnidadAcademica { ...props } /> }  />
+                    <Route index path="/unidadacademica/show/:idunidadacademica" element={ <ShowUnidadAcademica { ...props } /> }  />
 
                     <Route
                         path='*'

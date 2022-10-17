@@ -28,7 +28,7 @@ export default function UsuarioListadoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={550} centered
+                footer={null} width={650} centered
                 title={"LISTA DE USUARIO"}
             >
                 <div className="row">

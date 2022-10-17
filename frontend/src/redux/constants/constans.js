@@ -79,6 +79,18 @@ const Constants = {
     ciudad_onCreate: "[ON CREATE] Ciudad",
     ciudad_onShow: "[ON SHOW] Ciudad",
     ciudad_onLimpiar: "[ON LIMPIAR] Ciudad",
+
+    unidadadministrativa_setInit: "[SET INIT] Unidad Administtrativa",
+    unidadadministrativa_onChange: "[ON CHANGE] Unidad Administtrativa",
+    unidadadministrativa_onCreate: "[ON CREATE] Unidad Administtrativa",
+    unidadadministrativa_onShow: "[ON SHOW] Unidad Administtrativa",
+    unidadadministrativa_onLimpiar: "[ON LIMPIAR] Unidad Administtrativa",
+
+    unidadacademica_setInit: "[SET INIT] Unidad Academica",
+    unidadacademica_onChange: "[ON CHANGE] Unidad Academica",
+    unidadacademica_onCreate: "[ON CREATE] Unidad Academica",
+    unidadacademica_onShow: "[ON SHOW] Unidad Academica",
+    unidadacademica_onLimpiar: "[ON LIMPIAR] Unidad Academica",
 };
 
 export default Constants;

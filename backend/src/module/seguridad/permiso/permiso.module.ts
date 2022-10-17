@@ -4,6 +4,7 @@ import { PermisoController } from './permiso.controller';
 
 @Module({
   controllers: [PermisoController],
-  providers: [PermisoService]
+  providers: [PermisoService],
+  exports: [PermisoService],
 })
 export class PermisoModule {}

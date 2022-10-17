@@ -296,6 +296,92 @@ const ColumnModules = {
             state: true,
         },
     ],
+
+    columnUnidadAdministrativa: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'unidadnegocio',
+            label: 'Unidad Negocio',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+    columnUnidadAcademica: [
+        {
+            id: 'codigo',
+            label: 'Código',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'unidadadministrativa',
+            label: 'Unidad Administrativa',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'unidadnegocio',
+            label: 'Unidad Negocio',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
 };
 
 export default ColumnModules;

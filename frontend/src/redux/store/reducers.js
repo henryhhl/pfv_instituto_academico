@@ -18,6 +18,8 @@ import { OfertaAcademicaReducer } from '../reducers/ofertaAcademicaReducers';
 import { UnidadNegocioReducer } from '../reducers/unidadNegocioReducers';
 import { ColumnModuleReducer } from '../reducers/columnModulesReducers';
 import { CiudadReducer } from '../reducers/parametros/ciudad.reducer';
+import { UnidadAdministrativaReducer } from '../reducers/estructuraacademica/unidad_administrativa.reducer';
+import { UnidadAcademicaReducer } from '../reducers/estructuraacademica/unidad_academica.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -36,6 +38,9 @@ const RootReducer = combineReducers( {
     OfertaAcademica: OfertaAcademicaReducer,
     UnidadNegocio: UnidadNegocioReducer,
     Ciudad: CiudadReducer,
+
+    UnidadAdministrativa: UnidadAdministrativaReducer,
+    UnidadAcademica: UnidadAcademicaReducer,
 } );
 
 export default RootReducer;
