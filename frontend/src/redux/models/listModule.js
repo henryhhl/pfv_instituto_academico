@@ -17,6 +17,8 @@ const ListModules = {
 
     listUnidadAdministrativa: [],
     listUnidadAcademica: [],
+    listPrograma: [],
+    listPensum: [],
 };
 
 export default ListModules;

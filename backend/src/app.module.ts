@@ -26,6 +26,8 @@ import { PermisoModule } from './module/seguridad/permiso/permiso.module';
 import { UsuarioRolDetalleModule } from './module/seguridad/usuarioroldetalle/usuarioroldetalle.module';
 import { RolPermisoDetalleModule } from './module/seguridad/rolpermisodetalle/rolpermisodetalle.module';
 import { UnidadacademicaModule } from './module/estructuraacademica/unidadacademica/unidadacademica.module';
+import { ProgramaModule } from './module/estructuraacademica/programa/programa.module';
+import { PensumModule } from './module/estructuraacademica/pensum/pensum.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -53,7 +55,7 @@ import { UnidadacademicaModule } from './module/estructuraacademica/unidadacadem
     UsuarioModule, UnidadNegocioModule, OfertaacademicaModule, NivelacademicoModule, 
     ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
     CiudadclasificacionModule, UnidadAdministrativaModule, UsuarioRolDetalleModule, 
-    RolPermisoDetalleModule, UnidadacademicaModule,
+    RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule,
   ],
   controllers: [],
   providers: [],

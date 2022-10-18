@@ -77,6 +77,16 @@ import CreateUnidadAcademica from '../screens/modules/estructuraacademica/unidad
 import ShowUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidad_academica.show';
 import EditUnidadAcademica from '../screens/modules/estructuraacademica/unidadacademica/unidad_academica.edit';
 
+import IndexPrograma from '../screens/modules/estructuraacademica/programa/programa.index';
+import CreatePrograma from '../screens/modules/estructuraacademica/programa/programa.create';
+import ShowPrograma from '../screens/modules/estructuraacademica/programa/programa.show';
+import EditPrograma from '../screens/modules/estructuraacademica/programa/programa.edit';
+
+import IndexPensum from '../screens/modules/estructuraacademica/pensum/pensum.index';
+import CreatePensum from '../screens/modules/estructuraacademica/pensum/pensum.create';
+import ShowPensum from '../screens/modules/estructuraacademica/pensum/pensum.show';
+import EditPensum from '../screens/modules/estructuraacademica/pensum/pensum.edit';
+
 const HomeRoute = (props) => {
     return (
         <>
@@ -155,6 +165,16 @@ const HomeRoute = (props) => {
                     <Route index path="/unidadacademica/create" element={ <CreateUnidadAcademica { ...props } /> }  />
                     <Route index path="/unidadacademica/edit/:idunidadacademica" element={ <EditUnidadAcademica { ...props } /> }  />
                     <Route index path="/unidadacademica/show/:idunidadacademica" element={ <ShowUnidadAcademica { ...props } /> }  />
+
+                    <Route index path="/programa/index" element={ <IndexPrograma { ...props } /> }  />
+                    <Route index path="/programa/create" element={ <CreatePrograma { ...props } /> }  />
+                    <Route index path="/programa/edit/:idprograma" element={ <EditPrograma { ...props } /> }  />
+                    <Route index path="/programa/show/:idprograma" element={ <ShowPrograma { ...props } /> }  />
+
+                    <Route index path="/pensum/index" element={ <IndexPensum { ...props } /> }  />
+                    <Route index path="/pensum/create" element={ <CreatePensum { ...props } /> }  />
+                    <Route index path="/pensum/edit/:idpensum" element={ <EditPensum { ...props } /> }  />
+                    <Route index path="/pensum/show/:idpensum" element={ <ShowPensum { ...props } /> }  />
 
                     <Route
                         path='*'

@@ -133,6 +133,22 @@ const apiServices = {
     apiestructuraacademicaunidadacademica_show:   `${module.estructuraacademica}/unidadacademica/show`,
     apiestructuraacademicaunidadacademica_update: `${module.estructuraacademica}/unidadacademica/update`,
     apiestructuraacademicaunidadacademica_delete: `${module.estructuraacademica}/unidadacademica/delete`,
+
+    apiestructuraacademicaprograma_index:  `${module.estructuraacademica}/programa/index`,
+    apiestructuraacademicaprograma_create: `${module.estructuraacademica}/programa/create`,
+    apiestructuraacademicaprograma_store:  `${module.estructuraacademica}/programa/store`,
+    apiestructuraacademicaprograma_edit:   `${module.estructuraacademica}/programa/edit`,
+    apiestructuraacademicaprograma_show:   `${module.estructuraacademica}/programa/show`,
+    apiestructuraacademicaprograma_update: `${module.estructuraacademica}/programa/update`,
+    apiestructuraacademicaprograma_delete: `${module.estructuraacademica}/programa/delete`,
+
+    apiestructuraacademicapensum_index:  `${module.estructuraacademica}/pensum/index`,
+    apiestructuraacademicapensum_create: `${module.estructuraacademica}/pensum/create`,
+    apiestructuraacademicapensum_store:  `${module.estructuraacademica}/pensum/store`,
+    apiestructuraacademicapensum_edit:   `${module.estructuraacademica}/pensum/edit`,
+    apiestructuraacademicapensum_show:   `${module.estructuraacademica}/pensum/show`,
+    apiestructuraacademicapensum_update: `${module.estructuraacademica}/pensum/update`,
+    apiestructuraacademicapensum_delete: `${module.estructuraacademica}/pensum/delete`,
 };
 
 export default apiServices;

@@ -46,8 +46,8 @@ export default function SidebarComponent() {
                                 </Link>
                             </li>
                             <li>
-                                <Link to={"/programaanalitico/index"}>
-                                    <i className="ion ion-ios-circle-outline"></i> Programa Analitico
+                                <Link to={"/programa/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Programa 
                                 </Link>
                             </li>
                             <li>

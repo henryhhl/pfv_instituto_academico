@@ -91,6 +91,18 @@ const Constants = {
     unidadacademica_onCreate: "[ON CREATE] Unidad Academica",
     unidadacademica_onShow: "[ON SHOW] Unidad Academica",
     unidadacademica_onLimpiar: "[ON LIMPIAR] Unidad Academica",
+
+    programa_setInit: "[SET INIT] Programa",
+    programa_onChange: "[ON CHANGE] Programa",
+    programa_onCreate: "[ON CREATE] Programa",
+    programa_onShow: "[ON SHOW] Programa",
+    programa_onLimpiar: "[ON LIMPIAR] Programa",
+
+    pensum_setInit: "[SET INIT] Pensum",
+    pensum_onChange: "[ON CHANGE] Pensum",
+    pensum_onCreate: "[ON CREATE] Pensum",
+    pensum_onShow: "[ON SHOW] Pensum",
+    pensum_onLimpiar: "[ON LIMPIAR] Pensum",
 };
 
 export default Constants;

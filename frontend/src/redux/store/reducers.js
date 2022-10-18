@@ -20,6 +20,8 @@ import { ColumnModuleReducer } from '../reducers/columnModulesReducers';
 import { CiudadReducer } from '../reducers/parametros/ciudad.reducer';
 import { UnidadAdministrativaReducer } from '../reducers/estructuraacademica/unidad_administrativa.reducer';
 import { UnidadAcademicaReducer } from '../reducers/estructuraacademica/unidad_academica.reducer';
+import { ProgramaReducer } from '../reducers/estructuraacademica/programa.reducer';
+import { PensumReducer } from '../reducers/estructuraacademica/pensum.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -41,6 +43,8 @@ const RootReducer = combineReducers( {
 
     UnidadAdministrativa: UnidadAdministrativaReducer,
     UnidadAcademica: UnidadAcademicaReducer,
+    Programa: ProgramaReducer,
+    Pensum: PensumReducer,
 } );
 
 export default RootReducer;
