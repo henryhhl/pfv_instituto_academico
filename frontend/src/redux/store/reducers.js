@@ -17,11 +17,14 @@ import { MateriaReducer } from '../reducers/materiaReducers';
 import { OfertaAcademicaReducer } from '../reducers/ofertaAcademicaReducers';
 import { UnidadNegocioReducer } from '../reducers/unidadNegocioReducers';
 import { ColumnModuleReducer } from '../reducers/columnModulesReducers';
+import { TipoCiudadReducer } from '../reducers/parametros/tipo_ciudad.reducer';
 import { CiudadReducer } from '../reducers/parametros/ciudad.reducer';
+
 import { UnidadAdministrativaReducer } from '../reducers/estructuraacademica/unidad_administrativa.reducer';
 import { UnidadAcademicaReducer } from '../reducers/estructuraacademica/unidad_academica.reducer';
 import { ProgramaReducer } from '../reducers/estructuraacademica/programa.reducer';
 import { PensumReducer } from '../reducers/estructuraacademica/pensum.reducer';
+import { ReferenciaContactoReducer } from '../reducers/parametros/referencia_contacto.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -39,7 +42,9 @@ const RootReducer = combineReducers( {
     Materia: MateriaReducer,
     OfertaAcademica: OfertaAcademicaReducer,
     UnidadNegocio: UnidadNegocioReducer,
+    TipoCiudad: TipoCiudadReducer,
     Ciudad: CiudadReducer,
+    ReferenciaContacto: ReferenciaContactoReducer,
 
     UnidadAdministrativa: UnidadAdministrativaReducer,
     UnidadAcademica: UnidadAcademicaReducer,

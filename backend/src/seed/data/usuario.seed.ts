@@ -1,6 +1,6 @@
 
 import { v4 as uuid } from 'uuid'
-import { Usuario } from '../../usuario/entities/usuario.entity';
+import { Usuario } from '../../module/seguridad/usuario/entities/usuario.entity';
 
 export const USUARIO_SEED: Usuario[] = [
     {

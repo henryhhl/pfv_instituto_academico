@@ -106,8 +106,18 @@ export default function SidebarComponent() {
                                 </Link>
                             </li>
                             <li>
+                                <Link to={"/referenciacontacto/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Referencia Contacto
+                                </Link>
+                            </li>
+                            <li>
                                 <Link to={"/ciudad/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Ciudad
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/tipociudad/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Ciudad
                                 </Link>
                             </li>
                         </ul>

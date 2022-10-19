@@ -74,11 +74,23 @@ const Constants = {
     unidadNegocio_onChange: "[ON CHANGE] Unidad Negocio",
     unidadNegocio_onLimpiar: "[ON LIMPIAR] Unidad Negocio",
 
+    tipociudad_setInit: "[SET INIT] Tipo Ciudad",
+    tipociudad_onChange: "[ON CHANGE] Tipo Ciudad",
+    tipociudad_onCreate: "[ON CREATE] Tipo Ciudad",
+    tipociudad_onShow: "[ON SHOW] Tipo Ciudad",
+    tipociudad_onLimpiar: "[ON LIMPIAR] Tipo Ciudad",
+
     ciudad_setInit: "[SET INIT] Ciudad",
     ciudad_onChange: "[ON CHANGE] Ciudad",
     ciudad_onCreate: "[ON CREATE] Ciudad",
     ciudad_onShow: "[ON SHOW] Ciudad",
     ciudad_onLimpiar: "[ON LIMPIAR] Ciudad",
+
+    referenciaContacto_setInit: "[SET INIT] Referencia Contacto",
+    referenciaContacto_onChange: "[ON CHANGE] Referencia Contacto",
+    referenciaContacto_onCreate: "[ON CREATE] Referencia Contacto",
+    referenciaContacto_onShow: "[ON SHOW] Referencia Contacto",
+    referenciaContacto_onLimpiar: "[ON LIMPIAR] Referencia Contacto",
 
     unidadadministrativa_setInit: "[SET INIT] Unidad Administtrativa",
     unidadadministrativa_onChange: "[ON CHANGE] Unidad Administtrativa",

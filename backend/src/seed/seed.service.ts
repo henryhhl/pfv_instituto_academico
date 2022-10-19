@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { TipoRolService } from '../tiporol/tiporol.service';
+import { TipoRolService } from '../module/seguridad/tiporol/tiporol.service';
 import { TIPOROL_SEED } from './data/tipoRol.seed';
-import { TipoPermisoService } from '../tipopermiso/tipopermiso.service';
+import { TipoPermisoService } from '../module/seguridad/tipopermiso/tipopermiso.service';
 import { TIPOPERMISO_SEED } from './data/tipoPermiso.seed';
-import { TipoMateriaService } from '../tipomateria/tipomateria.service';
+import { TipoMateriaService } from '../module/parametro/tipomateria/tipomateria.service';
 import { TIPOMATERIA_SEED } from './data/tipoMateria.seed';
-import { UsuarioService } from '../usuario/usuario.service';
+import { UsuarioService } from '../module/seguridad/usuario/usuario.service';
 import { USUARIO_SEED } from './data/usuario.seed';
 
 @Injectable()

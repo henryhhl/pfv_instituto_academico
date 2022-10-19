@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SeedService } from './seed.service';
 import { SeedController } from './seed.controller';
-import { TipoRolModule } from '../tiporol/tiporol.module';
-import { TipoPermisoModule } from '../tipopermiso/tipopermiso.module';
-import { TipoMateriaModule } from '../tipomateria/tipomateria.module';
-import { RolModule } from '../rol/rol.module';
-import { UsuarioModule } from '../usuario/usuario.module';
+import { TipoRolModule } from '../module/seguridad/tiporol/tiporol.module';
+import { TipoPermisoModule } from '../module/seguridad/tipopermiso/tipopermiso.module';
+import { TipoMateriaModule } from '../module/parametro/tipomateria/tipomateria.module';
+import { RolModule } from '../module/seguridad/rol/rol.module';
+import { UsuarioModule } from '../module/seguridad/usuario/usuario.module';
 
 @Module({
   controllers: [SeedController],

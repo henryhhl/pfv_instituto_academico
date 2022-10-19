@@ -55,6 +55,16 @@ import CreateMateria from '../screens/modules/admin/materia/createMateria';
 import EditMateria from '../screens/modules/admin/materia/editMateria';
 import ShowMateria from '../screens/modules/admin/materia/showMateria';
 
+import IndexReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.index';
+import CreateReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.create';
+import EditReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.edit';
+import ShowReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.show';
+
+import IndexTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.index';
+import CreateTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.create';
+import EditTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.edit';
+import ShowTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.show';
+
 import IndexCiudad from '../screens/modules/admin/ciudad/indexCiudad';
 
 import IndexOfertaAcademica from '../screens/modules/admin/ofertaacademica/indexOfertaAcademica';
@@ -143,6 +153,16 @@ const HomeRoute = (props) => {
                     <Route index path="/materia/create" element={ <CreateMateria { ...props } /> }  />
                     <Route index path="/materia/edit/:idmateria" element={ <EditMateria { ...props } /> }  />
                     <Route index path="/materia/show/:idmateria" element={ <ShowMateria { ...props } /> }  />
+
+                    <Route index path="/referenciacontacto/index" element={ <IndexReferenciaContacto { ...props } /> }  />
+                    <Route index path="/referenciacontacto/create" element={ <CreateReferenciaContacto { ...props } /> }  />
+                    <Route index path="/referenciacontacto/edit/:idreferenciacontacto" element={ <EditReferenciaContacto { ...props } /> }  />
+                    <Route index path="/referenciacontacto/show/:idreferenciacontacto" element={ <ShowReferenciaContacto { ...props } /> }  />
+
+                    <Route index path="/tipociudad/index" element={ <IndexTipoCiudad { ...props } /> }  />
+                    <Route index path="/tipociudad/create" element={ <CreateTipoCiudad { ...props } /> }  />
+                    <Route index path="/tipociudad/edit/:idtipociudad" element={ <EditTipoCiudad { ...props } /> }  />
+                    <Route index path="/tipociudad/show/:idtipociudad" element={ <ShowTipoCiudad { ...props } /> }  />
 
                     <Route index path="/ciudad/index" element={ <IndexCiudad { ...props } /> }  />
 

@@ -27,6 +27,44 @@ const ColumnModules = {
         },
     ],
 
+    columnTipoCiudad: [
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+    columnReferenciaContacto: [
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
     columnOfertaAcademica: [
         {
             id: 'sigla',

@@ -110,6 +110,14 @@ const apiServices = {
     apiadminmateria_update: `${module.admin}/materia/update`,
     apiadminmateria_delete: `${module.admin}/materia/delete`,
 
+    apiparametrosadmintipociudad_index:  `${module.parametros}/tipociudad/index`,
+    apiparametrosadmintipociudad_create: `${module.parametros}/tipociudad/create`,
+    apiparametrosadmintipociudad_store:  `${module.parametros}/tipociudad/store`,
+    apiparametrosadmintipociudad_edit:   `${module.parametros}/tipociudad/edit`,
+    apiparametrosadmintipociudad_show:   `${module.parametros}/tipociudad/show`,
+    apiparametrosadmintipociudad_update: `${module.parametros}/tipociudad/update`,
+    apiparametrosadmintipociudad_delete: `${module.parametros}/tipociudad/delete`,
+
     apiparametrosadminciudad_index:  `${module.parametros}/ciudad/index`,
     apiparametrosadminciudad_create: `${module.parametros}/ciudad/create`,
     apiparametrosadminciudad_store:  `${module.parametros}/ciudad/store`,
@@ -117,6 +125,14 @@ const apiServices = {
     apiparametrosadminciudad_show:   `${module.parametros}/ciudad/show`,
     apiparametrosadminciudad_update: `${module.parametros}/ciudad/update`,
     apiparametrosadminciudad_delete: `${module.parametros}/ciudad/delete`,
+
+    apiparametrosadminreferenciacontacto_index:  `${module.parametros}/referenciacontacto/index`,
+    apiparametrosadminreferenciacontacto_create: `${module.parametros}/referenciacontacto/create`,
+    apiparametrosadminreferenciacontacto_store:  `${module.parametros}/referenciacontacto/store`,
+    apiparametrosadminreferenciacontacto_edit:   `${module.parametros}/referenciacontacto/edit`,
+    apiparametrosadminreferenciacontacto_show:   `${module.parametros}/referenciacontacto/show`,
+    apiparametrosadminreferenciacontacto_update: `${module.parametros}/referenciacontacto/update`,
+    apiparametrosadminreferenciacontacto_delete: `${module.parametros}/referenciacontacto/delete`,
 
     apiestructuraacademicaunidadadministrativa_index:  `${module.estructuraacademica}/unidadadministrativa/index`,
     apiestructuraacademicaunidadadministrativa_create: `${module.estructuraacademica}/unidadadministrativa/create`,

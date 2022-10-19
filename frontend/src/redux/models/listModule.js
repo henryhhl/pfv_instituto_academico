@@ -8,6 +8,8 @@ const ListModules = {
     listPeriodo: [],
     listTipoMateria: [],
     listMateria: [],
+    listTipoCiudad: [],
+    listReferenciaContacto: [],
 
     listRol: [],
     listPermiso: [],

@@ -1,6 +1,6 @@
 
 import { v4 as uuid } from 'uuid'
-import { TipoRol } from '../../tiporol/interfaces/tipoRol.interface';
+import { TipoRol } from '../../module/seguridad/tiporol/interfaces/tipoRol.interface';
 
 export const TIPOROL_SEED: TipoRol[] = [
     {

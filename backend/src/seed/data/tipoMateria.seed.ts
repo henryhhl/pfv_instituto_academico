@@ -1,6 +1,6 @@
 
 import { v4 as uuid } from 'uuid';
-import { TipoMateria } from '../../tipomateria/entities/tipomateria.entity';
+import { TipoMateria } from '../../module/parametro/tipomateria/entities/tipomateria.entity';
 
 export const TIPOMATERIA_SEED: TipoMateria[] = [
     {

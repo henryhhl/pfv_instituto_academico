@@ -1,6 +1,6 @@
 
 import { v4 as uuid } from 'uuid';
-import { TipoPermiso } from '../../tipopermiso/interfaces/tipoPermiso.interface';
+import { TipoPermiso } from '../../module/seguridad/tipopermiso/interfaces/tipoPermiso.interface';
 
 export const TIPOPERMISO_SEED: TipoPermiso[] = [
     {

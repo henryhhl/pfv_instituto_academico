@@ -3,8 +3,8 @@ import { v4 as uuid } from 'uuid';
 import { CreateUsuarioRolDetalleDto } from './dto/create-usuarioroldetalle.dto';
 import { UpdateUsuarioroldetalleDto } from './dto/update-usuarioroldetalle.dto';
 import { UsuarioRolDetalle } from './entities/usuarioroldetalle.entity';
-import { RolService } from '../../../rol/rol.service';
-import { UsuarioService } from '../../../usuario/usuario.service';
+import { RolService } from '../rol/rol.service';
+import { UsuarioService } from '../usuario/usuario.service';
 
 @Injectable()
 export class UsuarioRolDetalleService {
