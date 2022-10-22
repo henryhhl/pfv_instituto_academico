@@ -97,6 +97,11 @@ import CreatePensum from '../screens/modules/estructuraacademica/pensum/pensum.c
 import ShowPensum from '../screens/modules/estructuraacademica/pensum/pensum.show';
 import EditPensum from '../screens/modules/estructuraacademica/pensum/pensum.edit';
 
+import IndexResponsable from '../screens/modules/estructuraacademica/responsable/responsable.index';
+import CreateResponsable from '../screens/modules/estructuraacademica/responsable/responsable.create';
+import ShowResponsable from '../screens/modules/estructuraacademica/responsable/responsable.show';
+import EditResponsable from '../screens/modules/estructuraacademica/responsable/responsable.edit';
+
 const HomeRoute = (props) => {
     return (
         <>
@@ -195,6 +200,11 @@ const HomeRoute = (props) => {
                     <Route index path="/pensum/create" element={ <CreatePensum { ...props } /> }  />
                     <Route index path="/pensum/edit/:idpensum" element={ <EditPensum { ...props } /> }  />
                     <Route index path="/pensum/show/:idpensum" element={ <ShowPensum { ...props } /> }  />
+
+                    <Route index path="/responsable/index" element={ <IndexResponsable { ...props } /> }  />
+                    <Route index path="/responsable/create" element={ <CreateResponsable { ...props } /> }  />
+                    <Route index path="/responsable/edit/:idresponsable" element={ <EditResponsable { ...props } /> }  />
+                    <Route index path="/responsable/show/:idresponsable" element={ <ShowResponsable { ...props } /> }  />
 
                     <Route
                         path='*'

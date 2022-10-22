@@ -30,6 +30,8 @@ import { PensumModule } from './module/estructuraacademica/pensum/pensum.module'
 import { ResponsableModule } from './module/estructuraacademica/responsable/responsable.module';
 import { ReferenciaContactoModule } from './module/parametro/referenciacontacto/referenciacontacto.module';
 import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.module';
+import { ResponsableUnidadAcademicaDetalleModule } from './module/estructuraacademica/responsableunidadacademicadetalle/responsableunidadacademicadetalle.module';
+import { ResponsablereferenciacontactodetalleModule } from './module/estructuraacademica/responsablereferenciacontactodetalle/responsablereferenciacontactodetalle.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -58,7 +60,7 @@ import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.modul
     ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
     UnidadAdministrativaModule, UsuarioRolDetalleModule, 
     RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
-    ReferenciaContactoModule, TipoCiudadModule,
+    ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, ResponsablereferenciacontactodetalleModule,
   ],
   controllers: [],
   providers: [],

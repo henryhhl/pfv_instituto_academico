@@ -1,12 +1,15 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DatePicker } from 'antd';
+import { ConfigProvider, DatePicker } from 'antd';
 import moment from 'moment';
+
+import 'moment/locale/es';
+import locale from 'antd/es/locale/es_ES';
 
 export default function DatePickerComponent( props ) {
     return (
-        <>
+        <ConfigProvider locale={locale}>
             { props.label &&
                 <label className={`${props.error && 'text-danger'}`}>
                     { props.label }
@@ -29,7 +32,7 @@ export default function DatePickerComponent( props ) {
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
                 { props.message }
             </div>
-        </>
+        </ConfigProvider>
     );
 };
 

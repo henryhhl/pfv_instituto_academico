@@ -115,6 +115,16 @@ const Constants = {
     pensum_onCreate: "[ON CREATE] Pensum",
     pensum_onShow: "[ON SHOW] Pensum",
     pensum_onLimpiar: "[ON LIMPIAR] Pensum",
+
+    responsable_setInit: "[SET INIT] Responsable",
+    responsable_onChange: "[ON CHANGE] Responsable",
+    responsable_onCreate: "[ON CREATE] Responsable",
+    responsable_onShow: "[ON SHOW] Responsable",
+    responsable_onLimpiar: "[ON LIMPIAR] Responsable",
+    responsable_onAddRefContact: "[ON ADD REFERENCIA CONTACTO] Responsable",
+    responsable_onDeleteRowRefContact: "[ON DELETE ROW REFERENCIA CONTACTO] Responsable",
+    responsable_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Responsable",
+    responsable_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Responsable",
 };
 
 export default Constants;

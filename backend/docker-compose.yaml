@@ -2,11 +2,22 @@
 version: '3'
 services: 
   db:
-    image: mongo:5
+    image: postgres:14.3
     restart: always
     ports: 
-      - 27017:27017
+      - "5432:5432"
     environment: 
-      MONGODB_DATABASE: instituto-academico
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_PASSWORD}
+    container_name: instituo_academico
     volumes: 
-      - ./mongo:/data/db
+      - ./postgres:/var/lib/postgresql/data
+
+    # image: mongo:5 MONGO
+    # restart: always
+    # ports: 
+    #   - 27017:27017
+    # environment: 
+    #   MONGODB_DATABASE: instituto-academico
+    # volumes: 
+    #  ./mongo:/data/db

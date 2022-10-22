@@ -41,4 +41,10 @@ export class CreateResponsableDto {
     @MinLength(1, { message: 'Campo Fecha Nacimiento debe ser mayor o igual a 1 carácter.', } )
     readonly fechanacimiento?: string;
 
+    // @IsNotEmpty( { message: 'Campo Genero es requerido.', } )
+    // readonly arrayResponsableUnidadAcademicaDetalle: string;
+
+    // @IsNotEmpty( { message: 'Campo Genero es requerido.', } )
+    // readonly arrayResponsableReferenciaContactoDetalle: string;
+
 }

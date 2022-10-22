@@ -12,7 +12,7 @@ export default function TableComponent( props ) {
                 <table className="table table-striped table-bordered table-hover table-sm">
                     <tbody>
                         <tr>
-                            <th align='left' style={{ width: 35, }}>
+                            <th align='left' style={{ width: 35, fontSize: 12, }}>
                                 #
                             </th>
                             { props.columns.map( ( column, index ) => {
@@ -23,6 +23,7 @@ export default function TableComponent( props ) {
                                             textAlign: `${column.numeric === true ? 'right' : 'left'}`,
                                             paddingRight: 10,
                                             paddingLeft: 10,
+                                            fontSize: 12,
                                         }}
                                     >
                                         { column.label }
@@ -30,7 +31,7 @@ export default function TableComponent( props ) {
                                 );
                             } ) }
                             { props.option === true &&
-                                <th align='left'>
+                                <th align='left' style={{ fontSize: 12, }}>
                                     Opción
                                 </th>
                             }
@@ -47,7 +48,7 @@ export default function TableComponent( props ) {
                                     } }
                                     style={style}
                                 >
-                                    <td>
+                                    <td style={{ fontSize: 12, }}>
                                         { index + 1 }
                                     </td>
                                     { props.columns.map( ( column, index ) => {
@@ -57,6 +58,7 @@ export default function TableComponent( props ) {
                                                     textAlign: `${column.numeric === true ? 'right' : 'left'}`,
                                                     paddingRight: 10,
                                                     paddingLeft: 10,
+                                                    fontSize: 12,
                                                 }}
                                             >
                                                 { column.state === true ? 

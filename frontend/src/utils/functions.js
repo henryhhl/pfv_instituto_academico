@@ -32,7 +32,13 @@ const getValueEstado = ( estado ) => {
     return 'InActivo';
 };
 
+const getValueGenero = ( genero ) => {
+    if ( genero === 'M' ) return 'Masculino';
+    return 'Femenino';
+};
+
 export const Functions = {
     cleanObejct,
     getValueEstado,
+    getValueGenero,
 };

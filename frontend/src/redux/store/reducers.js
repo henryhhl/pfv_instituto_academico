@@ -25,6 +25,7 @@ import { UnidadAcademicaReducer } from '../reducers/estructuraacademica/unidad_a
 import { ProgramaReducer } from '../reducers/estructuraacademica/programa.reducer';
 import { PensumReducer } from '../reducers/estructuraacademica/pensum.reducer';
 import { ReferenciaContactoReducer } from '../reducers/parametros/referencia_contacto.reducer';
+import { ResponsableReducer } from '../reducers/estructuraacademica/responsable.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -50,6 +51,7 @@ const RootReducer = combineReducers( {
     UnidadAcademica: UnidadAcademicaReducer,
     Programa: ProgramaReducer,
     Pensum: PensumReducer,
+    Responsable: ResponsableReducer,
 } );
 
 export default RootReducer;

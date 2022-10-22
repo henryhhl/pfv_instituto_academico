@@ -1,5 +1,6 @@
 
-const linkBackend = 'http://localhost:5000/api/v1';
+// const linkBackend = 'http://localhost:5000/api/v1';
+const linkBackend = 'https://instituto-academico-backend.herokuapp.com/api/v1';
 
 const module = {
     // seguridad: linkBackend + '/seguridad',
@@ -165,6 +166,14 @@ const apiServices = {
     apiestructuraacademicapensum_show:   `${module.estructuraacademica}/pensum/show`,
     apiestructuraacademicapensum_update: `${module.estructuraacademica}/pensum/update`,
     apiestructuraacademicapensum_delete: `${module.estructuraacademica}/pensum/delete`,
+
+    apiestructuraacademicaresponsable_index:  `${module.estructuraacademica}/responsable/index`,
+    apiestructuraacademicaresponsable_create: `${module.estructuraacademica}/responsable/create`,
+    apiestructuraacademicaresponsable_store:  `${module.estructuraacademica}/responsable/store`,
+    apiestructuraacademicaresponsable_edit:   `${module.estructuraacademica}/responsable/edit`,
+    apiestructuraacademicaresponsable_show:   `${module.estructuraacademica}/responsable/show`,
+    apiestructuraacademicaresponsable_update: `${module.estructuraacademica}/responsable/update`,
+    apiestructuraacademicaresponsable_delete: `${module.estructuraacademica}/responsable/delete`,
 };
 
 export default apiServices;

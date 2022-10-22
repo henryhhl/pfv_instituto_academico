@@ -554,6 +554,57 @@ const ColumnModules = {
             state: true,
         },
     ],
+
+    columnResponsable: [
+        {
+            id: 'nombre',
+            label: 'Nombre',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'apellido',
+            label: 'Apellido',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'nrodocumento',
+            label: 'Nro documento',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'ciudad',
+            label: 'Ciudad',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'direccion',
+            label: 'Dirección',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
 };
 
 export default ColumnModules;
