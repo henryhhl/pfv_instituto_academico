@@ -1,78 +1,159 @@
-import { Injectable } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
+import { Repository, Like } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateOfertaAcademicaDto } from './dto/create-ofertaacademica.dto';
 import { UpdateOfertaAcademicaDto } from './dto/update-ofertaacademica.dto';
 import { OfertaAcademica } from './entities/ofertaacademica.entity';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class OfertaAcademicaService {
 
   private listOfertaAcademica: OfertaAcademica[] = [];
+  private readonly logger = new Logger('OfertaAcademicaService');
 
-  findAll() {
-    const listOfertaAcademica = this.listOfertaAcademica;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayOfertaAcademica: listOfertaAcademica,
-    };
+  constructor(
+    @InjectRepository(OfertaAcademica)
+    private readonly ofertaAcademicaRepository: Repository<OfertaAcademica>,
+  ) {}
+
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listOfertaAcademica = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listOfertaAcademica, totalPagination] = await this.ofertaAcademicaRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listOfertaAcademica, totalPagination] = await this.ofertaAcademicaRepository.findAndCount( {
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayOfertaAcademica: listOfertaAcademica,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createOfertaAcademicaDto: CreateOfertaAcademicaDto) {
-    let ofertaAcademica: OfertaAcademica = {
-      idofertaacademica: uuid(),
-      sigla: createOfertaAcademicaDto.sigla,
-      descripcion: createOfertaAcademicaDto.descripcion,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    this.listOfertaAcademica.push(ofertaAcademica);
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Oferta Academica registrado éxitosamente.',
-      ofertaAcademica: ofertaAcademica,
-    };
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idofertaacademica: string) {
-    const ofertaAcademica = this.listOfertaAcademica.find( (ofertaAcademica) => ofertaAcademica.idofertaacademica === idofertaacademica );
+  async store(createOfertaAcademicaDto: CreateOfertaAcademicaDto) {
+    try {
+      const ofertaAcademica = this.ofertaAcademicaRepository.create( {
+        sigla: createOfertaAcademicaDto.sigla,
+        descripcion: createOfertaAcademicaDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.ofertaAcademicaRepository.save( ofertaAcademica );
+      return {
+        resp: 1, error: false,
+        message: 'Oferta Academica registrado éxitosamente.',
+        ofertaAcademica: ofertaAcademica,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idofertaacademica: string) {
+    const ofertaAcademica = await this.ofertaAcademicaRepository.findOneBy( {
+      idofertaacademica: idofertaacademica,
+    } );
     return ofertaAcademica;
   }
 
-  edit( idofertaacademica: string ) {
-    const ofertaAcademica = this.findOne( idofertaacademica );
-    if ( ofertaAcademica ) {
-        return {
+  async edit( idofertaacademica: string ) {
+    try {
+      const ofertaAcademica = await this.findOne(idofertaacademica);
+      if ( ofertaAcademica ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             ofertaAcademica: ofertaAcademica,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Oferta Academica no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  show( idofertaacademica: string ) {
-    const ofertaAcademica = this.findOne( idofertaacademica );
-    if ( ofertaAcademica ) {
-        return {
+  async show( idofertaacademica: string ) {
+    try {
+      const ofertaAcademica = await this.findOne(idofertaacademica);
+      if ( ofertaAcademica ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             ofertaAcademica: ofertaAcademica,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Oferta Academica no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updateOfertaAcademicaDto: UpdateOfertaAcademicaDto) {
@@ -84,19 +165,19 @@ export class OfertaAcademicaService {
       };
     }
 
-    this.listOfertaAcademica = this.listOfertaAcademica.map( (ofertaAcademica) => {
-      if ( ofertaAcademica.idofertaacademica === id ) {
-        ofertaAcademicaDB.updated_at = '';
-        ofertaAcademicaDB = {
-          ...ofertaAcademicaDB,
-          ...updateOfertaAcademicaDto,
-          idofertaacademica: id,
-          concurrencia: ofertaAcademica.concurrencia + 1,
-        };
-        return ofertaAcademicaDB;
-      }
-      return ofertaAcademica;
-    } );
+    // this.listOfertaAcademica = this.listOfertaAcademica.map( (ofertaAcademica) => {
+    //   if ( ofertaAcademica.idofertaacademica === id ) {
+    //     ofertaAcademicaDB.updated_at = '';
+    //     ofertaAcademicaDB = {
+    //       ...ofertaAcademicaDB,
+    //       ...updateOfertaAcademicaDto,
+    //       idofertaacademica: id,
+    //       concurrencia: ofertaAcademica.concurrencia + 1,
+    //     };
+    //     return ofertaAcademicaDB;
+    //   }
+    //   return ofertaAcademica;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -105,19 +186,27 @@ export class OfertaAcademicaService {
     };
   }
 
-  remove(id: string) {
-    let ofertaAcademicaDB = this.findOne(id);
-    if ( ofertaAcademicaDB === null ) {
+  async delete( idofertaacademica: string ) {
+    try {
+      let ofertaAcademica = await this.findOne(idofertaacademica);
+      if ( ofertaAcademica === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Oferta Academica no existe.',
+        };
+      }
+      await this.ofertaAcademicaRepository.remove( ofertaAcademica );
       return {
-        resp: 0, error: false,
-        message: 'Oferta Academica no existe.',
+        resp: 1, error: false,
+        message: 'Oferta Academica eliminado éxitosamente.',
+        ofertaAcademica: ofertaAcademica,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listOfertaAcademica = this.listOfertaAcademica.filter( (ofertaAcademica) => ofertaAcademica.idofertaacademica !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Oferta Academica eliminado éxitosamente.',
-      ofertaAcademica: ofertaAcademicaDB,
-    };
   }
 }

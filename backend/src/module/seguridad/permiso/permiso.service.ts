@@ -1,4 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreatePermisoDto } from './dto/create-permiso.dto';
 import { UpdatePermisoDto } from './dto/update-permiso.dto';
@@ -7,73 +9,131 @@ import { Permiso } from './entities/permiso.entity';
 @Injectable()
 export class PermisoService {
   private listPermiso: Permiso[] = [];
+  private readonly logger = new Logger('PermisoService');
 
-  findAll() {
-    const listPermiso = this.listPermiso;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayPermiso: listPermiso,
-    };
+  constructor(
+    @InjectRepository(Permiso)
+    private readonly permisoRepository: Repository<Permiso>,
+  ) {}
+
+  async findAll() {
+    try {
+      const [listPermiso, totalCount] = await this.permisoRepository.findAndCount( {
+        where: {
+        },
+        order: { created_at: "ASC", },
+      } );
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayPermiso: listPermiso,
+        totalCount: totalCount,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createPermisoDto: CreatePermisoDto) {
-    let permiso: Permiso = {
-      idpermiso: uuid(),
-      fkidtipopermiso: createPermisoDto.fkidtipopermiso,
-      tipopermiso: createPermisoDto.tipopermiso,
-      fkidpermisopadre: createPermisoDto.fkidpermisopadre,
-      descripcion: createPermisoDto.descripcion,
-      imagen: createPermisoDto.imagen,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
-    this.listPermiso.push(permiso);
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Permiso registrado éxitosamente.',
-      permiso: permiso,
-    };
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
+
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idpermiso: string) {
-    const permiso = this.listPermiso.find( (permiso) => permiso.idpermiso === idpermiso );
+  async store(createPermisoDto: CreatePermisoDto) {
+    try {
+      const permiso = this.permisoRepository.create( {
+        fkidpermisopadre: createPermisoDto.fkidpermisopadre,
+        fkidtipopermiso: createPermisoDto.fkidtipopermiso,
+        tipopermiso: createPermisoDto.tipopermiso,
+        descripcion: createPermisoDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.permisoRepository.save( permiso );
+      return {
+        resp: 1, error: false,
+        message: 'Permiso registrado éxitosamente.',
+        permiso: permiso,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idpermiso: string) {
+    const permiso = await this.permisoRepository.findOneBy( {
+      idpermiso: idpermiso,
+    } );
     return permiso;
   }
 
-  edit(idpermiso: string) {
-    const permiso = this.findOne(idpermiso);
-    if ( permiso ) {
+  async edit(idpermiso: string) {
+    try {
+      const permiso = await this.findOne(idpermiso);
+      if ( permiso ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
           permiso: permiso,
         };
-    }
-    return {
-      resp: 0, error: false,
-      message: 'Permiso no existe.',
-    };
-  }
-
-  show(idpermiso: string) {
-    const permiso = this.findOne(idpermiso);
-    if ( permiso ) {
-        return {
-            resp: 1, error: false,
-            message: 'Servicio realizado exitosamente.',
-            permiso: permiso,
-        };
-    }
-    return {
+      }
+      return {
         resp: 0, error: false,
         message: 'Permiso no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async show(idpermiso: string) {
+    try {
+      const permiso = await this.findOne(idpermiso);
+      if ( permiso ) {
+        return {
+          resp: 1, error: false,
+          message: 'Servicio realizado exitosamente.',
+          permiso: permiso,
+        };
+      }
+      return {
+        resp: 0, error: false,
+        message: 'Permiso no existe.',
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updatePermisoDto: UpdatePermisoDto) {
@@ -85,19 +145,19 @@ export class PermisoService {
       };
     }
 
-    this.listPermiso = this.listPermiso.map( (permiso) => {
-      if ( permiso.idpermiso === id ) {
-        permisoDB.updated_at = '';
-        permisoDB = {
-          ...permisoDB,
-          ...updatePermisoDto,
-          idpermiso: id,
-          concurrencia: permiso.concurrencia + 1,
-        };
-        return permisoDB;
-      }
-      return permiso;
-    } );
+    // this.listPermiso = this.listPermiso.map( (permiso) => {
+    //   if ( permiso.idpermiso === id ) {
+    //     permisoDB.updated_at = '';
+    //     permisoDB = {
+    //       ...permisoDB,
+    //       ...updatePermisoDto,
+    //       idpermiso: id,
+    //       concurrencia: permiso.concurrencia + 1,
+    //     };
+    //     return permisoDB;
+    //   }
+    //   return permiso;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -106,32 +166,47 @@ export class PermisoService {
     };
   }
 
-  remove(id: string) {
-    let permispoDB = this.findOne(id);
-    if ( permispoDB === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Permiso no existe.',
-      };
-    }
-    let cont = 0;
-    for (let index = 0; index < this.listPermiso.length; index++) {
-      const element = this.listPermiso[index];
-      if ( permispoDB.idpermiso === element.fkidpermisopadre ) {
-        cont++;
+
+
+  async remove( idpermiso: string ) {
+    try {
+      let permiso = await this.findOne(idpermiso);
+      if ( permiso === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Permiso no existe.',
+        };
       }
-    }
-    if ( cont > 0 ) {
+      if ( permiso.isdelete == "N" ) {
+        return {
+          resp: 0, error: true,
+          message: "Permiso no permitido eliminar.",
+        };
+      }
+      const arrayChildren = await this.permisoRepository.find( {
+        where: {
+          fkidpermisopadre: idpermiso,
+        }
+      } );
+      if ( arrayChildren.length > 0 ) {
+        return {
+          resp: 0, error: true,
+          message: "Funcionalidad no permitido, por que tiene sub permisos agregados.",
+        };
+      }
+      const permisoDelete = await this.permisoRepository.remove( permiso );
       return {
-        resp: 0, error: false,
-        message: 'Error al eliminar Permiso.',
+        resp: 1, error: false,
+        message: 'Permiso eliminado éxitosamente.',
+        permiso: permiso,
+        permisoDelete: permisoDelete,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listPermiso = this.listPermiso.filter( (permiso) => permiso.idpermiso !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Permiso eliminado éxitosamente.',
-      permiso: permispoDB,
-    };
   }
 }

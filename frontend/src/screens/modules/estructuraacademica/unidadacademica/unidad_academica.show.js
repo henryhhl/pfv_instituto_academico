@@ -39,23 +39,23 @@ function ShowUnidadAcademica( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Código"
                                 value={unidadAcademica.codigo}
                                 readOnly
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Sigla"
                                 value={unidadAcademica.sigla}
                                 readOnly
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Unidad Academica"
                                 value={unidadAcademica.descripcion}
                                 readOnly
                             />

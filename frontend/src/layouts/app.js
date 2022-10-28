@@ -6,7 +6,6 @@ import SidebarComponent from './partials/sidebar';
 
 
 const AppMain = ( props ) => {
-    console.log('App Main');
     return (
         <>
             <div id="app">

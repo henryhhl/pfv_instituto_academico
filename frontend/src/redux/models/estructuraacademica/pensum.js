@@ -17,6 +17,7 @@ const Pensum = {
     descripcion: "",
     fechaaprobacion: "",
     estadoproceso: "",
+    nota: "",
 
     estado: "",
     concurrencia: "",

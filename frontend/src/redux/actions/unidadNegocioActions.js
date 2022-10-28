@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.unidadNegocio_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageUnidadNegocio = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        UnidadNegocioService.getAllUnidadNegocio( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listUnidadNegocio',
+                        value: result.arrayUnidadNegocio,
+                    },
+                    pagination: {
+                        name: 'paginationUnidadNegocio',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageUnidadNegocio',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateUnidadNegocio',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -185,7 +221,7 @@ const onDelete = ( unidadNegocio ) => {
         let onDelete = () => {
             UnidadNegocioService.onDelete(unidadNegocio).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllUnidadNegocio() );
+                    dispatch( onPageUnidadNegocio() );
                 }
             } ).finally( () => {} );
         };
@@ -198,6 +234,7 @@ const onDelete = ( unidadNegocio ) => {
 
 export const UnidadNegocioActions = {
     initData,
+    onPageUnidadNegocio,
     getAllUnidadNegocio,
     onLimpiar,
     setSigla,

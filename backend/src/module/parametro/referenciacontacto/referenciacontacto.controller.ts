@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { ReferenciaContactoService } from './referenciacontacto.service';
 import { CreateReferenciaContactoDto } from './dto/create-referenciacontacto.dto';
 import { UpdateReferenciaContactoDto } from './dto/update-referenciacontacto.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('referenciacontacto')
 export class ReferenciaContactoController {
   constructor(private readonly referenciacontactoService: ReferenciaContactoService) {}
 
   @Get('/index')
-  findAll() {
-    return this.referenciacontactoService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.referenciacontactoService.findAll( paginationDto );
   }
 
   @Post('/store')
@@ -19,12 +20,12 @@ export class ReferenciaContactoController {
 
   @Get('/edit/:idreferenciacontacto')
   edit(@Param('idreferenciacontacto') id: string) {
-    return this.referenciacontactoService.findOne(id);
+    return this.referenciacontactoService.edit(id);
   }
 
   @Get('/show/:idreferenciacontacto')
   show(@Param('idreferenciacontacto') id: string) {
-    return this.referenciacontactoService.findOne(id);
+    return this.referenciacontactoService.show(id);
   }
 
   @Patch('/update/:idreferenciacontacto')
@@ -39,6 +40,6 @@ export class ReferenciaContactoController {
 
   @Delete('/delete/:idreferenciacontacto')
   remove(@Param('idreferenciacontacto') id: string) {
-    return this.referenciacontactoService.remove(id);
+    return this.referenciacontactoService.delete(id);
   }
 }

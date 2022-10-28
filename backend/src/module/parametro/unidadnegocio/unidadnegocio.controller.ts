@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { UnidadNegocioService } from './unidadnegocio.service';
 import { CreateUnidadnegocioDto } from './dto/create-unidadnegocio.dto';
 import { UpdateUnidadNegocioDto } from './dto/update-unidadnegocio.dto';
@@ -8,8 +9,8 @@ export class UnidadNegocioController {
   constructor(private readonly unidadNegocioService: UnidadNegocioService) {}
 
   @Get('/index')
-  findAll() {
-    return this.unidadNegocioService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.unidadNegocioService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -34,6 +35,6 @@ export class UnidadNegocioController {
 
   @Delete('/delete/:idunidadnegocio')
   remove(@Param('idunidadnegocio') id: string) {
-    return this.unidadNegocioService.remove(id);
+    return this.unidadNegocioService.delete(id);
   }
 }

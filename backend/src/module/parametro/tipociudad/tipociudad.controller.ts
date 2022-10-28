@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { TipoCiudadService } from './tipociudad.service';
 import { CreateTipoCiudadDto } from './dto/create-tipociudad.dto';
 import { UpdateTipoCiudadDto } from './dto/update-tipociudad.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('tipociudad')
 export class TipoCiudadController {
   constructor(private readonly tipociudadService: TipoCiudadService) {}
 
   @Get('/index')
-  findAll() {
-    return this.tipociudadService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.tipociudadService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -38,7 +39,7 @@ export class TipoCiudadController {
   }
 
   @Delete('/delete/:idtipociudad')
-  remove(@Param('idtipociudad') id: string) {
-    return this.tipociudadService.remove(id);
+  delete(@Param('idtipociudad') id: string) {
+    return this.tipociudadService.delete(id);
   }
 }

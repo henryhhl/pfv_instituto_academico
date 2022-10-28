@@ -1,5 +1,6 @@
 import { join } from 'path';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
@@ -13,10 +14,10 @@ import { TipoMateriaModule } from './module/parametro/tipomateria/tipomateria.mo
 import { SeedModule } from './seed/seed.module';
 import { RolModule } from './module/seguridad/rol/rol.module';
 import { UsuarioModule } from './module/seguridad/usuario/usuario.module';
-import { UnidadNegocioModule } from './module/parametro/ciudad/unidadnegocio/unidadnegocio.module';
-import { OfertaacademicaModule } from './module/parametro/ofertaacademica/ofertaacademica.module';
-import { NivelacademicoModule } from './module/parametro/nivelacademico/nivelacademico.module';
-import { ModalidadacademicaModule } from './module/parametro/modalidadacademica/modalidadacademica.module';
+import { UnidadNegocioModule } from './module/parametro/unidadnegocio/unidadnegocio.module';
+import { OfertaAcademicaModule } from './module/parametro/ofertaacademica/ofertaacademica.module';
+import { NivelAcademicoModule } from './module/parametro/nivelacademico/nivelacademico.module';
+import { ModalidadAcademicaModule } from './module/parametro/modalidadacademica/modalidadacademica.module';
 import { PeriodoModule } from './module/parametro/periodo/periodo.module';
 import { MateriaModule } from './module/parametro/materia/materia.module';
 import { UnidadAdministrativaModule } from './module/estructuraacademica/unidadadministrativa/unidadadministrativa.module';
@@ -32,6 +33,7 @@ import { ReferenciaContactoModule } from './module/parametro/referenciacontacto/
 import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.module';
 import { ResponsableUnidadAcademicaDetalleModule } from './module/estructuraacademica/responsableunidadacademicadetalle/responsableunidadacademicadetalle.module';
 import { ResponsablereferenciacontactodetalleModule } from './module/estructuraacademica/responsablereferenciacontactodetalle/responsablereferenciacontactodetalle.module';
+import { CommonModule } from './common/common.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -49,18 +51,30 @@ import { ResponsablereferenciacontactodetalleModule } from './module/estructuraa
       validationSchema: JoiValidationSchema,
     } ),
 
-    ServeStaticModule.forRoot( {
-      rootPath: join(__dirname, '..', 'public'),
+    TypeOrmModule.forRoot( {
+      type: 'postgres',
+      host: process.env.DB_HOST || 'localhost',
+      port: +process.env.DB_PORT || 5432,
+      database: process.env.DB_NAME || 'instituto_academico',
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
+      autoLoadEntities: true,
+      synchronize: true,
     } ),
 
     // MongooseModule.forRoot( process.env.MONGO_DB || 'mongodb://localhost:27017/instituto-academico' ),
 
+    ServeStaticModule.forRoot( {
+      rootPath: join(__dirname, '..', 'public'),
+    } ),
+
+
     TipoRolModule, TipoPermisoModule, TipoMateriaModule, SeedModule, RolModule, 
-    UsuarioModule, UnidadNegocioModule, OfertaacademicaModule, NivelacademicoModule, 
-    ModalidadacademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
+    UsuarioModule, UnidadNegocioModule, OfertaAcademicaModule, NivelAcademicoModule, 
+    ModalidadAcademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
     UnidadAdministrativaModule, UsuarioRolDetalleModule, 
     RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
-    ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, ResponsablereferenciacontactodetalleModule,
+    ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, ResponsablereferenciacontactodetalleModule, CommonModule,
   ],
   controllers: [],
   providers: [],

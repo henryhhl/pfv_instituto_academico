@@ -1,11 +1,16 @@
 
 import apiServices from "../../../utils/apiservices";
 import { httpRequest } from "../../../utils/httpRequest";
+import Swal from 'sweetalert2';
+import toastr from 'toastr';
 
 const getAllPermiso = async (search = "") => {
     return await httpRequest('get', apiServices.apiseguridadpermiso_index, {
         search: search,
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", } );
+        }
         return respta;
     } );
 };
@@ -17,6 +22,15 @@ const onStore = async (body) => {
         fkidpermisopadre: body.fkidpermisopadre,
         descripcion: body.descripcion,
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'success',
+                title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
         return respta;
     } );
 };
@@ -24,6 +38,9 @@ const onStore = async (body) => {
 const onShow = async (idpermiso) => {
     return await httpRequest('get', apiServices.apiseguridadpermiso_show + `/${idpermiso}`, {
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
+        }
         return respta;
     } );
 };
@@ -31,6 +48,9 @@ const onShow = async (idpermiso) => {
 const onEdit = async (idpermiso) => {
     return await httpRequest('get', apiServices.apiseguridadpermiso_edit + `/${idpermiso}`, {
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
+        }
         return respta;
     } );
 };
@@ -43,6 +63,15 @@ const onUpdate = async (body) => {
         descripcion: body.descripcion,
         estado: body.estado,
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'success',
+                title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
         return respta;
     } );
 };
@@ -50,6 +79,15 @@ const onUpdate = async (body) => {
 const onDelete = async (body) => {
     return await httpRequest('delete', apiServices.apiseguridadpermiso_delete + `/${body.idpermiso}`, {
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'success',
+                title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
         return respta;
     } );
 };

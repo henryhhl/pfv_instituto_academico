@@ -1,53 +1,41 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, ParseUUIDPipe, Query } from '@nestjs/common';
 import { TipoPermisoService } from './tipopermiso.service';
 import { CreateTipoPermisoDto, UpdateTipoPermisoDto } from './dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('tipopermiso')
 export class TipoPermisoController {
 
-    constructor(
-        private readonly tipoPermisoService: TipoPermisoService
-    ) {
-
-    }
+    constructor( private readonly tipoPermisoService: TipoPermisoService ) {}
 
     @Get('/index')
-    getAllTipoPermiso() {
-        let listTipoPermiso = this.tipoPermisoService.getAll();
-        return {
-            resp: 1,
-            error: false,
-            message: 'Servicio realizado exitosamente.',
-            arrayTipoPermiso: listTipoPermiso,
-        };
+    findAll( @Query() paginationDto: PaginationDto ) {
+        return this.tipoPermisoService.findAll(paginationDto);
     }
 
     @Post('/store')
-    storeTipoPermiso( @Body() request: CreateTipoPermisoDto ) {
-        return this.tipoPermisoService.storeTipoPermiso(request);
-    }
-
-    @Get('/show/:idtipopermiso')
-    showTipoPermiso( @Param('idtipopermiso', ParseUUIDPipe) id: string ) {
-        return this.tipoPermisoService.showTipoPermiso(id);
+    store(@Body() createMateriaDto: CreateTipoPermisoDto) {
+        return this.tipoPermisoService.store(createMateriaDto);
     }
 
     @Get('/edit/:idtipopermiso')
-    getTipoPermisoById( @Param('idtipopermiso', ParseUUIDPipe) id: string ) {
-        return this.tipoPermisoService.editTipoPermiso(id);
+    edit(@Param('idtipopermiso') id: string) {
+        return this.tipoPermisoService.edit(id);
+    }
+
+    @Get('/show/:idtipopermiso')
+    show(@Param('idtipopermiso') id: string) {
+        return this.tipoPermisoService.show(id);
     }
 
     @Put('/update/:idtipopermiso')
-    updateTipoPermiso( 
-        @Param('idtipopermiso', ParseUUIDPipe) idtipopermiso: string, 
-        @Body() request: UpdateTipoPermisoDto ) 
-    {
-        return this.tipoPermisoService.updateTipoPermiso(idtipopermiso, request);
+    update(@Param('idtipopermiso') id: string, @Body() updateMateriaDto: UpdateTipoPermisoDto) {
+        return this.tipoPermisoService.update(id, updateMateriaDto);
     }
-    
+
     @Delete('/delete/:idtipopermiso')
-    deleteTipoPermiso( @Param('idtipopermiso', ParseUUIDPipe) idtipopermiso: string, @Body() body: any ) {
-        return this.tipoPermisoService.deleteTipoPermiso(idtipopermiso);
+    delete(@Param('idtipopermiso') id: string) {
+        return this.tipoPermisoService.delete(id);
     }
 
 }

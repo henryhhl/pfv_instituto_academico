@@ -1,25 +1,13 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateNivelAcademicoDto } from './create-nivelacademico.dto';
-import { IsString, IsUUID, IsOptional, MinLength } from 'class-validator';
+import { IsString, IsOptional, MinLength, IsIn } from 'class-validator';
 
-// export class UpdateNivelacademicoDto extends PartialType(CreateNivelAcademicoDto) {}
-export class UpdateNivelAcademicoDto {
-    @IsString()
-    @IsUUID()
-    @IsOptional()
-    readonly idnivelacademico?: string;
-
-    @IsString( { message: 'Campo sigla es requerido.', } )
-    @MinLength(1, { message: 'Campo sigla debe ser mayor o igual a 1 carácter.', } )
-    @IsOptional()
-    readonly sigla?: string;
-
-    @IsString( { message: 'Campo descripción es requerido.', } )
-    @MinLength(1, { message: 'Campo descripción debe ser mayor o igual a 1 carácter.', } )
-    @IsOptional()
-    readonly descripcion?: string;
-
-    @IsString( { message: 'Campo estado es requerido.', } )
+export class UpdateNivelAcademicoDto extends PartialType(CreateNivelAcademicoDto) {
+    
+    @IsString( { message: 'Campo Estado solo permitido tipo STRING.', } )
+    @MinLength(1, { message: 'Campo Estado debe ser mayor o igual a 1 carácter.', } )
+    @IsIn( [ 'A', 'N', ], { message: 'Campo Estado permite valor: A y N', } )
     @IsOptional()
     readonly estado?: string;
+
 }

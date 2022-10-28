@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.unidadadministrativa_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageUnidadAdministrativa = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        UnidadAdministrativaService.getAllUnidadAdministrativa( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listUnidadAdministrativa',
+                        value: result.arrayUnidadAdministrativa,
+                    },
+                    pagination: {
+                        name: 'paginationUnidadAdministrativa',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageUnidadAdministrativa',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateUnidadAdministrativa',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -200,7 +236,7 @@ const onDelete = ( unidadAdministrativa ) => {
         let onDelete = () => {
             UnidadAdministrativaService.onDelete(unidadAdministrativa).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllUnidadAdministrativa() );
+                    dispatch( onPageUnidadAdministrativa() );
                 }
             } ).finally( () => {} );
         };
@@ -213,6 +249,7 @@ const onDelete = ( unidadAdministrativa ) => {
 
 export const UnidadAdministrativaActions = {
     initData,
+    onPageUnidadAdministrativa,
     getAllUnidadAdministrativa,
     onLimpiar,
     setSigla,

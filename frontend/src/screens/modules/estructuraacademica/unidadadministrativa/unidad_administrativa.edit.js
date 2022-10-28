@@ -60,7 +60,7 @@ function EditUnidadAdministrativa( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Sigla"
                                 value={unidadAdministrativa.sigla}
@@ -69,9 +69,9 @@ function EditUnidadAdministrativa( props ) {
                                 message={unidadAdministrativa.message.sigla}
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-5">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Unidad Administrativa"
                                 value={unidadAdministrativa.descripcion}
                                 onChange={ (value) => props.setDescripcion(unidadAdministrativa, value) }
                                 error={unidadAdministrativa.error.descripcion}

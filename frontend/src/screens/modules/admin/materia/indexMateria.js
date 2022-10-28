@@ -10,23 +10,31 @@ import CardComponent from '../../../../components/card';
 function IndexMateria(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllMateria();
+    useEffect( () => {
+      props.onPageMateria();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/materia/create');
-    }
+    };
 
-    function onEdit(materia) {
+    const onEdit = (materia) => {
         navigate(`/materia/edit/${materia.idmateria}`);
-    }
+    };
 
-    function onShow(materia) {
+    const onShow = (materia) => {
         navigate(`/materia/show/${materia.idmateria}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageMateria(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageMateria(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexMateria(props) {
                         onShow={ ( materia ) => onShow(materia) }
                         onEditar={ ( materia ) => onEdit(materia) }
                         onDelete={ ( materia ) => props.onDelete(materia) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexMateria(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnMateria: state.ColumnModule.columnMateria,
-    listMateria: state.ListModule.listMateria,
+    listMateria: state.PaginationModule.listMateria,
+    page: state.PaginationModule.pageMateria,
+    pagination: state.PaginationModule.paginationMateria,
+    paginate: state.PaginationModule.paginateMateria,
 } );
 
 const mapDispatchToProps = {
-    getAllMateria: MateriaActions.getAllMateria,
+    onPageMateria: MateriaActions.onPageMateria,
     onDelete: MateriaActions.onDelete,
 };
 

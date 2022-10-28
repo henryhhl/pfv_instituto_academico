@@ -26,15 +26,18 @@ import { ProgramaReducer } from '../reducers/estructuraacademica/programa.reduce
 import { PensumReducer } from '../reducers/estructuraacademica/pensum.reducer';
 import { ReferenciaContactoReducer } from '../reducers/parametros/referencia_contacto.reducer';
 import { ResponsableReducer } from '../reducers/estructuraacademica/responsable.reducer';
+import { PaginationModuleReducer } from '../reducers/paginationModule.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
     Permiso: PermisoReducer,
     TipoRol: TipoRolReducer,
     Usuario: UsuarioReducer,
+    TipoPermiso: TipoPermisoReducer,
+
+    PaginationModule: PaginationModuleReducer,
     ListModule: ListModuleReducer,
     ColumnModule: ColumnModuleReducer,
-    TipoPermiso: TipoPermisoReducer,
 
     NivelAcademico: NivelAcademicoReducer,
     ModalidadAcademica: ModalidadAcademicaReducer,

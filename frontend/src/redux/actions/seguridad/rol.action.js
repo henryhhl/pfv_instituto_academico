@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.rol_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageRol = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        RolService.getAllRol( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listRol',
+                        value: result.arrayRol,
+                    },
+                    pagination: {
+                        name: 'paginationRol',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageRol',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateRol',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -193,7 +229,7 @@ const onDelete = ( rol ) => {
         let onDelete = () => {
             RolService.onDelete(rol).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllRol() );
+                    dispatch( onPageRol() );
                 }
             } ).finally( () => {} );
         };
@@ -206,6 +242,7 @@ const onDelete = ( rol ) => {
 
 export const RolActions = {
     initData,
+    onPageRol,
     getAllRol,
     onLimpiar,
     setDescripcion,

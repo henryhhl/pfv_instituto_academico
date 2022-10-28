@@ -1,11 +1,22 @@
 
 import apiServices from "../../../utils/apiservices";
 import { httpRequest } from "../../../utils/httpRequest";
+import Swal from 'sweetalert2';
+import toastr from 'toastr';
 
-const getAllPensum = async (search = "") => {
+const getAllPensum = async ( {
+    page = 1, paginate = 1, 
+    search = "", esPaginate = false,
+} ) => {
     return await httpRequest('get', apiServices.apiestructuraacademicapensum_index, {
         search: search,
+        offset: page - 1,
+        limit: paginate,
+        esPaginate: esPaginate,
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", } );
+        }
         return respta;
     } );
 };
@@ -22,8 +33,18 @@ const onStore = async (body) => {
         programa: body.programa,
         descripcion: body.descripcion,
         fechaaprobacion: body.fechaaprobacion,
+        nota: body.nota,
         estadoproceso: body.estadoproceso,
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'success',
+                title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
         return respta;
     } );
 };
@@ -31,6 +52,9 @@ const onStore = async (body) => {
 const onShow = async (idpensum) => {
     return await httpRequest('get', apiServices.apiestructuraacademicapensum_show + `/${idpensum}`, {
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
+        }
         return respta;
     } );
 };
@@ -38,6 +62,9 @@ const onShow = async (idpensum) => {
 const onEdit = async (idpensum) => {
     return await httpRequest('get', apiServices.apiestructuraacademicapensum_edit + `/${idpensum}`, {
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
+        }
         return respta;
     } );
 };
@@ -55,8 +82,18 @@ const onUpdate = async (body) => {
         descripcion: body.descripcion,
         fechaaprobacion: body.fechaaprobacion,
         estadoproceso: body.estadoproceso,
+        nota: body.nota,
         estado: body.estado,
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'success',
+                title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
         return respta;
     } );
 };
@@ -64,6 +101,15 @@ const onUpdate = async (body) => {
 const onDelete = async (body) => {
     return await httpRequest('delete', apiServices.apiestructuraacademicapensum_delete + `/${body.idpensum}`, {
     } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'success',
+                title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
         return respta;
     } );
 };

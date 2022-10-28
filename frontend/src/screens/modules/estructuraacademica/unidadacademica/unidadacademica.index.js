@@ -10,23 +10,31 @@ import TableComponent from '../../../../components/table';
 function IndexUnidadAcademica(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllUnidadAcademica();
+    useEffect( () => {
+      props.onPageUnidadAcademica();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/unidadacademica/create');
-    }
+    };
 
-    function onEdit(unidadAcademica) {
+    const onEdit = (unidadAcademica) => {
         navigate(`/unidadacademica/edit/${unidadAcademica.idunidadacademica}`);
-    }
+    };
 
-    function onShow(unidadAcademica) {
+    const onShow = (unidadAcademica) => {
         navigate(`/unidadacademica/show/${unidadAcademica.idunidadacademica}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageUnidadAcademica(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageUnidadAcademica(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexUnidadAcademica(props) {
                         onShow={ ( unidadAcademica ) => onShow(unidadAcademica) }
                         onEditar={ ( unidadAcademica ) => onEdit(unidadAcademica) }
                         onDelete={ ( unidadAcademica ) => props.onDelete(unidadAcademica) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexUnidadAcademica(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnUnidadAcademica: state.ColumnModule.columnUnidadAcademica,
-    listUnidadAcademica: state.ListModule.listUnidadAcademica,
+    listUnidadAcademica: state.PaginationModule.listUnidadAcademica,
+    page: state.PaginationModule.pageUnidadAcademica,
+    pagination: state.PaginationModule.paginationUnidadAcademica,
+    paginate: state.PaginationModule.paginateUnidadAcademica,
 } );
 
 const mapDispatchToProps = {
-    getAllUnidadAcademica: UnidadAcademicaActions.getAllUnidadAcademica,
+    onPageUnidadAcademica: UnidadAcademicaActions.onPageUnidadAcademica,
     onDelete: UnidadAcademicaActions.onDelete,
 };
 

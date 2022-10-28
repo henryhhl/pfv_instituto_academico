@@ -1,78 +1,160 @@
-import { Injectable } from '@nestjs/common';
+import { Repository, Like } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { CreateNivelAcademicoDto } from './dto/create-nivelacademico.dto';
 import { UpdateNivelAcademicoDto } from './dto/update-nivelacademico.dto';
 import { NivelAcademico } from './entities/nivelacademico.entity';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class NivelAcademicoService {
 
   private listNivelAcademico: NivelAcademico[] = [];
+  private readonly logger = new Logger('NivelAcademicoService');
 
-  findAll() {
-    const listNivelAcademico = this.listNivelAcademico;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayNivelAcademico: listNivelAcademico,
-    };
+  constructor(
+    @InjectRepository(NivelAcademico)
+    private readonly nivelAcademicoRepository: Repository<NivelAcademico>,
+  ) {}
+
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listNivelAcademico = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listNivelAcademico, totalPagination] = await this.nivelAcademicoRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listNivelAcademico, totalPagination] = await this.nivelAcademicoRepository.findAndCount( {
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayNivelAcademico: listNivelAcademico,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createNivelAcademicoDto: CreateNivelAcademicoDto) {
-    let nivelAcademico: NivelAcademico = {
-      idnivelacademico: uuid(),
-      sigla: createNivelAcademicoDto.sigla,
-      descripcion: createNivelAcademicoDto.descripcion,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    this.listNivelAcademico.push(nivelAcademico);
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Nivel Academico registrado éxitosamente.',
-      nivelAcademico: nivelAcademico,
-    };
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idnivelacademico: string) {
-    const nivelAcademico = this.listNivelAcademico.find( (nivelAcademico) => nivelAcademico.idnivelacademico === idnivelacademico );
+  async store(createNivelAcademicoDto: CreateNivelAcademicoDto) {
+    try {
+      const nivelAcademico = this.nivelAcademicoRepository.create( {
+        sigla: createNivelAcademicoDto.sigla,
+        descripcion: createNivelAcademicoDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.nivelAcademicoRepository.save( nivelAcademico );
+      return {
+        resp: 1, error: false,
+        message: 'Nivel Academico registrado éxitosamente.',
+        nivelAcademico: nivelAcademico,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idnivelacademico: string) {
+    const nivelAcademico = await this.nivelAcademicoRepository.findOneBy( {
+      idnivelacademico: idnivelacademico,
+    } );
     return nivelAcademico;
   }
 
-  edit( idnivelacademico: string ) {
-    const nivelAcademico = this.findOne(idnivelacademico);
-    if ( nivelAcademico ) {
-        return {
+  async edit( idnivelacademico: string ) {
+    try {
+      const nivelAcademico = await this.findOne(idnivelacademico);
+      if ( nivelAcademico ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             nivelAcademico: nivelAcademico,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Nivel Academico no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  show( idnivelacademico: string ) {
-    const nivelAcademico = this.findOne(idnivelacademico);
-    if ( nivelAcademico ) {
-        return {
+  async show( idnivelacademico: string ) {
+    try {
+      const nivelAcademico = await this.findOne(idnivelacademico);
+      if ( nivelAcademico ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             nivelAcademico: nivelAcademico,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Nivel Academico no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updateNivelAcademicoDto: UpdateNivelAcademicoDto) {
@@ -84,19 +166,19 @@ export class NivelAcademicoService {
       };
     }
 
-    this.listNivelAcademico = this.listNivelAcademico.map( (nivelAcademico) => {
-      if ( nivelAcademico.idnivelacademico === id ) {
-        nivelAcademicoDB.updated_at = '';
-        nivelAcademicoDB = {
-          ...nivelAcademicoDB,
-          ...updateNivelAcademicoDto,
-          idnivelacademico: id,
-          concurrencia: nivelAcademico.concurrencia + 1,
-        };
-        return nivelAcademicoDB;
-      }
-      return nivelAcademico;
-    } );
+    // this.listNivelAcademico = this.listNivelAcademico.map( (nivelAcademico) => {
+    //   if ( nivelAcademico.idnivelacademico === id ) {
+    //     nivelAcademicoDB.updated_at = '';
+    //     nivelAcademicoDB = {
+    //       ...nivelAcademicoDB,
+    //       ...updateNivelAcademicoDto,
+    //       idnivelacademico: id,
+    //       concurrencia: nivelAcademico.concurrencia + 1,
+    //     };
+    //     return nivelAcademicoDB;
+    //   }
+    //   return nivelAcademico;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -105,19 +187,27 @@ export class NivelAcademicoService {
     };
   }
 
-  remove(id: string) {
-    let nivelAcademicoDB = this.findOne(id);
-    if ( nivelAcademicoDB === null ) {
+  async delete( idnivelacademico: string ) {
+    try {
+      let nivelAcademico = await this.findOne(idnivelacademico);
+      if ( nivelAcademico === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Nivel Academico no existe.',
+        };
+      }
+      await this.nivelAcademicoRepository.remove( nivelAcademico );
       return {
-        resp: 0, error: false,
-        message: 'Nivel Academico no existe.',
+        resp: 1, error: false,
+        message: 'Nivel Academico eliminado éxitosamente.',
+        nivelAcademico: nivelAcademico,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listNivelAcademico = this.listNivelAcademico.filter( (nivelAcademico) => nivelAcademico.idnivelacademico !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Nivel Academico eliminado éxitosamente.',
-      nivelAcademico: nivelAcademicoDB,
-    };
   }
 }

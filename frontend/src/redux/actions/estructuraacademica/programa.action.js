@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.programa_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPagePrograma = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        ProgramaService.getAllPrograma( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listPrograma',
+                        value: result.arrayPrograma,
+                    },
+                    pagination: {
+                        name: 'paginationPrograma',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pagePrograma',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginatePrograma',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -269,7 +305,7 @@ const onDelete = ( programa ) => {
         let onDelete = () => {
             ProgramaService.onDelete(programa).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllPrograma() );
+                    dispatch( onPagePrograma() );
                 }
             } ).finally( () => {} );
         };
@@ -282,6 +318,7 @@ const onDelete = ( programa ) => {
 
 export const ProgramaActions = {
     initData,
+    onPagePrograma,
     getAllPrograma,
     onLimpiar,
     setCodigo,

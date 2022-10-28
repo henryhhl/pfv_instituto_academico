@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { UnidadacademicaService } from './unidadacademica.service';
 import { CreateUnidadAcademicaDto } from './dto/create-unidadacademica.dto';
 import { UpdateUnidadAcademicaDto } from './dto/update-unidadacademica.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('unidadacademica')
 export class UnidadacademicaController {
   constructor(private readonly unidadacademicaService: UnidadacademicaService) {}
 
   @Get('/index')
-  findAll() {
-    return this.unidadacademicaService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.unidadacademicaService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -38,7 +39,7 @@ export class UnidadacademicaController {
   }
 
   @Delete('/delete/:idunidadacademica')
-  remove(@Param('idunidadacademica') id: string) {
-    return this.unidadacademicaService.remove(id);
+  delete(@Param('idunidadacademica') id: string) {
+    return this.unidadacademicaService.delete(id);
   }
 }

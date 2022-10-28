@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.tipoPermiso_onCreate,
 } );
@@ -66,6 +71,37 @@ const setISDelete = (tipoPermiso, value) => {
         tipoPermiso.error.isdelete = false;
         tipoPermiso.message.isdelete = "";
         dispatch( onChange(tipoPermiso) );
+    };
+};
+
+const onPageTipoPermiso = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        TipoPermisoService.getAllTipoPermiso( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listTipoPermiso',
+                        value: result.arrayTipoPermiso,
+                    },
+                    pagination: {
+                        name: 'paginationTipoPermiso',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageTipoPermiso',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateTipoPermiso',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -171,7 +207,7 @@ const onDelete = ( tipoPermiso ) => {
         let onDelete = () => {
             TipoPermisoService.onDelete(tipoPermiso).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllTipoPermiso() );
+                    dispatch( onPageTipoPermiso() );
                 }
             } ).finally( () => {} );
         };
@@ -184,6 +220,7 @@ const onDelete = ( tipoPermiso ) => {
 
 export const TipoPermisoActions = {
     initData,
+    onPageTipoPermiso,
     getAllTipoPermiso,
     onLimpiar,
     setDescripcion,

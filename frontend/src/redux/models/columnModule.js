@@ -531,7 +531,7 @@ const ColumnModules = {
         },
         {
             id: 'descripcion',
-            label: 'Descripción',
+            label: 'Pensum',
             numeric: false,
             visible: true,
             width: null,

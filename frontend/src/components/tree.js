@@ -12,9 +12,7 @@ export default function TreeComponent( props ) {
 
     React.useEffect( () => {
         if ( Array.isArray( props.treeData ) ) {
-            if ( props.treeData.length > 0 ) {
-                loadTree( props.treeData );
-            }
+            loadTree( props.treeData );
         }
     }, [ props.treeData ] );
 

@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateUnidadAcademicaDto } from './dto/create-unidadacademica.dto';
 import { UpdateUnidadAcademicaDto } from './dto/update-unidadacademica.dto';
@@ -7,80 +10,154 @@ import { UnidadAcademica } from './entities/unidadacademica.entity';
 @Injectable()
 export class UnidadacademicaService {
   private listUnidadAcademica: UnidadAcademica[] = [];
+  private readonly logger = new Logger('UnidadAcademicaService');
 
-  findAll() {
-    const listUnidadAcademica = this.listUnidadAcademica;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayUnidadAcademica: listUnidadAcademica,
-    };
+  constructor(
+    @InjectRepository(UnidadAcademica)
+    private readonly unidadAcademicaRepository: Repository<UnidadAcademica>,
+  ) {}
+
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listUnidadAcademica = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listUnidadAcademica, totalPagination] = await this.unidadAcademicaRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: { },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listUnidadAcademica, totalPagination] = await this.unidadAcademicaRepository.findAndCount( {
+          where: { },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayUnidadAcademica: listUnidadAcademica,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  create(createUnidadacademicaDto: CreateUnidadAcademicaDto) {
-    let unidadAcademica: UnidadAcademica = {
-      idunidadacademica: uuid(),
-      fkidunidadnegocio: createUnidadacademicaDto.fkidunidadnegocio,
-      unidadnegocio: createUnidadacademicaDto.unidadnegocio,
-      fkidunidadadministrativa: createUnidadacademicaDto.fkidunidadadministrativa,
-      unidadadministrativa: createUnidadacademicaDto.unidadadministrativa,
-      codigo: createUnidadacademicaDto.codigo,
-      sigla: createUnidadacademicaDto.sigla,
-      descripcion: createUnidadacademicaDto.descripcion,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
-    this.listUnidadAcademica.push(unidadAcademica);
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Unidad Academica registrado éxitosamente.',
-      unidadAcademica: unidadAcademica,
-    };
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
+
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idunidadacademica: String) {
-    const unidadAcademica = this.listUnidadAcademica.find( 
-      (unidadAcademica) => unidadAcademica.idunidadacademica === idunidadacademica 
-    );
+  async create(createUnidadacademicaDto: CreateUnidadAcademicaDto) {
+    try {
+      const unidadAcademica = this.unidadAcademicaRepository.create( {
+        fkidunidadnegocio: createUnidadacademicaDto.fkidunidadnegocio,
+        unidadnegocio: createUnidadacademicaDto.unidadnegocio,
+        fkidunidadadministrativa: createUnidadacademicaDto.fkidunidadadministrativa,
+        unidadadministrativa: createUnidadacademicaDto.unidadadministrativa,
+        codigo: createUnidadacademicaDto.codigo,
+        sigla: createUnidadacademicaDto.sigla,
+        descripcion: createUnidadacademicaDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.unidadAcademicaRepository.save( unidadAcademica );
+      return {
+        resp: 1, error: false,
+        message: 'Unidad Academica registrado éxitosamente.',
+        unidadAcademica: unidadAcademica,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idunidadacademica: string) {
+    const unidadAcademica = await this.unidadAcademicaRepository.findOneBy( {
+      idunidadacademica: idunidadacademica,
+    } );
     return unidadAcademica;
   }
 
-  edit(idunidadacademica: string) {
-    const unidadAcademica = this.findOne(idunidadacademica);
-    if ( unidadAcademica ) {
+  async edit(idunidadacademica: string) {
+    try {
+      const unidadAcademica = await this.findOne(idunidadacademica);
+      if ( unidadAcademica ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
           unidadAcademica: unidadAcademica,
         };
-    }
-    return {
-      resp: 0, error: false,
-      message: 'Unidad Academica no existe.',
-    };
-  }
-
-  show(idunidadacademica: string) {
-    const unidadAcademica = this.findOne(idunidadacademica);
-    if ( unidadAcademica ) {
-        return {
-            resp: 1, error: false,
-            message: 'Servicio realizado exitosamente.',
-            unidadAcademica: unidadAcademica,
-        };
-    }
-    return {
+      }
+      return {
         resp: 0, error: false,
         message: 'Unidad Academica no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  update(id: String, updateUnidadacademicaDto: UpdateUnidadAcademicaDto) {
+  async show(idunidadacademica: string) {
+    try {
+      const unidadAcademica = await this.findOne(idunidadacademica);
+      if ( unidadAcademica ) {
+        return {
+          resp: 1, error: false,
+          message: 'Servicio realizado exitosamente.',
+          unidadAcademica: unidadAcademica,
+        };
+      }
+      return {
+        resp: 0, error: false,
+        message: 'Unidad Academica no existe.',
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  update(id: string, updateUnidadacademicaDto: UpdateUnidadAcademicaDto) {
     let unidadAcademicaDB = this.findOne(id);
     if ( unidadAcademicaDB === null ) {
       return {
@@ -89,19 +166,19 @@ export class UnidadacademicaService {
       };
     }
 
-    this.listUnidadAcademica = this.listUnidadAcademica.map( (unidadAcademica) => {
-      if ( unidadAcademica.idunidadacademica === id ) {
-        unidadAcademicaDB.updated_at = '';
-        unidadAcademicaDB = {
-          ...unidadAcademicaDB,
-          ...updateUnidadacademicaDto,
-          idunidadacademica: id,
-          concurrencia: unidadAcademica.concurrencia + 1,
-        };
-        return unidadAcademicaDB;
-      }
-      return unidadAcademica;
-    } );
+    // this.listUnidadAcademica = this.listUnidadAcademica.map( (unidadAcademica) => {
+    //   if ( unidadAcademica.idunidadacademica === id ) {
+    //     unidadAcademicaDB.updated_at = '';
+    //     unidadAcademicaDB = {
+    //       ...unidadAcademicaDB,
+    //       ...updateUnidadacademicaDto,
+    //       idunidadacademica: id,
+    //       concurrencia: unidadAcademica.concurrencia + 1,
+    //     };
+    //     return unidadAcademicaDB;
+    //   }
+    //   return unidadAcademica;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -110,21 +187,27 @@ export class UnidadacademicaService {
     };
   }
 
-  remove(id: String) {
-    let unidadAcademicaDB = this.findOne(id);
-    if ( unidadAcademicaDB === null ) {
+  async delete(idunidadacademica: string) {
+    try {
+      let unidadAcademica = await this.findOne(idunidadacademica);
+      if ( unidadAcademica === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Unidad Academica no existe.',
+        };
+      }
+      await this.unidadAcademicaRepository.remove( unidadAcademica );
       return {
-        resp: 0, error: false,
-        message: 'Unidad Academica no existe.',
+        resp: 1, error: false,
+        message: 'Unidad Academica eliminado éxitosamente.',
+        unidadAcademica: unidadAcademica,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listUnidadAcademica = this.listUnidadAcademica.filter( 
-      (unidadAcademica) => unidadAcademica.idunidadacademica !== id 
-    );
-    return {
-      resp: 1, error: false,
-      message: 'Unidad Academica eliminado éxitosamente.',
-      unidadAcademica: unidadAcademicaDB,
-    };
   }
 }

@@ -10,23 +10,31 @@ import CardComponent from '../../../../components/card';
 function IndexModalidadAcademica(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllModalidadAcademica();
+    useEffect( () => {
+      props.onPageModalidadAcademica();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/modalidadacademica/create');
-    }
+    };
 
-    function onEdit(modalidadAcademica) {
+    const onEdit = (modalidadAcademica) => {
         navigate(`/modalidadacademica/edit/${modalidadAcademica.idmodalidadacademica}`);
-    }
+    };
 
-    function onShow(modalidadAcademica) {
+    const onShow = (modalidadAcademica) => {
         navigate(`/modalidadacademica/show/${modalidadAcademica.idmodalidadacademica}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageModalidadAcademica(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageModalidadAcademica(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexModalidadAcademica(props) {
                         onShow={ ( modalidadAcademica ) => onShow(modalidadAcademica) }
                         onEditar={ ( modalidadAcademica ) => onEdit(modalidadAcademica) }
                         onDelete={ ( modalidadAcademica ) => props.onDelete(modalidadAcademica) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexModalidadAcademica(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnModalidadAcademica: state.ColumnModule.columnModalidadAcademica,
-    listModalidadAcademica: state.ListModule.listModalidadAcademica,
+    listModalidadAcademica: state.PaginationModule.listModalidadAcademica,
+    page: state.PaginationModule.pageModalidadAcademica,
+    pagination: state.PaginationModule.paginationModalidadAcademica,
+    paginate: state.PaginationModule.paginateModalidadAcademica,
 } );
 
 const mapDispatchToProps = {
-    getAllModalidadAcademica: ModalidadAcademicaActions.getAllModalidadAcademica,
+    onPageModalidadAcademica: ModalidadAcademicaActions.onPageModalidadAcademica,
     onDelete: ModalidadAcademicaActions.onDelete,
 };
 

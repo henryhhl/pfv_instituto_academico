@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.pensum_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPagePensum = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        PensumService.getAllPensum( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listPensum',
+                        value: result.arrayPensum,
+                    },
+                    pagination: {
+                        name: 'paginationPensum',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pagePensum',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginatePensum',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -70,6 +106,13 @@ const setFechaAprobacion = (pensum, value) => {
         pensum.fechaaprobacion = value;
         pensum.error.fechaaprobacion = false;
         pensum.message.fechaaprobacion = "";
+        dispatch( onChange(pensum) );
+    };
+};
+
+const setNota = (pensum, value) => {
+    return ( dispatch ) => {
+        pensum.nota = value;
         dispatch( onChange(pensum) );
     };
 };
@@ -234,7 +277,7 @@ const onDelete = ( pensum ) => {
         let onDelete = () => {
             PensumService.onDelete(pensum).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllPensum() );
+                    dispatch( onPagePensum() );
                 }
             } ).finally( () => {} );
         };
@@ -247,10 +290,12 @@ const onDelete = ( pensum ) => {
 
 export const PensumActions = {
     initData,
+    onPagePensum,
     getAllPensum,
     onLimpiar,
     setFechaAprobacion,
     setDescripcion,
+    setNota,
     setFKIDPrograma,
     setEstado,
     setISDelete,

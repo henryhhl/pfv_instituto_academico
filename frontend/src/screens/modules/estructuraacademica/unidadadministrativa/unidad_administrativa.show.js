@@ -39,16 +39,16 @@ function ShowUnidadAdministrativa( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Sigla"
                                 value={unidadAdministrativa.sigla}
                                 readOnly
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-5">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Unidad Administrativa"
                                 value={unidadAdministrativa.descripcion}
                                 readOnly
                             />

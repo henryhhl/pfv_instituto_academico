@@ -11,22 +11,29 @@ function IndexTipoMateria(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllTipoMateria();
+      props.onPageTipoMateria();
       return () => {};
-    }, [])
-    
+    }, []);
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/tipomateria/create');
-    }
+    };
 
-    function onEdit(tipoMateria) {
+    const onEdit = (tipoMateria) => {
         navigate(`/tipomateria/edit/${tipoMateria.idtipomateria}`);
-    }
+    };
 
-    function onShow(tipoMateria) {
+    const onShow = (tipoMateria) => {
         navigate(`/tipomateria/show/${tipoMateria.idtipomateria}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageTipoMateria(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageTipoMateria(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +51,12 @@ function IndexTipoMateria(props) {
                         onShow={ ( tipoMateria ) => onShow(tipoMateria) }
                         onEditar={ ( tipoMateria ) => onEdit(tipoMateria) }
                         onDelete={ ( tipoMateria ) => props.onDelete(tipoMateria) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +66,14 @@ function IndexTipoMateria(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnTipoMateria: state.ColumnModule.columnTipoMateria,
-    listTipoMateria: state.ListModule.listTipoMateria,
+    listTipoMateria: state.PaginationModule.listTipoMateria,
+    page: state.PaginationModule.pageTipoMateria,
+    pagination: state.PaginationModule.paginationTipoMateria,
+    paginate: state.PaginationModule.paginateTipoMateria,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoMateria: TipoMateriaActions.getAllTipoMateria,
+    onPageTipoMateria: TipoMateriaActions.onPageTipoMateria,
     onDelete: TipoMateriaActions.onDelete,
 };
 

@@ -1,80 +1,139 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { CreateCiudadDto } from './dto/create-ciudad.dto';
 import { UpdateCiudadDto } from './dto/update-ciudad.dto';
 import { Ciudad } from './entities/ciudad.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CiudadService {
 
   private listCiudad: Ciudad[] = [];
+  private readonly logger = new Logger('CiudadService');
 
-  findAll() {
-    const listCiudad = this.listCiudad;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayCiudad: listCiudad,
-    };
+  constructor(
+    @InjectRepository(Ciudad)
+    private readonly ciudadRepository: Repository<Ciudad>,
+  ) {}
+
+  async findAll() {
+    try {
+      const [listCiudad, totalCount] = await this.ciudadRepository.findAndCount( {
+        where: {
+        },
+        order: { created_at: "ASC", },
+      } );
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayCiudad: listCiudad,
+        totalCount: totalCount,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createCiudadDto: CreateCiudadDto) {
-    let ciudad: Ciudad = {
-      idciudad: uuid(),
-      fkidciudadpadre: createCiudadDto.fkidciudadpadre,
-      sigla: createCiudadDto.sigla,
-      descripcion: createCiudadDto.descripcion,
-      imagen: createCiudadDto.imagen,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    this.listCiudad.push(ciudad);
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Ciudad registrado éxitosamente.',
-      ciudad: ciudad,
-    };
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idciudad: string) {
-    const ciudad = this.listCiudad.find( (ciudad) => ciudad.idciudad === idciudad );
+  async store(createCiudadDto: CreateCiudadDto) {
+    try {
+      const ciudad = this.ciudadRepository.create( {
+        fkidciudadpadre: createCiudadDto.fkidciudadpadre,
+        sigla: createCiudadDto.sigla,
+        descripcion: createCiudadDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.ciudadRepository.save( ciudad );
+      return {
+        resp: 1, error: false,
+        message: 'Ciudad registrado éxitosamente.',
+        ciudad: ciudad,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idciudad: string) {
+    const ciudad = await this.ciudadRepository.findOneBy( {
+      idciudad: idciudad,
+    } );
     return ciudad;
   }
 
-  edit(idciudad: string) {
-    const ciudad = this.findOne(idciudad);
-    if ( ciudad ) {
+  async edit(idciudad: string) {
+    try {
+      const ciudad = await this.findOne(idciudad);
+      if ( ciudad ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
           ciudad: ciudad,
         };
-    }
-    return {
-      resp: 0, error: false,
-      message: 'Ciudad no existe.',
-    };
-  }
-
-  show(idciudad: string) {
-    const ciudad = this.findOne(idciudad);
-    if ( ciudad ) {
-        return {
-            resp: 1, error: false,
-            message: 'Servicio realizado exitosamente.',
-            ciudad: ciudad,
-        };
-    }
-    return {
+      }
+      return {
         resp: 0, error: false,
         message: 'Ciudad no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async show(idciudad: string) {
+    try {
+      const ciudad = await this.findOne(idciudad);
+      if ( ciudad ) {
+        return {
+          resp: 1, error: false,
+          message: 'Servicio realizado exitosamente.',
+          ciudad: ciudad,
+        };
+      }
+      return {
+        resp: 0, error: false,
+        message: 'Ciudad no existe.',
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updateCiudadDto: UpdateCiudadDto) {
@@ -86,19 +145,19 @@ export class CiudadService {
       };
     }
 
-    this.listCiudad = this.listCiudad.map( (ciudad) => {
-      if ( ciudad.idciudad === id ) {
-        ciudadDB.updated_at = '';
-        ciudadDB = {
-          ...ciudadDB,
-          ...updateCiudadDto,
-          idciudad: id,
-          concurrencia: ciudad.concurrencia + 1,
-        };
-        return ciudadDB;
-      }
-      return ciudad;
-    } );
+    // this.listCiudad = this.listCiudad.map( (ciudad) => {
+    //   if ( ciudad.idciudad === id ) {
+    //     ciudadDB.updated_at = '';
+    //     ciudadDB = {
+    //       ...ciudadDB,
+    //       ...updateCiudadDto,
+    //       idciudad: id,
+    //       concurrencia: ciudad.concurrencia + 1,
+    //     };
+    //     return ciudadDB;
+    //   }
+    //   return ciudad;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -107,19 +166,34 @@ export class CiudadService {
     };
   }
 
-  delete(id: string) {
-    let ciudadDB = this.findOne(id);
-    if ( ciudadDB === null ) {
+  async delete(idciudad: string) {
+    try {
+      let ciudad = await this.findOne(idciudad);
+      if ( ciudad === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Ciudad no existe.',
+        };
+      }
+      if ( ciudad.isdelete == "N" ) {
+        return {
+          resp: 0, error: true,
+          message: "Ciudad no permitido eliminar.",
+        };
+      }
+      const ciudadDelete = await this.ciudadRepository.remove( ciudad );
       return {
-        resp: 0, error: false,
-        message: 'Ciudad no existe.',
+        resp: 1, error: false,
+        message: 'Ciudad eliminado éxitosamente.',
+        ciudad: ciudad,
+        ciudadDelete: ciudadDelete,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listCiudad = this.listCiudad.filter( (ciudad) => ciudad.idciudad !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Ciudad eliminado éxitosamente.',
-      ciudad: ciudadDB,
-    };
   }
 }

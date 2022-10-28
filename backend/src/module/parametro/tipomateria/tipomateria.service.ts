@@ -1,6 +1,8 @@
 
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
+import { Like, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateTipoMateriaDto } from './dto/create-tipomateria.dto';
 import { UpdateTipoMateriaDto } from './dto/update-tipomateria.dto';
 import { TipoMateria } from './entities/tipomateria.entity';
@@ -9,74 +11,151 @@ import { TipoMateria } from './entities/tipomateria.entity';
 export class TipoMateriaService {
 
   private listTipoMateria: TipoMateria[] = [];
+  private readonly logger = new Logger('TipoMateriaService');
 
-  findAll() {
-    const listTipoMateria = this.listTipoMateria;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayTipoMateria: listTipoMateria,
-    };
+  constructor(
+    @InjectRepository(TipoMateria)
+    private readonly tipoMateriaRepository: Repository<TipoMateria>,
+  ) {}
+
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listTipoMateria = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listTipoMateria, totalPagination] = await this.tipoMateriaRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listTipoMateria, totalPagination] = await this.tipoMateriaRepository.findAndCount( {
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayTipoMateria: listTipoMateria,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createTipoMateriaDto: CreateTipoMateriaDto) {
-    let tipoMateria: TipoMateria = {
-      idtipomateria: uuid(),
-      sigla: createTipoMateriaDto.sigla,
-      descripcion: createTipoMateriaDto.descripcion,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    this.listTipoMateria.push(tipoMateria);
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Tipo Materia registrado éxitosamente.',
-      tipoMateria: tipoMateria,
-    };
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idtipomateria: string) {
-    const tipoMateria = this.listTipoMateria.find( (tipoMateria) => tipoMateria.idtipomateria === idtipomateria );
-    // if ( !tipoMateria ) {
-    //   throw new NotFoundException('Tipo Materia with id not found');
-    // }
+  async store(createTipoMateriaDto: CreateTipoMateriaDto) {
+    try {
+      const tipoMateria = this.tipoMateriaRepository.create( {
+        sigla: createTipoMateriaDto.sigla,
+        descripcion: createTipoMateriaDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.tipoMateriaRepository.save( tipoMateria );
+      return {
+        resp: 1, error: false,
+        message: 'Tipo Materia registrado éxitosamente.',
+        tipoMateria: tipoMateria,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idtipomateria: string) {
+    const tipoMateria = await this.tipoMateriaRepository.findOneBy( {
+      idtipomateria: idtipomateria,
+    } );
     return tipoMateria;
   }
 
-  edit( idtipomateria: string ) {
-    const tipoMateria = this.findOne(idtipomateria);
-    if ( tipoMateria ) {
-        return {
+  async edit( idtipomateria: string ) {
+    try {
+      const tipoMateria = await this.findOne(idtipomateria);
+      if ( tipoMateria ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             tipoMateria: tipoMateria,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Tipo Materia no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  show( idtipomateria: string ) {
-    const tipoMateria = this.findOne(idtipomateria);
-    if ( tipoMateria ) {
-        return {
-          resp: 1, error: false,
-          message: 'Servicio realizado exitosamente.',
-          tipoMateria: tipoMateria,
-        };
+  async show( idtipomateria: string ) {
+    try {
+      const tipoMateria = await this.findOne(idtipomateria);
+      if ( tipoMateria ) {
+          return {
+            resp: 1, error: false,
+            message: 'Servicio realizado exitosamente.',
+            tipoMateria: tipoMateria,
+          };
+      }
+      return {
+        resp: 0, error: false,
+        message: 'Tipo Materia no existe.',
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
     }
-    return {
-      resp: 0, error: false,
-      message: 'Tipo Materia no existe.',
-    };
   }
 
   update(id: string, updateTipoMateriaDto: UpdateTipoMateriaDto) {
@@ -88,19 +167,19 @@ export class TipoMateriaService {
       };
     }
 
-    this.listTipoMateria = this.listTipoMateria.map( (tipoMateria) => {
-      if ( tipoMateria.idtipomateria === id ) {
-        tipoMateriaDB.updated_at = '';
-        tipoMateriaDB = {
-          ...tipoMateriaDB,
-          ...updateTipoMateriaDto,
-          idtipomateria: id,
-          concurrencia: tipoMateria.concurrencia + 1,
-        };
-        return tipoMateriaDB;
-      }
-      return tipoMateria;
-    } );
+    // this.listTipoMateria = this.listTipoMateria.map( (tipoMateria) => {
+    //   if ( tipoMateria.idtipomateria === id ) {
+    //     tipoMateriaDB.updated_at = '';
+    //     tipoMateriaDB = {
+    //       ...tipoMateriaDB,
+    //       ...updateTipoMateriaDto,
+    //       idtipomateria: id,
+    //       concurrencia: tipoMateria.concurrencia + 1,
+    //     };
+    //     return tipoMateriaDB;
+    //   }
+    //   return tipoMateria;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -109,20 +188,28 @@ export class TipoMateriaService {
     };
   }
 
-  remove(id: string) {
-    let tipoMateriaDB = this.findOne(id);
-    if ( tipoMateriaDB === null ) {
+  async delete(idtipomateria: string) {
+    try {
+      let tipoMateria = await this.findOne(idtipomateria);
+      if ( tipoMateria === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Tipo Materia no existe.',
+        };
+      }
+      await this.tipoMateriaRepository.remove( tipoMateria );
       return {
-        resp: 0, error: false,
-        message: 'Tipo Materia no existe.',
+        resp: 1, error: false,
+        message: 'Tipo Materia eliminado éxitosamente.',
+        tipoMateria: tipoMateria,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listTipoMateria = this.listTipoMateria.filter( (tipoMateria) => tipoMateria.idtipomateria !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Tipo Materia eliminado éxitosamente.',
-      tipoMateria: tipoMateriaDB,
-    };
   }
 
   fillTipoMateriaSeedData( listTipoMateria: TipoMateria[] ) {

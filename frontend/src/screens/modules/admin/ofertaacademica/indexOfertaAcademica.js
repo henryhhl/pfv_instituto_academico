@@ -11,22 +11,30 @@ function IndexOfertaAcademica(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllOfertaAcademica();
+      props.onPageOfertaAcademica();
       return () => {};
     }, [])
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/ofertaacademica/create');
-    }
+    };
 
-    function onEdit(ofertaAcademica) {
+    const onEdit = (ofertaAcademica) => {
         navigate(`/ofertaacademica/edit/${ofertaAcademica.idofertaacademica}`);
-    }
+    };
 
-    function onShow(ofertaAcademica) {
+    const onShow = (ofertaAcademica) => {
         navigate(`/ofertaacademica/show/${ofertaAcademica.idofertaacademica}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageOfertaAcademica(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageOfertaAcademica(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexOfertaAcademica(props) {
                         onShow={ ( ofertaAcademica ) => onShow(ofertaAcademica) }
                         onEditar={ ( ofertaAcademica ) => onEdit(ofertaAcademica) }
                         onDelete={ ( ofertaAcademica ) => props.onDelete(ofertaAcademica) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexOfertaAcademica(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnOfertaAcademica: state.ColumnModule.columnOfertaAcademica,
-    listOfertaAcademica: state.ListModule.listOfertaAcademica,
+    listOfertaAcademica: state.PaginationModule.listOfertaAcademica,
+    page: state.PaginationModule.pageOfertaAcademica,
+    pagination: state.PaginationModule.paginationOfertaAcademica,
+    paginate: state.PaginationModule.paginateOfertaAcademica,
 } );
 
 const mapDispatchToProps = {
-    getAllOfertaAcademica: OfertaAcademicaActions.getAllOfertaAcademica,
+    onPageOfertaAcademica: OfertaAcademicaActions.onPageOfertaAcademica,
     onDelete: OfertaAcademicaActions.onDelete,
 };
 

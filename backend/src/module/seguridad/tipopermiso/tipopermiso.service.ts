@@ -1,122 +1,208 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
-import { TipoPermiso } from './interfaces/tipoPermiso.interface';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateTipoPermisoDto, UpdateTipoPermisoDto } from './dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { TipoPermiso } from './entities/tipoPermiso.entity';
 
 @Injectable()
 export class TipoPermisoService {
     private listTipoPermiso: TipoPermiso[] = [];
+    private readonly logger = new Logger('TipoPermisoService');
 
-    getAll() {
-        return this.listTipoPermiso;
+    constructor(
+        @InjectRepository(TipoPermiso)
+        private readonly tipoPermisoRepository: Repository<TipoPermiso>,
+    ) {}
+
+    async findAll( paginationDto: PaginationDto ) {
+        try {
+            const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+            let listTipoPermiso = [];
+            let totalPagination = 0;
+            if ( esPaginate ) {
+                [listTipoPermiso, totalPagination] = await this.tipoPermisoRepository.findAndCount( {
+                    take: limit,
+                    skip: offset,
+                    where: {
+                    },
+                    order: {
+                        created_at: "DESC",
+                    },
+                } );
+            } else {
+                [listTipoPermiso, totalPagination] = await this.tipoPermisoRepository.findAndCount( {
+                    where: {
+                    },
+                    order: {
+                        created_at: "DESC",
+                    },
+                } );
+            }
+            return {
+                resp: 1, error: false,
+                message: 'Servicio realizado exitosamente.',
+                arrayTipoPermiso: listTipoPermiso,
+                pagination: {
+                    total: totalPagination,
+                },
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
+            };
+        }
     }
 
-    findTipoPermisoById( idtipopermiso:string ) {
-        const tipoPermiso = this.listTipoPermiso.find( tipoPermiso => tipoPermiso.idtipopermiso === idtipopermiso );
-        // if (!tipoPermiso) {
-        //     throw new NotFoundException('Eror al realizar servicio.');
-        // }
+    private getDateTime() {
+        let date = new Date();
+        let month = (date.getMonth() + 1).toString();
+        let day = date.getDate().toString();
+        let year = date.getFullYear().toString();
+        
+        month = (+month < 10) ? "0" + month : month;
+        day = (+day < 10) ? "0" + day : day;
+
+        let hour = date.getHours().toString();
+        let minutes  = date.getMinutes().toString();
+        let segundos = date.getSeconds().toString();
+        let milliSeconds = date.getMilliseconds().toString();
+
+        hour = (+hour < 10) ? "0" + hour : hour;
+        minutes = (+minutes < 10) ? "0" + minutes : minutes;
+        segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+        return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
+    }
+
+    async store(createTipoPermisoDto: CreateTipoPermisoDto) {
+        try {
+            const tipoPermiso = this.tipoPermisoRepository.create( {
+                descripcion: createTipoPermisoDto.descripcion,
+                created_at: this.getDateTime(),
+            } );
+            await this.tipoPermisoRepository.save( tipoPermiso );
+            return {
+                resp: 1, error: false,
+                message: 'Tipo Permiso registrado éxitosamente.',
+                tipoPermiso: tipoPermiso,
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al insertar información con el servidor.',
+            };
+        }
+    }
+
+    async findOne(idtipopermiso: string) {
+        const tipoPermiso = await this.tipoPermisoRepository.findOneBy( {
+            idtipopermiso: idtipopermiso,
+        } );
         return tipoPermiso;
     }
 
-    editTipoPermiso( idtipopermiso: string ) {
-        const tipoPermiso = this.listTipoPermiso.find( tipoPermiso => tipoPermiso.idtipopermiso === idtipopermiso );
-        // if (!tipoPermiso) {
-        //     throw new NotFoundException('Eror al realizar servicio.');
-        // }
-        if ( tipoPermiso ) {
+    async edit( idtipopermiso: string ) {
+        try {
+            const tipoPermiso = await this.findOne(idtipopermiso);
+            if ( tipoPermiso ) {
+                return {
+                    resp: 1, error: false,
+                    message: 'Servicio realizado exitosamente.',
+                    tipoPermiso: tipoPermiso,
+                };
+            }
             return {
-                resp: 1, error: false,
-                message: 'Servicio realizado exitosamente.',
-                tipoPermiso: tipoPermiso,
+                resp: 0, error: false,
+                message: 'Tipo Permiso no existe.',
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
             };
         }
-        return {
-            resp: 0, error: false,
-            message: 'Tipo Permiso no existe.',
-        };
     }
 
-    showTipoPermiso( idtipopermiso: string ) {
-        const tipoPermiso = this.listTipoPermiso.find( tipoPermiso => tipoPermiso.idtipopermiso === idtipopermiso );
-        // if (!tipoPermiso) {
-        //     throw new NotFoundException('Eror al realizar servicio.');
-        // }
-        if ( tipoPermiso ) {
+    async show( idtipopermiso: string ) {
+        try {
+            const tipoPermiso = await this.findOne(idtipopermiso);
+            if ( tipoPermiso ) {
+                return {
+                    resp: 1, error: false,
+                    message: 'Servicio realizado exitosamente.',
+                    tipoPermiso: tipoPermiso,
+                };
+            }
             return {
-                resp: 1, error: false,
-                message: 'Servicio realizado exitosamente.',
-                tipoPermiso: tipoPermiso,
+                resp: 0, error: false,
+                message: 'Tipo Permiso no existe.',
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
             };
         }
-        return {
-            resp: 0, error: false,
-            message: 'Tipo Permiso no existe.',
-        };
     }
 
-    storeTipoPermiso( request : CreateTipoPermisoDto ) {
-        const tipoPermiso: TipoPermiso = {
-            idtipopermiso: uuid(),
-            descripcion: request.descripcion,
-            estado: 'A',
-            concurrencia: 1,
-            isdelete: 'A',
-            created_at: '',
-            updated_at: '',
-            deleted_at: '',
-        };
-        this.listTipoPermiso.push(tipoPermiso);
+    update(id: string, updateTipoPermisoDto: UpdateTipoPermisoDto) {
+        let materiaDB = this.findOne(id);
+        if ( materiaDB === null ) {
+            return {
+                resp: 0, error: false,
+                message: 'Tipo Permiso no existe.',
+            };
+        }
+
+        // this.listTipoPermiso = this.listTipoPermiso.map( (tipoPermiso) => {
+        //   if ( tipoPermiso.idtipopermiso === id ) {
+        //     materiaDB.updated_at = '';
+        //     materiaDB = {
+        //       ...materiaDB,
+        //       ...updateTipoPermisoDto,
+        //       idtipopermiso: id,
+        //       concurrencia: tipoPermiso.concurrencia + 1,
+        //     };
+        //     return materiaDB;
+        //   }
+        //   return tipoPermiso;
+        // } );
         return {
             resp: 1,
             error: false,
-            message: 'Tipo Permiso registrado éxitosamente.',
-            tipoPermiso: tipoPermiso,
-        };
-    }
-
-    updateTipoPermiso( idtipopermiso: string, request : UpdateTipoPermisoDto ) {
-        let tipoPermisoById = this.findTipoPermisoById(idtipopermiso);
-        if ( tipoPermisoById === null ) {
-            return {
-                resp: 0, error: false,
-                message: 'Tipo Permiso no existe.',
-            };
-        }
-        
-        this.listTipoPermiso = this.listTipoPermiso.map( ( tipoPermiso ) => {
-            if ( tipoPermiso.idtipopermiso === idtipopermiso ) {
-                tipoPermisoById = {
-                    ...tipoPermisoById,
-                    ...request,
-                    idtipopermiso,
-                    concurrencia: tipoPermiso.concurrencia + 1,
-                };
-                return tipoPermisoById;
-            }
-            return tipoPermiso;
-        } );
-        return {
-            resp: 1, error: false,
             message: 'Tipo Permiso actualizado éxitosamente.',
-            tipoPermiso: tipoPermisoById,
+            tipoPermiso: materiaDB,
         };
     }
 
-    deleteTipoPermiso( idtipopermiso: string ) {
-        let tipoPermisoById = this.findTipoPermisoById(idtipopermiso);
-        if ( tipoPermisoById === null ) {
+    async delete( idtipopermiso: string ) {
+        try {
+            let tipoPermiso = await this.findOne(idtipopermiso);
+            if ( tipoPermiso === null ) {
+                return {
+                    resp: 0, error: true,
+                    message: 'Tipo Permiso no existe.',
+                };
+            }
+            await this.tipoPermisoRepository.remove( tipoPermiso );
             return {
-                resp: 0, error: false,
-                message: 'Tipo Permiso no existe.',
+                resp: 1, error: false,
+                message: 'Tipo Permiso eliminado éxitosamente.',
+                tipoPermiso: tipoPermiso,
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
             };
         }
-        this.listTipoPermiso = this.listTipoPermiso.filter( ( tipoPermiso ) => tipoPermiso.idtipopermiso !== idtipopermiso );
-        return {
-            resp: 1, error: false,
-            message: 'Tipo Permiso eliminado éxitosamente.',
-            tipoPermiso: tipoPermisoById,
-        };
     }
 
     fillTipoPermisoSeedData( listTipoPermiso: TipoPermiso[] ) {

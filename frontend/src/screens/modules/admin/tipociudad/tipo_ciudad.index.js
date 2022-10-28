@@ -10,23 +10,31 @@ import { TipoCiudadActions } from '../../../../redux/actions/parametros/tipo_ciu
 function IndexTipoCiudad(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllTipoCiudad();
+    useEffect( () => {
+      props.onPageTipoCiudad();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/tipociudad/create');
-    }
+    };
 
-    function onEdit(tipoCiudad) {
+    const onEdit = (tipoCiudad) => {
         navigate(`/tipociudad/edit/${tipoCiudad.idtipociudad}`);
-    }
+    };
 
-    function onShow(tipoCiudad) {
+    const onShow = (tipoCiudad) => {
         navigate(`/tipociudad/show/${tipoCiudad.idtipociudad}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageTipoCiudad(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageTipoCiudad(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexTipoCiudad(props) {
                         onShow={ ( tipoCiudad ) => onShow(tipoCiudad) }
                         onEditar={ ( tipoCiudad ) => onEdit(tipoCiudad) }
                         onDelete={ ( tipoCiudad ) => props.onDelete(tipoCiudad) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexTipoCiudad(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnTipoCiudad: state.ColumnModule.columnTipoCiudad,
-    listTipoCiudad: state.ListModule.listTipoCiudad,
+    listTipoCiudad: state.PaginationModule.listTipoCiudad,
+    page: state.PaginationModule.pageTipoCiudad,
+    pagination: state.PaginationModule.paginationTipoCiudad,
+    paginate: state.PaginationModule.paginateTipoCiudad,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoCiudad: TipoCiudadActions.getAllTipoCiudad,
+    onPageTipoCiudad: TipoCiudadActions.onPageTipoCiudad,
     onDelete: TipoCiudadActions.onDelete,
 };
 

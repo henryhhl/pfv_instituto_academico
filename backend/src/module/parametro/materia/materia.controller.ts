@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { MateriaService } from './materia.service';
 import { CreateMateriaDto } from './dto/create-materia.dto';
 import { UpdateMateriaDto } from './dto/update-materia.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('materia')
 export class MateriaController {
   constructor(private readonly materiaService: MateriaService) {}
 
   @Get('/index')
-  findAll() {
-    return this.materiaService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.materiaService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -33,7 +34,7 @@ export class MateriaController {
   }
 
   @Delete('/delete/:idmateria')
-  remove(@Param('idmateria') id: string) {
-    return this.materiaService.remove(id);
+  delete(@Param('idmateria') id: string) {
+    return this.materiaService.delete(id);
   }
 }

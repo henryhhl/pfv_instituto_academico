@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put, Query } from '@nestjs/common';
 import { ProgramaService } from './programa.service';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('programa')
 export class ProgramaController {
   constructor(private readonly programaService: ProgramaService) {}
 
   @Get('/index')
-  findAll() {
-    return this.programaService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.programaService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -39,7 +40,7 @@ export class ProgramaController {
   }
 
   @Delete('/delete/:idprograma')
-  remove(@Param('idprograma') id: string) {
-    return this.programaService.remove(id);
+  delete(@Param('idprograma') id: string) {
+    return this.programaService.delete(id);
   }
 }

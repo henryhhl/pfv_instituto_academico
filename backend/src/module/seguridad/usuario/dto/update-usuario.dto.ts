@@ -1,25 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateUsuarioDto } from './create-usuario.dto';
-import { IsOptional, IsString, MinLength } from 'class-validator';
+import { IsOptional, IsString, MinLength, IsIn } from 'class-validator';
 
-// export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {}
-export class UpdateUsuarioDto {
+export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
 
-    @IsString( { message: 'Campo Email es requerido.', } )
-    @IsOptional()
-    readonly email: string;
-
-    @IsString( { message: 'Campo Login es requerido.', } )
-    @MinLength(3)
-    @IsOptional()
-    readonly login: string;
-
-    @IsString( { message: 'Campo Password es requerido.', } )
-    @MinLength(4)
-    @IsOptional()
-    readonly password: string;
-
-    @IsString( { message: 'Campo estado es requerido.', } )
+    @IsString( { message: 'Campo Estado solo permitido tipo STRING.', } )
+    @MinLength(1, { message: 'Campo Estado debe ser mayor o igual a 1 carácter.', } )
+    @IsIn( [ 'A', 'N', ], { message: 'Campo Estado permite valor: A y N', } )
     @IsOptional()
     readonly estado?: string;
 

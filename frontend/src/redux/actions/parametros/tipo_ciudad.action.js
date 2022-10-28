@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.tipociudad_onCreate,
 } );
@@ -32,6 +37,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageTipoCiudad = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        TipoCiudadService.getAllTipoCiudad( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listTipoCiudad',
+                        value: result.arrayTipoCiudad,
+                    },
+                    pagination: {
+                        name: 'paginationTipoCiudad',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageTipoCiudad',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateTipoCiudad',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -170,7 +206,7 @@ const onDelete = ( tipoCiudad ) => {
         let onDelete = () => {
             TipoCiudadService.onDelete(tipoCiudad).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllTipoCiudad() );
+                    dispatch( onPageTipoCiudad() );
                 }
             } ).finally( () => {} );
         };
@@ -183,6 +219,7 @@ const onDelete = ( tipoCiudad ) => {
 
 export const TipoCiudadActions = {
     initData,
+    onPageTipoCiudad,
     getAllTipoCiudad,
     onLimpiar,
     setDescripcion,

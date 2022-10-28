@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { Like, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateMateriaDto } from './dto/create-materia.dto';
 import { UpdateMateriaDto } from './dto/update-materia.dto';
@@ -8,77 +11,154 @@ import { Materia } from './entities/materia.entity';
 export class MateriaService {
 
   private listMateria: Materia[] = [];
+  private readonly logger = new Logger('MateriaService');
 
-  findAll() {
-    const listMateria = this.listMateria;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayMateria: listMateria,
-    };
+  constructor(
+    @InjectRepository(Materia)
+    private readonly materiaRepository: Repository<Materia>,
+  ) {}
+
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listMateria = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listMateria, totalPagination] = await this.materiaRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: {
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listMateria, totalPagination] = await this.materiaRepository.findAndCount( {
+          where: {
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayMateria: listMateria,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createMateriaDto: CreateMateriaDto) {
-    let materia: Materia = {
-      idmateria: uuid(),
-      fkidtipomateria: createMateriaDto.fkidtipomateria,
-      tipomateria: createMateriaDto.tipomateria,
-      codigo: createMateriaDto.codigo,
-      sigla: createMateriaDto.sigla,
-      nombrelargo: createMateriaDto.nombrelargo,
-      nombrecorto: createMateriaDto.nombrecorto,
-      nombrealternativo: createMateriaDto.nombrealternativo,
-      creditos: createMateriaDto.creditos,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    this.listMateria.push(materia);
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Materia registrado éxitosamente.',
-      materia: materia,
-    };
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idmateria: string) {
-    const materia = this.listMateria.find( (materia) => materia.idmateria === idmateria );
+  async store(createMateriaDto: CreateMateriaDto) {
+    try {
+      const materia = this.materiaRepository.create( {
+        fkidtipomateria: createMateriaDto.fkidtipomateria,
+        tipomateria: createMateriaDto.tipomateria,
+        codigo: createMateriaDto.codigo,
+        sigla: createMateriaDto.sigla,
+        nombrelargo: createMateriaDto.nombrelargo,
+        nombrecorto: createMateriaDto.nombrecorto,
+        nombrealternativo: createMateriaDto.nombrealternativo,
+        creditos: createMateriaDto.creditos,
+        created_at: this.getDateTime(),
+      } );
+      await this.materiaRepository.save( materia );
+      return {
+        resp: 1, error: false,
+        message: 'Materia registrado éxitosamente.',
+        materia: materia,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idmateria: string) {
+    const materia = await this.materiaRepository.findOneBy( {
+      idmateria: idmateria,
+    } );
     return materia;
   }
 
-  edit( idmateria: string ) {
-    const materia = this.findOne(idmateria);
-    if ( materia ) {
-        return {
+  async edit( idmateria: string ) {
+    try {
+      const materia = await this.findOne(idmateria);
+      if ( materia ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             materia: materia,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Materia no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  show( idmateria: string ) {
-    const materia = this.findOne(idmateria);
-    if ( materia ) {
-        return {
+  async show( idmateria: string ) {
+    try {
+      const materia = await this.findOne(idmateria);
+      if ( materia ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             materia: materia,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Materia no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updateMateriaDto: UpdateMateriaDto) {
@@ -90,19 +170,19 @@ export class MateriaService {
       };
     }
 
-    this.listMateria = this.listMateria.map( (materia) => {
-      if ( materia.idmateria === id ) {
-        materiaDB.updated_at = '';
-        materiaDB = {
-          ...materiaDB,
-          ...updateMateriaDto,
-          idmateria: id,
-          concurrencia: materia.concurrencia + 1,
-        };
-        return materiaDB;
-      }
-      return materia;
-    } );
+    // this.listMateria = this.listMateria.map( (materia) => {
+    //   if ( materia.idmateria === id ) {
+    //     materiaDB.updated_at = '';
+    //     materiaDB = {
+    //       ...materiaDB,
+    //       ...updateMateriaDto,
+    //       idmateria: id,
+    //       concurrencia: materia.concurrencia + 1,
+    //     };
+    //     return materiaDB;
+    //   }
+    //   return materia;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -111,19 +191,27 @@ export class MateriaService {
     };
   }
 
-  remove(id: string) {
-    let materiaDB = this.findOne(id);
-    if ( materiaDB === null ) {
+  async delete( idmateria: string ) {
+    try {
+      let materia = await this.findOne(idmateria);
+      if ( materia === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Materia no existe.',
+        };
+      }
+      await this.materiaRepository.remove( materia );
       return {
-        resp: 0, error: false,
-        message: 'Materia no existe.',
+        resp: 1, error: false,
+        message: 'Materia eliminado éxitosamente.',
+        materia: materia,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listMateria = this.listMateria.filter( (materia) => materia.idmateria !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Materia eliminado éxitosamente.',
-      materia: materiaDB,
-    };
   }
 }

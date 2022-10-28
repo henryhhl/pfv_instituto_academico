@@ -6,7 +6,6 @@ import { TIPOPERMISO_SEED } from './data/tipoPermiso.seed';
 import { TipoMateriaService } from '../module/parametro/tipomateria/tipomateria.service';
 import { TIPOMATERIA_SEED } from './data/tipoMateria.seed';
 import { UsuarioService } from '../module/seguridad/usuario/usuario.service';
-import { USUARIO_SEED } from './data/usuario.seed';
 
 @Injectable()
 export class SeedService {
@@ -22,7 +21,6 @@ export class SeedService {
     this.tipoRolService.fillTipoRolSeedData( TIPOROL_SEED );
     this.tipoPermisoService.fillTipoPermisoSeedData( TIPOPERMISO_SEED );
     this.tipoMateriaService.fillTipoMateriaSeedData( TIPOMATERIA_SEED );
-    this.usuarioService.fillUsuarioSeedData( USUARIO_SEED );
     return `This action returns all seed`;
   }
 }

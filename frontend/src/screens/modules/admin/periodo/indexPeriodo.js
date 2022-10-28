@@ -11,22 +11,30 @@ function IndexPeriodo(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllPeriodo();
+      props.onPagePeriodo();
       return () => {};
     }, [])
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/periodo/create');
     }
 
-    function onEdit(periodo) {
+    const onEdit = (periodo) => {
         navigate(`/periodo/edit/${periodo.idperiodo}`);
     }
 
-    function onShow(periodo) {
+    const onShow = (periodo) => {
         navigate(`/periodo/show/${periodo.idperiodo}`);
     }
+
+    const setPage = (page) => {
+        props.onPagePeriodo(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPagePeriodo(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexPeriodo(props) {
                         onShow={ ( periodo ) => onShow(periodo) }
                         onEditar={ ( periodo ) => onEdit(periodo) }
                         onDelete={ ( periodo ) => props.onDelete(periodo) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexPeriodo(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnPeriodo: state.ColumnModule.columnPeriodo,
-    listPeriodo: state.ListModule.listPeriodo,
+    listPeriodo: state.PaginationModule.listPeriodo,
+    page: state.PaginationModule.pagePeriodo,
+    pagination: state.PaginationModule.paginationPeriodo,
+    paginate: state.PaginationModule.paginatePeriodo,
 } );
 
 const mapDispatchToProps = {
-    getAllPeriodo: PeriodoActions.getAllPeriodo,
+    onPagePeriodo: PeriodoActions.onPagePeriodo,
     onDelete: PeriodoActions.onDelete,
 };
 

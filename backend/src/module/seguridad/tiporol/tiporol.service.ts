@@ -1,114 +1,208 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
-import { TipoRol } from './interfaces/tipoRol.interface';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { TipoRol } from './entities/tipoRol.entity';
 import { CreateTipoRolDto, UpdateTipoRolDto } from './dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class TipoRolService {
     private listTipoRol: TipoRol[] = [];
+    private readonly logger = new Logger('TipoRolService');
 
-    getAll() {
-        const listTipoRol = this.listTipoRol;
-        return {
-            resp: 1,
-            error: false,
-            message: 'Servicio realizado exitosamente.',
-            arrayTipoRol: listTipoRol,
-        };
+    constructor(
+        @InjectRepository(TipoRol)
+        private readonly tipoRolRepository: Repository<TipoRol>,
+    ) {}
+
+    async findAll( paginationDto: PaginationDto ) {
+        try {
+            const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+            let listTipoRol = [];
+            let totalPagination = 0;
+            if ( esPaginate ) {
+                [listTipoRol, totalPagination] = await this.tipoRolRepository.findAndCount( {
+                    take: limit,
+                    skip: offset,
+                    where: {
+                    },
+                    order: {
+                        created_at: "DESC",
+                    },
+                } );
+            } else {
+                [listTipoRol, totalPagination] = await this.tipoRolRepository.findAndCount( {
+                    where: {
+                    },
+                    order: {
+                        created_at: "DESC",
+                    },
+                } );
+            }
+            return {
+                resp: 1, error: false,
+                message: 'Servicio realizado exitosamente.',
+                arrayTipoRol: listTipoRol,
+                pagination: {
+                    total: totalPagination,
+                },
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
+            };
+        }
     }
 
-    findTipoRolById( idtiporol:string ) {
-        const tipoRol = this.listTipoRol.find( tipoRol => tipoRol.idtiporol === idtiporol );
-        if (!tipoRol) {
-            throw new NotFoundException('Eror al realizar servicio.');
+    private getDateTime() {
+        let date = new Date();
+        let month = (date.getMonth() + 1).toString();
+        let day = date.getDate().toString();
+        let year = date.getFullYear().toString();
+        
+        month = (+month < 10) ? "0" + month : month;
+        day = (+day < 10) ? "0" + day : day;
+
+        let hour = date.getHours().toString();
+        let minutes  = date.getMinutes().toString();
+        let segundos = date.getSeconds().toString();
+        let milliSeconds = date.getMilliseconds().toString();
+
+        hour = (+hour < 10) ? "0" + hour : hour;
+        minutes = (+minutes < 10) ? "0" + minutes : minutes;
+        segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+        return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
+    }
+
+    async store(createTipoRolDto: CreateTipoRolDto) {
+        try {
+            const tipoRol = this.tipoRolRepository.create( {
+                descripcion: createTipoRolDto.descripcion,
+                created_at: this.getDateTime(),
+            } );
+            await this.tipoRolRepository.save( tipoRol );
+            return {
+                resp: 1, error: false,
+                message: 'Tipo Rol registrado éxitosamente.',
+                tipoRol: tipoRol,
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al insertar información con el servidor.',
+            };
         }
+    }
+
+    async findOne(idtiporol: string) {
+        const tipoRol = await this.tipoRolRepository.findOneBy( {
+            idtiporol: idtiporol,
+        } );
         return tipoRol;
     }
 
-    storeTipoRol( request : CreateTipoRolDto ) {
-        const tipoRol: TipoRol = {
-            idtiporol: uuid(),
-            descripcion: request.descripcion,
-            estado: 'A',
-            concurrencia: 1,
-            isdelete: 'A',
-            created_at: '',
-        };
-        this.listTipoRol.push(tipoRol);
-        return {
-            resp: 1,
-            error: false,
-            message: 'Tipo Rol registrado éxitosamente.',
-            tipoRol: tipoRol,
-        };
-    }
-
-    editTipoRol( idtiporol: string ) {
-        const tipoRol = this.listTipoRol.find( tipoRol => tipoRol.idtiporol === idtiporol );
-        if ( tipoRol ) {
-            return {
-                resp: 1, error: false,
-                message: 'Servicio realizado exitosamente.',
-                tipoRol: tipoRol,
-            };
-        }
-        return {
-            resp: 0, error: false,
-            message: 'Tipo Rol no existe.',
-        };
-    }
-
-    showTipoRol( idtiporol: string ) {
-        const tipoRol = this.listTipoRol.find( tipoRol => tipoRol.idtiporol === idtiporol );
-        if ( tipoRol ) {
-            return {
-                resp: 1, error: false,
-                message: 'Servicio realizado exitosamente.',
-                tipoRol: tipoRol,
-            };
-        }
-        return {
-            resp: 0, error: false,
-            message: 'Tipo Rol no existe.',
-        };
-    }
-
-    updateTipoRol( idtiporol: string, request : UpdateTipoRolDto ) {
-        let tipoRolById = this.findTipoRolById(idtiporol);
-        this.listTipoRol = this.listTipoRol.map( ( tipoRol ) => {
-            if ( tipoRol.idtiporol === idtiporol ) {
-                tipoRolById = {
-                    ...tipoRolById,
-                    ...request,
-                    idtiporol,
-                    concurrencia: tipoRol.concurrencia + 1,
+    async edit( idtiporol: string ) {
+        try {
+            const tipoRol = await this.findOne(idtiporol);
+            if ( tipoRol ) {
+                return {
+                    resp: 1, error: false,
+                    message: 'Servicio realizado exitosamente.',
+                    tipoRol: tipoRol,
                 };
-                return tipoRolById;
             }
-            return tipoRol;
-        } );
-        return {
-            resp: 1,
-            error: false,
-            message: 'Tipo Rol registrado éxitosamente.',
-            tipoRol: tipoRolById,
-        };
+            return {
+                resp: 0, error: false,
+                message: 'Tipo Rol no existe.',
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
+            };
+        }
     }
 
-    deleteTipoRol( idtiporol: string ) {
-        let tipoRolById = this.findTipoRolById(idtiporol);
-        if ( tipoRolById === null ) {
+    async show( idtiporol: string ) {
+        try {
+            const tipoRol = await this.findOne(idtiporol);
+            if ( tipoRol ) {
+                return {
+                    resp: 1, error: false,
+                    message: 'Servicio realizado exitosamente.',
+                    tipoRol: tipoRol,
+                };
+            }
+            return {
+                resp: 0, error: false,
+                message: 'Tipo Rol no existe.',
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
+            };
+        }
+    }
+
+    update(id: string, updateTipoRolDto: UpdateTipoRolDto) {
+        let materiaDB = this.findOne(id);
+        if ( materiaDB === null ) {
             return {
                 resp: 0, error: false,
                 message: 'Tipo Rol no existe.',
             };
         }
-        this.listTipoRol = this.listTipoRol.filter( tiporol => tiporol.idtiporol !== idtiporol );
+
+        // this.listTipoRol = this.listTipoRol.map( (tipoRol) => {
+        //   if ( tipoRol.idtiporol === id ) {
+        //     materiaDB.updated_at = '';
+        //     materiaDB = {
+        //       ...materiaDB,
+        //       ...updateTipoRolDto,
+        //       idtiporol: id,
+        //       concurrencia: tipoRol.concurrencia + 1,
+        //     };
+        //     return materiaDB;
+        //   }
+        //   return tipoRol;
+        // } );
         return {
-            resp: 1, error: false,
-            message: 'Tipo Permiso eliminado éxitosamente.',
-            tipoRol: tipoRolById,
+            resp: 1,
+            error: false,
+            message: 'Tipo Rol actualizado éxitosamente.',
+            tipoRol: materiaDB,
         };
+    }
+
+    async delete( idtiporol: string ) {
+        try {
+            let tipoRol = await this.findOne(idtiporol);
+            if ( tipoRol === null ) {
+                return {
+                    resp: 0, error: true,
+                    message: 'Tipo Rol no existe.',
+                };
+            }
+            await this.tipoRolRepository.remove( tipoRol );
+            return {
+                resp: 1, error: false,
+                message: 'Tipo Rol eliminado éxitosamente.',
+                tipoRol: tipoRol,
+            };
+        } catch (error) {
+            this.logger.error(error);
+            return {
+                resp: -1, error: true,
+                message: 'Hubo conflictos al consultar información con el servidor.',
+            };
+        }
     }
 
     fillTipoRolSeedData( listTipoRol: TipoRol[] ) {

@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.modalidad_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageModalidadAcademica = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        ModalidadAcademicaService.getAllModalidadAcademica( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listModalidadAcademica',
+                        value: result.arrayModalidadAcademica,
+                    },
+                    pagination: {
+                        name: 'paginationModalidadAcademica',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageModalidadAcademica',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateModalidadAcademica',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -185,7 +221,7 @@ const onDelete = ( modalidadAcademica ) => {
         let onDelete = () => {
             ModalidadAcademicaService.onDelete(modalidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllModalidadAcademica() );
+                    dispatch( onPageModalidadAcademica() );
                 }
             } ).finally( () => {} );
         };
@@ -198,6 +234,7 @@ const onDelete = ( modalidadAcademica ) => {
 
 export const ModalidadAcademicaActions = {
     initData,
+    onPageModalidadAcademica,
     getAllModalidadAcademica,
     onLimpiar,
     setSigla,

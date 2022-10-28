@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query } from '@nestjs/common';
 import { NivelAcademicoService } from './nivelacademico.service';
 import { CreateNivelAcademicoDto } from './dto/create-nivelacademico.dto';
 import { UpdateNivelAcademicoDto } from './dto/update-nivelacademico.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('nivelacademico')
 export class NivelAcademicoController {
   constructor(private readonly nivelacademicoService: NivelAcademicoService) {}
 
   @Get('/index')
-  findAll() {
-    return this.nivelacademicoService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.nivelacademicoService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -34,6 +35,6 @@ export class NivelAcademicoController {
 
   @Delete('/delete/:idnivelacademico')
   remove(@Param('idnivelacademico') id: string) {
-    return this.nivelacademicoService.remove(id);
+    return this.nivelacademicoService.delete(id);
   }
 }

@@ -10,23 +10,31 @@ import CardComponent from '../../../../components/card';
 function IndexTipoPermiso(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllTipoPermiso();
-    //   return () => {};
-    }, [])
+    useEffect( () => {
+      props.onPageTipoPermiso();
+      return () => {};
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/tipo_permiso/create');
-    }
+    };
 
-    function onEdit(tipoPermiso) {
+    const onEdit = (tipoPermiso) => {
         navigate(`/tipo_permiso/edit/${tipoPermiso.idtipopermiso}`);
-    }
+    };
 
-    function onShow(tipoPermiso) {
+    const onShow = (tipoPermiso) => {
         navigate(`/tipo_permiso/show/${tipoPermiso.idtipopermiso}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageTipoPermiso(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageTipoPermiso(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexTipoPermiso(props) {
                         onShow={ ( tipoPermiso ) => onShow(tipoPermiso) }
                         onEditar={ ( tipoPermiso ) => onEdit(tipoPermiso) }
                         onDelete={ ( tipoPermiso ) => props.onDelete(tipoPermiso) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexTipoPermiso(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnTipoPermiso: state.ColumnModule.columnTipoPermiso,
-    listTipoPermiso: state.ListModule.listTipoPermiso,
+    listTipoPermiso: state.PaginationModule.listTipoPermiso,
+    page: state.PaginationModule.pageTipoPermiso,
+    pagination: state.PaginationModule.paginationTipoPermiso,
+    paginate: state.PaginationModule.paginateTipoPermiso,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoPermiso: TipoPermisoActions.getAllTipoPermiso,
+    onPageTipoPermiso: TipoPermisoActions.onPageTipoPermiso,
     onDelete: TipoPermisoActions.onDelete,
 };
 

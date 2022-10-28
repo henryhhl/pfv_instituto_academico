@@ -39,6 +39,7 @@ export const PensumReducer = ( state = inititalState, action ) => {
             state.descripcion = action.payload.descripcion;
             state.fechaaprobacion = action.payload.fechaaprobacion;
             state.estadoproceso = action.payload.estadoproceso;
+            state.nota = action.payload.nota;
 
             state.estado = action.payload.estado;
             state.concurrencia = action.payload.concurrencia;

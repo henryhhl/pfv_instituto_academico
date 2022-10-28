@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.materia_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageMateria = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        MateriaService.getAllMateria( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listMateria',
+                        value: result.arrayMateria,
+                    },
+                    pagination: {
+                        name: 'paginationMateria',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageMateria',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateMateria',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -256,7 +292,7 @@ const onDelete = ( materia ) => {
         let onDelete = () => {
             MateriaService.onDelete(materia).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllMateria() );
+                    dispatch( onPageMateria() );
                 }
             } ).finally( () => {} );
         };
@@ -269,6 +305,7 @@ const onDelete = ( materia ) => {
 
 export const MateriaActions = {
     initData,
+    onPageMateria,
     getAllMateria,
     onLimpiar,
     setFKIDTipoMateria,

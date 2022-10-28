@@ -60,7 +60,7 @@ function EditUnidadAcademica( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Código"
                                 value={unidadAcademica.codigo}
@@ -69,7 +69,7 @@ function EditUnidadAcademica( props ) {
                                 message={unidadAcademica.message.codigo}
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Sigla"
                                 value={unidadAcademica.sigla}
@@ -78,9 +78,9 @@ function EditUnidadAcademica( props ) {
                                 message={unidadAcademica.message.sigla}
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Unidad Academica"
                                 value={unidadAcademica.descripcion}
                                 onChange={ (value) => props.setDescripcion(unidadAcademica, value) }
                                 error={unidadAcademica.error.descripcion}

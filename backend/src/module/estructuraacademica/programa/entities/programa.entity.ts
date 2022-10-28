@@ -1,29 +1,91 @@
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
+@Entity('programa')
 export class Programa {
-    idprograma: String;
-    fkidunidadadministrativa: String;
-    unidadadministrativa: String;
 
-    fkidunidadnegocio: String;
-    unidadnegocio: String;
+    @PrimaryGeneratedColumn('uuid')
+    idprograma: string;
 
-    fkidunidadacademica: String;
-    unidadacademica: String;
+    @Column('text')
+    fkidunidadadministrativa: string;
 
-    fkidnivelacademico: String;
-    nivelacademico: String;
+    @Column('text')
+    unidadadministrativa: string;
 
-    fkidmodalidadacademica: String;
-    modalidadacademica: String;
+    @Column('text')
+    fkidunidadnegocio: string;
 
-    codigo: String;
-    sigla: String;
-    descripcion: String;
+    @Column('text')
+    unidadnegocio: string;
+
+    @Column('text')
+    fkidunidadacademica: string;
+
+    @Column('text')
+    unidadacademica: string;
+
+    @Column('text')
+    fkidnivelacademico: string;
+
+    @Column('text')
+    nivelacademico: string;
+
+    @Column('text')
+    fkidmodalidadacademica: string;
+
+    @Column('text')
+    modalidadacademica: string;
+
+    @Column( {
+        type: 'text',
+        unique: false,
+    } )
+    codigo: string;
+
+    @Column( {
+        type: 'text',
+        unique: false,
+    } )
+    sigla: string;
+
+    @Column( {
+        type: 'text',
+        unique: false,
+    } )
+    descripcion: string;
     
-    estado: String;
+    @Column( {
+        type: 'enum',
+        enum: ['A', 'N'],
+        default: 'A',
+    } )
+    estado: string;
+
+    @Column( {
+        type: 'numeric',
+        default: 1,
+    })
     concurrencia: number;
-    isdelete: String;
-    created_at: String;
-    updated_at?: String;
-    deleted_at?: String;
+
+    @Column( {
+        type: 'enum',
+        enum: ['A', 'N'],
+        default: 'A',
+    } )
+    isdelete: string;
+
+    @Column('text')
+    created_at: string;
+
+    @Column( {
+        type: 'text',
+        nullable: true,
+    } )
+    updated_at?: string;
+
+    @Column( {
+        type: 'text',
+        nullable: true,
+    } )
+    deleted_at?: string;
 }

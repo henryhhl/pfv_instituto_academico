@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.periodo_onCreate,
 } );
@@ -35,6 +40,37 @@ const initData = () => {
         dispatch( setInit() );
     };
 };
+
+const onPagePeriodo = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        PeriodoService.getAllPeriodo( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listPeriodo',
+                        value: result.arrayPeriodo,
+                    },
+                    pagination: {
+                        name: 'paginationPeriodo',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pagePeriodo',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginatePeriodo',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
+    };
+}; 
 
 const getAllPeriodo = () => {
     return ( dispatch ) => {
@@ -185,7 +221,7 @@ const onDelete = ( periodo ) => {
         let onDelete = () => {
             PeriodoService.onDelete(periodo).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllPeriodo() );
+                    dispatch( onPagePeriodo() );
                 }
             } ).finally( () => {} );
         };
@@ -198,6 +234,7 @@ const onDelete = ( periodo ) => {
 
 export const PeriodoActions = {
     initData,
+    onPagePeriodo,
     getAllPeriodo,
     onLimpiar,
     setSigla,

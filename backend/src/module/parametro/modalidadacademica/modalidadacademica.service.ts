@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { Like, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateModalidadAcademicaDto } from './dto/create-modalidadacademica.dto';
 import { UpdateModalidadAcademicaDto } from './dto/update-modalidadacademica.dto';
@@ -8,71 +11,150 @@ import { ModalidadAcademica } from './entities/modalidadacademica.entity';
 export class ModalidadAcademicaService {
 
   private listModalidadAcademica: ModalidadAcademica[] = [];
+  private readonly logger = new Logger('ModalidadAcademicaService');
 
-  findAll() {
-    const listModalidadAcademica = this.listModalidadAcademica;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayModalidadAcademica: listModalidadAcademica,
-    };
+  constructor(
+    @InjectRepository(ModalidadAcademica)
+    private readonly modalidadAcademicaRepository: Repository<ModalidadAcademica>,
+  ) {}
+
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listModalidadAcademica = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listModalidadAcademica, totalPagination] = await this.modalidadAcademicaRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listModalidadAcademica, totalPagination] = await this.modalidadAcademicaRepository.findAndCount( {
+          where: {
+            descripcion: Like( '%' + search + '%', ),
+          },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayModalidadAcademica: listModalidadAcademica,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  store(createModalidadAcademicaDto: CreateModalidadAcademicaDto) {
-    let modalidadAcademica: ModalidadAcademica = {
-      idmodalidadacademica: uuid(),
-      sigla: createModalidadAcademicaDto.sigla,
-      descripcion: createModalidadAcademicaDto.descripcion,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
 
-    this.listModalidadAcademica.push(modalidadAcademica);
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
 
-    return {
-      resp: 1,
-      error: false,
-      message: 'Modalidad Academica registrado éxitosamente.',
-      modalidadAcademica: modalidadAcademica,
-    };
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idmodalidadacademica: string) {
-    const modalidadAcademica = this.listModalidadAcademica.find( (modalidadAcademica) => modalidadAcademica.idmodalidadacademica === idmodalidadacademica );
+  async store(createModalidadAcademicaDto: CreateModalidadAcademicaDto) {
+    try {
+      const modalidadAcademica = this.modalidadAcademicaRepository.create( {
+        sigla: createModalidadAcademicaDto.sigla,
+        descripcion: createModalidadAcademicaDto.descripcion,
+        created_at: this.getDateTime(),
+      } );
+      await this.modalidadAcademicaRepository.save( modalidadAcademica );
+      return {
+        resp: 1, error: false,
+        message: 'Modalidad Academica registrado éxitosamente.',
+        modalidadAcademica: modalidadAcademica,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idmodalidadacademica: string) {
+    const modalidadAcademica = await this.modalidadAcademicaRepository.findOneBy( {
+      idmodalidadacademica: idmodalidadacademica,
+    } );
     return modalidadAcademica;
   }
 
-  edit( idmodalidadacademica: string ) {
-    const modalidadAcademica = this.findOne(idmodalidadacademica);
-    if ( modalidadAcademica ) {
-        return {
+  async edit( idmodalidadacademica: string ) {
+    try {
+      const modalidadAcademica = await this.findOne(idmodalidadacademica);
+      if ( modalidadAcademica ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             modalidadAcademica: modalidadAcademica,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Modalidad Academica no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  show( idmodalidadacademica: string ) {
-    const modalidadAcademica = this.findOne(idmodalidadacademica);
-    if ( modalidadAcademica ) {
-        return {
+  async show( idmodalidadacademica: string ) {
+    try {
+      const modalidadAcademica = await this.findOne(idmodalidadacademica);
+      if ( modalidadAcademica ) {
+          return {
             resp: 1, error: false,
             message: 'Servicio realizado exitosamente.',
             modalidadAcademica: modalidadAcademica,
-        };
-    }
-    return {
+          };
+      }
+      return {
         resp: 0, error: false,
         message: 'Modalidad Academica no existe.',
-    };
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updateModalidadAcademicaDto: UpdateModalidadAcademicaDto) {
@@ -84,19 +166,19 @@ export class ModalidadAcademicaService {
       };
     }
 
-    this.listModalidadAcademica = this.listModalidadAcademica.map( (modalidadAcademica) => {
-      if ( modalidadAcademica.idmodalidadacademica === id ) {
-        modalidadAcademicaDB.updated_at = '';
-        modalidadAcademicaDB = {
-          ...modalidadAcademicaDB,
-          ...updateModalidadAcademicaDto,
-          idmodalidadacademica: id,
-          concurrencia: modalidadAcademica.concurrencia + 1,
-        };
-        return modalidadAcademicaDB;
-      }
-      return modalidadAcademica;
-    } );
+    // this.listModalidadAcademica = this.listModalidadAcademica.map( (modalidadAcademica) => {
+    //   if ( modalidadAcademica.idmodalidadacademica === id ) {
+    //     modalidadAcademicaDB.updated_at = '';
+    //     modalidadAcademicaDB = {
+    //       ...modalidadAcademicaDB,
+    //       ...updateModalidadAcademicaDto,
+    //       idmodalidadacademica: id,
+    //       concurrencia: modalidadAcademica.concurrencia + 1,
+    //     };
+    //     return modalidadAcademicaDB;
+    //   }
+    //   return modalidadAcademica;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -105,19 +187,27 @@ export class ModalidadAcademicaService {
     };
   }
 
-  remove(id: string) {
-    let modalidadAcademicaDB = this.findOne(id);
-    if ( modalidadAcademicaDB === null ) {
+  async delete(idmodalidadacademica: string) {
+    try {
+      let modalidadAcademica = await this.findOne(idmodalidadacademica);
+      if ( modalidadAcademica === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Modalidad Academica no existe.',
+        };
+      }
+      await this.modalidadAcademicaRepository.remove( modalidadAcademica );
       return {
-        resp: 0, error: false,
-        message: 'Modalidad Academica no existe.',
+        resp: 1, error: false,
+        message: 'Modalidad Academica eliminado éxitosamente.',
+        modalidadAcademica: modalidadAcademica,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listModalidadAcademica = this.listModalidadAcademica.filter( (modalidadAcademica) => modalidadAcademica.idmodalidadacademica !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Modalidad Academica eliminado éxitosamente.',
-      modalidadAcademica: modalidadAcademicaDB,
-    };
   }
 }

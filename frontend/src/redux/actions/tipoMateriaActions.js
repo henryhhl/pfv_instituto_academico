@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.tipoMateria_onCreate,
 } );
@@ -29,11 +34,43 @@ const setShowData = ( data ) => ( {
     type: Constants.tipoMateria_onShow,
     payload: data,
 } );
+
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
     };
 };
+
+const onPageTipoMateria = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        TipoMateriaService.getAllTipoMateria( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listTipoMateria',
+                        value: result.arrayTipoMateria,
+                    },
+                    pagination: {
+                        name: 'paginationTipoMateria',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageTipoMateria',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateTipoMateria',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
+    };
+}; 
 
 const getAllTipoMateria = () => {
     return ( dispatch ) => {
@@ -184,7 +221,7 @@ const onDelete = ( tipoMateria ) => {
         let onDelete = () => {
             TipoMateriaService.onDelete(tipoMateria).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllTipoMateria() );
+                    dispatch( onPageTipoMateria() );
                 }
             } ).finally( () => {} );
         };
@@ -197,6 +234,7 @@ const onDelete = ( tipoMateria ) => {
 
 export const TipoMateriaActions = {
     initData,
+    onPageTipoMateria,
     getAllTipoMateria,
     onLimpiar,
     setSigla,

@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.unidadacademica_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageUnidadAcademica = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        UnidadAcademicaService.getAllUnidadAcademica( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listUnidadAcademica',
+                        value: result.arrayUnidadAcademica,
+                    },
+                    pagination: {
+                        name: 'paginationUnidadAcademica',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageUnidadAcademica',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateUnidadAcademica',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -233,7 +269,7 @@ const onDelete = ( unidadAcademica ) => {
         let onDelete = () => {
             UnidadAcademicaService.onDelete(unidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllUnidadAcademica() );
+                    dispatch( onPageUnidadAcademica() );
                 }
             } ).finally( () => {} );
         };
@@ -246,6 +282,7 @@ const onDelete = ( unidadAcademica ) => {
 
 export const UnidadAcademicaActions = {
     initData,
+    onPageUnidadAcademica,
     getAllUnidadAcademica,
     onLimpiar,
     setCodigo,

@@ -10,23 +10,31 @@ import CardComponent from '../../../../components/card';
 function IndexUnidadNegocio(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllUnidadNegocio();
+    useEffect( () => {
+      props.onPageUnidadNegocio();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/unidadnegocio/create');
-    }
+    };
 
-    function onEdit(unidadNegocio) {
+    const onEdit = (unidadNegocio) => {
         navigate(`/unidadnegocio/edit/${unidadNegocio.idunidadnegocio}`);
-    }
+    };
 
-    function onShow(unidadNegocio) {
+    const onShow = (unidadNegocio) => {
         navigate(`/unidadnegocio/show/${unidadNegocio.idunidadnegocio}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageUnidadNegocio(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageUnidadNegocio(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexUnidadNegocio(props) {
                         onShow={ ( unidadNegocio ) => onShow(unidadNegocio) }
                         onEditar={ ( unidadNegocio ) => onEdit(unidadNegocio) }
                         onDelete={ ( unidadNegocio ) => props.onDelete(unidadNegocio) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexUnidadNegocio(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnUnidadNegocio: state.ColumnModule.columnUnidadNegocio,
-    listUnidadNegocio: state.ListModule.listUnidadNegocio,
+    listUnidadNegocio: state.PaginationModule.listUnidadNegocio,
+    page: state.PaginationModule.pageUnidadNegocio,
+    pagination: state.PaginationModule.paginationUnidadNegocio,
+    paginate: state.PaginationModule.paginateUnidadNegocio,
 } );
 
 const mapDispatchToProps = {
-    getAllUnidadNegocio: UnidadNegocioActions.getAllUnidadNegocio,
+    onPageUnidadNegocio: UnidadNegocioActions.onPageUnidadNegocio,
     onDelete: UnidadNegocioActions.onDelete,
 };
 

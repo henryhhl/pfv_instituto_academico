@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.nivelAcademico_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageNivelAcademico = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        NivelAcademicoService.getAllNivelAcademico( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listNivelAcademico',
+                        value: result.arrayNivelAcademico,
+                    },
+                    pagination: {
+                        name: 'paginationNivelAcademico',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageNivelAcademico',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateNivelAcademico',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -185,7 +221,7 @@ const onDelete = ( nivelAcademico ) => {
         let onDelete = () => {
             NivelAcademicoService.onDelete(nivelAcademico).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllNivelAcademico() );
+                    dispatch( onPageNivelAcademico() );
                 }
             } ).finally( () => {} );
         };
@@ -198,6 +234,7 @@ const onDelete = ( nivelAcademico ) => {
 
 export const NivelAcademicoActions = {
     initData,
+    onPageNivelAcademico,
     getAllNivelAcademico,
     onLimpiar,
     setSigla,

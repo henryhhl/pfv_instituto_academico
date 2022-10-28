@@ -1,6 +1,7 @@
 
 const Constants = {
     listModules_onChange: "[ON CHANGE] List Modules",
+    paginationModules_onChange: "[ON CHANGE] Pagination Modules",
 
     tipoRol_setInit: "[SET INIT] Tipo Rol",
     tipoRol_onChange: "[ON CHANGE] Tipo Rol",

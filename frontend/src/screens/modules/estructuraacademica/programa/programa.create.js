@@ -116,7 +116,7 @@ function CreatePrograma( props ) {
                     <div className="row">
                         <div className="form-group col-12">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre de Programa"
                                 value={programa.descripcion}
                                 onChange={ (value) => props.setDescripcion(programa, value) }
                                 error={programa.error.descripcion}

@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
 import { PensumActions } from '../../../../redux/actions/estructuraacademica/pensum.action';
 import { Functions } from '../../../../utils/functions';
@@ -38,18 +38,27 @@ function ShowPensum( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-2"></div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-1"></div>
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Fecha Aprobación"
                                 value={pensum.fechaaprobacion}
                                 readOnly
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-7">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre de Pensum"
                                 value={pensum.descripcion}
+                                readOnly
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="form-group col-12">
+                            <TextAreaComponent 
+                                label="Nota"
+                                value={pensum.nota}
                                 readOnly
                             />
                         </div>

@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.tipoRol_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageTipoRol = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        TipoRolService.getAllTipoRol( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listTipoRol',
+                        value: result.arrayTipoRol,
+                    },
+                    pagination: {
+                        name: 'paginationTipoRol',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageTipoRol',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateTipoRol',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -171,7 +207,7 @@ const onDelete = ( tipoRol ) => {
         let onDelete = () => {
             TipoRolService.onDelete(tipoRol).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllTipoRol() );
+                    dispatch( onPageTipoRol() );
                 }
             } ).finally( () => {} );
         };
@@ -184,6 +220,7 @@ const onDelete = ( tipoRol ) => {
 
 export const TipoRolActions = {
     initData,
+    onPageTipoRol,
     getAllTipoRol,
     onLimpiar,
     setDescripcion,

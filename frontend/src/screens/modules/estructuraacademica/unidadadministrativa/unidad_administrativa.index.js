@@ -10,23 +10,31 @@ import TableComponent from '../../../../components/table';
 function IndexUnidadAdministrativa(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllUnidadAdministrativa();
+    useEffect( () => {
+      props.onPageUnidadAdministrativa();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/unidadadministrativa/create');
     }
 
-    function onEdit(unidadAdministrativa) {
+    const onEdit = (unidadAdministrativa) => {
         navigate(`/unidadadministrativa/edit/${unidadAdministrativa.idunidadadministrativa}`);
     }
 
-    function onShow(unidadAdministrativa) {
+    const onShow = (unidadAdministrativa) => {
         navigate(`/unidadadministrativa/show/${unidadAdministrativa.idunidadadministrativa}`);
     }
+
+    const setPage = (page) => {
+        props.onPageUnidadAdministrativa(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageUnidadAdministrativa(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexUnidadAdministrativa(props) {
                         onShow={ ( unidadAdministrativa ) => onShow(unidadAdministrativa) }
                         onEditar={ ( unidadAdministrativa ) => onEdit(unidadAdministrativa) }
                         onDelete={ ( unidadAdministrativa ) => props.onDelete(unidadAdministrativa) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexUnidadAdministrativa(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnUnidadAdministrativa: state.ColumnModule.columnUnidadAdministrativa,
-    listUnidadAdministrativa: state.ListModule.listUnidadAdministrativa,
+    listUnidadAdministrativa: state.PaginationModule.listUnidadAdministrativa,
+    page: state.PaginationModule.pageUnidadAdministrativa,
+    pagination: state.PaginationModule.paginationUnidadAdministrativa,
+    paginate: state.PaginationModule.paginateUnidadAdministrativa,
 } );
 
 const mapDispatchToProps = {
-    getAllUnidadAdministrativa: UnidadAdministrativaActions.getAllUnidadAdministrativa,
+    onPageUnidadAdministrativa: UnidadAdministrativaActions.onPageUnidadAdministrativa,
     onDelete: UnidadAdministrativaActions.onDelete,
 };
 

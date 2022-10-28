@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UnidadadministrativaController } from './unidadadministrativa.controller';
-import { UnidadadministrativaService } from './unidadadministrativa.service';
+import { UnidadAdministrativaController } from './unidadadministrativa.controller';
+import { UnidadAdministrativaService } from './unidadadministrativa.service';
 
-describe('UnidadadministrativaController', () => {
-  let controller: UnidadadministrativaController;
+describe('UnidadAdministrativaController', () => {
+  let controller: UnidadAdministrativaController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [UnidadadministrativaController],
-      providers: [UnidadadministrativaService],
+      controllers: [UnidadAdministrativaController],
+      providers: [UnidadAdministrativaService],
     }).compile();
 
-    controller = module.get<UnidadadministrativaController>(UnidadadministrativaController);
+    controller = module.get<UnidadAdministrativaController>(UnidadAdministrativaController);
   });
 
   it('should be defined', () => {

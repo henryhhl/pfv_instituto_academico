@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { PeriodoService } from './periodo.service';
 import { CreatePeriodoDto } from './dto/create-periodo.dto';
 import { UpdatePeriodoDto } from './dto/update-periodo.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('periodo')
 export class PeriodoController {
   constructor(private readonly periodoService: PeriodoService) {}
 
   @Get('/index')
-  findAll() {
-    return this.periodoService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.periodoService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -34,6 +35,6 @@ export class PeriodoController {
 
   @Delete('/delete/:idperiodo')
   remove(@Param('idperiodo') id: string) {
-    return this.periodoService.remove(id);
+    return this.periodoService.delete(id);
   }
 }

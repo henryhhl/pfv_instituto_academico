@@ -1,44 +1,40 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query } from '@nestjs/common';
 import { RolService } from './rol.service';
 import { CreateRolDto } from './dto/create-rol.dto';
 import { UpdateRolDto } from './dto/update-rol.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('rol')
 export class RolController {
   constructor(private readonly rolService: RolService) {}
 
   @Get('/index')
-  findAll() {
-    return this.rolService.findAll();
-  }
+    findAll( @Query() paginationDto: PaginationDto ) {
+        return this.rolService.findAll(paginationDto);
+    }
 
-  @Get('/create')
-  create() {
-    return this.rolService.findAll();
-  }
+    @Post('/store')
+    store(@Body() createMateriaDto: CreateRolDto) {
+        return this.rolService.store(createMateriaDto);
+    }
 
-  @Post('/store')
-  store(@Body() createRolDto: CreateRolDto) {
-    return this.rolService.store(createRolDto);
-  }
+    @Get('/edit/:idtiporol')
+    edit(@Param('idtiporol') id: string) {
+        return this.rolService.edit(id);
+    }
 
-  @Get('/show/:idusuario')
-  showUsuario(@Param('idusuario') id: string) {
-    return this.rolService.showRol(id);
-  }
+    @Get('/show/:idtiporol')
+    show(@Param('idtiporol') id: string) {
+        return this.rolService.show(id);
+    }
 
-  @Get('/edit/:idusuario')
-  editUsuario(@Param('idusuario') id: string) {
-    return this.rolService.editRol(id);
-  }
+    @Put('/update/:idtiporol')
+    update(@Param('idtiporol') id: string, @Body() updateMateriaDto: UpdateRolDto) {
+        return this.rolService.update(id, updateMateriaDto);
+    }
 
-  @Put('/update/:idrol')
-  update(@Param('idrol') id: string, @Body() updateRolDto: UpdateRolDto) {
-    return this.rolService.update(id, updateRolDto);
-  }
-
-  @Delete('/delete/:idrol')
-  remove(@Param('idrol') id: string) {
-    return this.rolService.remove(id);
-  }
+    @Delete('/delete/:idtiporol')
+    delete(@Param('idtiporol') id: string) {
+        return this.rolService.delete(id);
+    }
 }

@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { OfertaAcademicaService } from './ofertaacademica.service';
 import { CreateOfertaAcademicaDto } from './dto/create-ofertaacademica.dto';
 import { UpdateOfertaAcademicaDto } from './dto/update-ofertaacademica.dto';
@@ -8,8 +9,8 @@ export class OfertaAcademicaController {
   constructor(private readonly ofertaacademicaService: OfertaAcademicaService) {}
 
   @Get('/index')
-  findAll() {
-    return this.ofertaacademicaService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.ofertaacademicaService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -34,6 +35,6 @@ export class OfertaAcademicaController {
 
   @Delete('/delete/:idofertaacademica')
   remove(@Param('idofertaacademica') id: string) {
-    return this.ofertaacademicaService.remove(id);
+    return this.ofertaacademicaService.delete(id);
   }
 }

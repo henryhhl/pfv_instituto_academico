@@ -37,16 +37,16 @@ function ShowUnidadNegocio( props ) {
                 >
                     <div className="row">
                         <div className="form-group col-2"></div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-3">
                             <InputComponent
                                 label="Sigla"
                                 value={unidadNegocio.sigla}
                                 readOnly
                             />
                         </div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-5">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Unidad Negocio"
                                 value={unidadNegocio.descripcion}
                                 readOnly
                             />

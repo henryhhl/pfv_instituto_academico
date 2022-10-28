@@ -10,23 +10,31 @@ import { ProgramaActions } from '../../../../redux/actions/estructuraacademica/p
 function IndexPrograma(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllPrograma();
+    useEffect( () => {
+      props.onPagePrograma();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/programa/create');
-    }
+    };
 
-    function onEdit(programa) {
+    const onEdit = (programa) => {
         navigate(`/programa/edit/${programa.idprograma}`);
-    }
+    };
 
-    function onShow(programa) {
+    const onShow = (programa) => {
         navigate(`/programa/show/${programa.idprograma}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPagePrograma(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPagePrograma(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexPrograma(props) {
                         onShow={ ( programa ) => onShow(programa) }
                         onEditar={ ( programa ) => onEdit(programa) }
                         onDelete={ ( programa ) => props.onDelete(programa) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexPrograma(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnPrograma: state.ColumnModule.columnPrograma,
-    listPrograma: state.ListModule.listPrograma,
+    listPrograma: state.PaginationModule.listPrograma,
+    page: state.PaginationModule.pagePrograma,
+    pagination: state.PaginationModule.paginationPrograma,
+    paginate: state.PaginationModule.paginatePrograma,
 } );
 
 const mapDispatchToProps = {
-    getAllPrograma: ProgramaActions.getAllPrograma,
+    onPagePrograma: ProgramaActions.onPagePrograma,
     onDelete: ProgramaActions.onDelete,
 };
 

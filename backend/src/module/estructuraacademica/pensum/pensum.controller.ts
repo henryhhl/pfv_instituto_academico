@@ -1,15 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { PensumService } from './pensum.service';
 import { CreatePensumDto } from './dto/create-pensum.dto';
 import { UpdatePensumDto } from './dto/update-pensum.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Controller('pensum')
 export class PensumController {
   constructor(private readonly pensumService: PensumService) {}
 
   @Get('/index')
-  findAll() {
-    return this.pensumService.findAll();
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.pensumService.findAll(paginationDto);
   }
 
   @Post('/store')
@@ -38,7 +39,7 @@ export class PensumController {
   }
 
   @Delete('/delete/:idpensum')
-  remove(@Param('idpensum') id: string) {
-    return this.pensumService.remove(id);
+  delete(@Param('idpensum') id: string) {
+    return this.pensumService.delete(id);
   }
 }

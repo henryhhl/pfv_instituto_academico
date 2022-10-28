@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.ofertaAcademica_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageOfertaAcademica = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        OfertaAcademicaService.getAllOfertaAcademica( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listOfertaAcademica',
+                        value: result.arrayOfertaAcademica,
+                    },
+                    pagination: {
+                        name: 'paginationOfertaAcademica',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageOfertaAcademica',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateOfertaAcademica',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -185,7 +221,7 @@ const onDelete = ( ofertaAcademica ) => {
         let onDelete = () => {
             OfertaAcademicaService.onDelete(ofertaAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllOfertaAcademica() );
+                    dispatch( onPageOfertaAcademica() );
                 }
             } ).finally( () => {} );
         };
@@ -198,6 +234,7 @@ const onDelete = ( ofertaAcademica ) => {
 
 export const OfertaAcademicaActions = {
     initData,
+    onPageOfertaAcademica,
     getAllOfertaAcademica,
     onLimpiar,
     setSigla,

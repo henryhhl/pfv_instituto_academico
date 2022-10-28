@@ -1,29 +1,13 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateRolDto } from './create-rol.dto';
-import { IsString, MinLength, IsOptional } from 'class-validator';
+import { IsString, MinLength, IsOptional, IsIn } from 'class-validator';
 
-// export class UpdateRolDto extends PartialType(CreateRolDto) {}
+export class UpdateRolDto extends PartialType(CreateRolDto) {
 
-export class UpdateRolDto {
-
-    @IsString( { message: 'Campo ID Tipo Rol es requerido.', } )
+    @IsString( { message: 'Campo Estado solo permitido tipo STRING.', } )
+    @MinLength(1, { message: 'Campo Estado debe ser mayor o igual a 1 carácter.', } )
+    @IsIn( [ 'A', 'N', ], { message: 'Campo Estado permite valor: A y N', } )
     @IsOptional()
-    readonly fkidtiporol: string;
-
-    @IsString( { message: 'Campo tipo rol es requerido.', } )
-    readonly tiporol: string;
-
-    @IsString( { message: 'Campo descripción es requerido.', } )
-    @MinLength(2)
-    @IsOptional()
-    readonly descripcion: string;
-
-    @IsString( { message: 'Campo nota es requerido.', } )
-    @IsOptional()
-    readonly nota: string;
-
-    @IsString( { message: 'Campo estado es requerido.', } )
-    @IsOptional()
-    readonly estado: string;
+    readonly estado?: string;
 
 }

@@ -11,23 +11,31 @@ import CardComponent from '../../../../components/card';
 function IndexTipoRol(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllTipoRol();
+    useEffect( () => {
+      props.onPageTipoRol();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/tipo_rol/create');
-    }
+    };
 
-    function onEdit(tipoRol) {
+    const onEdit = (tipoRol) => {
         navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
-    }
+    };
 
-    function onShow(tipoRol) {
+    const onShow = (tipoRol) => {
         navigate(`/tipo_rol/show/${tipoRol.idtiporol}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageTipoRol(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageTipoRol(1, paginate);
+    };
 
     return (
         <>
@@ -45,6 +53,12 @@ function IndexTipoRol(props) {
                         onShow={ ( tipoRol ) => onShow(tipoRol) }
                         onEditar={ ( tipoRol ) => onEdit(tipoRol) }
                         onDelete={ ( tipoRol ) => props.onDelete(tipoRol) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -54,11 +68,14 @@ function IndexTipoRol(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnTipoRol: state.ColumnModule.columnTipoRol,
-    listTipoRol: state.ListModule.listTipoRol,
+    listTipoRol: state.PaginationModule.listTipoRol,
+    page: state.PaginationModule.pageTipoRol,
+    pagination: state.PaginationModule.paginationTipoRol,
+    paginate: state.PaginationModule.paginateTipoRol,
 } );
 
 const mapDispatchToProps = {
-    getAllTipoRol: TipoRolActions.getAllTipoRol,
+    onPageTipoRol: TipoRolActions.onPageTipoRol,
     onDelete: TipoRolActions.onDelete,
 };
 

@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.referenciaContacto_onCreate,
 } );
@@ -35,9 +40,42 @@ const initData = () => {
     };
 };
 
+const onPageReferenciaContacto = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        ReferenciaContactoService.getAllReferenciaContacto( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listReferenciaContacto',
+                        value: result.arrayReferenciaContacto,
+                    },
+                    pagination: {
+                        name: 'paginationReferenciaContacto',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageReferenciaContacto',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateReferenciaContacto',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
+    };
+};
+
 const getAllReferenciaContacto = () => {
     return ( dispatch ) => {
-        ReferenciaContactoService.getAllReferenciaContacto().then( (result) => {
+        ReferenciaContactoService.getAllReferenciaContacto( {
+            
+        } ).then( (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listReferenciaContacto',
@@ -184,7 +222,7 @@ const onDelete = ( referenciaContacto ) => {
         let onDelete = () => {
             ReferenciaContactoService.onDelete(referenciaContacto).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllReferenciaContacto() );
+                    dispatch( onPageReferenciaContacto() );
                 }
             } ).finally( () => {} );
         };
@@ -198,6 +236,7 @@ const onDelete = ( referenciaContacto ) => {
 export const ReferenciaContactoActions = {
     initData,
     getAllReferenciaContacto,
+    onPageReferenciaContacto,
     onLimpiar,
     setDescripcion,
     setTipoReferenciaContacto,

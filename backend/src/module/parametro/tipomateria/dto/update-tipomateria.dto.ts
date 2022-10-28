@@ -1,23 +1,13 @@
 
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTipoMateriaDto } from './create-tipomateria.dto';
-import { IsString, IsOptional, MinLength } from 'class-validator';
+import { IsString, IsOptional, MinLength, IsIn } from 'class-validator';
 
-// export class UpdateTipomateriaDto extends PartialType(CreateTipoMateriaDto) {}
+export class UpdateTipoMateriaDto extends PartialType(CreateTipoMateriaDto) {
 
-export class UpdateTipoMateriaDto {
-
-    @IsString( { message: 'Campo sigla es requerido.', } )
-    @MinLength(1)
-    @IsOptional()
-    readonly sigla?: string;
-
-    @IsString( { message: 'Campo descripción es requerido.', } )
-    @MinLength(2)
-    @IsOptional()
-    readonly descripcion?: string;
-
-    @IsString( { message: 'Campo estado es requerido.', } )
+    @IsString( { message: 'Campo Estado solo permitido tipo STRING.', } )
+    @MinLength(1, { message: 'Campo Estado debe ser mayor o igual a 1 carácter.', } )
+    @IsIn( [ 'A', 'N', ], { message: 'Campo Estado permite valor: A y N', } )
     @IsOptional()
     readonly estado?: string;
 }

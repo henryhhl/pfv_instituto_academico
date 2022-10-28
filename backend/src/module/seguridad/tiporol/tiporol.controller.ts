@@ -1,47 +1,41 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, ParseUUIDPipe, Post, Put, } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { TipoRolService } from './tiporol.service';
 import { CreateTipoRolDto, UpdateTipoRolDto } from './dto';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Controller('tiporol')
 export class TipoRolController {
 
-    constructor(
-        private readonly tipoRolService: TipoRolService
-    ) {
-
-    }
+    constructor( private readonly tipoRolService: TipoRolService ) {}
 
     @Get('/index')
-    getAllTipoRol() {
-        return this.tipoRolService.getAll();
+    findAll( @Query() paginationDto: PaginationDto ) {
+        return this.tipoRolService.findAll(paginationDto);
     }
 
     @Post('/store')
-    storeTipoRol( @Body() request: CreateTipoRolDto ) {
-        return this.tipoRolService.storeTipoRol(request);
-    }
-
-    @Get('/show/:idtiporol')
-    showTipoPermiso( @Param('idtiporol', ParseUUIDPipe) id: string ) {
-        return this.tipoRolService.showTipoRol(id);
+    store(@Body() createMateriaDto: CreateTipoRolDto) {
+        return this.tipoRolService.store(createMateriaDto);
     }
 
     @Get('/edit/:idtiporol')
-    getTipoPermisoById( @Param('idtiporol', ParseUUIDPipe) id: string ) {
-        return this.tipoRolService.editTipoRol(id);
+    edit(@Param('idtiporol') id: string) {
+        return this.tipoRolService.edit(id);
+    }
+
+    @Get('/show/:idtiporol')
+    show(@Param('idtiporol') id: string) {
+        return this.tipoRolService.show(id);
     }
 
     @Put('/update/:idtiporol')
-    updateTipoRol( 
-        @Param('idtiporol', ParseUUIDPipe) idtiporol: string, 
-        @Body() request: UpdateTipoRolDto ) 
-    {
-        return this.tipoRolService.updateTipoRol(idtiporol, request);
+    update(@Param('idtiporol') id: string, @Body() updateMateriaDto: UpdateTipoRolDto) {
+        return this.tipoRolService.update(id, updateMateriaDto);
     }
-    
+
     @Delete('/delete/:idtiporol')
-    deleteTipoRol( @Param('idtiporol', ParseUUIDPipe) idtiporol: string, @Body() body: any ) {
-        return this.tipoRolService.deleteTipoRol(idtiporol);
+    delete(@Param('idtiporol') id: string) {
+        return this.tipoRolService.delete(id);
     }
 
 }

@@ -1,82 +1,157 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Usuario } from './entities/usuario.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class UsuarioService {
 
   private listUsuario: Usuario[] = [];
+  private readonly logger = new Logger('UsuarioService');
 
-  create(createUsuarioDto: CreateUsuarioDto) {
-    let usuario: Usuario = {
-      idusuario: uuid(),
-      email: createUsuarioDto.email,
-      login: createUsuarioDto.login,
-      password: createUsuarioDto.password,
-      estado: 'A',
-      concurrencia: 1,
-      isdelete: 'A',
-      created_at: '',
-    };
+  constructor(
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
+  ) {}
 
-    this.listUsuario.push(usuario);
-
-    return {
-      resp: 1,
-      error: false,
-      message: 'Usuario registrado éxitosamente.',
-      usuario: usuario,
-    };
+  async findAll( paginationDto: PaginationDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      let listUsuario = [];
+      let totalPagination = 0;
+      if ( esPaginate ) {
+        [listUsuario, totalPagination] = await this.usuarioRepository.findAndCount( {
+          take: limit,
+          skip: offset,
+          where: { },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      } else {
+        [listUsuario, totalPagination] = await this.usuarioRepository.findAndCount( {
+          where: { },
+          order: {
+            created_at: "DESC",
+          },
+        } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayUsuario: listUsuario,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
-  findAll() {
-    const listUsuario = this.listUsuario;
-    return {
-      resp: 1,
-      error: false,
-      message: 'Servicio realizado exitosamente.',
-      arrayUsuario: listUsuario,
-    };
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
+
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
+
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  findOne(idusuario: string) {
-    const usuario = this.listUsuario.find( (usuario) => usuario.idusuario === idusuario );
-    // if ( !usuario ) {
-    //   throw new NotFoundException('Tipo Materia with id not found');
-    // }
+  async store(createUsuarioDto: CreateUsuarioDto) {
+    try {
+      const usuario = this.usuarioRepository.create( {
+        email: createUsuarioDto.email,
+        login: createUsuarioDto.login,
+        password: createUsuarioDto.password,
+        created_at: this.getDateTime(),
+      } );
+      await this.usuarioRepository.save( usuario );
+      return {
+        resp: 1, error: false,
+        message: 'Usuario registrado éxitosamente.',
+        usuario: usuario,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idusuario: string) {
+    const usuario = await this.usuarioRepository.findOneBy( {
+      idusuario: idusuario,
+    } );
     return usuario;
   }
 
-  editUsuario( idusuario: string ) {
-    const usuario = this.listUsuario.find( usuario => usuario.idusuario === idusuario );
-    if ( usuario ) {
-        return {
-            resp: 1, error: false,
-            message: 'Servicio realizado exitosamente.',
-            usuario: usuario,
-        };
-    }
-    return {
-        resp: 0, error: false,
-        message: 'Usuario no existe.',
-    };
-  }
-
-  showUsuario( idusuario: string ) {
-      const usuario = this.listUsuario.find( usuario => usuario.idusuario === idusuario );
+  async edit( idusuario: string ) {
+    try {
+      const usuario = await this.findOne(idusuario);
       if ( usuario ) {
-          return {
-              resp: 1, error: false,
-              message: 'Servicio realizado exitosamente.',
-              usuario: usuario,
-          };
+        return {
+          resp: 1, error: false,
+          message: 'Servicio realizado exitosamente.',
+          usuario: usuario,
+        };
       }
       return {
-          resp: 0, error: false,
-          message: 'Usuario no existe.',
+        resp: 0, error: false,
+        message: 'Usuario no existe.',
       };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async show( idusuario: string ) {
+    try {
+      const usuario = await this.findOne(idusuario);
+      if ( usuario ) {
+        return {
+          resp: 1, error: false,
+          message: 'Servicio realizado exitosamente.',
+          usuario: usuario,
+        };
+      }
+      return {
+        resp: 0, error: false,
+        message: 'Usuario no existe.',
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
@@ -88,19 +163,19 @@ export class UsuarioService {
       };
     }
 
-    this.listUsuario = this.listUsuario.map( (usuario) => {
-      if ( usuario.idusuario === id ) {
-        usuarioDB.updated_at = '';
-        usuarioDB = {
-          ...usuarioDB,
-          ...updateUsuarioDto,
-          idusuario: id,
-          concurrencia: usuario.concurrencia + 1,
-        };
-        return usuarioDB;
-      }
-      return usuario;
-    } );
+    // this.listUsuario = this.listUsuario.map( (usuario) => {
+    //   if ( usuario.idusuario === id ) {
+    //     usuarioDB.updated_at = '';
+    //     usuarioDB = {
+    //       ...usuarioDB,
+    //       ...updateUsuarioDto,
+    //       idusuario: id,
+    //       concurrencia: usuario.concurrencia + 1,
+    //     };
+    //     return usuarioDB;
+    //   }
+    //   return usuario;
+    // } );
     return {
       resp: 1,
       error: false,
@@ -109,20 +184,28 @@ export class UsuarioService {
     };
   }
 
-  remove(id: string) {
-    let usuario = this.findOne(id);
-    if ( usuario === null ) {
+  async delete(idusuario: string) {
+    try {
+      let usuario = await this.findOne(idusuario);
+      if ( usuario === null ) {
+        return {
+          resp: 0, error: true,
+          message: 'Usuario no existe.',
+        };
+      }
+      await this.usuarioRepository.remove( usuario );
       return {
-        resp: 0, error: false,
-        message: 'Usuario no existe.',
+        resp: 1, error: false,
+        message: 'Usuario eliminado éxitosamente.',
+        usuario: usuario,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    this.listUsuario = this.listUsuario.filter( (usuario) => usuario.idusuario !== id );
-    return {
-      resp: 1, error: false,
-      message: 'Usuario eliminado éxitosamente.',
-      usuario: usuario,
-    };
   }
 
   fillUsuarioSeedData( listUsuario: Usuario[] ) {

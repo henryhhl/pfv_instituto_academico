@@ -10,23 +10,31 @@ import CardComponent from '../../../../components/card';
 function IndexUsuario(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllUsuario();
+    useEffect( () => {
+      props.onPageUsuario();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/usuario/create');
-    }
+    };
 
-    function onEdit(usuario) {
+    const onEdit = (usuario) => {
         navigate(`/usuario/edit/${usuario.idusuario}`);
-    }
+    };
 
-    function onShow(usuario) {
+    const onShow = (usuario) => {
         navigate(`/usuario/show/${usuario.idusuario}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageUsuario(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageUsuario(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexUsuario(props) {
                         onShow={ ( usuario ) => onShow(usuario) }
                         onEditar={ ( usuario ) => onEdit(usuario) }
                         onDelete={ ( usuario ) => props.onDelete(usuario) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexUsuario(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnUsuario: state.ColumnModule.columnUsuario,
-    listUsuario: state.ListModule.listUsuario,
+    listUsuario: state.PaginationModule.listUsuario,
+    page: state.PaginationModule.pageUsuario,
+    pagination: state.PaginationModule.paginationUsuario,
+    paginate: state.PaginationModule.paginateUsuario,
 } );
 
 const mapDispatchToProps = {
-    getAllUsuario: UsuarioActions.getAllUsuario,
+    onPageUsuario: UsuarioActions.onPageUsuario,
     onDelete: UsuarioActions.onDelete,
 };
 

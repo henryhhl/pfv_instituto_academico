@@ -2,8 +2,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Button, Tag, Tooltip } from 'antd';
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { NivelAcademicoActions } from '../../../../redux/actions/nivelAcademicoActions';
 import TableComponent from '../../../../components/table';
 import PaperComponent from '../../../../components/paper';
@@ -12,23 +10,31 @@ import CardComponent from '../../../../components/card';
 function IndexNivelAcademico(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllNivelAcademico();
+    useEffect( () => {
+      props.onPageNivelAcademico();
       return () => {};
-    }, [])
+    }, [] );
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/nivelacademico/create');
-    }
+    };
 
-    function onEdit(nivelAcademico) {
+    const onEdit = (nivelAcademico) => {
         navigate(`/nivelacademico/edit/${nivelAcademico.idnivelacademico}`);
-    }
+    };
 
-    function onShow(nivelAcademico) {
+    const onShow = (nivelAcademico) => {
         navigate(`/nivelacademico/show/${nivelAcademico.idnivelacademico}`);
-    }
+    };
+
+    const setPage = (page) => {
+        props.onPageNivelAcademico(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageNivelAcademico(1, paginate);
+    };
 
     return (
         <>
@@ -46,6 +52,12 @@ function IndexNivelAcademico(props) {
                         onShow={ ( nivelAcademico ) => onShow(nivelAcademico) }
                         onEditar={ ( nivelAcademico ) => onEdit(nivelAcademico) }
                         onDelete={ ( nivelAcademico ) => props.onDelete(nivelAcademico) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -55,11 +67,14 @@ function IndexNivelAcademico(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnNivelAcademico: state.ColumnModule.columnNivelAcademico,
-    listNivelAcademico: state.ListModule.listNivelAcademico,
+    listNivelAcademico: state.PaginationModule.listNivelAcademico,
+    page: state.PaginationModule.pageNivelAcademico,
+    pagination: state.PaginationModule.paginationNivelAcademico,
+    paginate: state.PaginationModule.paginateNivelAcademico,
 } );
 
 const mapDispatchToProps = {
-    getAllNivelAcademico: NivelAcademicoActions.getAllNivelAcademico,
+    onPageNivelAcademico: NivelAcademicoActions.onPageNivelAcademico,
     onDelete: NivelAcademicoActions.onDelete,
 };
 

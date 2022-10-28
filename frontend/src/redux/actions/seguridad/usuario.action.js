@@ -21,6 +21,11 @@ const onListModule = ( data ) => ( {
     payload: data,
 } );
 
+const onPaginateModule = ( data ) => ( {
+    type: Constants.paginationModules_onChange,
+    payload: data,
+} );
+
 const setCreate = () => ( {
     type: Constants.usuario_onCreate,
 } );
@@ -33,6 +38,37 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onPageUsuario = ( page = 1, paginate = 5, search = "" ) => {
+    return ( dispatch ) => {
+        UsuarioService.getAllUsuario( {
+            page: page, paginate: paginate, 
+            search: search, esPaginate: true,
+        } ).then( (result) => {
+            if ( result.resp === 1 ) {
+                let obj = {
+                    data: {
+                        name: 'listUsuario',
+                        value: result.arrayUsuario,
+                    },
+                    pagination: {
+                        name: 'paginationUsuario',
+                        value: result.pagination,
+                    },
+                    page: {
+                        name: 'pageUsuario',
+                        value: page,
+                    },
+                    paginate: {
+                        name: 'paginateUsuario',
+                        value: paginate,
+                    },
+                };
+                dispatch( onPaginateModule(obj) );
+            }
+        } ).finally( () => {} );
     };
 };
 
@@ -215,7 +251,7 @@ const onDelete = ( usuario ) => {
         let onDelete = () => {
             UsuarioService.onDelete(usuario).then( (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( getAllUsuario() );
+                    dispatch( onPageUsuario() );
                 }
             } ).finally( () => {} );
         };
@@ -228,6 +264,7 @@ const onDelete = ( usuario ) => {
 
 export const UsuarioActions = {
     initData,
+    onPageUsuario,
     getAllUsuario,
     onLimpiar,
     setEmail,

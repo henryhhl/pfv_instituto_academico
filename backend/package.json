@@ -34,6 +34,7 @@
     "class-validator": "^0.13.2",
     "joi": "^17.6.3",
     "mongoose": "^6.6.5",
+    "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",

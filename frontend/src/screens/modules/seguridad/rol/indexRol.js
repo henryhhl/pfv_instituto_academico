@@ -11,22 +11,30 @@ function IndexRol(props) {
     const navigate = useNavigate();
 
     useEffect(() => {
-      props.getAllRol();
+      props.onPageRol();
       return () => {};
     }, [])
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/rol/create');
     }
 
-    function onEdit(rol) {
+    const onEdit = (rol) => {
         navigate(`/rol/edit/${rol.idrol}`);
     }
 
-    function onShow(rol) {
+    const onShow = (rol) => {
         navigate(`/rol/show/${rol.idrol}`);
     }
+
+    const setPage = (page) => {
+        props.onPageRol(page + 1, props.paginate);
+    };
+
+    const setPaginate = (paginate) => {
+        props.onPageRol(1, paginate);
+    };
 
     return (
         <>
@@ -44,6 +52,12 @@ function IndexRol(props) {
                         onShow={ ( rol ) => onShow(rol) }
                         onEditar={ ( rol ) => onEdit(rol) }
                         onDelete={ ( rol ) => props.onDelete(rol) }
+                        isPagination={true}
+                        pagination={props.pagination}
+                        paginate={props.paginate}
+                        page={props.page - 1}
+                        setPage={setPage}
+                        setPaginate={setPaginate}
                     />
                 </CardComponent>
             </PaperComponent>
@@ -53,11 +67,14 @@ function IndexRol(props) {
 
 const mapStateToProps = ( state ) => ( {
     columnRol: state.ColumnModule.columnRol,
-    listRol: state.ListModule.listRol,
+    listRol: state.PaginationModule.listRol,
+    page: state.PaginationModule.pageRol,
+    pagination: state.PaginationModule.paginationRol,
+    paginate: state.PaginationModule.paginateRol,
 } );
 
 const mapDispatchToProps = {
-    getAllRol: RolActions.getAllRol,
+    onPageRol: RolActions.onPageRol,
     onDelete: RolActions.onDelete,
 };
 
