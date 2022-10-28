@@ -40,7 +40,7 @@ export class Usuario {
     movil_token?: string;
 
     @Column( {
-        type: 'numeric',
+        type: 'int',
         default: 0,
     } )
     intentos: number;

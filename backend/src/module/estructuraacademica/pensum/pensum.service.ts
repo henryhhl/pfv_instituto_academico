@@ -4,7 +4,7 @@ import { CreatePensumDto } from './dto/create-pensum.dto';
 import { UpdatePensumDto } from './dto/update-pensum.dto';
 import { Pensum } from './entities/pensum.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
@@ -26,14 +26,18 @@ export class PensumService {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
           take: limit,
           skip: offset,
-          where: { },
+          where: [
+            { descripcion: Like( '%' + search + '%', ), },
+          ],
           order: {
             created_at: "DESC",
           },
         } );
       } else {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
-          where: { },
+          where: [
+            { descripcion: Like( '%' + search + '%', ), },
+          ],
           order: {
             created_at: "DESC",
           },
@@ -166,33 +170,34 @@ export class PensumService {
     }
   }
 
-  update(id: string, updatePensumDto: UpdatePensumDto) {
-    let pensumDB = this.findOne(id);
-    if ( pensumDB === null ) {
+  async update( idpensum: string, updatePensumDto: UpdatePensumDto ) {
+    const pensum = await this.findOne(idpensum);
+    if ( pensum === null ) {
       return {
         resp: 0, error: false,
         message: 'Pensum no existe.',
       };
     }
+    const pensumPreLoad = await this.pensumRepository.preload( {
+      idpensum: idpensum,
+      ...updatePensumDto,
+      concurrencia: pensum.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listPensum = this.listPensum.map( (pensum) => {
-    //   if ( pensum.idpensum === id ) {
-    //     pensumDB.updated_at = '';
-    //     pensumDB = {
-    //       ...pensumDB,
-    //       ...updatePensumDto,
-    //       idpensum: id,
-    //       concurrencia: pensum.concurrencia + 1,
-    //     };
-    //     return pensumDB;
-    //   }
-    //   return pensum;
-    // } );
+    if ( pensumPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Pensum no existe.',
+      };
+    }
+    const pensumUpdate = await this.pensumRepository.save( pensumPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Pensum actualizado éxitosamente.',
-      pensum: pensumDB,
+      pensum: pensum,
+      pensumUpdate: pensumUpdate,
     };
   }
 

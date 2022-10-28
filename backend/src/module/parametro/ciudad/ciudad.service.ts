@@ -1,15 +1,13 @@
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import { CreateCiudadDto } from './dto/create-ciudad.dto';
 import { UpdateCiudadDto } from './dto/update-ciudad.dto';
 import { Ciudad } from './entities/ciudad.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class CiudadService {
 
-  private listCiudad: Ciudad[] = [];
   private readonly logger = new Logger('CiudadService');
 
   constructor(
@@ -136,33 +134,34 @@ export class CiudadService {
     }
   }
 
-  update(id: string, updateCiudadDto: UpdateCiudadDto) {
-    let ciudadDB = this.findOne(id);
-    if ( ciudadDB === null ) {
+  async update( idciudad: string, updateCiudadDto: UpdateCiudadDto ) {
+    const ciudad = await this.findOne(idciudad);
+    if ( ciudad === null ) {
       return {
         resp: 0, error: false,
         message: 'Ciudad no existe.',
       };
     }
+    const ciudadPreLoad = await this.ciudadRepository.preload( {
+      idciudad: idciudad,
+      ...updateCiudadDto,
+      concurrencia: ciudad.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listCiudad = this.listCiudad.map( (ciudad) => {
-    //   if ( ciudad.idciudad === id ) {
-    //     ciudadDB.updated_at = '';
-    //     ciudadDB = {
-    //       ...ciudadDB,
-    //       ...updateCiudadDto,
-    //       idciudad: id,
-    //       concurrencia: ciudad.concurrencia + 1,
-    //     };
-    //     return ciudadDB;
-    //   }
-    //   return ciudad;
-    // } );
+    if ( ciudadPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Ciudad no existe.',
+      };
+    }
+    const ciudadUpdate = await this.ciudadRepository.save( ciudadPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Ciudad actualizado éxitosamente.',
-      ciudad: ciudadDB,
+      ciudad: ciudad,
+      ciudadUpdate: ciudadUpdate,
     };
   }
 

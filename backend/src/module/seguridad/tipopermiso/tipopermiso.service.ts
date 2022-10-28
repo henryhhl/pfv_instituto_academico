@@ -7,7 +7,6 @@ import { TipoPermiso } from './entities/tipoPermiso.entity';
 
 @Injectable()
 export class TipoPermisoService {
-    private listTipoPermiso: TipoPermiso[] = [];
     private readonly logger = new Logger('TipoPermisoService');
 
     constructor(
@@ -151,33 +150,34 @@ export class TipoPermisoService {
         }
     }
 
-    update(id: string, updateTipoPermisoDto: UpdateTipoPermisoDto) {
-        let materiaDB = this.findOne(id);
-        if ( materiaDB === null ) {
+    async update( idtipopermiso: string, updateTipoPermisoDto: UpdateTipoPermisoDto ) {
+        const tipoPermiso = await this.findOne(idtipopermiso);
+        if ( tipoPermiso === null ) {
             return {
                 resp: 0, error: false,
                 message: 'Tipo Permiso no existe.',
             };
         }
+        const tipoPermisoPreLoad = await this.tipoPermisoRepository.preload( {
+            idtipopermiso: idtipopermiso,
+            ...updateTipoPermisoDto,
+            concurrencia: tipoPermiso.concurrencia + 1,
+            updated_at: this.getDateTime(),
+        } );
 
-        // this.listTipoPermiso = this.listTipoPermiso.map( (tipoPermiso) => {
-        //   if ( tipoPermiso.idtipopermiso === id ) {
-        //     materiaDB.updated_at = '';
-        //     materiaDB = {
-        //       ...materiaDB,
-        //       ...updateTipoPermisoDto,
-        //       idtipopermiso: id,
-        //       concurrencia: tipoPermiso.concurrencia + 1,
-        //     };
-        //     return materiaDB;
-        //   }
-        //   return tipoPermiso;
-        // } );
+        if ( tipoPermisoPreLoad === null ) {
+            return {
+                resp: 0, error: false,
+                message: 'Tipo Permiso no existe.',
+            };
+        }
+        const tipoPermisoUpdate = await this.tipoPermisoRepository.save( tipoPermisoPreLoad );
         return {
             resp: 1,
             error: false,
             message: 'Tipo Permiso actualizado éxitosamente.',
-            tipoPermiso: materiaDB,
+            tipoPermiso: tipoPermiso,
+            tipoPermisoUpdate: tipoPermisoUpdate,
         };
     }
 
@@ -203,10 +203,6 @@ export class TipoPermisoService {
                 message: 'Hubo conflictos al consultar información con el servidor.',
             };
         }
-    }
-
-    fillTipoPermisoSeedData( listTipoPermiso: TipoPermiso[] ) {
-        this.listTipoPermiso = listTipoPermiso;
     }
 
 }

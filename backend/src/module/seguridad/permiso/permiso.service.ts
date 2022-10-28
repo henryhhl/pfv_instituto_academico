@@ -1,14 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreatePermisoDto } from './dto/create-permiso.dto';
 import { UpdatePermisoDto } from './dto/update-permiso.dto';
 import { Permiso } from './entities/permiso.entity';
 
 @Injectable()
 export class PermisoService {
-  private listPermiso: Permiso[] = [];
   private readonly logger = new Logger('PermisoService');
 
   constructor(
@@ -136,37 +134,36 @@ export class PermisoService {
     }
   }
 
-  update(id: string, updatePermisoDto: UpdatePermisoDto) {
-    let permisoDB = this.findOne(id);
-    if ( permisoDB === null ) {
+  async update( idpermiso: string, updatePermisoDto: UpdatePermisoDto) {
+    const permiso = await this.findOne(idpermiso);
+    if ( permiso === null ) {
       return {
         resp: 0, error: false,
         message: 'Permiso no existe.',
       };
     }
+    const permisoPreLoad = await this.permisoRepository.preload( {
+      idpermiso: idpermiso,
+      ...updatePermisoDto,
+      concurrencia: permiso.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listPermiso = this.listPermiso.map( (permiso) => {
-    //   if ( permiso.idpermiso === id ) {
-    //     permisoDB.updated_at = '';
-    //     permisoDB = {
-    //       ...permisoDB,
-    //       ...updatePermisoDto,
-    //       idpermiso: id,
-    //       concurrencia: permiso.concurrencia + 1,
-    //     };
-    //     return permisoDB;
-    //   }
-    //   return permiso;
-    // } );
+    if ( permisoPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Permiso no existe.',
+      };
+    }
+    const permisoUpdate = await this.permisoRepository.save( permisoPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Permiso actualizado éxitosamente.',
-      permiso: permisoDB,
+      permiso: permiso,
+      permisoUpdate: permisoUpdate,
     };
   }
-
-
 
   async remove( idpermiso: string ) {
     try {

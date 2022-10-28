@@ -9,7 +9,6 @@ import { ReferenciaContacto } from './entities/referenciacontacto.entity';
 
 @Injectable()
 export class ReferenciaContactoService {
-  private listReferenciaContacto: ReferenciaContacto[] = [];
   private readonly logger = new Logger('ReferenciaContactoService');
 
   constructor(
@@ -158,33 +157,34 @@ export class ReferenciaContactoService {
     }
   }
 
-  update(id: string, updateReferenciacontactoDto: UpdateReferenciaContactoDto) {
-    let referenciaContactoDB = this.findOne(id);
-    if ( referenciaContactoDB === null ) {
+  async update( idreferenciacontacto: string, updateReferenciacontactoDto: UpdateReferenciaContactoDto ) {
+    const referenciaContacto = await this.findOne(idreferenciacontacto);
+    if ( referenciaContacto === null ) {
       return {
         resp: 0, error: false,
         message: 'Referencia Contacto no existe.',
       };
     }
+    const referenciaContactoPreLoad = await this.referenciaContactoRepository.preload( {
+      idreferenciacontacto: idreferenciacontacto,
+      ...updateReferenciacontactoDto,
+      concurrencia: referenciaContacto.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listReferenciaContacto = this.listReferenciaContacto.map( (referenciaContacto) => {
-    //   if ( referenciaContacto.idreferenciacontacto === id ) {
-    //     referenciaContactoDB.updated_at = '';
-    //     referenciaContactoDB = {
-    //       ...referenciaContactoDB,
-    //       ...updateReferenciacontactoDto,
-    //       idreferenciacontacto: id,
-    //       concurrencia: referenciaContacto.concurrencia + 1,
-    //     };
-    //     return referenciaContactoDB;
-    //   }
-    //   return referenciaContacto;
-    // } );
+    if ( referenciaContactoPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Referencia Contacto no existe.',
+      };
+    }
+    const referenciaContactoUpdate = await this.referenciaContactoRepository.save( referenciaContactoPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Referencia Contacto actualizado éxitosamente.',
-      referenciaContacto: referenciaContactoDB,
+      referenciaContacto: referenciaContacto,
+      referenciaContactoUpdate: referenciaContactoUpdate,
     };
   }
 

@@ -9,8 +9,6 @@ import { TipoMateria } from './entities/tipomateria.entity';
 
 @Injectable()
 export class TipoMateriaService {
-
-  private listTipoMateria: TipoMateria[] = [];
   private readonly logger = new Logger('TipoMateriaService');
 
   constructor(
@@ -158,33 +156,34 @@ export class TipoMateriaService {
     }
   }
 
-  update(id: string, updateTipoMateriaDto: UpdateTipoMateriaDto) {
-    let tipoMateriaDB = this.findOne(id);
-    if ( tipoMateriaDB === null ) {
+  async update( idtipomateria: string, updateTipoMateriaDto: UpdateTipoMateriaDto ) {
+    const tipoMateria = await this.findOne(idtipomateria);
+    if ( tipoMateria === null ) {
       return {
         resp: 0, error: false,
         message: 'Tipo Materia no existe.',
       };
     }
+    const tipoMateriaPreLoad = await this.tipoMateriaRepository.preload( {
+      idtipomateria: idtipomateria,
+      ...updateTipoMateriaDto,
+      concurrencia: tipoMateria.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listTipoMateria = this.listTipoMateria.map( (tipoMateria) => {
-    //   if ( tipoMateria.idtipomateria === id ) {
-    //     tipoMateriaDB.updated_at = '';
-    //     tipoMateriaDB = {
-    //       ...tipoMateriaDB,
-    //       ...updateTipoMateriaDto,
-    //       idtipomateria: id,
-    //       concurrencia: tipoMateria.concurrencia + 1,
-    //     };
-    //     return tipoMateriaDB;
-    //   }
-    //   return tipoMateria;
-    // } );
+    if ( tipoMateriaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Tipo Materia no existe.',
+      };
+    }
+    const tipoMateriaUpdate = await this.tipoMateriaRepository.save( tipoMateriaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Tipo Materia actualizado éxitosamente.',
-      tipoMateria: tipoMateriaDB,
+      tipoMateria: tipoMateria,
+      tipoMateriaUpdate: tipoMateriaUpdate,
     };
   }
 
@@ -210,10 +209,6 @@ export class TipoMateriaService {
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-  }
-
-  fillTipoMateriaSeedData( listTipoMateria: TipoMateria[] ) {
-    this.listTipoMateria = listTipoMateria;
   }
 
 }

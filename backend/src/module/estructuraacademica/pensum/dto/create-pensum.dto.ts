@@ -57,7 +57,6 @@ export class CreatePensumDto {
     readonly estadoproceso: string;
 
     @IsString( { message: 'Campo Nota solo permitido tipo STRING.', } )
-    @MinLength(1, { message: 'Campo Nota debe ser mayor o igual a 1 carácter.', } )
     @IsOptional()
     readonly nota?: string;
 

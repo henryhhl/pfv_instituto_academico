@@ -20,7 +20,7 @@ export class TipoRol {
     estado: string;
 
     @Column( {
-        type: 'numeric',
+        type: 'int',
         default: 1,
     })
     concurrencia: number;

@@ -1,14 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Like, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateTipoCiudadDto } from './dto/create-tipociudad.dto';
 import { UpdateTipoCiudadDto } from './dto/update-tipociudad.dto';
 import { TipoCiudad } from './entities/tipociudad.entity';
 
 @Injectable()
 export class TipoCiudadService {
-  private listTipoCiudad: TipoCiudad[] = [];
   private readonly logger = new Logger('TipoCiudadService');
 
   constructor(
@@ -154,33 +153,34 @@ export class TipoCiudadService {
     }
   }
 
-  update(id: string, updateTipociudadDto: UpdateTipoCiudadDto) {
-    let tipoCiudadDB = this.findOne(id);
-    if ( tipoCiudadDB === null ) {
+  async update( idtipociudad: string, updateTipociudadDto: UpdateTipoCiudadDto ) {
+    const tipoCiudad = await this.findOne(idtipociudad);
+    if ( tipoCiudad === null ) {
       return {
         resp: 0, error: false,
-        message: 'Tipo Ciudad no existe.',
+        message: 'Tipo ciudad no existe.',
       };
     }
+    const tipoCiudadPreLoad = await this.tipoCiudadRepository.preload( {
+      idtipociudad: idtipociudad,
+      ...updateTipociudadDto,
+      concurrencia: tipoCiudad.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listTipoCiudad = this.listTipoCiudad.map( (tipoCiudad) => {
-    //   if ( tipoCiudad.idtipociudad === id ) {
-    //     tipoCiudadDB.updated_at = '';
-    //     tipoCiudadDB = {
-    //       ...tipoCiudadDB,
-    //       ...updateTipociudadDto,
-    //       idtipociudad: id,
-    //       concurrencia: tipoCiudad.concurrencia + 1,
-    //     };
-    //     return tipoCiudadDB;
-    //   }
-    //   return tipoCiudad;
-    // } );
+    if ( tipoCiudadPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Tipo ciudad no existe.',
+      };
+    }
+    const tipoCiudadUpdate = await this.tipoCiudadRepository.save( tipoCiudadPreLoad );
     return {
       resp: 1,
       error: false,
-      message: 'Tipo Ciudad actualizado éxitosamente.',
-      tipoCiudad: tipoCiudadDB,
+      message: 'Tipo ciudad actualizado éxitosamente.',
+      tipoCiudad: tipoCiudad,
+      tipoCiudadUpdate: tipoCiudadUpdate,
     };
   }
 

@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { Like, Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 import { CreateMateriaDto } from './dto/create-materia.dto';
 import { UpdateMateriaDto } from './dto/update-materia.dto';
 import { Materia } from './entities/materia.entity';
@@ -10,7 +9,6 @@ import { Materia } from './entities/materia.entity';
 @Injectable()
 export class MateriaService {
 
-  private listMateria: Materia[] = [];
   private readonly logger = new Logger('MateriaService');
 
   constructor(
@@ -161,33 +159,34 @@ export class MateriaService {
     }
   }
 
-  update(id: string, updateMateriaDto: UpdateMateriaDto) {
-    let materiaDB = this.findOne(id);
-    if ( materiaDB === null ) {
+  async update( idmateria: string, updateMateriaDto: UpdateMateriaDto ) {
+    const materia = await this.findOne(idmateria);
+    if ( materia === null ) {
       return {
         resp: 0, error: false,
         message: 'Materia no existe.',
       };
     }
+    const materiaPreLoad = await this.materiaRepository.preload( {
+      idmateria: idmateria,
+      ...updateMateriaDto,
+      concurrencia: materia.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listMateria = this.listMateria.map( (materia) => {
-    //   if ( materia.idmateria === id ) {
-    //     materiaDB.updated_at = '';
-    //     materiaDB = {
-    //       ...materiaDB,
-    //       ...updateMateriaDto,
-    //       idmateria: id,
-    //       concurrencia: materia.concurrencia + 1,
-    //     };
-    //     return materiaDB;
-    //   }
-    //   return materia;
-    // } );
+    if ( materiaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Materia no existe.',
+      };
+    }
+    const materiaUpdate = await this.materiaRepository.save( materiaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Materia actualizado éxitosamente.',
-      materia: materiaDB,
+      materia: materia,
+      materiaUpdate: materiaUpdate,
     };
   }
 

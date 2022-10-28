@@ -3,14 +3,12 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { Programa } from './entities/programa.entity';
 
 @Injectable()
 export class ProgramaService {
-  private listPrograma: Programa[] = [];
   private readonly logger = new Logger('ProgramaService');
 
   constructor(
@@ -164,33 +162,34 @@ export class ProgramaService {
     }
   }
 
-  update(id: string, updateProgramaDto: UpdateProgramaDto) {
-    let programaDB = this.findOne(id);
-    if ( programaDB === null ) {
+  async update( idprograma: string, updateProgramaDto: UpdateProgramaDto ) {
+    const programa = await this.findOne(idprograma);
+    if ( programa === null ) {
       return {
         resp: 0, error: false,
         message: 'Programa no existe.',
       };
     }
+    const programaPreLoad = await this.programaRepository.preload( {
+      idprograma: idprograma,
+      ...updateProgramaDto,
+      concurrencia: programa.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listPrograma = this.listPrograma.map( (programa) => {
-    //   if ( programa.idprograma === id ) {
-    //     programaDB.updated_at = '';
-    //     programaDB = {
-    //       ...programaDB,
-    //       ...updateProgramaDto,
-    //       idprograma: id,
-    //       concurrencia: programa.concurrencia + 1,
-    //     };
-    //     return programaDB;
-    //   }
-    //   return programa;
-    // } );
+    if ( programaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Programa no existe.',
+      };
+    }
+    const programaUpdate = await this.programaRepository.save( programaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Programa actualizado éxitosamente.',
-      programa: programaDB,
+      programa: programa,
+      programaUpdate: programaUpdate,
     };
   }
 

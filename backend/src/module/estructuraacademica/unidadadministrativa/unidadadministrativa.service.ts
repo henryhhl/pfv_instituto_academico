@@ -153,33 +153,34 @@ export class UnidadAdministrativaService {
     }
   }
 
-  update(id: string, updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto) {
-    let unidadAdministrativaDB = this.findOne(id);
-    if ( unidadAdministrativaDB === null ) {
+  async update( idunidadadministrativa: string, updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto ) {
+    const unidadAdministrativa = await this.findOne(idunidadadministrativa);
+    if ( unidadAdministrativa === null ) {
       return {
         resp: 0, error: false,
         message: 'Unidad Administrativa no existe.',
       };
     }
+    const unidadAdministrativaPreLoad = await this.unidadAdministrativaRepository.preload( {
+      idunidadadministrativa: idunidadadministrativa,
+      ...updateUnidadadministrativaDto,
+      concurrencia: unidadAdministrativa.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listUnidadAdministrativa = this.listUnidadAdministrativa.map( (unidadAdministrativa) => {
-    //   if ( unidadAdministrativa.idunidadadministrativa === id ) {
-    //     unidadAdministrativaDB.updated_at = '';
-    //     unidadAdministrativaDB = {
-    //       ...unidadAdministrativaDB,
-    //       ...updateUnidadadministrativaDto,
-    //       idunidadadministrativa: id,
-    //       concurrencia: unidadAdministrativa.concurrencia + 1,
-    //     };
-    //     return unidadAdministrativaDB;
-    //   }
-    //   return unidadAdministrativa;
-    // } );
+    if ( unidadAdministrativaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Unidad Administrativa no existe.',
+      };
+    }
+    const unidadAdministrativaUpdate = await this.unidadAdministrativaRepository.save( unidadAdministrativaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Unidad Administrativa actualizado éxitosamente.',
-      unidadAdministrativa: unidadAdministrativaDB,
+      unidadAdministrativa: unidadAdministrativa,
+      unidadAdministrativaUpdate: unidadAdministrativaUpdate,
     };
   }
 

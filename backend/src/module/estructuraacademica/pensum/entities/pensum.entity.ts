@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeUpdate } from 'typeorm';
 
 @Entity('pensum')
 export class Pensum {
@@ -60,7 +60,7 @@ export class Pensum {
     estado: string;
 
     @Column( {
-        type: 'numeric',
+        type: 'int',
         default: 1,
     })
     concurrencia: number;
@@ -86,4 +86,9 @@ export class Pensum {
         nullable: true,
     } )
     deleted_at?: string;
+
+    // @BeforeUpdate()
+    // update() {
+    //     this.concurrencia = this.concurrencia + 1;
+    // }
 }

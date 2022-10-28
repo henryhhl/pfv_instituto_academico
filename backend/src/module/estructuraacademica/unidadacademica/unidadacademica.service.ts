@@ -157,33 +157,34 @@ export class UnidadacademicaService {
     }
   }
 
-  update(id: string, updateUnidadacademicaDto: UpdateUnidadAcademicaDto) {
-    let unidadAcademicaDB = this.findOne(id);
-    if ( unidadAcademicaDB === null ) {
+  async update( idunidadacademica: string, updateUnidadacademicaDto: UpdateUnidadAcademicaDto ) {
+    const unidadAcademica = await this.findOne(idunidadacademica);
+    if ( unidadAcademica === null ) {
       return {
         resp: 0, error: false,
         message: 'Unidad Academica no existe.',
       };
     }
+    const unidadAcademicaPreLoad = await this.unidadAcademicaRepository.preload( {
+      idunidadacademica: idunidadacademica,
+      ...updateUnidadacademicaDto,
+      concurrencia: unidadAcademica.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listUnidadAcademica = this.listUnidadAcademica.map( (unidadAcademica) => {
-    //   if ( unidadAcademica.idunidadacademica === id ) {
-    //     unidadAcademicaDB.updated_at = '';
-    //     unidadAcademicaDB = {
-    //       ...unidadAcademicaDB,
-    //       ...updateUnidadacademicaDto,
-    //       idunidadacademica: id,
-    //       concurrencia: unidadAcademica.concurrencia + 1,
-    //     };
-    //     return unidadAcademicaDB;
-    //   }
-    //   return unidadAcademica;
-    // } );
+    if ( unidadAcademicaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Unidad Academica no existe.',
+      };
+    }
+    const unidadAcademicaUpdate = await this.unidadAcademicaRepository.save( unidadAcademicaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Unidad Academica actualizado éxitosamente.',
-      unidadAcademica: unidadAcademicaDB,
+      unidadAcademica: unidadAcademica,
+      unidadAcademicaUpdate: unidadAcademicaUpdate,
     };
   }
 

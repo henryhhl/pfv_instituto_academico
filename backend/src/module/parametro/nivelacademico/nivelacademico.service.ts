@@ -1,7 +1,6 @@
 import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import { CreateNivelAcademicoDto } from './dto/create-nivelacademico.dto';
 import { UpdateNivelAcademicoDto } from './dto/update-nivelacademico.dto';
 import { NivelAcademico } from './entities/nivelacademico.entity';
@@ -9,8 +8,6 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class NivelAcademicoService {
-
-  private listNivelAcademico: NivelAcademico[] = [];
   private readonly logger = new Logger('NivelAcademicoService');
 
   constructor(
@@ -157,33 +154,34 @@ export class NivelAcademicoService {
     }
   }
 
-  update(id: string, updateNivelAcademicoDto: UpdateNivelAcademicoDto) {
-    let nivelAcademicoDB = this.findOne(id);
-    if ( nivelAcademicoDB === null ) {
+  async update( idnivelacademico: string, updateNivelAcademicoDto: UpdateNivelAcademicoDto ) {
+    const nivelAcademico = await this.findOne(idnivelacademico);
+    if ( nivelAcademico === null ) {
       return {
         resp: 0, error: false,
         message: 'Nivel Academico no existe.',
       };
     }
+    const nivelAcademicoPreLoad = await this.nivelAcademicoRepository.preload( {
+      idnivelacademico: idnivelacademico,
+      ...updateNivelAcademicoDto,
+      concurrencia: nivelAcademico.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listNivelAcademico = this.listNivelAcademico.map( (nivelAcademico) => {
-    //   if ( nivelAcademico.idnivelacademico === id ) {
-    //     nivelAcademicoDB.updated_at = '';
-    //     nivelAcademicoDB = {
-    //       ...nivelAcademicoDB,
-    //       ...updateNivelAcademicoDto,
-    //       idnivelacademico: id,
-    //       concurrencia: nivelAcademico.concurrencia + 1,
-    //     };
-    //     return nivelAcademicoDB;
-    //   }
-    //   return nivelAcademico;
-    // } );
+    if ( nivelAcademicoPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Nivel Academico no existe.',
+      };
+    }
+    const nivelAcademicoUpdate = await this.nivelAcademicoRepository.save( nivelAcademicoPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Nivel Academico actualizado éxitosamente.',
-      nivelAcademico: nivelAcademicoDB,
+      nivelAcademico: nivelAcademico,
+      nivelAcademicoUpdate: nivelAcademicoUpdate,
     };
   }
 

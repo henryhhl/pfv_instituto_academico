@@ -1,16 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Like, Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateUnidadnegocioDto } from './dto/create-unidadnegocio.dto';
 import { UpdateUnidadNegocioDto } from './dto/update-unidadnegocio.dto';
 import { UnidadNegocio } from './entities/unidadnegocio.entity';
 
 @Injectable()
 export class UnidadNegocioService {
-
-  private listUnidadNegocio: UnidadNegocio[] = [];
   private readonly logger = new Logger('TipoMateriaService');
 
   constructor(
@@ -157,33 +154,34 @@ export class UnidadNegocioService {
     }
   }
 
-  update(id: string, updateUnidadNegocioDto: UpdateUnidadNegocioDto) {
-    let unidadNegocioDB = this.findOne(id);
-    if ( unidadNegocioDB === null ) {
+  async update( idunidadnegocio: string, updateUnidadNegocioDto: UpdateUnidadNegocioDto ) {
+    const unidadNegocio = await this.findOne(idunidadnegocio);
+    if ( unidadNegocio === null ) {
       return {
         resp: 0, error: false,
         message: 'Unidad Negocio no existe.',
       };
     }
+    const unidadNegocioPreLoad = await this.unidadNegocioRepository.preload( {
+      idunidadnegocio: idunidadnegocio,
+      ...updateUnidadNegocioDto,
+      concurrencia: unidadNegocio.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listUnidadNegocio = this.listUnidadNegocio.map( (unidadNegocio) => {
-    //   if ( unidadNegocio.idunidadnegocio === id ) {
-    //     unidadNegocioDB.updated_at = '';
-    //     unidadNegocioDB = {
-    //       ...unidadNegocioDB,
-    //       ...updateUnidadNegocioDto,
-    //       idunidadnegocio: id,
-    //       concurrencia: unidadNegocio.concurrencia + 1,
-    //     };
-    //     return unidadNegocioDB;
-    //   }
-    //   return unidadNegocio;
-    // } );
+    if ( unidadNegocioPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Unidad Negocio no existe.',
+      };
+    }
+    const unidadNegocioUpdate = await this.unidadNegocioRepository.save( unidadNegocioPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Unidad Negocio actualizado éxitosamente.',
-      unidadNegocio: unidadNegocioDB,
+      unidadNegocio: unidadNegocio,
+      unidadNegocioUpdate: unidadNegocioUpdate,
     };
   }
 

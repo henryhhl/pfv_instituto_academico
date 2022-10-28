@@ -2,15 +2,12 @@ import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { v4 as uuid } from 'uuid';
 import { CreatePeriodoDto } from './dto/create-periodo.dto';
 import { UpdatePeriodoDto } from './dto/update-periodo.dto';
 import { Periodo } from './entities/periodo.entity';
 
 @Injectable()
 export class PeriodoService {
-
-  private listPeriodo: Periodo[] = [];
   private readonly logger = new Logger('PeriodoService');
 
   constructor(
@@ -157,33 +154,34 @@ export class PeriodoService {
     }
   }
 
-  update(id: string, updatePeriodoDto: UpdatePeriodoDto) {
-    let periodoDB = this.findOne(id);
-    if ( periodoDB === null ) {
+  async update( idperiodo: string, updatePeriodoDto: UpdatePeriodoDto ) {
+    const periodo = await this.findOne(idperiodo);
+    if ( periodo === null ) {
       return {
         resp: 0, error: false,
         message: 'Periodo no existe.',
       };
     }
+    const periodoPreLoad = await this.periodoRepository.preload( {
+      idperiodo: idperiodo,
+      ...updatePeriodoDto,
+      concurrencia: periodo.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listPeriodo = this.listPeriodo.map( (periodo) => {
-    //   if ( periodo.idperiodo === id ) {
-    //     periodoDB.updated_at = '';
-    //     periodoDB = {
-    //       ...periodoDB,
-    //       ...updatePeriodoDto,
-    //       idperiodo: id,
-    //       concurrencia: periodo.concurrencia + 1,
-    //     };
-    //     return periodoDB;
-    //   }
-    //   return periodo;
-    // } );
+    if ( periodoPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Periodo no existe.',
+      };
+    }
+    const periodoUpdate = await this.periodoRepository.save( periodoPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Periodo actualizado éxitosamente.',
-      periodo: periodoDB,
+      periodo: periodo,
+      periodoUpdate: periodoUpdate,
     };
   }
 

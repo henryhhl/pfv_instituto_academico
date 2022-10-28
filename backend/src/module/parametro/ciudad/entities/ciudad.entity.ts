@@ -32,7 +32,7 @@ export class Ciudad {
     estado: string;
 
     @Column( {
-        type: 'numeric',
+        type: 'int',
         default: 1,
     } )
     concurrencia: number;

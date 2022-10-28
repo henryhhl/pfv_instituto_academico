@@ -1,16 +1,14 @@
 
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateRolDto } from './dto/create-rol.dto';
 import { UpdateRolDto } from './dto/update-rol.dto';
 import { Rol } from './entities/rol.entity';
 
 @Injectable()
 export class RolService {
-
-  private listRol: Rol[] = [];
   private readonly logger = new Logger('RolService');
 
   constructor(
@@ -157,33 +155,34 @@ export class RolService {
     }
   }
 
-  update(id: string, updateRolDto: UpdateRolDto) {
-    let materiaDB = this.findOne(id);
-    if ( materiaDB === null ) {
+  async update( idrol: string, updateRolDto: UpdateRolDto ) {
+    const rol = await this.findOne(idrol);
+    if ( rol === null ) {
       return {
         resp: 0, error: false,
         message: 'Rol no existe.',
       };
     }
+    const rolPreLoad = await this.rolRepository.preload( {
+      idrol: idrol,
+      ...updateRolDto,
+      concurrencia: rol.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listRol = this.listRol.map( (rol) => {
-    //   if ( rol.idrol === id ) {
-    //     materiaDB.updated_at = '';
-    //     materiaDB = {
-    //       ...materiaDB,
-    //       ...updateRolDto,
-    //       idrol: id,
-    //       concurrencia: rol.concurrencia + 1,
-    //     };
-    //     return materiaDB;
-    //   }
-    //   return rol;
-    // } );
+    if ( rolPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Rol no existe.',
+      };
+    }
+    const rolUpdate = await this.rolRepository.save( rolPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Rol actualizado éxitosamente.',
-      rol: materiaDB,
+      rol: rol,
+      rolUpdate: rolUpdate,
     };
   }
 
@@ -209,10 +208,6 @@ export class RolService {
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-  }
-
-  fillRolSeedData( listRol: Rol[] ) {
-    this.listRol = listRol;
   }
 
 }

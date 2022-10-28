@@ -8,8 +8,6 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class OfertaAcademicaService {
-
-  private listOfertaAcademica: OfertaAcademica[] = [];
   private readonly logger = new Logger('OfertaAcademicaService');
 
   constructor(
@@ -156,33 +154,34 @@ export class OfertaAcademicaService {
     }
   }
 
-  update(id: string, updateOfertaAcademicaDto: UpdateOfertaAcademicaDto) {
-    let ofertaAcademicaDB = this.findOne(id);
-    if ( ofertaAcademicaDB === null ) {
+  async update( idofertaacademica: string, updateOfertaAcademicaDto: UpdateOfertaAcademicaDto ) {
+    const ofertaAcademica = await this.findOne(idofertaacademica);
+    if ( ofertaAcademica === null ) {
       return {
         resp: 0, error: false,
         message: 'Oferta Academica no existe.',
       };
     }
+    const ofertaAcademicaPreLoad = await this.ofertaAcademicaRepository.preload( {
+      idofertaacademica: idofertaacademica,
+      ...updateOfertaAcademicaDto,
+      concurrencia: ofertaAcademica.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listOfertaAcademica = this.listOfertaAcademica.map( (ofertaAcademica) => {
-    //   if ( ofertaAcademica.idofertaacademica === id ) {
-    //     ofertaAcademicaDB.updated_at = '';
-    //     ofertaAcademicaDB = {
-    //       ...ofertaAcademicaDB,
-    //       ...updateOfertaAcademicaDto,
-    //       idofertaacademica: id,
-    //       concurrencia: ofertaAcademica.concurrencia + 1,
-    //     };
-    //     return ofertaAcademicaDB;
-    //   }
-    //   return ofertaAcademica;
-    // } );
+    if ( ofertaAcademicaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Oferta Academica no existe.',
+      };
+    }
+    const ofertaAcademicaUpdate = await this.ofertaAcademicaRepository.save( ofertaAcademicaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Oferta Academica actualizado éxitosamente.',
-      ofertaAcademica: ofertaAcademicaDB,
+      ofertaAcademica: ofertaAcademica,
+      ofertaAcademicaUpdate: ofertaAcademicaUpdate,
     };
   }
 

@@ -7,7 +7,6 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class TipoRolService {
-    private listTipoRol: TipoRol[] = [];
     private readonly logger = new Logger('TipoRolService');
 
     constructor(
@@ -151,33 +150,34 @@ export class TipoRolService {
         }
     }
 
-    update(id: string, updateTipoRolDto: UpdateTipoRolDto) {
-        let materiaDB = this.findOne(id);
-        if ( materiaDB === null ) {
+    async update( idtiporol: string, updateTipoRolDto: UpdateTipoRolDto ) {
+        const tipoRol = await this.findOne(idtiporol);
+        if ( tipoRol === null ) {
             return {
                 resp: 0, error: false,
                 message: 'Tipo Rol no existe.',
             };
         }
+        const tipoRolPreLoad = await this.tipoRolRepository.preload( {
+            idtiporol: idtiporol,
+            ...updateTipoRolDto,
+            concurrencia: tipoRol.concurrencia + 1,
+            updated_at: this.getDateTime(),
+        } );
 
-        // this.listTipoRol = this.listTipoRol.map( (tipoRol) => {
-        //   if ( tipoRol.idtiporol === id ) {
-        //     materiaDB.updated_at = '';
-        //     materiaDB = {
-        //       ...materiaDB,
-        //       ...updateTipoRolDto,
-        //       idtiporol: id,
-        //       concurrencia: tipoRol.concurrencia + 1,
-        //     };
-        //     return materiaDB;
-        //   }
-        //   return tipoRol;
-        // } );
+        if ( tipoRolPreLoad === null ) {
+            return {
+                resp: 0, error: false,
+                message: 'Tipo Rol no existe.',
+            };
+        }
+        const tipoRolUpdate = await this.tipoRolRepository.save( tipoRolPreLoad );
         return {
             resp: 1,
             error: false,
             message: 'Tipo Rol actualizado éxitosamente.',
-            tipoRol: materiaDB,
+            tipoRol: tipoRol,
+            tipoRolUpdate: tipoRolUpdate,
         };
     }
 
@@ -203,10 +203,6 @@ export class TipoRolService {
                 message: 'Hubo conflictos al consultar información con el servidor.',
             };
         }
-    }
-
-    fillTipoRolSeedData( listTipoRol: TipoRol[] ) {
-        this.listTipoRol = listTipoRol;
     }
 
 }

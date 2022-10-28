@@ -1,16 +1,13 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Usuario } from './entities/usuario.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class UsuarioService {
-
-  private listUsuario: Usuario[] = [];
   private readonly logger = new Logger('UsuarioService');
 
   constructor(
@@ -154,33 +151,34 @@ export class UsuarioService {
     }
   }
 
-  update(id: string, updateUsuarioDto: UpdateUsuarioDto) {
-    let usuarioDB = this.findOne(id);
-    if ( usuarioDB === null ) {
+  async update( idusuario: string, updateUsuarioDto: UpdateUsuarioDto ) {
+    const usuario = await this.findOne(idusuario);
+    if ( usuario === null ) {
       return {
         resp: 0, error: false,
         message: 'Usuario no existe.',
       };
     }
+    const usuarioPreLoad = await this.usuarioRepository.preload( {
+      idusuario: idusuario,
+      ...updateUsuarioDto,
+      concurrencia: usuario.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listUsuario = this.listUsuario.map( (usuario) => {
-    //   if ( usuario.idusuario === id ) {
-    //     usuarioDB.updated_at = '';
-    //     usuarioDB = {
-    //       ...usuarioDB,
-    //       ...updateUsuarioDto,
-    //       idusuario: id,
-    //       concurrencia: usuario.concurrencia + 1,
-    //     };
-    //     return usuarioDB;
-    //   }
-    //   return usuario;
-    // } );
+    if ( usuarioPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Usuario no existe.',
+      };
+    }
+    const usuarioUpdate = await this.usuarioRepository.save( usuarioPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Usuario actualizado éxitosamente.',
-      tipoRol: usuarioDB,
+      usuario: usuario,
+      usuarioUpdate: usuarioUpdate,
     };
   }
 
@@ -206,10 +204,6 @@ export class UsuarioService {
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-  }
-
-  fillUsuarioSeedData( listUsuario: Usuario[] ) {
-    this.listUsuario = listUsuario;
   }
 
 }

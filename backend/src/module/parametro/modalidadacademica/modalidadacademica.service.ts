@@ -1,16 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Like, Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateModalidadAcademicaDto } from './dto/create-modalidadacademica.dto';
 import { UpdateModalidadAcademicaDto } from './dto/update-modalidadacademica.dto';
 import { ModalidadAcademica } from './entities/modalidadacademica.entity';
 
 @Injectable()
 export class ModalidadAcademicaService {
-
-  private listModalidadAcademica: ModalidadAcademica[] = [];
   private readonly logger = new Logger('ModalidadAcademicaService');
 
   constructor(
@@ -157,33 +154,34 @@ export class ModalidadAcademicaService {
     }
   }
 
-  update(id: string, updateModalidadAcademicaDto: UpdateModalidadAcademicaDto) {
-    let modalidadAcademicaDB = this.findOne(id);
-    if ( modalidadAcademicaDB === null ) {
+  async update( idmodalidadacademica: string, updateModalidadAcademicaDto: UpdateModalidadAcademicaDto ) {
+    const modalidadAcademica = await this.findOne(idmodalidadacademica);
+    if ( modalidadAcademica === null ) {
       return {
         resp: 0, error: false,
         message: 'Modalidad Academica no existe.',
       };
     }
+    const modalidadAcademicaPreLoad = await this.modalidadAcademicaRepository.preload( {
+      idmodalidadacademica: idmodalidadacademica,
+      ...updateModalidadAcademicaDto,
+      concurrencia: modalidadAcademica.concurrencia + 1,
+      updated_at: this.getDateTime(),
+    } );
 
-    // this.listModalidadAcademica = this.listModalidadAcademica.map( (modalidadAcademica) => {
-    //   if ( modalidadAcademica.idmodalidadacademica === id ) {
-    //     modalidadAcademicaDB.updated_at = '';
-    //     modalidadAcademicaDB = {
-    //       ...modalidadAcademicaDB,
-    //       ...updateModalidadAcademicaDto,
-    //       idmodalidadacademica: id,
-    //       concurrencia: modalidadAcademica.concurrencia + 1,
-    //     };
-    //     return modalidadAcademicaDB;
-    //   }
-    //   return modalidadAcademica;
-    // } );
+    if ( modalidadAcademicaPreLoad === null ) {
+      return {
+        resp: 0, error: false,
+        message: 'Modalidad Academica no existe.',
+      };
+    }
+    const modalidadAcademicaUpdate = await this.modalidadAcademicaRepository.save( modalidadAcademicaPreLoad );
     return {
       resp: 1,
       error: false,
       message: 'Modalidad Academica actualizado éxitosamente.',
-      modalidadAcademica: modalidadAcademicaDB,
+      modalidadAcademica: modalidadAcademica,
+      modalidadAcademicaUpdate: modalidadAcademicaUpdate,
     };
   }
 
