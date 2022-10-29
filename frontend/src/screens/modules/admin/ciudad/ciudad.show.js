@@ -26,6 +26,15 @@ function ShowCiudad( props ) {
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
+                            label="Tipo"
+                            value={ciudad.tipociudad}
+                            readOnly
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
                             label="Sigla"
                             value={ciudad.sigla}
                             readOnly

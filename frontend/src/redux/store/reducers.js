@@ -27,6 +27,10 @@ import { PensumReducer } from '../reducers/estructuraacademica/pensum.reducer';
 import { ReferenciaContactoReducer } from '../reducers/parametros/referencia_contacto.reducer';
 import { ResponsableReducer } from '../reducers/estructuraacademica/responsable.reducer';
 import { PaginationModuleReducer } from '../reducers/paginationModule.reducer';
+import { TurnoReducer } from '../reducers/estructurainstitucional/turno.reducer';
+import { DivisionAcademicaReducer } from '../reducers/estructurainstitucional/division_academica.reducer';
+import { InstitucionReducer } from '../reducers/estructurainstitucional/institucion.reducer';
+import { GestionPeriodoReducer } from '../reducers/estructurainstitucional/gestion_periodo.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -55,6 +59,11 @@ const RootReducer = combineReducers( {
     Programa: ProgramaReducer,
     Pensum: PensumReducer,
     Responsable: ResponsableReducer,
+
+    Turno: TurnoReducer,
+    DivisionAcademica: DivisionAcademicaReducer,
+    Institucion: InstitucionReducer,
+    GestionPeriodo: GestionPeriodoReducer,
 } );
 
 export default RootReducer;

@@ -17,16 +17,17 @@ export default function DatePickerComponent( props ) {
             }
             <DatePicker 
                 className={`form-control ${props.error && 'border-danger'}`}
-                value={ props.value ? moment(props.value, "DD/MM/YYYY") : undefined}
+                value={ 
+                    (props.value === "" || props.value === null || typeof props.value === "undefined") ? 
+                        null : moment(props.value, "DD/MM/YYYY")
+                }
                 format="DD/MM/YYYY"
                 disabled={props.disabled}
                 style={{ width: '100%', maxWidth: '100%', minWidth: '100%', }}
                 onClick={props.onClick}
                 placeholder={props.placeholder}
                 onChange={ (value, dateString) => {
-                    if ( props.onChange ) {
-                        props.onChange(dateString);
-                    }
+                    props.onChange(dateString);
                 } }
             />
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
@@ -56,6 +57,6 @@ DatePickerComponent.defaultProps = {
     disabled: false,
     type: "text",
     value: null,
-    onChange: null,
+    onChange: () => {},
     style: {},
 }

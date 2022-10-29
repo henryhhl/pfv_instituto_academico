@@ -1,6 +1,8 @@
 
 const Ciudad = {
     idciudad: "",
+    fkidtipociudad: "",
+    tipociudad: "",
     fkidciudadpadre: "",
     sigla:"",
     descripcion: "",
@@ -12,6 +14,7 @@ const Ciudad = {
     deleted_at: "",
 
     error: {
+        fkidtipociudad: false,
         sigla: false,
         descripcion: false,
         estado: false,
@@ -19,6 +22,7 @@ const Ciudad = {
     },
 
     message: {
+        fkidtipociudad: "",
         sigla: "",
         descripcion: "",
         estado: "",

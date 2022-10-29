@@ -102,6 +102,26 @@ import CreateResponsable from '../screens/modules/estructuraacademica/responsabl
 import ShowResponsable from '../screens/modules/estructuraacademica/responsable/responsable.show';
 import EditResponsable from '../screens/modules/estructuraacademica/responsable/responsable.edit';
 
+import IndexTurno from '../screens/modules/estructurainstitucional/turno/turno.index';
+import CreateTurno from '../screens/modules/estructurainstitucional/turno/turno.create';
+import ShowTurno from '../screens/modules/estructurainstitucional/turno/turno.show';
+import EditTurno from '../screens/modules/estructurainstitucional/turno/turno.edit';
+
+import IndexDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.index';
+import CreateDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.create';
+import ShowDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.show';
+import EditDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.edit';
+
+import IndexInstitucion from '../screens/modules/estructurainstitucional/institucion/institucion.index';
+import CreateInstitucion from '../screens/modules/estructurainstitucional/institucion/institucion.create';
+import ShowInstitucion from '../screens/modules/estructurainstitucional/institucion/institucion.show';
+import EditInstitucion from '../screens/modules/estructurainstitucional/institucion/institucion.edit';
+
+import IndexGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.index';
+import CreateGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.create';
+import ShowGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.show';
+import EditGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.edit';
+
 const HomeRoute = (props) => {
     return (
         <>
@@ -205,6 +225,26 @@ const HomeRoute = (props) => {
                     <Route index path="/responsable/create" element={ <CreateResponsable { ...props } /> }  />
                     <Route index path="/responsable/edit/:idresponsable" element={ <EditResponsable { ...props } /> }  />
                     <Route index path="/responsable/show/:idresponsable" element={ <ShowResponsable { ...props } /> }  />
+
+                    <Route index path="/turno/index" element={ <IndexTurno { ...props } /> }  />
+                    <Route index path="/turno/create" element={ <CreateTurno { ...props } /> }  />
+                    <Route index path="/turno/edit/:idturno" element={ <EditTurno { ...props } /> }  />
+                    <Route index path="/turno/show/:idturno" element={ <ShowTurno { ...props } /> }  />
+
+                    <Route index path="/divisionacademica/index" element={ <IndexDivisionAcademica { ...props } /> }  />
+                    <Route index path="/divisionacademica/create" element={ <CreateDivisionAcademica { ...props } /> }  />
+                    <Route index path="/divisionacademica/edit/:iddivisionacademica" element={ <EditDivisionAcademica { ...props } /> }  />
+                    <Route index path="/divisionacademica/show/:iddivisionacademica" element={ <ShowDivisionAcademica { ...props } /> }  />
+
+                    <Route index path="/institucion/index" element={ <IndexInstitucion { ...props } /> }  />
+                    <Route index path="/institucion/create" element={ <CreateInstitucion { ...props } /> }  />
+                    <Route index path="/institucion/edit/:idinstitucion" element={ <EditInstitucion { ...props } /> }  />
+                    <Route index path="/institucion/show/:idinstitucion" element={ <ShowInstitucion { ...props } /> }  />
+
+                    <Route index path="/gestionperiodo/index" element={ <IndexGestionPeriodo { ...props } /> }  />
+                    <Route index path="/gestionperiodo/create" element={ <CreateGestionPeriodo { ...props } /> }  />
+                    <Route index path="/gestionperiodo/edit/:idgestionperiodo" element={ <EditGestionPeriodo { ...props } /> }  />
+                    <Route index path="/gestionperiodo/show/:idgestionperiodo" element={ <ShowGestionPeriodo { ...props } /> }  />
 
                     <Route
                         path='*'

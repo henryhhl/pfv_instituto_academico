@@ -23,6 +23,7 @@ export default function TreeComponent( props ) {
             let element = treeData[index];
             keys.push(element[props.option.value]);
             if ( element[props.option.fkidpadre] === null ) {
+                element.arrayFamily = [];
                 let obj = {
                     title: onComponentTitle(element),
                     key:   element[props.option.value],
@@ -34,7 +35,6 @@ export default function TreeComponent( props ) {
             }
         }
         treeFamily(treeData, array_treeData);
-        console.log('array_treeData: ', array_treeData);
         setTreeData(array_treeData);
         setArrayKeys(keys);
         setExpandedKeys(keys);
@@ -50,17 +50,27 @@ export default function TreeComponent( props ) {
             return;
         }
         for ( let i = 0; i < array_treeData.length; i++ ) {
-            let children = childrenFamily( treeData, array_treeData[i].value );
+            let children = childrenFamily( treeData, array_treeData[i] );
             array_treeData[i].children = children;
             treeFamily(treeData, children);
         }
     };
 
-    function childrenFamily(treeData = [], idpadre) {
+    function childrenFamily(treeData = [], tree) {
         let children = [];
+        let cantidad = 0;
         for ( let index = 0; index < treeData.length; index++ ) {
             let element = treeData[index];
-            if ( element[props.option.fkidpadre] == idpadre ) {
+            if ( element[props.option.fkidpadre] === tree.value ) {
+                    if ( !Array.isArray(element.arrayFamily) ) {
+                        element.arrayFamily = [];
+                    }
+                    if ( tree.data.arrayFamily.length > 0 ) {
+                        // element.arrayFamily = [...element.arrayFamily, tree.data.arrayFamily[tree.data.arrayFamily.length - 1]];
+                        element.arrayFamily = element.arrayFamily.concat(tree.data.arrayFamily);
+                    }
+                    element.arrayFamily = [...element.arrayFamily, tree.data[props.option.title]];
+                
                 let obj = {
                     title: onComponentTitle(element),
                     key:   element[props.option.value],
@@ -76,44 +86,54 @@ export default function TreeComponent( props ) {
 
     function onComponentTitle(obj) {
         return (
-            <span style={{ position: 'relative', }}>
+            <span style={{ position: 'relative', }} 
+                onClick={ () => props.onSelect(obj) }
+            >
                 { obj[props.option.title] } 
-                <Tooltip placement="top" title={"Agregar"}>
-                    <Tag 
-                        style={{ lineHeight: 0, padding: 3, marginLeft: 8, marginRight: 2, }} 
-                        // color="processing"
-                        onClick={ () => props.onCreate(obj) }
-                    >
-                        <PlusOutlined />
-                    </Tag>
-                </Tooltip>
-                <Tooltip placement="top" title={"Ver"}>
-                    <Tag 
-                        style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} 
-                        // color="green"
-                        onClick={ () => props.onShow(obj) }
-                    >
-                        <EyeOutlined />
-                    </Tag>
-                </Tooltip>
-                <Tooltip placement="top" title={"Editar"}>
-                    <Tag 
-                        style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} 
-                        // color="geekblue"
-                        onClick={ () => props.onEdit(obj) }
-                    >
-                        <EditOutlined />
-                    </Tag>
-                </Tooltip>
-                <Tooltip placement="top" title={"Eliminar"}>
-                    <Tag 
-                        style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} 
-                        // color="red"
-                        onClick={ () => props.onDelete(obj) }
-                    >
-                        <DeleteOutlined />
-                    </Tag>
-                </Tooltip>
+                { props.create === true &&
+                    <Tooltip placement="top" title={"Agregar"}>
+                        <Tag 
+                            style={{ lineHeight: 0, padding: 3, marginLeft: 8, marginRight: 2, }} 
+                            // color="processing"
+                            onClick={ () => props.onCreate(obj) }
+                        >
+                            <PlusOutlined />
+                        </Tag>
+                    </Tooltip>
+                }
+                { props.show === true &&
+                    <Tooltip placement="top" title={"Ver"}>
+                        <Tag 
+                            style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} 
+                            // color="green"
+                            onClick={ () => props.onShow(obj) }
+                        >
+                            <EyeOutlined />
+                        </Tag>
+                    </Tooltip>
+                }
+                { props.edit === true &&
+                    <Tooltip placement="top" title={"Editar"}>
+                        <Tag 
+                            style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} 
+                            // color="geekblue"
+                            onClick={ () => props.onEdit(obj) }
+                        >
+                            <EditOutlined />
+                        </Tag>
+                    </Tooltip>
+                }
+                { props.delete === true &&
+                    <Tooltip placement="top" title={"Eliminar"}>
+                        <Tag 
+                            style={{ lineHeight: 0, padding: 3, marginLeft: 2, marginRight: 2, }} 
+                            // color="red"
+                            onClick={ () => props.onDelete(obj) }
+                        >
+                            <DeleteOutlined />
+                        </Tag>
+                    </Tooltip>
+                }
             </span>
         );
     };
@@ -132,7 +152,7 @@ export default function TreeComponent( props ) {
             <Row gutter={ [12, 8] }>
                 <Col xs={{ span: 24, }}>
                     <Tree 
-                        onSelect={props.onSelect}
+                        // onSelect={props.onSelect}
                         style={ { 
                             width: '100%', maxWidth: '100%', 
                         } }
@@ -172,6 +192,10 @@ TreeComponent.propTypes = {
     draggable: PropTypes.bool,
     checkable: PropTypes.bool,
     selectable: PropTypes.bool,
+    create: PropTypes.bool,
+    show: PropTypes.bool,
+    edit: PropTypes.bool,
+    delete: PropTypes.bool,
 
     height: PropTypes.number,
     prefix: PropTypes.node,
@@ -185,6 +209,7 @@ TreeComponent.propTypes = {
     onShow: PropTypes.func,
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
+    onSelect: PropTypes.func,
 }
 
 TreeComponent.defaultProps = {
@@ -195,6 +220,10 @@ TreeComponent.defaultProps = {
     draggable: true,
     checkable: false,
     selectable: true,
+    create: true,
+    show: true,
+    edit: true,
+    delete: true,
 
     height: 400,
 

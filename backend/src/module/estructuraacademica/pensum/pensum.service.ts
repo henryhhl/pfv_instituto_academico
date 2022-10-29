@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { v4 as uuid } from 'uuid';
 import { CreatePensumDto } from './dto/create-pensum.dto';
 import { UpdatePensumDto } from './dto/update-pensum.dto';
 import { Pensum } from './entities/pensum.entity';
@@ -9,8 +8,7 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class PensumService {
-  private listPensum: Pensum[] = [];
-  private readonly logger = new Logger('ProgramaService');
+  private readonly logger = new Logger('PensumService');
 
   constructor(
     @InjectRepository(Pensum)

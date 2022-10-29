@@ -27,6 +27,8 @@ export const CiudadReducer = ( state = inititalState, action ) => {
 
         case Constants.ciudad_onShow:
             state.idciudad = action.payload.idciudad;
+            state.fkidtipociudad = action.payload.fkidtipociudad;
+            state.tipociudad = action.payload.tipociudad;
             state.fkidciudadpadre = action.payload.fkidciudadpadre;
             state.sigla = action.payload.sigla;
             state.descripcion = action.payload.descripcion;

@@ -10,6 +10,18 @@ export class Ciudad {
         type: 'text',
         nullable: true,
     } )
+    fkidtipociudad: string;
+
+    @Column( {
+        type: 'text',
+        nullable: true,
+    } )
+    tipociudad: string;
+
+    @Column( {
+        type: 'text',
+        nullable: true,
+    } )
     fkidciudadpadre?: string;
 
     @Column('text')

@@ -15,8 +15,21 @@ const getAllCiudad = async (search = "") => {
     } );
 };
 
+const onCreate = async (search = "") => {
+    return await httpRequest('get', apiServices.apiparametrosadminciudad_create, {
+        search: search,
+    } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", } );
+        }
+        return respta;
+    } );
+};
+
 const onStore = async (body) => {
     return await httpRequest('post', apiServices.apiparametrosadminciudad_store, {
+        fkidtipociudad: body.fkidtipociudad,
+        tipociudad: body.tipociudad,
         fkidciudadpadre: body.fkidciudadpadre,
         sigla: body.sigla,
         descripcion: body.descripcion,
@@ -56,6 +69,8 @@ const onEdit = async (idciudad) => {
 
 const onUpdate = async (body) => {
     return await httpRequest('put', apiServices.apiparametrosadminciudad_update + `/${body.idciudad}`, {
+        fkidtipociudad: body.fkidtipociudad,
+        tipociudad: body.tipociudad,
         fkidciudadpadre: body.fkidciudadpadre,
         sigla: body.sigla,
         descripcion: body.descripcion,
@@ -92,6 +107,7 @@ const onDelete = async (body) => {
 
 export const CiudadService = {
     getAllCiudad,
+    onCreate,
     onStore,
     onEdit,
     onShow,

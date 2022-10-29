@@ -61,6 +61,8 @@ export class CiudadService {
   async store(createCiudadDto: CreateCiudadDto) {
     try {
       const ciudad = this.ciudadRepository.create( {
+        fkidtipociudad: createCiudadDto.fkidtipociudad,
+        tipociudad: createCiudadDto.tipociudad,
         fkidciudadpadre: createCiudadDto.fkidciudadpadre,
         sigla: createCiudadDto.sigla,
         descripcion: createCiudadDto.descripcion,

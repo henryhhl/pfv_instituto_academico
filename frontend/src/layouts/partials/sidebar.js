@@ -28,11 +28,46 @@ export default function SidebarComponent() {
 
                     <li className="menu-header">Componentes</li>
                     <li>
-                        <a href="#" className="has-dropdown"
+                        <a href="#" className="has-dropdown pl-3"
                             onClick={ (evt) => evt.preventDefault() }
                         >
                             <i className="ion ion-ios-albums-outline"></i>
-                            <span>Estructura Academica</span>
+                            <span style={{ fontSize: 13, }}>Estructura Institucional</span>
+                        </a>
+                        <ul className="menu-dropdown">
+                            <li>
+                                <Link to={"/institucion/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Institución
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/gestionperiodo/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Periodo
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/divisionacademica/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> División Academica
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/turno/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Turno
+                                </Link>
+                            </li>
+                            {/* <li>
+                                <Link to={"/aula/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Aula
+                                </Link>
+                            </li> */}
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" className="has-dropdown pl-3"
+                            onClick={ (evt) => evt.preventDefault() }
+                        >
+                            <i className="ion ion-ios-albums-outline"></i>
+                            <span style={{ fontSize: 13, }}>Estructura Academica</span>
                         </a>
                         <ul className="menu-dropdown">
                             <li>
@@ -63,11 +98,11 @@ export default function SidebarComponent() {
                         </ul>
                     </li>
                     <li>
-                        <a href="#" className="has-dropdown"
+                        <a href="#" className="has-dropdown pl-3"
                             onClick={ (evt) => evt.preventDefault() }
                         >
                             <i className="ion ion-ios-albums-outline"></i>
-                            <span>Parametros</span>
+                            <span style={{ fontSize: 13, }}>Parametros</span>
                         </a>
                         <ul className="menu-dropdown">
                             <li>
@@ -123,11 +158,11 @@ export default function SidebarComponent() {
                         </ul>
                     </li>
                     <li>
-                        <a href="#" className="has-dropdown"
+                        <a href="#" className="has-dropdown pl-3"
                             onClick={ (evt) => evt.preventDefault() }
                         >
-                            <i className="ion ion-ios-copy-outline"></i>
-                            <span>Seguridad</span>
+                            <i className="ion ion-ios-albums-outline"></i>
+                            <span style={{ fontSize: 13, }}>Seguridad</span>
                         </a>
                         <ul className="menu-dropdown">
                             <li>

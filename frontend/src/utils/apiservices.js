@@ -8,6 +8,7 @@ const module = {
     admin: linkBackend + '',
     parametros: linkBackend + '',
     estructuraacademica: linkBackend + '',
+    estructurainstitucional: linkBackend + '',
 };
 
 const apiServices = {
@@ -174,6 +175,40 @@ const apiServices = {
     apiestructuraacademicaresponsable_show:   `${module.estructuraacademica}/responsable/show`,
     apiestructuraacademicaresponsable_update: `${module.estructuraacademica}/responsable/update`,
     apiestructuraacademicaresponsable_delete: `${module.estructuraacademica}/responsable/delete`,
+
+
+
+    apiestructurainstitucionalturno_index:  `${module.estructurainstitucional}/turno/index`,
+    apiestructurainstitucionalturno_create: `${module.estructurainstitucional}/turno/create`,
+    apiestructurainstitucionalturno_store:  `${module.estructurainstitucional}/turno/store`,
+    apiestructurainstitucionalturno_edit:   `${module.estructurainstitucional}/turno/edit`,
+    apiestructurainstitucionalturno_show:   `${module.estructurainstitucional}/turno/show`,
+    apiestructurainstitucionalturno_update: `${module.estructurainstitucional}/turno/update`,
+    apiestructurainstitucionalturno_delete: `${module.estructurainstitucional}/turno/delete`,
+
+    apiestructurainstitucionaldivisionacademica_index:  `${module.estructurainstitucional}/divisionacademica/index`,
+    apiestructurainstitucionaldivisionacademica_create: `${module.estructurainstitucional}/divisionacademica/create`,
+    apiestructurainstitucionaldivisionacademica_store:  `${module.estructurainstitucional}/divisionacademica/store`,
+    apiestructurainstitucionaldivisionacademica_edit:   `${module.estructurainstitucional}/divisionacademica/edit`,
+    apiestructurainstitucionaldivisionacademica_show:   `${module.estructurainstitucional}/divisionacademica/show`,
+    apiestructurainstitucionaldivisionacademica_update: `${module.estructurainstitucional}/divisionacademica/update`,
+    apiestructurainstitucionaldivisionacademica_delete: `${module.estructurainstitucional}/divisionacademica/delete`,
+
+    apiestructurainstitucionalinstitucion_index:  `${module.estructurainstitucional}/institucion/index`,
+    apiestructurainstitucionalinstitucion_create: `${module.estructurainstitucional}/institucion/create`,
+    apiestructurainstitucionalinstitucion_store:  `${module.estructurainstitucional}/institucion/store`,
+    apiestructurainstitucionalinstitucion_edit:   `${module.estructurainstitucional}/institucion/edit`,
+    apiestructurainstitucionalinstitucion_show:   `${module.estructurainstitucional}/institucion/show`,
+    apiestructurainstitucionalinstitucion_update: `${module.estructurainstitucional}/institucion/update`,
+    apiestructurainstitucionalinstitucion_delete: `${module.estructurainstitucional}/institucion/delete`,
+
+    apiestructurainstitucionalgestionperiodo_index:  `${module.estructurainstitucional}/gestionperiodo/index`,
+    apiestructurainstitucionalgestionperiodo_create: `${module.estructurainstitucional}/gestionperiodo/create`,
+    apiestructurainstitucionalgestionperiodo_store:  `${module.estructurainstitucional}/gestionperiodo/store`,
+    apiestructurainstitucionalgestionperiodo_edit:   `${module.estructurainstitucional}/gestionperiodo/edit`,
+    apiestructurainstitucionalgestionperiodo_show:   `${module.estructurainstitucional}/gestionperiodo/show`,
+    apiestructurainstitucionalgestionperiodo_update: `${module.estructurainstitucional}/gestionperiodo/update`,
+    apiestructurainstitucionalgestionperiodo_delete: `${module.estructurainstitucional}/gestionperiodo/delete`,
 };
 
 export default apiServices;

@@ -34,6 +34,11 @@ import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.modul
 import { ResponsableUnidadAcademicaDetalleModule } from './module/estructuraacademica/responsableunidadacademicadetalle/responsableunidadacademicadetalle.module';
 import { ResponsablereferenciacontactodetalleModule } from './module/estructuraacademica/responsablereferenciacontactodetalle/responsablereferenciacontactodetalle.module';
 import { CommonModule } from './common/common.module';
+import { TurnoModule } from './module/estructurainstitucional/turno/turno.module';
+import { AulaModule } from './module/estructurainstitucional/aula/aula.module';
+import { DivisionAcademicaModule } from './module/estructurainstitucional/divisionacademica/divisionacademica.module';
+import { InstitucionModule } from './module/estructurainstitucional/institucion/institucion.module';
+import { GestionPeriodoModule } from './module/estructurainstitucional/gestionperiodo/gestionperiodo.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -74,7 +79,9 @@ import { CommonModule } from './common/common.module';
     ModalidadAcademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
     UnidadAdministrativaModule, UsuarioRolDetalleModule, 
     RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
-    ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, ResponsablereferenciacontactodetalleModule, CommonModule,
+    ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, 
+    ResponsablereferenciacontactodetalleModule, CommonModule, TurnoModule, AulaModule, 
+    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule,
   ],
   controllers: [],
   providers: [],

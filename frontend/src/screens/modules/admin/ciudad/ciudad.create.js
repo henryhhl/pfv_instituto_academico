@@ -6,12 +6,29 @@ import ButtonComponent from '../../../../components/button';
 import InputComponent from '../../../../components/input';
 import { CiudadActions } from '../../../../redux/actions/parametros/ciudad.action';
 import CardComponent from '../../../../components/card';
+import ListadoTipoCiudadModal from '../tipociudad/modal/tipo_ciudad_listado.modal';
 
 function CreateCiudad( props ) {
     const { ciudad } = props;
+    const [ visibleTipoCiudad, setVisibleTipoCiudad ] = React.useState(false);
+
+    function onComponentTipoCiudad() {
+        if ( !visibleTipoCiudad ) return null;
+        return (
+            <ListadoTipoCiudadModal
+                visible={visibleTipoCiudad}
+                onClose={ () => setVisibleTipoCiudad(false) }
+                onSelect={ (tipoCiudad) => {
+                    props.setFkIDTipoCiudad(ciudad, tipoCiudad);
+                    setVisibleTipoCiudad(false);
+                } }
+            />
+        );
+    };
     
     return (
         <>
+            { onComponentTipoCiudad() }
             <CardComponent
                 style={{ marginTop: 10, }} isHeader={false}
                 footer={
@@ -29,6 +46,19 @@ function CreateCiudad( props ) {
                     </>
                 }
             >
+                <div className="row">
+                    <div className="form-group col-12">
+                        <InputComponent
+                            label="Tipo"
+                            value={ciudad.tipociudad}
+                            onClick={ () => setVisibleTipoCiudad(true) }
+                            error={ciudad.error.fkidtipociudad}
+                            message={ciudad.message.fkidtipociudad}
+                            readOnly
+                            style={{ background: 'white', cursor: 'pointer', }}
+                        />
+                    </div>
+                </div>
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
@@ -70,6 +100,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onLimpiar: CiudadActions.onLimpiar,
+    setFkIDTipoCiudad: CiudadActions.setFkIDTipoCiudad,
     setSigla: CiudadActions.setSigla,
     setDescripcion: CiudadActions.setDescripcion,
     onStore: CiudadActions.onGrabar,

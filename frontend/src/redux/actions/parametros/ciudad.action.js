@@ -57,6 +57,17 @@ const onLimpiar = () => {
     };
 };
 
+const setFkIDTipoCiudad = (ciudad, tipoCiudad) => {
+    return ( dispatch ) => {
+        ciudad.fkidtipociudad = tipoCiudad.idtipociudad;
+        ciudad.tipociudad = tipoCiudad.descripcion;
+        ciudad.error.fkidtipociudad = false;
+        ciudad.message.fkidtipociudad = "";
+        dispatch( onChange(ciudad) );
+        dispatch( onChange(ciudad) );
+    };
+};
+
 const setFkIDCiudadPadre = (ciudad, value) => {
     return ( dispatch ) => {
         ciudad.fkidciudadpadre = value;
@@ -170,6 +181,11 @@ const onUpdate = ( ciudad, onBack ) => {
 
 function onValidate( data ) {
     let bandera = true;
+    if ( data.fkidtipociudad?.toString().trim().length === 0 || data.fkidtipociudad === null ) {
+        data.error.fkidtipociudad   = true;
+        data.message.fkidtipociudad = "Campo requerido.";
+        bandera = false;
+    }
     if ( data.sigla.toString().trim().length === 0 ) {
         data.error.sigla   = true;
         data.message.sigla = "Campo requerido.";
@@ -208,6 +224,7 @@ export const CiudadActions = {
     initData,
     getAllCiudad,
     onLimpiar,
+    setFkIDTipoCiudad,
     setFkIDCiudadPadre,
     setSigla,
     setDescripcion,

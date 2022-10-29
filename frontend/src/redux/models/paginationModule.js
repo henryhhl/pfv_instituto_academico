@@ -1,6 +1,35 @@
 
 const PaginationModule = {
 
+    listTurno: [],
+    pageTurno: 1,
+    paginateTurno: 1,
+    paginationTurno: {
+        total: 0,
+    },
+
+    listDivisionAcademica: [],
+    pageDivisionAcademica: 1,
+    paginateDivisionAcademica: 1,
+    paginationDivisionAcademica: {
+        total: 0,
+    },
+
+    listInstitucion: [],
+    pageInstitucion: 1,
+    paginateInstitucion: 1,
+    paginationInstitucion: {
+        total: 0,
+    },
+
+    listGestionPeriodo: [],
+    pageGestionPeriodo: 1,
+    paginateGestionPeriodo: 1,
+    paginationGestionPeriodo: {
+        total: 0,
+    },
+
+
     listUnidadAdministrativa: [],
     pageUnidadAdministrativa: 1,
     paginateUnidadAdministrativa: 1,

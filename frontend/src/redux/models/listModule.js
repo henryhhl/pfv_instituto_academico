@@ -22,6 +22,11 @@ const ListModules = {
     listPrograma: [],
     listPensum: [],
     listResponsable: [],
+
+    listTurno: [],
+    listDivisionAcademica: [],
+    listInstitucion: [],
+    listGestionPeriodo: [],
 };
 
 export default ListModules;
