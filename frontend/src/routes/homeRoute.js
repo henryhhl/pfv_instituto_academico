@@ -6,76 +6,76 @@ import AppMain from '../layouts/app';
 
 import Error404 from '../errors/errors404';
 
-import IndexTipoRol from '../screens/modules/seguridad/tiporol/indexTipoRol';
-import CreateTipoRol from '../screens/modules/seguridad/tiporol/createTipoRol';
-import EditTipoRol from '../screens/modules/seguridad/tiporol/editTipoRol';
-import ShowTipoRol from '../screens/modules/seguridad/tiporol/showTipoRol';
+import IndexTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.index';
+import CreateTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.create';
+import EditTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.edit';
+import ShowTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.show';
 
-import IndexTipoPermiso from '../screens/modules/seguridad/tipopermiso/indexTipoPermiso';
-import CreateTipoPermiso from '../screens/modules/seguridad/tipopermiso/createTipoPermiso';
-import EditTipoPermiso from '../screens/modules/seguridad/tipopermiso/editTipoPermiso';
-import ShowTipoPermiso from '../screens/modules/seguridad/tipopermiso/showTipoPermiso';
+import IndexTipoPermiso from '../screens/modules/seguridad/tipopermiso/tipo_permiso.index';
+import CreateTipoPermiso from '../screens/modules/seguridad/tipopermiso/tipo_permiso.create';
+import EditTipoPermiso from '../screens/modules/seguridad/tipopermiso/tipo_permiso.edit';
+import ShowTipoPermiso from '../screens/modules/seguridad/tipopermiso/tipo_permiso.show';
 
-import IndexRol from '../screens/modules/seguridad/rol/indexRol';
-import CreateRol from '../screens/modules/seguridad/rol/createRol';
-import EditRol from '../screens/modules/seguridad/rol/editRol';
-import ShowRol from '../screens/modules/seguridad/rol/showRol';
+import IndexRol from '../screens/modules/seguridad/rol/rol.index';
+import CreateRol from '../screens/modules/seguridad/rol/rol.create';
+import EditRol from '../screens/modules/seguridad/rol/rol.edit';
+import ShowRol from '../screens/modules/seguridad/rol/rol.show';
 
-import IndexPermiso from '../screens/modules/seguridad/permiso/indexPermiso';
+import IndexPermiso from '../screens/modules/seguridad/permiso/permiso.index';
 import AsignarRol from '../screens/modules/seguridad/asignar_rol';
 import AsignarPermiso from '../screens/modules/seguridad/asignar_permiso';
 
-import IndexUsuario from '../screens/modules/seguridad/usuario/indexUsuario';
-import CreateUsuario from '../screens/modules/seguridad/usuario/createUsuario';
-import EditUsuario from '../screens/modules/seguridad/usuario/editUsuario';
-import ShowUsuario from '../screens/modules/seguridad/usuario/showUsuario';
+import IndexUsuario from '../screens/modules/seguridad/usuario/usuario.index';
+import CreateUsuario from '../screens/modules/seguridad/usuario/usuario.create';
+import EditUsuario from '../screens/modules/seguridad/usuario/usuario.edit';
+import ShowUsuario from '../screens/modules/seguridad/usuario/usuario.show';
 
-import IndexNivelAcademico from '../screens/modules/admin/nivelacademico/indexNivelAcademico';
-import CreateNivelAcademico from '../screens/modules/admin/nivelacademico/createNivelAcademico';
-import EditNivelAcademico from '../screens/modules/admin/nivelacademico/editNivelAcademico';
-import ShowNivelAcademico from '../screens/modules/admin/nivelacademico/showNivelAcademico';
+import IndexNivelAcademico from '../screens/modules/parametro/nivelacademico/nivel_academico.index';
+import CreateNivelAcademico from '../screens/modules/parametro/nivelacademico/nivel_academico.create';
+import EditNivelAcademico from '../screens/modules/parametro/nivelacademico/nivel_academico.edit';
+import ShowNivelAcademico from '../screens/modules/parametro/nivelacademico/nivel_academico.show';
 
-import IndexModalidadAcademica from '../screens/modules/admin/modalidad/indexModalidadAcademica';
-import CreateModalidadAcademica from '../screens/modules/admin/modalidad/createModalidadAcademica';
-import EditModalidadAcademica from '../screens/modules/admin/modalidad/editModalidadAcademica';
-import ShowModalidadAcademica from '../screens/modules/admin/modalidad/showModalidadAcademica';
+import IndexModalidadAcademica from '../screens/modules/parametro/modalidad/modalidad_academica.index';
+import CreateModalidadAcademica from '../screens/modules/parametro/modalidad/modalidad_academica.create';
+import EditModalidadAcademica from '../screens/modules/parametro/modalidad/modalidad_academica.edit';
+import ShowModalidadAcademica from '../screens/modules/parametro/modalidad/modalidad_academica.show';
 
-import IndexPeriodo from '../screens/modules/admin/periodo/indexPeriodo';
-import CreatePeriodo from '../screens/modules/admin/periodo/createPeriodo';
-import EditPeriodo from '../screens/modules/admin/periodo/editPeriodo';
-import ShowPeriodo from '../screens/modules/admin/periodo/showPeriodo';
+import IndexPeriodo from '../screens/modules/parametro/periodo/periodo.index';
+import CreatePeriodo from '../screens/modules/parametro/periodo/periodo.create';
+import EditPeriodo from '../screens/modules/parametro/periodo/periodo.edit';
+import ShowPeriodo from '../screens/modules/parametro/periodo/periodo.show';
 
-import IndexTipoMateria from '../screens/modules/admin/tipomateria/indexTipoMateria';
-import CreateTipoMateria from '../screens/modules/admin/tipomateria/createTipoMateria';
-import EditTipoMateria from '../screens/modules/admin/tipomateria/editTipoMateria';
-import ShowTipoMateria from '../screens/modules/admin/tipomateria/showTipoMateria';
+import IndexTipoMateria from '../screens/modules/parametro/tipomateria/tipo_materia.index';
+import CreateTipoMateria from '../screens/modules/parametro/tipomateria/tipo_materia.create';
+import EditTipoMateria from '../screens/modules/parametro/tipomateria/tipo_materia.edit';
+import ShowTipoMateria from '../screens/modules/parametro/tipomateria/tipo_materia.show';
 
-import IndexMateria from '../screens/modules/admin/materia/indexMateria';
-import CreateMateria from '../screens/modules/admin/materia/createMateria';
-import EditMateria from '../screens/modules/admin/materia/editMateria';
-import ShowMateria from '../screens/modules/admin/materia/showMateria';
+import IndexMateria from '../screens/modules/parametro/materia/materia.index';
+import CreateMateria from '../screens/modules/parametro/materia/materia.create';
+import EditMateria from '../screens/modules/parametro/materia/materia.edit';
+import ShowMateria from '../screens/modules/parametro/materia/materia.show';
 
-import IndexReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.index';
-import CreateReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.create';
-import EditReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.edit';
-import ShowReferenciaContacto from '../screens/modules/admin/referenciacontacto/referencia_contacto.show';
+import IndexReferenciaContacto from '../screens/modules/persona/referenciacontacto/referencia_contacto.index';
+import CreateReferenciaContacto from '../screens/modules/persona/referenciacontacto/referencia_contacto.create';
+import EditReferenciaContacto from '../screens/modules/persona/referenciacontacto/referencia_contacto.edit';
+import ShowReferenciaContacto from '../screens/modules/persona/referenciacontacto/referencia_contacto.show';
 
-import IndexTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.index';
-import CreateTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.create';
-import EditTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.edit';
-import ShowTipoCiudad from '../screens/modules/admin/tipociudad/tipo_ciudad.show';
+import IndexTipoCiudad from '../screens/modules/parametro/tipociudad/tipo_ciudad.index';
+import CreateTipoCiudad from '../screens/modules/parametro/tipociudad/tipo_ciudad.create';
+import EditTipoCiudad from '../screens/modules/parametro/tipociudad/tipo_ciudad.edit';
+import ShowTipoCiudad from '../screens/modules/parametro/tipociudad/tipo_ciudad.show';
 
-import IndexCiudad from '../screens/modules/admin/ciudad/indexCiudad';
+import IndexCiudad from '../screens/modules/parametro/ciudad/indexCiudad';
 
-import IndexOfertaAcademica from '../screens/modules/admin/ofertaacademica/indexOfertaAcademica';
-import CreateOfertaAcademica from '../screens/modules/admin/ofertaacademica/createOfertaAcademica';
-import EditOfertaAcademica from '../screens/modules/admin/ofertaacademica/editOfertaAcademica';
-import ShowOfertaAcademica from '../screens/modules/admin/ofertaacademica/showOfertaAcademica';
+import IndexOfertaAcademica from '../screens/modules/parametro/ofertaacademica/oferta_academica.index';
+import CreateOfertaAcademica from '../screens/modules/parametro/ofertaacademica/oferta_academica.create';
+import EditOfertaAcademica from '../screens/modules/parametro/ofertaacademica/oferta_academica.edit';
+import ShowOfertaAcademica from '../screens/modules/parametro/ofertaacademica/oferta_academica.show';
 
-import IndexUnidadNegocio from '../screens/modules/admin/unidadnegocio/indexUnidadNegocio';
-import CreateUnidadNegocio from '../screens/modules/admin/unidadnegocio/createUnidadNegocio';
-import EditUnidadNegocio from '../screens/modules/admin/unidadnegocio/editUnidadNegocio';
-import ShowUnidadNegocio from '../screens/modules/admin/unidadnegocio/showUnidadNegocio';
+import IndexUnidadNegocio from '../screens/modules/parametro/unidadnegocio/unidad_negocio.index';
+import CreateUnidadNegocio from '../screens/modules/parametro/unidadnegocio/unidad_negocio.create';
+import EditUnidadNegocio from '../screens/modules/parametro/unidadnegocio/unidad_negocio.edit';
+import ShowUnidadNegocio from '../screens/modules/parametro/unidadnegocio/unidad_negocio.show';
 
 import IndexUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/unidad_administrativa.index';
 import CreateUnidadAdministrativa from '../screens/modules/estructuraacademica/unidadadministrativa/unidad_administrativa.create';
@@ -121,6 +121,12 @@ import IndexGestionPeriodo from '../screens/modules/estructurainstitucional/gest
 import CreateGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.create';
 import ShowGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.show';
 import EditGestionPeriodo from '../screens/modules/estructurainstitucional/gestionperiodo/gestion_periodo.edit';
+
+
+import IndexTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.index';
+import CreateTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.create';
+import ShowTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.show';
+import EditTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.edit';
 
 const HomeRoute = (props) => {
     return (
@@ -245,6 +251,12 @@ const HomeRoute = (props) => {
                     <Route index path="/gestionperiodo/create" element={ <CreateGestionPeriodo { ...props } /> }  />
                     <Route index path="/gestionperiodo/edit/:idgestionperiodo" element={ <EditGestionPeriodo { ...props } /> }  />
                     <Route index path="/gestionperiodo/show/:idgestionperiodo" element={ <ShowGestionPeriodo { ...props } /> }  />
+
+
+                    <Route index path="/tipoidentificacion/index" element={ <IndexTipoIdentificacion { ...props } /> }  />
+                    <Route index path="/tipoidentificacion/create" element={ <CreateTipoIdentificacion { ...props } /> }  />
+                    <Route index path="/tipoidentificacion/edit/:idtipoidentificacion" element={ <EditTipoIdentificacion { ...props } /> }  />
+                    <Route index path="/tipoidentificacion/show/:idtipoidentificacion" element={ <ShowTipoIdentificacion { ...props } /> }  />
 
                     <Route
                         path='*'

@@ -29,7 +29,7 @@ import { UnidadacademicaModule } from './module/estructuraacademica/unidadacadem
 import { ProgramaModule } from './module/estructuraacademica/programa/programa.module';
 import { PensumModule } from './module/estructuraacademica/pensum/pensum.module';
 import { ResponsableModule } from './module/estructuraacademica/responsable/responsable.module';
-import { ReferenciaContactoModule } from './module/parametro/referenciacontacto/referenciacontacto.module';
+import { ReferenciaContactoModule } from './module/persona/referenciacontacto/referenciacontacto.module';
 import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.module';
 import { ResponsableUnidadAcademicaDetalleModule } from './module/estructuraacademica/responsableunidadacademicadetalle/responsableunidadacademicadetalle.module';
 import { ResponsablereferenciacontactodetalleModule } from './module/estructuraacademica/responsablereferenciacontactodetalle/responsablereferenciacontactodetalle.module';
@@ -39,6 +39,8 @@ import { AulaModule } from './module/estructurainstitucional/aula/aula.module';
 import { DivisionAcademicaModule } from './module/estructurainstitucional/divisionacademica/divisionacademica.module';
 import { InstitucionModule } from './module/estructurainstitucional/institucion/institucion.module';
 import { GestionPeriodoModule } from './module/estructurainstitucional/gestionperiodo/gestionperiodo.module';
+import { DocenteModule } from './module/persona/docente/docente.module';
+import { TipoIdentificacionModule } from './module/persona/tipoidentificacion/tipoidentificacion.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -81,7 +83,7 @@ import { GestionPeriodoModule } from './module/estructurainstitucional/gestionpe
     RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
     ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, 
     ResponsablereferenciacontactodetalleModule, CommonModule, TurnoModule, AulaModule, 
-    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule,
+    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, TipoIdentificacionModule,
   ],
   controllers: [],
   providers: [],

@@ -9,6 +9,7 @@ const module = {
     parametros: linkBackend + '',
     estructuraacademica: linkBackend + '',
     estructurainstitucional: linkBackend + '',
+    persona: linkBackend + '',
 };
 
 const apiServices = {
@@ -209,6 +210,16 @@ const apiServices = {
     apiestructurainstitucionalgestionperiodo_show:   `${module.estructurainstitucional}/gestionperiodo/show`,
     apiestructurainstitucionalgestionperiodo_update: `${module.estructurainstitucional}/gestionperiodo/update`,
     apiestructurainstitucionalgestionperiodo_delete: `${module.estructurainstitucional}/gestionperiodo/delete`,
+
+
+
+    apipersonatipoidentificacion_index:  `${module.persona}/tipoidentificacion/index`,
+    apipersonatipoidentificacion_create: `${module.persona}/tipoidentificacion/create`,
+    apipersonatipoidentificacion_store:  `${module.persona}/tipoidentificacion/store`,
+    apipersonatipoidentificacion_edit:   `${module.persona}/tipoidentificacion/edit`,
+    apipersonatipoidentificacion_show:   `${module.persona}/tipoidentificacion/show`,
+    apipersonatipoidentificacion_update: `${module.persona}/tipoidentificacion/update`,
+    apipersonatipoidentificacion_delete: `${module.persona}/tipoidentificacion/delete`,
 };
 
 export default apiServices;

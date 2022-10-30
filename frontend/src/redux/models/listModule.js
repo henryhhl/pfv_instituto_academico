@@ -27,6 +27,9 @@ const ListModules = {
     listDivisionAcademica: [],
     listInstitucion: [],
     listGestionPeriodo: [],
+
+
+    listTipoIdentificacion: [],
 };
 
 export default ListModules;

@@ -32,6 +32,21 @@ export default function SidebarComponent() {
                             onClick={ (evt) => evt.preventDefault() }
                         >
                             <i className="ion ion-ios-albums-outline"></i>
+                            <span style={{ fontSize: 13, }}>Persona</span>
+                        </a>
+                        <ul className="menu-dropdown">
+                            <li>
+                                <Link to={"/tipoidentificacion/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Identificación
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" className="has-dropdown pl-3"
+                            onClick={ (evt) => evt.preventDefault() }
+                        >
+                            <i className="ion ion-ios-albums-outline"></i>
                             <span style={{ fontSize: 13, }}>Estructura Institucional</span>
                         </a>
                         <ul className="menu-dropdown">

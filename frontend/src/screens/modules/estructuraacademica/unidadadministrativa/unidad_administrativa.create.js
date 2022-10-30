@@ -6,7 +6,7 @@ import CardComponent from '../../../../components/card';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
 import { UnidadAdministrativaActions } from '../../../../redux/actions/estructuraacademica/unidad_administrativa.action';
-import ListadoUnidadNegocioModal from '../../admin/unidadnegocio/modal/unidad_negocio_listado.modal';
+import ListadoUnidadNegocioModal from '../../parametro/unidadnegocio/modal/unidad_negocio_listado.modal';
 
 function CreateUnidadAdministrativa( props ) {
     const { unidadAdministrativa } = props;

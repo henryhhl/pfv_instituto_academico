@@ -6,7 +6,7 @@ import CardComponent from '../../../../components/card';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
 import { InstitucionActions } from '../../../../redux/actions/estructurainstitucional/institucion.action';
-import ListadoCiudadModal from '../../admin/ciudad/modal/ciudad_listado.modal';
+import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 
 function CreateInstitucion( props ) {
     const { institucion } = props;

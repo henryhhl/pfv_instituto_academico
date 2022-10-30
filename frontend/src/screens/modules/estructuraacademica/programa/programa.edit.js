@@ -7,8 +7,8 @@ import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../co
 import PaperComponent from '../../../../components/paper';
 import { EstadoData } from '../../../../data/estado.data';
 import { ProgramaActions } from '../../../../redux/actions/estructuraacademica/programa.action';
-import ListadoModalidadAcademicaModal from '../../admin/modalidad/modal/modalidad_academica_listado.modal';
-import ListadoNivelAcademicoModal from '../../admin/nivelacademico/modal/nivel_academico_listado.modal';
+import ListadoModalidadAcademicaModal from '../../parametro/modalidad/modal/modalidad_academica_listado.modal';
+import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
 import ListadoUnidadAcademicaModal from '../unidadacademica/modal/unidad_academica_listado.modal';
 
 function EditPrograma( props ) {

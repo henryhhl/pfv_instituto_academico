@@ -1,6 +1,14 @@
 
 const PaginationModule = {
 
+    listTipoIdentificacion: [],
+    pageTipoIdentificacion: 1,
+    paginateTipoIdentificacion: 1,
+    paginationTipoIdentificacion: {
+        total: 0,
+    },
+
+
     listTurno: [],
     pageTurno: 1,
     paginateTurno: 1,

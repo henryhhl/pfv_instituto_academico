@@ -10,7 +10,7 @@ import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
 import DatePickerComponent from '../../../../components/date';
 import { GeneroData } from '../../../../data/genero.data';
-import ListadoReferenciaContactoModal from '../../admin/referenciacontacto/modal/referenciacontacto_listado.modal';
+import ListadoReferenciaContactoModal from '../../persona/referenciacontacto/modal/referenciacontacto_listado.modal';
 import ListadoUnidadAcademicaModal from '../unidadacademica/modal/unidad_academica_listado.modal';
 
 function CreateResponsable( props ) {

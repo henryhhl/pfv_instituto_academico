@@ -1,5 +1,6 @@
 
 const ColumnModules = {
+
     columnUnidadNegocio: [
         {
             id: 'sigla',
@@ -739,6 +740,34 @@ const ColumnModules = {
         {
             id: 'fechafinal',
             label: 'Fecha Final',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+
+    columnTipoIdentificacion: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Tipo',
             numeric: false,
             visible: true,
             width: null,

@@ -166,6 +166,17 @@ const Constants = {
     gestionperiodo_onDeleteRowRefContact: "[ON DELETE ROW REFERENCIA CONTACTO] Gestion Periodo",
     gestionperiodo_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Gestion Periodo",
     gestionperiodo_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Gestion Periodo",
+
+
+    tipoidentificacion_setInit: "[SET INIT] Tipo Identificacion",
+    tipoidentificacion_onChange: "[ON CHANGE] Tipo Identificacion",
+    tipoidentificacion_onCreate: "[ON CREATE] Tipo Identificacion",
+    tipoidentificacion_onShow: "[ON SHOW] Tipo Identificacion",
+    tipoidentificacion_onLimpiar: "[ON LIMPIAR] Tipo Identificacion",
+    tipoidentificacion_onAddRefContact: "[ON ADD REFERENCIA CONTACTO] Tipo Identificacion",
+    tipoidentificacion_onDeleteRowRefContact: "[ON DELETE ROW REFERENCIA CONTACTO] Tipo Identificacion",
+    tipoidentificacion_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Tipo Identificacion",
+    tipoidentificacion_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Tipo Identificacion",
 };
 
 export default Constants;

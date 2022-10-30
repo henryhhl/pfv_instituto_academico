@@ -26,7 +26,7 @@ function ShowTurno( props ) {
         <>
             <PaperComponent>
                 <CardComponent
-                    header={"Nuevo Turno"}
+                    header={"Detalle Turno"}
                     footer={
                         <>
                             <ButtonComponent

@@ -7,7 +7,6 @@ import { ButtonComponent ,InputComponent } from '../../../../components/componen
 import PaperComponent from '../../../../components/paper';
 import { UnidadAdministrativaActions } from '../../../../redux/actions/estructuraacademica/unidad_administrativa.action';
 import { Functions } from '../../../../utils/functions';
-import ListadoUnidadNegocioModal from '../../admin/unidadnegocio/modal/unidad_negocio_listado.modal';
 
 function ShowUnidadAdministrativa( props ) {
     const { unidadAdministrativa } = props;

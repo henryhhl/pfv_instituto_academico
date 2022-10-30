@@ -7,7 +7,7 @@ import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../co
 import PaperComponent from '../../../../components/paper';
 import { EstadoData } from '../../../../data/estado.data';
 import { InstitucionActions } from '../../../../redux/actions/estructurainstitucional/institucion.action';
-import ListadoCiudadModal from '../../admin/ciudad/modal/ciudad_listado.modal';
+import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 
 function EditInstitucion( props ) {
     const { institucion } = props;
