@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { ProgramaService } from "../../services/estructuraacademica/programa.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.programa_setInit,
@@ -215,12 +216,15 @@ const onGrabar = ( programa, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             ProgramaService.onStore(programa).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Programa", onOk: onStore,
@@ -236,12 +240,15 @@ const onUpdate = ( programa, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             ProgramaService.onUpdate(programa).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Programa", onOk: onUpdate,
@@ -303,11 +310,14 @@ function onValidate( data ) {
 const onDelete = ( programa ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             ProgramaService.onDelete(programa).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPagePrograma() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Programa", onOk: onDelete,

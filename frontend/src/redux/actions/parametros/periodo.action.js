@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { PeriodoService } from "../../services/parametros/periodo.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.periodo_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( periodo, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             PeriodoService.onStore(periodo).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Periodo", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( periodo, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             PeriodoService.onUpdate(periodo).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Periodo", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( periodo ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             PeriodoService.onDelete(periodo).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPagePeriodo() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Periodo", onOk: onDelete,

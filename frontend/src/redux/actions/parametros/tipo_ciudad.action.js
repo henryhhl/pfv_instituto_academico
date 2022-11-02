@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import { TipoCiudadService } from "../../services/parametros/tipo_ciudad.service";
 import Constants from "../../constants/constans";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.tipociudad_setInit,
@@ -151,12 +152,15 @@ const onGrabar = ( tipoCiudad, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             TipoCiudadService.onStore(tipoCiudad).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Tipo Ciudad", onOk: onStore,
@@ -172,12 +176,15 @@ const onUpdate = ( tipoCiudad, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             TipoCiudadService.onUpdate(tipoCiudad).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Tipo Ciudad", onOk: onUpdate,
@@ -204,11 +211,14 @@ function onValidate( data ) {
 const onDelete = ( tipoCiudad ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             TipoCiudadService.onDelete(tipoCiudad).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoCiudad() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Tipo Ciudad", onOk: onDelete,

@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { RolService } from "../../services/seguridad/rolServices";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.rol_setInit,
@@ -169,12 +170,15 @@ const onGrabar = ( rol, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             RolService.onStore(rol).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Rol", onOk: onStore,
@@ -190,12 +194,15 @@ const onUpdate = ( rol, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             RolService.onUpdate(rol).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Rol", onOk: onUpdate,
@@ -227,11 +234,14 @@ function onValidate( data ) {
 const onDelete = ( rol ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             RolService.onDelete(rol).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageRol() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Rol", onOk: onDelete,

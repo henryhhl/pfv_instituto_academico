@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { PensumService } from "../../services/estructuraacademica/pensum.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.pensum_setInit,
@@ -197,12 +198,15 @@ const onGrabar = ( pensum, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             PensumService.onStore(pensum).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Pensum", onOk: onStore,
@@ -218,12 +222,15 @@ const onUpdate = ( pensum, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             PensumService.onUpdate(pensum).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Pensum", onOk: onUpdate,
@@ -275,11 +282,14 @@ function onValidate( data ) {
 const onDelete = ( pensum ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             PensumService.onDelete(pensum).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPagePensum() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Pensum", onOk: onDelete,

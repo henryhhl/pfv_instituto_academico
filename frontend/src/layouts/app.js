@@ -1,13 +1,24 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import LoadingComponent from '../components/loading';
 import HeaderComponent from './partials/header';
 import SidebarComponent from './partials/sidebar';
 
 
 const AppMain = ( props ) => {
+    const { loading } = props;
+
+    const setLoading = () => {
+        return (
+            <LoadingComponent visible={loading.visible} />
+        );
+    };
+
     return (
         <>
+            { setLoading() }
             <div id="app">
                 <div className="main-wrapper position-relative">
                     <div className="navbar-bg"></div>
@@ -26,4 +37,10 @@ const AppMain = ( props ) => {
     )
 };
 
-export default AppMain;
+const mapStateToProps = ( state ) => ( {
+    loading: state.Loading,
+} );
+
+const mapDispatchToProps = null;
+
+export default connect(mapStateToProps, mapDispatchToProps)( AppMain );;

@@ -1,6 +1,13 @@
 
 const PaginationModule = {
 
+    listCargo: [],
+    pageCargo: 1,
+    paginateCargo: 1,
+    paginationCargo: {
+        total: 0,
+    },
+
     listTipoIdentificacion: [],
     pageTipoIdentificacion: 1,
     paginateTipoIdentificacion: 1,

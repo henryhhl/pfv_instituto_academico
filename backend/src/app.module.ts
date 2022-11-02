@@ -41,6 +41,7 @@ import { InstitucionModule } from './module/estructurainstitucional/institucion/
 import { GestionPeriodoModule } from './module/estructurainstitucional/gestionperiodo/gestionperiodo.module';
 import { DocenteModule } from './module/persona/docente/docente.module';
 import { TipoIdentificacionModule } from './module/persona/tipoidentificacion/tipoidentificacion.module';
+import { CargoModule } from './module/persona/cargo/cargo.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -59,6 +60,13 @@ import { TipoIdentificacionModule } from './module/persona/tipoidentificacion/ti
     } ),
 
     TypeOrmModule.forRoot( {
+      ssl: (process.env.STAGE || 'dev') === 'production' ? true : false,
+      extra: {
+        ssl: (process.env.STAGE || 'dev') !== 'production' ? null : {
+          rejectUnauthorized: false,
+        },
+      },
+
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',
       port: +process.env.DB_PORT || 5432,
@@ -83,7 +91,7 @@ import { TipoIdentificacionModule } from './module/persona/tipoidentificacion/ti
     RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
     ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, 
     ResponsablereferenciacontactodetalleModule, CommonModule, TurnoModule, AulaModule, 
-    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, TipoIdentificacionModule,
+    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, TipoIdentificacionModule, CargoModule,
   ],
   controllers: [],
   providers: [],

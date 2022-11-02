@@ -34,6 +34,8 @@ import { InstitucionReducer } from '../reducers/estructurainstitucional/instituc
 import { TurnoReducer } from '../reducers/estructurainstitucional/turno.reducer';
 
 import { TipoIdentificacionReducer } from '../reducers/persona/tipo_identificacion.reducer';
+import { LoadingReducer } from '../reducers/loading.reducer';
+import { CargoReducer } from '../reducers/persona/cargo.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -45,6 +47,8 @@ const RootReducer = combineReducers( {
     ColumnModule: ColumnModuleReducer,
     ListModule: ListModuleReducer,
     PaginationModule: PaginationModuleReducer,
+
+    Loading: LoadingReducer,
 
     Ciudad: CiudadReducer,
     Materia: MateriaReducer,
@@ -69,6 +73,7 @@ const RootReducer = combineReducers( {
     Turno: TurnoReducer,
     
     TipoIdentificacion: TipoIdentificacionReducer,
+    Cargo: CargoReducer,
 } );
 
 export default RootReducer;

@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { TurnoService } from "../../services/estructurainstitucional/turno.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.turno_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( turno, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             TurnoService.onStore(turno).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Turno", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( turno, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             TurnoService.onUpdate(turno).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Turno", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( turno ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             TurnoService.onDelete(turno).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTurno() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Turno", onOk: onDelete,

@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { ResponsableService } from "../../services/estructuraacademica/responsable.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.responsable_setInit,
@@ -197,12 +198,15 @@ const onGrabar = ( responsable, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             ResponsableService.onStore(responsable).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Responsable", onOk: onStore,
@@ -218,12 +222,15 @@ const onUpdate = ( responsable, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             ResponsableService.onUpdate(responsable).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Responsable", onOk: onUpdate,
@@ -285,11 +292,14 @@ function onValidate( data ) {
 const onDelete = ( responsable ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             ResponsableService.onDelete(responsable).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllResponsable() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Responsable", onOk: onDelete,

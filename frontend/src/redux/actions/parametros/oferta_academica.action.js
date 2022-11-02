@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { OfertaAcademicaService } from "../../services/parametros/oferta_academica.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.ofertaAcademica_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( ofertaAcademica, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             OfertaAcademicaService.onStore(ofertaAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Oferta Academica", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( ofertaAcademica, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             OfertaAcademicaService.onUpdate(ofertaAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Oferta Academica", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( ofertaAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             OfertaAcademicaService.onDelete(ofertaAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageOfertaAcademica() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Oferta Academica", onOk: onDelete,

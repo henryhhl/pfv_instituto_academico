@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { ModalidadAcademicaService } from "../../services/parametros/modalidad_academica.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.modalidad_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( modalidadAcademica, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             ModalidadAcademicaService.onStore(modalidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Modalidad Academica", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( modalidadAcademica, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             ModalidadAcademicaService.onUpdate(modalidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Modalidad Academica", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( modalidadAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             ModalidadAcademicaService.onDelete(modalidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageModalidadAcademica() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Modalidad Academica", onOk: onDelete,

@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { DivisionAcademicaService } from "../../services/estructurainstitucional/division_academica.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.divisionacademica_setInit,
@@ -172,12 +173,15 @@ const onGrabar = ( divisionAcademica, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             DivisionAcademicaService.onStore(divisionAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Division Academica", onOk: onStore,
@@ -193,12 +197,15 @@ const onUpdate = ( divisionAcademica, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             DivisionAcademicaService.onUpdate(divisionAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Division Academica", onOk: onUpdate,
@@ -235,11 +242,14 @@ function onValidate( data ) {
 const onDelete = ( divisionAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             DivisionAcademicaService.onDelete(divisionAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageDivisionAcademica() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Division Academica", onOk: onDelete,

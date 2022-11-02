@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import { ReferenciaContactoService } from "../../services/parametros/referencia_contacto.service";
 import Constants from "../../constants/constans";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.referenciaContacto_setInit,
@@ -162,12 +163,15 @@ const onGrabar = ( referenciaContacto, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             ReferenciaContactoService.onStore(referenciaContacto).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Referencia Contacto", onOk: onStore,
@@ -183,12 +187,15 @@ const onUpdate = ( referenciaContacto, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             ReferenciaContactoService.onUpdate(referenciaContacto).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Referencia Contacto", onOk: onUpdate,
@@ -220,11 +227,14 @@ function onValidate( data ) {
 const onDelete = ( referenciaContacto ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             ReferenciaContactoService.onDelete(referenciaContacto).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageReferenciaContacto() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Referencia Contacto", onOk: onDelete,

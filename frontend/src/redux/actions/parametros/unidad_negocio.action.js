@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { UnidadNegocioService } from "../../services/parametros/unidad_negocioServices";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.unidadNegocio_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( unidadNegocio, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             UnidadNegocioService.onStore(unidadNegocio).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Unidad Negocio", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( unidadNegocio, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             UnidadNegocioService.onUpdate(unidadNegocio).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Unidad Negocio", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( unidadNegocio ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             UnidadNegocioService.onDelete(unidadNegocio).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUnidadNegocio() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Unidad Negocio", onOk: onDelete,

@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { TipoIdentificacionService } from "../../services/persona/tipo_identificacion.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.tipoidentificacion_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( tipoIdentificacion, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             TipoIdentificacionService.onStore(tipoIdentificacion).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Tipo Identificación", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( tipoIdentificacion, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             TipoIdentificacionService.onUpdate(tipoIdentificacion).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Tipo Identificación", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( tipoIdentificacion ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             TipoIdentificacionService.onDelete(tipoIdentificacion).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoIdentificacion() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Tipo Identificación", onOk: onDelete,

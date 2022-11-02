@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { UsuarioService } from "../../services/seguridad/usuarioServices";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.usuario_setInit,
@@ -170,12 +171,15 @@ const onGrabar = ( usuario, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             UsuarioService.onStore(usuario).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Usuario", onOk: onStore,
@@ -191,12 +195,15 @@ const onUpdate = ( usuario, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             UsuarioService.onUpdate(usuario).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Usuario", onOk: onUpdate,
@@ -249,11 +256,14 @@ function onValidate( data ) {
 const onDelete = ( usuario ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             UsuarioService.onDelete(usuario).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUsuario() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Usuario", onOk: onDelete,

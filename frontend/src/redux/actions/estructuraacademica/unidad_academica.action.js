@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { UnidadAcademicaService } from "../../services/estructuraacademica/unidad_academica.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.unidadacademica_setInit,
@@ -194,12 +195,15 @@ const onGrabar = ( unidadAcademica, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             UnidadAcademicaService.onStore(unidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Unidad Academica", onOk: onStore,
@@ -215,12 +219,15 @@ const onUpdate = ( unidadAcademica, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             UnidadAcademicaService.onUpdate(unidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Unidad Academica", onOk: onUpdate,
@@ -267,11 +274,14 @@ function onValidate( data ) {
 const onDelete = ( unidadAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             UnidadAcademicaService.onDelete(unidadAcademica).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUnidadAcademica() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Unidad Academica", onOk: onDelete,

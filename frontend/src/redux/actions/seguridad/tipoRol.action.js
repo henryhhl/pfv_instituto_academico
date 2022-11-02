@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { TipoRolService } from "../../services/seguridad/tipoRolServices";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.tipoRol_setInit,
@@ -152,12 +153,15 @@ const onGrabar = ( tipoRol, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             TipoRolService.onStore(tipoRol).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Tipo Rol", onOk: onStore,
@@ -173,12 +177,15 @@ const onUpdate = ( tipoRol, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             TipoRolService.onUpdate(tipoRol).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Tipo Rol", onOk: onUpdate,
@@ -205,11 +212,14 @@ function onValidate( data ) {
 const onDelete = ( tipoRol ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             TipoRolService.onDelete(tipoRol).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoRol() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Tipo Rol", onOk: onDelete,

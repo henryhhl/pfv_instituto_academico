@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { TipoMateriaService } from "../../services/parametros/tipo_materia.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.tipoMateria_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( tipoMateria, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             TipoMateriaService.onStore(tipoMateria).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Tipo Materia", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( tipoMateria, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             TipoMateriaService.onUpdate(tipoMateria).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Tipo Materia", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( tipoMateria ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             TipoMateriaService.onDelete(tipoMateria).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoMateria() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Tipo Materia", onOk: onDelete,

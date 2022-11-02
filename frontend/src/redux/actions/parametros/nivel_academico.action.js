@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { NivelAcademicoService } from "../../services/parametros/nivel_academico.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.nivelAcademico_setInit,
@@ -161,12 +162,15 @@ const onGrabar = ( nivelacademico, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             NivelAcademicoService.onStore(nivelacademico).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Nivel Academico", onOk: onStore,
@@ -182,12 +186,15 @@ const onUpdate = ( nivelacademico, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             NivelAcademicoService.onUpdate(nivelacademico).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Nivel Academico", onOk: onUpdate,
@@ -219,11 +226,14 @@ function onValidate( data ) {
 const onDelete = ( nivelAcademico ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             NivelAcademicoService.onDelete(nivelAcademico).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageNivelAcademico() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Nivel Academico", onOk: onDelete,

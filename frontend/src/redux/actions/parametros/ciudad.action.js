@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { CiudadService } from "../../services/parametros/ciudad.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.ciudad_setInit,
@@ -144,12 +145,15 @@ const onGrabar = ( ciudad, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             CiudadService.onStore(ciudad).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllCiudad() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Ciudad", onOk: onStore,
@@ -165,12 +169,15 @@ const onUpdate = ( ciudad, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             CiudadService.onUpdate(ciudad).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllCiudad() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Ciudad", onOk: onUpdate,
@@ -207,11 +214,14 @@ function onValidate( data ) {
 const onDelete = ( ciudad ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             CiudadService.onDelete(ciudad).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllCiudad() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Ciudad", onOk: onDelete,

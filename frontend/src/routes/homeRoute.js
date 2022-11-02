@@ -128,6 +128,11 @@ import CreateTipoIdentificacion from '../screens/modules/persona/tipoidentificac
 import ShowTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.show';
 import EditTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.edit';
 
+import IndexCargo from '../screens/modules/persona/cargo/cargo.index';
+import CreateCargo from '../screens/modules/persona/cargo/cargo.create';
+import ShowCargo from '../screens/modules/persona/cargo/cargo.show';
+import EditCargo from '../screens/modules/persona/cargo/cargo.edit';
+
 const HomeRoute = (props) => {
     return (
         <>
@@ -257,6 +262,11 @@ const HomeRoute = (props) => {
                     <Route index path="/tipoidentificacion/create" element={ <CreateTipoIdentificacion { ...props } /> }  />
                     <Route index path="/tipoidentificacion/edit/:idtipoidentificacion" element={ <EditTipoIdentificacion { ...props } /> }  />
                     <Route index path="/tipoidentificacion/show/:idtipoidentificacion" element={ <ShowTipoIdentificacion { ...props } /> }  />
+
+                    <Route index path="/cargo/index" element={ <IndexCargo { ...props } /> }  />
+                    <Route index path="/cargo/create" element={ <CreateCargo { ...props } /> }  />
+                    <Route index path="/cargo/edit/:idcargo" element={ <EditCargo { ...props } /> }  />
+                    <Route index path="/cargo/show/:idcargo" element={ <ShowCargo { ...props } /> }  />
 
                     <Route
                         path='*'

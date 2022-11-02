@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { MateriaService } from "../../services/parametros/materia.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.materia_setInit,
@@ -207,12 +208,15 @@ const onGrabar = ( materia, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             MateriaService.onStore(materia).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Materia", onOk: onStore,
@@ -228,12 +232,15 @@ const onUpdate = ( materia, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             MateriaService.onUpdate(materia).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Materia", onOk: onUpdate,
@@ -290,11 +297,14 @@ function onValidate( data ) {
 const onDelete = ( materia ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             MateriaService.onDelete(materia).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageMateria() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Materia", onOk: onDelete,

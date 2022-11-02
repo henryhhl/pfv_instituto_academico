@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { InstitucionService } from "../../services/estructurainstitucional/institucion.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.institucion_setInit,
@@ -217,12 +218,15 @@ const onGrabar = ( institucion, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             InstitucionService.onStore(institucion).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Institución", onOk: onStore,
@@ -238,12 +242,15 @@ const onUpdate = ( institucion, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             InstitucionService.onUpdate(institucion).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Institución", onOk: onUpdate,
@@ -285,11 +292,14 @@ function onValidate( data ) {
 const onDelete = ( institucion ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             InstitucionService.onDelete(institucion).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageInstitucion() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Institución", onOk: onDelete,

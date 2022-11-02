@@ -3,6 +3,7 @@ import ConfirmationComponent from "../../../components/confirmation";
 import { Functions } from "../../../utils/functions";
 import Constants from "../../constants/constans";
 import { GestionPeriodoService } from "../../services/estructurainstitucional/gestion_periodo.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.gestionperiodo_setInit,
@@ -194,12 +195,15 @@ const onGrabar = ( gestionPeriodo, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             GestionPeriodoService.onStore(gestionPeriodo).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Gestión Periodo", onOk: onStore,
@@ -215,12 +219,15 @@ const onUpdate = ( gestionPeriodo, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             GestionPeriodoService.onUpdate(gestionPeriodo).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Gestión Periodo", onOk: onUpdate,
@@ -262,11 +269,14 @@ function onValidate( data ) {
 const onDelete = ( gestionPeriodo ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             GestionPeriodoService.onDelete(gestionPeriodo).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageGestionPeriodo() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Gestión Periodo", onOk: onDelete,

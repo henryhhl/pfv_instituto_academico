@@ -30,6 +30,7 @@ const ListModules = {
 
 
     listTipoIdentificacion: [],
+    listCargo: [],
 };
 
 export default ListModules;

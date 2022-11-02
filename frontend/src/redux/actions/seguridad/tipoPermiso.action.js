@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { TipoPermisoService } from "../../services/seguridad/tipoPermisoServices";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.tipoPermiso_setInit,
@@ -152,12 +153,15 @@ const onGrabar = ( tipoPermiso, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             TipoPermisoService.onStore(tipoPermiso).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Tipo Permiso", onOk: onStore,
@@ -173,12 +177,15 @@ const onUpdate = ( tipoPermiso, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             TipoPermisoService.onUpdate(tipoPermiso).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Tipo Permiso", onOk: onUpdate,
@@ -205,11 +212,14 @@ function onValidate( data ) {
 const onDelete = ( tipoPermiso ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             TipoPermisoService.onDelete(tipoPermiso).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoPermiso() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Tipo Permiso", onOk: onDelete,

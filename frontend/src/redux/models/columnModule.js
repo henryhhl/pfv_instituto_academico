@@ -782,6 +782,25 @@ const ColumnModules = {
             state: true,
         },
     ],
+
+    columnCargo: [
+        {
+            id: 'descripcion',
+            label: 'Tipo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
 };
 
 export default ColumnModules;

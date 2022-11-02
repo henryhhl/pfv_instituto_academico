@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { UnidadAdministrativaService } from "../../services/estructuraacademica/unidad_administrativa.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.unidadadministrativa_setInit,
@@ -171,12 +172,15 @@ const onGrabar = ( unidadAdministrativa, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             UnidadAdministrativaService.onStore(unidadAdministrativa).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Unidad Administrativa", onOk: onStore,
@@ -192,12 +196,15 @@ const onUpdate = ( unidadAdministrativa, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             UnidadAdministrativaService.onUpdate(unidadAdministrativa).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Unidad Administrativa", onOk: onUpdate,
@@ -234,11 +241,14 @@ function onValidate( data ) {
 const onDelete = ( unidadAdministrativa ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             UnidadAdministrativaService.onDelete(unidadAdministrativa).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUnidadAdministrativa() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Unidad Administrativa", onOk: onDelete,

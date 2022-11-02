@@ -1,5 +1,8 @@
 
 const Constants = {
+    setShowLoading: "[LOADING] Set Show",
+    setHiddenLoading: "[LOADING] Set Hidden",
+
     listModules_onChange: "[ON CHANGE] List Modules",
     paginationModules_onChange: "[ON CHANGE] Pagination Modules",
 
@@ -177,6 +180,16 @@ const Constants = {
     tipoidentificacion_onDeleteRowRefContact: "[ON DELETE ROW REFERENCIA CONTACTO] Tipo Identificacion",
     tipoidentificacion_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Tipo Identificacion",
     tipoidentificacion_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Tipo Identificacion",
+
+    cargo_setInit: "[SET INIT] Cargo",
+    cargo_onChange: "[ON CHANGE] Cargo",
+    cargo_onCreate: "[ON CREATE] Cargo",
+    cargo_onShow: "[ON SHOW] Cargo",
+    cargo_onLimpiar: "[ON LIMPIAR] Cargo",
+    cargo_onAddRefContact: "[ON ADD REFERENCIA CONTACTO] Cargo",
+    cargo_onDeleteRowRefContact: "[ON DELETE ROW REFERENCIA CONTACTO] Cargo",
+    cargo_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Cargo",
+    cargo_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Cargo",
 };
 
 export default Constants;

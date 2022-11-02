@@ -37,13 +37,13 @@ export const TipoIdentificacionReducer = ( state = inititalState, action ) => {
     }
 };
 
-const onSetData = ( state = inititalState, turno ) => {
-    state.idtipoidentificacion = turno.idtipoidentificacion;
-    state.sigla = turno.sigla;
-    state.descripcion = turno.descripcion;
-    state.concurrencia = turno.concurrencia;
-    state.estado = turno.estado;
-    state.isdelete = turno.isdelete;
+const onSetData = ( state = inititalState, tipoIdentificacion ) => {
+    state.idtipoidentificacion = tipoIdentificacion.idtipoidentificacion;
+    state.sigla = tipoIdentificacion.sigla;
+    state.descripcion = tipoIdentificacion.descripcion;
+    state.concurrencia = tipoIdentificacion.concurrencia;
+    state.estado = tipoIdentificacion.estado;
+    state.isdelete = tipoIdentificacion.isdelete;
 }
 
 const onCreate = ( state = inititalState ) => {

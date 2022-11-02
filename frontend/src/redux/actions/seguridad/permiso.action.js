@@ -2,6 +2,7 @@
 import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { PermisoService } from "../../services/seguridad/permiso.service";
+import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 
 const setInit = () => ( {
     type: Constants.permiso_setInit,
@@ -134,12 +135,15 @@ const onGrabar = ( permiso, onBack ) => {
             return;
         }
         let onStore = () => {
+            dispatch( setShowLoading() );
             PermisoService.onStore(permiso).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllPermiso() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Registrar Permiso", onOk: onStore,
@@ -155,12 +159,15 @@ const onUpdate = ( permiso, onBack ) => {
             return;
         }
         let onUpdate = () => {
+            dispatch( setShowLoading() );
             PermisoService.onUpdate(permiso).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllPermiso() );
                     onBack();
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Editar Permiso", onOk: onUpdate,
@@ -192,11 +199,14 @@ function onValidate( data ) {
 const onDelete = ( permiso ) => {
     return ( dispatch ) => {
         let onDelete = () => {
+            dispatch( setShowLoading() );
             PermisoService.onDelete(permiso).then( (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllPermiso() );
                 }
-            } ).finally( () => {} );
+            } ).finally( () => {
+                dispatch( setHiddenLoading() );
+            } );
         };
         ConfirmationComponent( {
             title: "Eliminar Permiso", onOk: onDelete,
