@@ -1,6 +1,6 @@
 
-// const linkBackend = 'http://localhost:5000/api/v1';
-const linkBackend = 'https://instituto-academico-backend.herokuapp.com/api/v1';
+const linkBackend = 'http://localhost:5000/api/v1';
+// const linkBackend = 'https://instituto-academico-backend.herokuapp.com/api/v1';
 
 const module = {
     // seguridad: linkBackend + '/seguridad',
@@ -228,6 +228,22 @@ const apiServices = {
     apipersonacargo_show:   `${module.persona}/cargo/show`,
     apipersonacargo_update: `${module.persona}/cargo/update`,
     apipersonacargo_delete: `${module.persona}/cargo/delete`,
+
+    apipersonadocente_index:  `${module.persona}/docente/index`,
+    apipersonadocente_create: `${module.persona}/docente/create`,
+    apipersonadocente_store:  `${module.persona}/docente/store`,
+    apipersonadocente_edit:   `${module.persona}/docente/edit`,
+    apipersonadocente_show:   `${module.persona}/docente/show`,
+    apipersonadocente_update: `${module.persona}/docente/update`,
+    apipersonadocente_delete: `${module.persona}/docente/delete`,
+
+    apipersonaadministrativo_index:  `${module.persona}/administrativo/index`,
+    apipersonaadministrativo_create: `${module.persona}/administrativo/create`,
+    apipersonaadministrativo_store:  `${module.persona}/administrativo/store`,
+    apipersonaadministrativo_edit:   `${module.persona}/administrativo/edit`,
+    apipersonaadministrativo_show:   `${module.persona}/administrativo/show`,
+    apipersonaadministrativo_update: `${module.persona}/administrativo/update`,
+    apipersonaadministrativo_delete: `${module.persona}/administrativo/delete`,
 };
 
 export default apiServices;

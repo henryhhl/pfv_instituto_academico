@@ -34,7 +34,9 @@ export default function TreeComponent( props ) {
                 array_treeData.push(obj);
             }
         }
-        treeFamily(treeData, array_treeData);
+        if ( props.fkidpadre === false ) {
+            treeFamily(treeData, array_treeData);
+        }
         setTreeData(array_treeData);
         setArrayKeys(keys);
         setExpandedKeys(keys);
@@ -191,6 +193,7 @@ TreeComponent.propTypes = {
     blockNode: PropTypes.bool,
     draggable: PropTypes.bool,
     checkable: PropTypes.bool,
+    fkidpadre: PropTypes.bool,
     selectable: PropTypes.bool,
     create: PropTypes.bool,
     show: PropTypes.bool,
@@ -220,6 +223,7 @@ TreeComponent.defaultProps = {
     draggable: true,
     checkable: false,
     selectable: true,
+    fkidpadre: false,
     create: true,
     show: true,
     edit: true,

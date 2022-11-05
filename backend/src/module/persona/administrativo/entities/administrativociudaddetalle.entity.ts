@@ -1,11 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Docente } from './docente.entity';
+import { Administrativo } from './administrativo.entity';
 
-@Entity('docentenacionalidaddetalle')
-export class DocenteCiudadDetalle {
+@Entity('administrativonacionalidaddetalle')
+export class AdministrativoNacionalidadDetalle {
 
     @PrimaryGeneratedColumn('uuid')
-    iddocenteciudaddetalle: string;
+    idadministrativonacionalidaddetalle: string;
 
     @Column('text')
     fkidnacionalidad: string;
@@ -14,14 +14,14 @@ export class DocenteCiudadDetalle {
     nacionalidad: string;
 
     @ManyToOne(
-        () => Docente,
-        (docente) => docente.arraynacionalidad,
+        () => Administrativo,
+        (administrativo) => administrativo.arraynacionalidad,
         {
             onDelete: 'CASCADE',
         }
     )
-    @JoinColumn({ name: 'fkiddocente', })
-    fkiddocente: Docente;
+    @JoinColumn({ name: 'fkidadministrativo', })
+    fkidadministrativo: Administrativo;
 
     @Column( {
         type: 'enum',

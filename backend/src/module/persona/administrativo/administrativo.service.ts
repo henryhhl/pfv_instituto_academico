@@ -1,26 +1,26 @@
-import { Repository, Like, DataSource } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { Docente } from './entities/docente.entity';
-import { CreateDocenteDto } from './dto/create-docente.dto';
-import { UpdateDocenteDto } from './dto/update-docente.dto';
-import { PaginationDto } from '../../../common/dtos/pagination.dto';
-import { DocenteCiudadDetalle } from './entities/docenteciudaddetalle.entity';
-import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
+import { CreateAdministrativoDto } from './dto/create-administrativo.dto';
+import { UpdateAdministrativoDto } from './dto/update-administrativo.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Administrativo } from './entities/administrativo.entity';
+import { Repository, DataSource, Like } from 'typeorm';
+import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
+import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
-export class DocenteService {
-  private readonly logger = new Logger('DocenteService');
+export class AdministrativoService {
+  private readonly logger = new Logger('AdministrativoService');
 
   constructor(
-    @InjectRepository(Docente)
-    private readonly docenteRepository: Repository<Docente>,
+    @InjectRepository(Administrativo)
+    private readonly administrativoRepository: Repository<Administrativo>,
 
-    @InjectRepository(DocenteCiudadDetalle)
-    private readonly docenteCiudadDetalleRepository: Repository<DocenteCiudadDetalle>,
+    @InjectRepository(AdministrativoNacionalidadDetalle)
+    private readonly administrativoNacionalidadDetalleRepository: Repository<AdministrativoNacionalidadDetalle>,
 
-    @InjectRepository(DocenteReferenciaContactoDetalle)
-    private readonly docenteReferenciaContactoDetalleRepository: Repository<DocenteReferenciaContactoDetalle>,
+    @InjectRepository(AdministrativoReferenciaContactoDetalle)
+    private readonly administrativoReferenciaContactoDetalleRepository: Repository<AdministrativoReferenciaContactoDetalle>,
 
     private readonly dataSource: DataSource,
   ) {}
@@ -28,10 +28,10 @@ export class DocenteService {
   async findAll( paginationDto: PaginationDto ) {
     try {
       const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
-      let listDocente = [];
+      let listAdministrativo = [];
       let totalPagination = 0;
       if ( esPaginate ) {
-        [listDocente, totalPagination] = await this.docenteRepository.findAndCount( {
+        [listAdministrativo, totalPagination] = await this.administrativoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
             { nombreadicional: Like( '%' + search + '%', ), },
@@ -39,7 +39,7 @@ export class DocenteService {
           order: { created_at: "DESC", },
         } );
       } else {
-        [listDocente, totalPagination] = await this.docenteRepository.findAndCount( {
+        [listAdministrativo, totalPagination] = await this.administrativoRepository.findAndCount( {
           where: [
             { nombreadicional: Like( '%' + search + '%', ), },
           ],
@@ -49,7 +49,7 @@ export class DocenteService {
       return {
         resp: 1, error: false,
         message: 'Servicio realizado exitosamente.',
-        arrayDocente: listDocente,
+        arrayAdministrativo: listAdministrativo,
         pagination: {
           total: totalPagination,
         },
@@ -84,12 +84,12 @@ export class DocenteService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createDocenteDto: CreateDocenteDto) {
+  async store(createAdministrativoDto: CreateAdministrativoDto) {
     try {
-      const docente = this.docenteRepository.create( {
-        ...createDocenteDto,
-        arraynacionalidad: createDocenteDto.arraynacionalidad.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
-          return this.docenteCiudadDetalleRepository.create( {
+      const administrativo = this.administrativoRepository.create( {
+        ...createAdministrativoDto,
+        arraynacionalidad: createAdministrativoDto.arraynacionalidad.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
+          return this.administrativoNacionalidadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
             created_at: this.getDateTime(),
@@ -98,11 +98,11 @@ export class DocenteService {
         arrayreferenciacontactos: [],
         created_at: this.getDateTime(),
       } );
-      await this.docenteRepository.save( docente );
+      await this.administrativoRepository.save( administrativo );
       return {
         resp: 1, error: false,
-        message: 'Docente registrado éxitosamente.',
-        docente: docente,
+        message: 'Administrativo registrado éxitosamente.',
+        administrativo: administrativo,
       };
     } catch (error) {
       this.logger.error(error);
@@ -113,27 +113,27 @@ export class DocenteService {
     }
   }
 
-  async findOne(iddocente: string) {
-    const docente = await this.docenteRepository.findOne( {
-      where: { iddocente: iddocente },
+  async findOne(idadministrativo: string) {
+    const administrativo = await this.administrativoRepository.findOne( {
+      where: { idadministrativo: idadministrativo },
       relations: { arraynacionalidad: true, },
     } );
-    return docente;
+    return administrativo;
   }
 
-  async edit(iddocente: string) {
+  async edit(idadministrativo: string) {
     try {
-      const docente = await this.findOne(iddocente);
-      if ( docente ) {
+      const administrativo = await this.findOne(idadministrativo);
+      if ( administrativo ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
-          docente: docente,
+          administrativo: administrativo,
         };
       }
       return {
         resp: 0, error: false,
-        message: 'Docente no existe.',
+        message: 'Administrativo no existe.',
       };
     } catch (error) {
       this.logger.error(error);
@@ -144,19 +144,19 @@ export class DocenteService {
     }
   }
 
-  async show(iddocente: string) {
+  async show(idadministrativo: string) {
     try {
-      const docente = await this.findOne(iddocente);
-      if ( docente ) {
+      const administrativo = await this.findOne(idadministrativo);
+      if ( administrativo ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
-          docente: docente,
+          administrativo: administrativo,
         };
       }
       return {
         resp: 0, error: false,
-        message: 'Docente no existe.',
+        message: 'Administrativo no existe.',
       };
     } catch (error) {
       this.logger.error(error);
@@ -167,39 +167,39 @@ export class DocenteService {
     }
   }
 
-  async update(iddocente: string, updateDocenteDto: UpdateDocenteDto) {
+  async update(idadministrativo: string, updateAdministrativoDto: UpdateAdministrativoDto) {
 
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
-      const docente = await this.findOne(iddocente);
-      if ( docente === null ) {
+      const administrativo = await this.findOne(idadministrativo);
+      if ( administrativo === null ) {
         return {
           resp: 0, error: false,
-          message: 'Docente no existe.',
+          message: 'Administrativo no existe.',
         };
       }
-      const { arraynacionalidad, ...toUpdate } = updateDocenteDto;
-      const docentePreLoad = await this.docenteRepository.preload( {
-        iddocente: iddocente,
+      const { arraynacionalidad, ...toUpdate } = updateAdministrativoDto;
+      const administrativoPreLoad = await this.administrativoRepository.preload( {
+        idadministrativo: idadministrativo,
         ...toUpdate,
-        concurrencia: docente.concurrencia + 1,
+        concurrencia: administrativo.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );
 
-      if ( docentePreLoad === null ) {
+      if ( administrativoPreLoad === null ) {
         return {
           resp: 0, error: false,
-          message: 'Docente no existe.',
+          message: 'Administrativo no existe.',
         };
       }
 
       if ( arraynacionalidad ) {
-        await queryRunner.manager.delete( DocenteCiudadDetalle, { fkiddocente: { iddocente: iddocente } } );
-        docentePreLoad.arraynacionalidad = arraynacionalidad.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
-          return this.docenteCiudadDetalleRepository.create( {
+        await queryRunner.manager.delete( AdministrativoNacionalidadDetalle, { fkidadministrativo: { idadministrativo: idadministrativo } } );
+        administrativoPreLoad.arraynacionalidad = arraynacionalidad.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
+          return this.administrativoNacionalidadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
             created_at: this.getDateTime(),
@@ -207,7 +207,7 @@ export class DocenteService {
         } );
       }
 
-      const docenteUpdate = await queryRunner.manager.save( docentePreLoad );
+      const administrativoUpdate = await queryRunner.manager.save( administrativoPreLoad );
 
       await queryRunner.commitTransaction();
       await queryRunner.release();
@@ -215,9 +215,9 @@ export class DocenteService {
       return {
         resp: 1,
         error: false,
-        message: 'Docente actualizado éxitosamente.',
-        docente: docente,
-        docenteUpdate: docenteUpdate,
+        message: 'Administrativo actualizado éxitosamente.',
+        administrativo: administrativo,
+        administrativoUpdate: administrativoUpdate,
       };
     } catch (error) {
       await queryRunner.rollbackTransaction();
@@ -230,20 +230,20 @@ export class DocenteService {
     }
   }
 
-  async delete(iddocente: string) {
+  async delete(idadministrativo: string) {
     try {
-      let docente = await this.findOne(iddocente);
-      if ( docente === null ) {
+      let administrativo = await this.findOne(idadministrativo);
+      if ( administrativo === null ) {
         return {
           resp: 0, error: true,
-          message: 'Docente no existe.',
+          message: 'Administrativo no existe.',
         };
       }
-      await this.docenteRepository.remove( docente );
+      await this.administrativoRepository.remove( administrativo );
       return {
         resp: 1, error: false,
-        message: 'Docente eliminado éxitosamente.',
-        docente: docente,
+        message: 'Administrativo eliminado éxitosamente.',
+        administrativo: administrativo,
       };
     } catch (error) {
       this.logger.error(error);

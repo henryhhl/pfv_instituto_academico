@@ -1,6 +1,6 @@
 
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import InicioPage from '../screens/inicioPage';
 import AppMain from '../layouts/app';
 
@@ -132,6 +132,16 @@ import IndexCargo from '../screens/modules/persona/cargo/cargo.index';
 import CreateCargo from '../screens/modules/persona/cargo/cargo.create';
 import ShowCargo from '../screens/modules/persona/cargo/cargo.show';
 import EditCargo from '../screens/modules/persona/cargo/cargo.edit';
+
+import IndexDocente from '../screens/modules/persona/docente/docente.index';
+import CreateDocente from '../screens/modules/persona/docente/docente.create';
+import ShowDocente from '../screens/modules/persona/docente/docente.show';
+import EditDocente from '../screens/modules/persona/docente/docente.edit';
+
+import IndexAdministrativo from '../screens/modules/persona/administrativo/administrativo.index';
+import CreateAdministrativo from '../screens/modules/persona/administrativo/administrativo.create';
+import ShowAdministrativo from '../screens/modules/persona/administrativo/administrativo.show';
+import EditAdministrativo from '../screens/modules/persona/administrativo/administrativo.edit';
 
 const HomeRoute = (props) => {
     return (
@@ -267,6 +277,16 @@ const HomeRoute = (props) => {
                     <Route index path="/cargo/create" element={ <CreateCargo { ...props } /> }  />
                     <Route index path="/cargo/edit/:idcargo" element={ <EditCargo { ...props } /> }  />
                     <Route index path="/cargo/show/:idcargo" element={ <ShowCargo { ...props } /> }  />
+
+                    <Route index path="/docente/index" element={ <IndexDocente { ...props } /> }  />
+                    <Route index path="/docente/create" element={ <CreateDocente { ...props } /> }  />
+                    <Route index path="/docente/edit/:iddocente" element={ <EditDocente { ...props } /> }  />
+                    <Route index path="/docente/show/:iddocente" element={ <ShowDocente { ...props } /> }  />
+
+                    <Route index path="/administrativo/index" element={ <IndexAdministrativo { ...props } /> }  />
+                    <Route index path="/administrativo/create" element={ <CreateAdministrativo { ...props } /> }  />
+                    <Route index path="/administrativo/edit/:idadministrativo" element={ <EditAdministrativo { ...props } /> }  />
+                    <Route index path="/administrativo/show/:idadministrativo" element={ <ShowAdministrativo { ...props } /> }  />
 
                     <Route
                         path='*'

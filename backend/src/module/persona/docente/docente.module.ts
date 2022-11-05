@@ -8,7 +8,8 @@ import { DocenteCiudadDetalle } from './entities/docenteciudaddetalle.entity';
 
 @Module({
   controllers: [DocenteController],
-  providers: [DocenteService],imports: [
+  providers: [DocenteService],
+  imports: [
     TypeOrmModule.forFeature( [
       Docente, DocenteReferenciaContactoDetalle, DocenteCiudadDetalle,
     ] ),

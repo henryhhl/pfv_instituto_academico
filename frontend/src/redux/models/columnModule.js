@@ -801,6 +801,92 @@ const ColumnModules = {
             state: true,
         },
     ],
+
+    columnDocente: [
+        {
+            id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
+            label: 'Docente',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'tipoidentificacion',
+            label: 'Tipo Identificación',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'numeroidentificacion',
+            label: 'Nro. Identificación',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'ciudadnacimiento',
+            label: 'Lugar Nacimiento',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+    columnAdministrativo: [
+        {
+            id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
+            label: 'Docente',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'tipoidentificacion',
+            label: 'Tipo Identificación',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'numeroidentificacion',
+            label: 'Nro. Identificación',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'ciudadnacimiento',
+            label: 'Lugar Nacimiento',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
 };
 
 export default ColumnModules;

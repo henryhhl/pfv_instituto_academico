@@ -1,34 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { DocenteService } from './docente.service';
 import { CreateDocenteDto } from './dto/create-docente.dto';
 import { UpdateDocenteDto } from './dto/update-docente.dto';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Controller('docente')
 export class DocenteController {
   constructor(private readonly docenteService: DocenteService) {}
 
-  @Post()
-  create(@Body() createDocenteDto: CreateDocenteDto) {
-    return this.docenteService.create(createDocenteDto);
+  @Get('/index')
+  findAll( @Query() paginationDto: PaginationDto ) {
+    return this.docenteService.findAll(paginationDto);
   }
 
-  @Get()
-  findAll() {
-    return this.docenteService.findAll();
+  @Post('/store')
+  store(@Body() createDocenteDto: CreateDocenteDto) {
+    return this.docenteService.store(createDocenteDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.docenteService.findOne(+id);
+  @Get('/edit/:iddocente')
+  edit(@Param('iddocente') iddocente: string) {
+    return this.docenteService.edit(iddocente);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDocenteDto: UpdateDocenteDto) {
-    return this.docenteService.update(+id, updateDocenteDto);
+  @Get('/show/:iddocente')
+  show(@Param('iddocente') iddocente: string) {
+    return this.docenteService.show(iddocente);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.docenteService.remove(+id);
+  @Patch('/update/:iddocente')
+  updatePatch(@Param('iddocente') iddocente: string, @Body() updateDocenteDto: UpdateDocenteDto) {
+    return this.docenteService.update(iddocente, updateDocenteDto);
+  }
+
+  @Put('/update/:iddocente')
+  updatePut(@Param('iddocente') iddocente: string, @Body() updateDocenteDto: UpdateDocenteDto) {
+    return this.docenteService.update(iddocente, updateDocenteDto);
+  }
+
+  @Delete(':iddocente')
+  delete(@Param('iddocente') iddocente: string) {
+    return this.docenteService.delete(iddocente);
   }
 }

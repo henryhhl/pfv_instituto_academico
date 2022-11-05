@@ -150,34 +150,42 @@ export class TipoIdentificacionService {
   }
 
   async update(idtipoidentificacion: string, updateTipoidentificacionDto: UpdateTipoIdentificacionDto) {
-    const tipoIdentificacion = await this.findOne(idtipoidentificacion);
-    if ( tipoIdentificacion === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Tipo Identificacion no existe.',
-      };
-    }
-    const tipoIdentificacionPreLoad = await this.tipoIdentificacionRepository.preload( {
-      idtipoidentificacion: idtipoidentificacion,
-      ...updateTipoidentificacionDto,
-      concurrencia: tipoIdentificacion.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
+    try {
+      const tipoIdentificacion = await this.findOne(idtipoidentificacion);
+      if ( tipoIdentificacion === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Tipo Identificacion no existe.',
+        };
+      }
+      const tipoIdentificacionPreLoad = await this.tipoIdentificacionRepository.preload( {
+        idtipoidentificacion: idtipoidentificacion,
+        ...updateTipoidentificacionDto,
+        concurrencia: tipoIdentificacion.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
 
-    if ( tipoIdentificacionPreLoad === null ) {
+      if ( tipoIdentificacionPreLoad === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Tipo Identificacion no existe.',
+        };
+      }
+      const tipoIdentificacionUpdate = await this.tipoIdentificacionRepository.save( tipoIdentificacionPreLoad );
       return {
-        resp: 0, error: false,
-        message: 'Tipo Identificacion no existe.',
+        resp: 1,
+        error: false,
+        message: 'Tipo Identificacion actualizado éxitosamente.',
+        tipoIdentificacion: tipoIdentificacion,
+        tipoIdentificacionUpdate: tipoIdentificacionUpdate,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const tipoIdentificacionUpdate = await this.tipoIdentificacionRepository.save( tipoIdentificacionPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Tipo Identificacion actualizado éxitosamente.',
-      tipoIdentificacion: tipoIdentificacion,
-      tipoIdentificacionUpdate: tipoIdentificacionUpdate,
-    };
   }
 
   async delete(idtipoidentificacion: string) {

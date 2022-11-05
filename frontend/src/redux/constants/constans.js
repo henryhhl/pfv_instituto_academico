@@ -190,6 +190,26 @@ const Constants = {
     cargo_onDeleteRowRefContact: "[ON DELETE ROW REFERENCIA CONTACTO] Cargo",
     cargo_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Cargo",
     cargo_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Cargo",
+
+    docente_setInit: "[SET INIT] Docente",
+    docente_onChange: "[ON CHANGE] Docente",
+    docente_onCreate: "[ON CREATE] Docente",
+    docente_onShow: "[ON SHOW] Docente",
+    docente_onLimpiar: "[ON LIMPIAR] Docente",
+    docente_onAddRowNacionalidad: "[ON ADD ROW NACIONALIDAD] Docente",
+    docente_onDeleteRowNacionalidad: "[ON DELETE ROW NACIONALIDAD] Docente",
+    docente_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Docente",
+    docente_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Docente",
+
+    administrativo_setInit: "[SET INIT] Administrativo",
+    administrativo_onChange: "[ON CHANGE] Administrativo",
+    administrativo_onCreate: "[ON CREATE] Administrativo",
+    administrativo_onShow: "[ON SHOW] Administrativo",
+    administrativo_onLimpiar: "[ON LIMPIAR] Administrativo",
+    administrativo_onAddRowNacionalidad: "[ON ADD ROW NACIONALIDAD] Administrativo",
+    administrativo_onDeleteRowNacionalidad: "[ON DELETE ROW NACIONALIDAD] Administrativo",
+    administrativo_onAddUndAcademica: "[ON ADD UNIDAD ACADEMICA] Administrativo",
+    administrativo_onDeleteRowUndAcademica: "[ON DELETE ROW UNIDAD ACADEMICA] Administrativo",
 };
 
 export default Constants;

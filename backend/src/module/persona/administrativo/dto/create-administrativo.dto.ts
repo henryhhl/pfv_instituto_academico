@@ -2,7 +2,7 @@ import { IsNotEmpty, IsOptional, IsString, MinLength, IsArray, ValidateNested } 
 import { Type } from 'class-transformer';
 import { CreateNacionalidadDto } from './create-nacionalidad.dto';
 
-export class CreateDocenteDto {
+export class CreateAdministrativoDto {
 
     @IsNotEmpty( { message: 'Campo ID Tipo Identificación es requerido.', } )
     @IsString( { message: 'Campo ID Tipo Identificación solo permitido tipo STRING.', } )

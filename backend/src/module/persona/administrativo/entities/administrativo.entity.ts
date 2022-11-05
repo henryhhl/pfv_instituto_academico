@@ -1,12 +1,12 @@
 import { Entity, OneToMany, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { DocenteReferenciaContactoDetalle } from './docentereferenciacontacto.entity';
-import { DocenteCiudadDetalle } from './docenteciudaddetalle.entity';
+import { AdministrativoNacionalidadDetalle } from './administrativociudaddetalle.entity';
+import { AdministrativoReferenciaContactoDetalle } from './administrativoreferenciacontacto.entity';
 
-@Entity('docente')
-export class Docente {
+@Entity('administrativo')
+export class Administrativo {
 
     @PrimaryGeneratedColumn('uuid')
-    iddocente: string;
+    idadministrativo: string;
 
     @Column( 'text' )
     fkidtipoidentificacion: string;
@@ -27,18 +27,18 @@ export class Docente {
     ciudadresidencia: string;
 
     @OneToMany(
-        () => DocenteReferenciaContactoDetalle,
-        ( docentereferenciacontactodetalle ) => docentereferenciacontactodetalle.fkiddocente,
+        () => AdministrativoReferenciaContactoDetalle,
+        ( administrativoreferenciacontactodetalle ) => administrativoreferenciacontactodetalle.fkidadministrativo,
         { cascade: true, eager: true, },
     )
-    arrayreferenciacontactos?: DocenteReferenciaContactoDetalle[];
+    arrayreferenciacontactos?: AdministrativoReferenciaContactoDetalle[];
 
     @OneToMany(
-        () => DocenteCiudadDetalle,
-        ( docenteciudaddetalle ) => docenteciudaddetalle.fkiddocente,
+        () => AdministrativoNacionalidadDetalle,
+        ( administrativonacionalidaddetalle ) => administrativonacionalidaddetalle.fkidadministrativo,
         { cascade: true, eager: true, },
     )
-    arraynacionalidad?: DocenteCiudadDetalle[];
+    arraynacionalidad?: AdministrativoNacionalidadDetalle[];
 
     @Column( 'text' )
     nombreprincipal: string;

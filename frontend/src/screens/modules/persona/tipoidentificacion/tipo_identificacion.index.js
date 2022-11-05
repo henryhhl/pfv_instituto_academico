@@ -39,7 +39,7 @@ function IndexTipoIdentificacion(props) {
     return (
         <>
             <PaperComponent
-                title={"Listado Tipo Identifiación"}
+                title={"Listado Tipo Identificación"}
                 create
                 onCreate={onCreate}
             >

@@ -21,6 +21,15 @@ export default function TableComponent( props ) {
         props.setPaginate( event.target.value );
     };
 
+    const showDataArray = ( array, row ) => {
+        let string = "";
+        for (let index = 0; index < array.length; index++) {
+            const element = array[index];
+            string += `${row[element]} `;
+        }
+        return string;
+    };
+
     function onComponent() {
         return (
             <div className="table-responsive">
@@ -80,7 +89,9 @@ export default function TableComponent( props ) {
                                                     <Tag color={`${ row[column.id] === 'A' ? 'geekblue' : '' }`}>
                                                         { `${ row[column.id] === 'A' ? 'Activo' : 'InActivo' }` }
                                                     </Tag> : 
-                                                    row[column.id] 
+                                                    Array.isArray( column.id ) ? 
+                                                        showDataArray(column.id, row)
+                                                    : row[column.id] 
                                                 }
                                             </td>
                                         );

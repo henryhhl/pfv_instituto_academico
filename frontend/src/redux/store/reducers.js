@@ -36,6 +36,8 @@ import { TurnoReducer } from '../reducers/estructurainstitucional/turno.reducer'
 import { TipoIdentificacionReducer } from '../reducers/persona/tipo_identificacion.reducer';
 import { LoadingReducer } from '../reducers/loading.reducer';
 import { CargoReducer } from '../reducers/persona/cargo.reducer';
+import { DocenteReducer } from '../reducers/persona/docente.reducer';
+import { AdministrativoReducer } from '../reducers/persona/administrativo.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -74,6 +76,8 @@ const RootReducer = combineReducers( {
     
     TipoIdentificacion: TipoIdentificacionReducer,
     Cargo: CargoReducer,
+    Docente: DocenteReducer,
+    Administrativo: AdministrativoReducer,
 } );
 
 export default RootReducer;

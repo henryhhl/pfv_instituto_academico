@@ -1,6 +1,20 @@
 
 const PaginationModule = {
 
+    listAdministrativo: [],
+    pageAdministrativo: 1,
+    paginateAdministrativo: 1,
+    paginationAdministrativo: {
+        total: 0,
+    },
+
+    listDocente: [],
+    pageDocente: 1,
+    paginateDocente: 1,
+    paginationDocente: {
+        total: 0,
+    },
+
     listCargo: [],
     pageCargo: 1,
     paginateCargo: 1,

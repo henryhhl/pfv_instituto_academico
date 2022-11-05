@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import apiServices from '../../../../../utils/apiservices';
 import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
-import TreeComponent from '../../../../../components/tree';
+import TableComponent from '../../../../../components/table';
 
-export default function ListadoCiudadModal( props ) {
+export default function ListadoTipoIdentificacionModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
 
     React.useEffect( () => {
@@ -15,10 +15,10 @@ export default function ListadoCiudadModal( props ) {
     }, [] );
 
     function get_data() {
-        httpRequest( 'get', apiServices.apiparametrosadminciudad_index, {
+        httpRequest( 'get', apiServices.apipersonatipoidentificacion_index, {
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
-                setArrayData( result.arrayCiudad );
+                setArrayData( result.arrayTipoIdentificacion );
             };
         } );
     };
@@ -28,24 +28,23 @@ export default function ListadoCiudadModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={'70%'} centered
-                title={props.title}
+                footer={null} width={400} centered
+                title={"LISTA TIPO IDENTIFICACIÓN"}
             >
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
                             <div className="card-body">
-                                <TreeComponent 
-                                    treeData={array_data}
-                                    option={ {
-                                        title: "descripcion",
-                                        value: "idciudad",
-                                        fkidpadre: "fkidciudadpadre",
-                                    } } selectable={false}
-                                    create={false} show={false}
-                                    edit={false} delete={false}
-                                    onSelect={props.onSelect}
-                                    fkidpadre={props.fkidpadre}
+                                <TableComponent 
+                                    option={false}
+                                    columns={ [
+                                        {
+                                            id: 'descripcion',
+                                            label: 'Descripción',
+                                        },
+                                    ] } select
+                                    dataSource={array_data}
+                                    onSelect={ props.onSelect }
                                 />
                             </div>
                         </div>
@@ -56,17 +55,13 @@ export default function ListadoCiudadModal( props ) {
     );
 };
 
-ListadoCiudadModal.propTypes = {
+ListadoTipoIdentificacionModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
-    fkidpadre: PropTypes.bool,
-    title: PropTypes.node,
 };
 
-ListadoCiudadModal.defaultProps = {
+ListadoTipoIdentificacionModal.defaultProps = {
     onSelect: () => {},
     visible: false,
-    fkidpadre: false,
-    title: "LISTA CIUDAD",
 };

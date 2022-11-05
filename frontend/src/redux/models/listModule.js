@@ -31,6 +31,8 @@ const ListModules = {
 
     listTipoIdentificacion: [],
     listCargo: [],
+    listDocente: [],
+    listAdministrativo: [],
 };
 
 export default ListModules;

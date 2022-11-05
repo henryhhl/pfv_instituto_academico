@@ -36,6 +36,16 @@ export default function SidebarComponent() {
                         </a>
                         <ul className="menu-dropdown">
                             <li>
+                                <Link to={"/administrativo/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Administrativo
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/docente/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Docente
+                                </Link>
+                            </li>
+                            <li>
                                 <Link to={"/cargo/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Cargo
                                 </Link>
