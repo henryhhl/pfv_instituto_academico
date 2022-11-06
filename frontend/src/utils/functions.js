@@ -91,6 +91,11 @@ const dateToString = ( date = new Date() ) => {
     return year + "-" + month + "-" + day;
 };
 
+const dateToYear = ( date = new Date() ) => {
+    let year  = date.getFullYear();
+    return year;
+};
+
 const validateEmail = ( value ) => {
     let email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if ( !email.test(value) ) return false;
@@ -99,6 +104,7 @@ const validateEmail = ( value ) => {
 
 export const Functions = {
     dateToString,
+    dateToYear,
     cleanObejct,
     getValueEstado,
     getValueGenero,

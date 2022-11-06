@@ -13,6 +13,8 @@ const Docente = {
 
     arrayreferenciacontactos: [],
     arraynacionalidad: [],
+    arraymateria: [],
+    arraycategoriadocumento: [],
 
     nombreprincipal: "",
     nombreadicional: "",

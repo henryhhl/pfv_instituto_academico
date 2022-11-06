@@ -25,7 +25,7 @@ function CreateTipoCiudad( props ) {
         <>
             <PaperComponent>
                 <CardComponent
-                    header={"Nuevo Tipo Ciudad"}
+                    header={"Nuevo Tipo Localidad"}
                     footer={
                         <>
                             <ButtonComponent

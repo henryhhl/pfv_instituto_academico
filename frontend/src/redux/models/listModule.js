@@ -33,6 +33,7 @@ const ListModules = {
     listCargo: [],
     listDocente: [],
     listAdministrativo: [],
+    listCategoriaDocumento: [],
 };
 
 export default ListModules;

@@ -26,7 +26,7 @@ function EditTipoCiudad( props ) {
         <>
             <PaperComponent>
                 <CardComponent
-                    header={"Editar Tipo Ciudad"}
+                    header={"Editar Tipo Localidad"}
                     footer={
                         <>
                             <ButtonComponent

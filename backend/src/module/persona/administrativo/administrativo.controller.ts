@@ -38,7 +38,7 @@ export class AdministrativoController {
     return this.administrativoService.update(idadministrativo, updateAdministrativoDto);
   }
 
-  @Delete(':idadministrativo')
+  @Delete('/delete/:idadministrativo')
   delete(@Param('idadministrativo') idadministrativo: string) {
     return this.administrativoService.delete(idadministrativo);
   }

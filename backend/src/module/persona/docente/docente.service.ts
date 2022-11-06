@@ -7,6 +7,8 @@ import { UpdateDocenteDto } from './dto/update-docente.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { DocenteCiudadDetalle } from './entities/docenteciudaddetalle.entity';
 import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
+import { DocenteMateriaDetalle } from './entities/docentemateriadetalle.entity';
+import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadocumentodetalle.entity';
 
 @Injectable()
 export class DocenteService {
@@ -18,6 +20,12 @@ export class DocenteService {
 
     @InjectRepository(DocenteCiudadDetalle)
     private readonly docenteCiudadDetalleRepository: Repository<DocenteCiudadDetalle>,
+
+    @InjectRepository(DocenteMateriaDetalle)
+    private readonly docenteMateriaDetalleRepository: Repository<DocenteMateriaDetalle>,
+
+    @InjectRepository(DocenteCategoriaDocumentoDetalle)
+    private readonly docenteCategoriaDocumentoDetalleRepository: Repository<DocenteCategoriaDocumentoDetalle>,
 
     @InjectRepository(DocenteReferenciaContactoDetalle)
     private readonly docenteReferenciaContactoDetalleRepository: Repository<DocenteReferenciaContactoDetalle>,
@@ -88,6 +96,7 @@ export class DocenteService {
     try {
       const docente = this.docenteRepository.create( {
         ...createDocenteDto,
+
         arraynacionalidad: createDocenteDto.arraynacionalidad.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
           return this.docenteCiudadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
@@ -95,6 +104,30 @@ export class DocenteService {
             created_at: this.getDateTime(),
           } );
         } ),
+
+        arraymateria: createDocenteDto.arraymateria.filter( ( materia ) => ( materia.fkidmateria !== null ) ).map( ( materia ) => {
+          return this.docenteMateriaDetalleRepository.create( {
+            fkidmateria: materia.fkidmateria,
+            materia: materia.materia,
+            estado: (materia.estado !== 'A' && materia.estado !== 'N' ) ? 'A' : materia.estado,
+            tipoprioridad: (materia.tipoprioridad !== '' ) ? 'A' : materia.tipoprioridad,
+            created_at: this.getDateTime(),
+          } );
+        } ),
+
+        arraycategoriadocumento: createDocenteDto.arraycategoriadocumento.filter( 
+          ( categoriadocumento ) => ( categoriadocumento.fkidcategoriadocumento !== null ) 
+        ).map( ( categoriadocumento ) => {
+          return this.docenteCategoriaDocumentoDetalleRepository.create( {
+            fkidcategoriadocumento: categoriadocumento.fkidcategoriadocumento,
+            categoriadocumento: categoriadocumento.categoriadocumento,
+            descripcion: categoriadocumento.descripcion,
+            documento: categoriadocumento.documento,
+            extension: categoriadocumento.extension,
+            created_at: this.getDateTime(),
+          } );
+        } ),
+
         arrayreferenciacontactos: [],
         created_at: this.getDateTime(),
       } );
@@ -116,7 +149,7 @@ export class DocenteService {
   async findOne(iddocente: string) {
     const docente = await this.docenteRepository.findOne( {
       where: { iddocente: iddocente },
-      relations: { arraynacionalidad: true, },
+      relations: { arraynacionalidad: true, arraymateria: true, },
     } );
     return docente;
   }
@@ -181,7 +214,7 @@ export class DocenteService {
           message: 'Docente no existe.',
         };
       }
-      const { arraynacionalidad, ...toUpdate } = updateDocenteDto;
+      const { arraynacionalidad, arraymateria, arraycategoriadocumento, ...toUpdate } = updateDocenteDto;
       const docentePreLoad = await this.docenteRepository.preload( {
         iddocente: iddocente,
         ...toUpdate,
@@ -202,6 +235,35 @@ export class DocenteService {
           return this.docenteCiudadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+
+      if ( arraymateria ) {
+        await queryRunner.manager.delete( DocenteMateriaDetalle, { fkiddocente: { iddocente: iddocente } } );
+        docentePreLoad.arraymateria = arraymateria.filter( ( materia ) => ( materia.fkidmateria !== null ) ).map( ( materia ) => {
+          return this.docenteMateriaDetalleRepository.create( {
+            fkidmateria: materia.fkidmateria,
+            materia: materia.materia,
+            estado: (materia.estado !== 'A' && materia.estado !== 'N' ) ? 'A' : materia.estado,
+            tipoprioridad: (materia.tipoprioridad !== '' ) ? 'A' : materia.tipoprioridad,
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+
+      if ( arraycategoriadocumento ) {
+        await queryRunner.manager.delete( DocenteCategoriaDocumentoDetalle, { fkiddocente: { iddocente: iddocente } } );
+        docentePreLoad.arraycategoriadocumento = arraycategoriadocumento.filter( 
+            ( categoriadocumento ) => ( categoriadocumento.fkidcategoriadocumento !== null ) 
+        ).map( ( categoriadocumento ) => {
+          return this.docenteCategoriaDocumentoDetalleRepository.create( {
+            fkidcategoriadocumento: categoriadocumento.fkidcategoriadocumento,
+            categoriadocumento: categoriadocumento.categoriadocumento,
+            descripcion: categoriadocumento.descripcion,
+            documento: categoriadocumento.documento,
+            extension: categoriadocumento.extension,
             created_at: this.getDateTime(),
           } );
         } );

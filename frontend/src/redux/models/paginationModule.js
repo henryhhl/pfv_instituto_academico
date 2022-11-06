@@ -22,6 +22,14 @@ const PaginationModule = {
         total: 0,
     },
 
+    
+    listCategoriaDocumento: [],
+    pageCategoriaDocumento: 1,
+    paginateCategoriaDocumento: 1,
+    paginationCategoriaDocumento: {
+        total: 0,
+    },
+
     listTipoIdentificacion: [],
     pageTipoIdentificacion: 1,
     paginateTipoIdentificacion: 1,

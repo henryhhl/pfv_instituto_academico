@@ -29,7 +29,7 @@ export default function ListadoTipoCiudadModal( props ) {
                 visible={props.visible}
                 onClose={props.onClose}
                 footer={null} width={300} centered
-                title={"LISTA DE TIPO CIUDAD"}
+                title={"LISTA DE TIPO LOCALIDAD"}
                 zIndex={1200}
             >
                 <div className="row">

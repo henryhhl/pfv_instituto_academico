@@ -38,7 +38,7 @@ export class DocenteController {
     return this.docenteService.update(iddocente, updateDocenteDto);
   }
 
-  @Delete(':iddocente')
+  @Delete('/delete/:iddocente')
   delete(@Param('iddocente') iddocente: string) {
     return this.docenteService.delete(iddocente);
   }

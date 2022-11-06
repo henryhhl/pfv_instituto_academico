@@ -38,6 +38,7 @@ import { LoadingReducer } from '../reducers/loading.reducer';
 import { CargoReducer } from '../reducers/persona/cargo.reducer';
 import { DocenteReducer } from '../reducers/persona/docente.reducer';
 import { AdministrativoReducer } from '../reducers/persona/administrativo.reducer';
+import { CategoriaDocumentoReducer } from '../reducers/persona/categoria_documento.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -78,6 +79,7 @@ const RootReducer = combineReducers( {
     Cargo: CargoReducer,
     Docente: DocenteReducer,
     Administrativo: AdministrativoReducer,
+    CategoriaDocumento: CategoriaDocumentoReducer,
 } );
 
 export default RootReducer;

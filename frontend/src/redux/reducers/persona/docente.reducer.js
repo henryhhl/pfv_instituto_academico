@@ -44,6 +44,32 @@ export const DocenteReducer = ( state = inititalState, action ) => {
             );
             state = Object.assign( {}, state );
             return state;
+
+        case Constants.docente_onAddRowMateria:
+            let arrayMateria = state.arraymateria;
+            state.arraymateria = [ ...arrayMateria, onDefaultMateria() ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.docente_onDeleteRowMateria:
+            state.arraymateria = state.arraymateria.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.docente_onAddRowCategoriaDocumento:
+            let arrayCategoriaDocumento = state.arraycategoriadocumento;
+            state.arraycategoriadocumento = [ ...arrayCategoriaDocumento, onDefaultCategoriaDocumento() ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.docente_onDeleteRowCategoriaDocumento:
+            state.arraycategoriadocumento = state.arraycategoriadocumento.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
     
         default:
             return state;
@@ -65,8 +91,45 @@ const onDefaultNacionalidad = () => {
     };
 };
 
+const loadMateriaDetalle = () => {
+    let array = [];
+    for (let index = 0; index < 3; index++) {
+        array = [ ...array, onDefaultMateria() ];
+    }
+    return array;
+};
+
+const onDefaultMateria = () => {
+    return {
+        fkidmateria: null,
+        materia: null,
+        tipoprioridad: "A",
+        estado: "A",
+    };
+};
+
+const loadCategoriaDocumentoDetalle = () => {
+    let array = [];
+    for (let index = 0; index < 3; index++) {
+        array = [ ...array, onDefaultCategoriaDocumento() ];
+    }
+    return array;
+};
+
+const onDefaultCategoriaDocumento = () => {
+    return {
+        fkidcategoriadocumento: null,
+        categoriadocumento: null,
+        descripcion: null,
+        documento: "",
+        extension: "",
+    };
+};
+
 const onCreate = ( state = inititalState ) => {
     state.arraynacionalidad = loadNacionalidadDetalle();
+    state.arraymateria = loadMateriaDetalle();
+    state.arraycategoriadocumento = loadCategoriaDocumentoDetalle();
     state.concurrencia = 1;
     state.estado = 'A';
     state.isdelete = 'A';
@@ -90,6 +153,19 @@ const onSetData = ( state = inititalState, docente ) => {
             fkidnacionalidad: item.fkidnacionalidad, nacionalidad: item.nacionalidad,
         };
      } );
+    state.arraycategoriadocumento = docente.arraycategoriadocumento.map( ( item ) => { 
+        return {
+            fkidcategoriadocumento: item.fkidcategoriadocumento, categoriadocumento: item.categoriadocumento,
+            descripcion: item.descripcion, documento: item.documento, extension: item.extension,
+        };
+    } );
+
+    state.arraymateria = docente.arraymateria.map( ( item ) => { 
+        return {
+            fkidmateria: item.fkidmateria, materia: item.materia,
+            tipoprioridad: item.tipoprioridad, estado: item.estado,
+        };
+    } );
 
     state.nombreprincipal = docente.nombreprincipal;
     state.nombreadicional = docente.nombreadicional;

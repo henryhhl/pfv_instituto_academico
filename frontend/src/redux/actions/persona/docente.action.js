@@ -27,6 +27,24 @@ const onDeleteNacionalidad = ( index ) => ( {
     payload: index,
 } );
 
+const onAddRowMateria = ( ) => ( {
+    type: Constants.docente_onAddRowMateria,
+} );
+
+const onDeleteRowMateria = ( index ) => ( {
+    type: Constants.docente_onDeleteRowMateria,
+    payload: index,
+} );
+
+const onAddRowCategoriaDocumento = ( ) => ( {
+    type: Constants.docente_onAddRowCategoriaDocumento,
+} );
+
+const onDeleteRowCategoriaDocumento = ( index ) => ( {
+    type: Constants.docente_onDeleteRowCategoriaDocumento,
+    payload: index,
+} );
+
 const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
     payload: data,
@@ -456,6 +474,10 @@ export const DocenteActions = {
     onChange,
     onAddNacionalidad,
     onDeleteNacionalidad,
+    onAddRowMateria,
+    onDeleteRowMateria,
+    onAddRowCategoriaDocumento,
+    onDeleteRowCategoriaDocumento,
     setNombrePrincipal,
     setNombreAdicional,
     setApellidoPrimero,

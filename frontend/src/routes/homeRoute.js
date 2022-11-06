@@ -128,6 +128,11 @@ import CreateTipoIdentificacion from '../screens/modules/persona/tipoidentificac
 import ShowTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.show';
 import EditTipoIdentificacion from '../screens/modules/persona/tipoidentificacion/tipo_identificacion.edit';
 
+import IndexCategoriaDocumento from '../screens/modules/persona/categoriadocumento/categoria_documento.index';
+import CreateCategoriaDocumento from '../screens/modules/persona/categoriadocumento/categoria_documento.create';
+import ShowCategoriaDocumento from '../screens/modules/persona/categoriadocumento/categoria_documento.show';
+import EditCategoriaDocumento from '../screens/modules/persona/categoriadocumento/categoria_documento.edit';
+
 import IndexCargo from '../screens/modules/persona/cargo/cargo.index';
 import CreateCargo from '../screens/modules/persona/cargo/cargo.create';
 import ShowCargo from '../screens/modules/persona/cargo/cargo.show';
@@ -287,6 +292,11 @@ const HomeRoute = (props) => {
                     <Route index path="/administrativo/create" element={ <CreateAdministrativo { ...props } /> }  />
                     <Route index path="/administrativo/edit/:idadministrativo" element={ <EditAdministrativo { ...props } /> }  />
                     <Route index path="/administrativo/show/:idadministrativo" element={ <ShowAdministrativo { ...props } /> }  />
+
+                    <Route index path="/categoriadocumento/index" element={ <IndexCategoriaDocumento { ...props } /> }  />
+                    <Route index path="/categoriadocumento/create" element={ <CreateCategoriaDocumento { ...props } /> }  />
+                    <Route index path="/categoriadocumento/edit/:idcategoriadocumento" element={ <EditCategoriaDocumento { ...props } /> }  />
+                    <Route index path="/categoriadocumento/show/:idcategoriadocumento" element={ <ShowCategoriaDocumento { ...props } /> }  />
 
                     <Route
                         path='*'

@@ -67,7 +67,7 @@ export default function HeaderComponent() {
                 <li className="dropdown">
                     <a href="#" data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg">
                         <i className="ion ion-android-person d-lg-none"></i>
-                        <div className="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                        <div className="d-sm-none d-lg-inline-block">Hola, Ericka Lopez</div>
                     </a>
                     <div className="dropdown-menu dropdown-menu-right">
                         <a href="profile.html" className="dropdown-item has-icon">

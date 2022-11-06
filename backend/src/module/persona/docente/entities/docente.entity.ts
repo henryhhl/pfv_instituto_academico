@@ -1,6 +1,8 @@
 import { Entity, OneToMany, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { DocenteReferenciaContactoDetalle } from './docentereferenciacontacto.entity';
 import { DocenteCiudadDetalle } from './docenteciudaddetalle.entity';
+import { DocenteMateriaDetalle } from './docentemateriadetalle.entity';
+import { DocenteCategoriaDocumentoDetalle } from './docentecategoriadocumentodetalle.entity';
 
 @Entity('docente')
 export class Docente {
@@ -39,6 +41,20 @@ export class Docente {
         { cascade: true, eager: true, },
     )
     arraynacionalidad?: DocenteCiudadDetalle[];
+
+    @OneToMany(
+        () => DocenteMateriaDetalle,
+        ( docentemateriadetalle ) => docentemateriadetalle.fkiddocente,
+        { cascade: true, eager: true, },
+    )
+    arraymateria?: DocenteMateriaDetalle[];
+
+    @OneToMany(
+        () => DocenteCategoriaDocumentoDetalle,
+        ( docentecategoriadocumentodetalle ) => docentecategoriadocumentodetalle.fkiddocente,
+        { cascade: true, eager: true, },
+    )
+    arraycategoriadocumento?: DocenteCategoriaDocumentoDetalle[];
 
     @Column( 'text' )
     nombreprincipal: string;

@@ -7,14 +7,16 @@ export default function SidebarComponent() {
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div className="sidebar-brand">
-                    <a href="index.html">Stisla Lite</a>
+                    <a href="index.html">
+                        SolverTic SRL
+                    </a>
                 </div>
                 <div className="sidebar-user">
                     <div className="sidebar-user-picture">
-                        <img alt="image" src="/assets/dist/img/avatar/avatar-1.jpeg" />
+                        <img alt="image" src="/assets/img/photo_ericka.jpeg" />
                     </div>
                     <div className="sidebar-user-details">
-                        <div className="user-name">Ujang Maman</div>
+                        <div className="user-name">Ericka Lopez</div>
                         <div className="user-role">
                             Administrator
                         </div>
@@ -53,6 +55,11 @@ export default function SidebarComponent() {
                             <li>
                                 <Link to={"/tipoidentificacion/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Tipo Identificación
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/categoriadocumento/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Categoria Documento
                                 </Link>
                             </li>
                         </ul>

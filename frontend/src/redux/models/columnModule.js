@@ -786,7 +786,7 @@ const ColumnModules = {
     columnCargo: [
         {
             id: 'descripcion',
-            label: 'Tipo',
+            label: 'Nombre',
             numeric: false,
             visible: true,
             width: null,
@@ -873,6 +873,25 @@ const ColumnModules = {
         {
             id: 'ciudadnacimiento',
             label: 'Lugar Nacimiento',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+    columnCategoriaDocumento: [
+        {
+            id: 'descripcion',
+            label: 'Nombre',
             numeric: false,
             visible: true,
             width: null,

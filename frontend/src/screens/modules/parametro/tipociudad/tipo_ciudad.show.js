@@ -26,7 +26,7 @@ function ShowTipoCiudad( props ) {
         <>
             <PaperComponent>
                 <CardComponent
-                    header={"Detalle Tipo Ciudad"}
+                    header={"Detalle Tipo Localidad"}
                     footer={
                         <ButtonComponent
                             onClick={onBack}

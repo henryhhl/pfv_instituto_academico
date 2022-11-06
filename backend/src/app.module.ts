@@ -43,6 +43,7 @@ import { DocenteModule } from './module/persona/docente/docente.module';
 import { TipoIdentificacionModule } from './module/persona/tipoidentificacion/tipoidentificacion.module';
 import { CargoModule } from './module/persona/cargo/cargo.module';
 import { AdministrativoModule } from './module/persona/administrativo/administrativo.module';
+import { CategoriaDocumentoModule } from './module/persona/categoriadocumento/categoriadocumento.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -92,7 +93,7 @@ import { AdministrativoModule } from './module/persona/administrativo/administra
     RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
     ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, 
     ResponsablereferenciacontactodetalleModule, CommonModule, TurnoModule, AulaModule, 
-    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, TipoIdentificacionModule, CargoModule, AdministrativoModule,
+    DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, TipoIdentificacionModule, CargoModule, AdministrativoModule, CategoriaDocumentoModule,
   ],
   controllers: [],
   providers: [],

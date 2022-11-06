@@ -39,7 +39,7 @@ function IndexTipoCiudad(props) {
     return (
         <>
             <PaperComponent
-                title={"Listado Tipo Ciudad"}
+                title={"Listado Tipo Localidad"}
                 create
                 onCreate={onCreate}
             >

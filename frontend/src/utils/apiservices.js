@@ -221,6 +221,14 @@ const apiServices = {
     apipersonatipoidentificacion_update: `${module.persona}/tipoidentificacion/update`,
     apipersonatipoidentificacion_delete: `${module.persona}/tipoidentificacion/delete`,
 
+    apipersonacategoriadocumento_index:  `${module.persona}/categoriadocumento/index`,
+    apipersonacategoriadocumento_create: `${module.persona}/categoriadocumento/create`,
+    apipersonacategoriadocumento_store:  `${module.persona}/categoriadocumento/store`,
+    apipersonacategoriadocumento_edit:   `${module.persona}/categoriadocumento/edit`,
+    apipersonacategoriadocumento_show:   `${module.persona}/categoriadocumento/show`,
+    apipersonacategoriadocumento_update: `${module.persona}/categoriadocumento/update`,
+    apipersonacategoriadocumento_delete: `${module.persona}/categoriadocumento/delete`,
+
     apipersonacargo_index:  `${module.persona}/cargo/index`,
     apipersonacargo_create: `${module.persona}/cargo/create`,
     apipersonacargo_store:  `${module.persona}/cargo/store`,
