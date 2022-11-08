@@ -107,6 +107,11 @@ import CreateTurno from '../screens/modules/estructurainstitucional/turno/turno.
 import ShowTurno from '../screens/modules/estructurainstitucional/turno/turno.show';
 import EditTurno from '../screens/modules/estructurainstitucional/turno/turno.edit';
 
+import IndexAula from '../screens/modules/estructurainstitucional/aula/aula.index';
+import CreateAula from '../screens/modules/estructurainstitucional/aula/aula.create';
+import ShowAula from '../screens/modules/estructurainstitucional/aula/aula.show';
+import EditAula from '../screens/modules/estructurainstitucional/aula/aula.edit';
+
 import IndexDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.index';
 import CreateDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.create';
 import ShowDivisionAcademica from '../screens/modules/estructurainstitucional/divisionacademica/division_academica.show';
@@ -147,6 +152,7 @@ import IndexAdministrativo from '../screens/modules/persona/administrativo/admin
 import CreateAdministrativo from '../screens/modules/persona/administrativo/administrativo.create';
 import ShowAdministrativo from '../screens/modules/persona/administrativo/administrativo.show';
 import EditAdministrativo from '../screens/modules/persona/administrativo/administrativo.edit';
+import SeguridadRoute from './module/seguridad.route';
 
 const HomeRoute = (props) => {
     return (
@@ -252,10 +258,16 @@ const HomeRoute = (props) => {
                     <Route index path="/responsable/edit/:idresponsable" element={ <EditResponsable { ...props } /> }  />
                     <Route index path="/responsable/show/:idresponsable" element={ <ShowResponsable { ...props } /> }  />
 
+
                     <Route index path="/turno/index" element={ <IndexTurno { ...props } /> }  />
                     <Route index path="/turno/create" element={ <CreateTurno { ...props } /> }  />
                     <Route index path="/turno/edit/:idturno" element={ <EditTurno { ...props } /> }  />
                     <Route index path="/turno/show/:idturno" element={ <ShowTurno { ...props } /> }  />
+
+                    <Route index path="/aula/index" element={ <IndexAula { ...props } /> }  />
+                    <Route index path="/aula/create" element={ <CreateAula { ...props } /> }  />
+                    <Route index path="/aula/edit/:idaula" element={ <EditAula { ...props } /> }  />
+                    <Route index path="/aula/show/:idaula" element={ <ShowAula { ...props } /> }  />
 
                     <Route index path="/divisionacademica/index" element={ <IndexDivisionAcademica { ...props } /> }  />
                     <Route index path="/divisionacademica/create" element={ <CreateDivisionAcademica { ...props } /> }  />

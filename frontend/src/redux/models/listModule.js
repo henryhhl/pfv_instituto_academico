@@ -23,6 +23,7 @@ const ListModules = {
     listPensum: [],
     listResponsable: [],
 
+    listAula: [],
     listTurno: [],
     listDivisionAcademica: [],
     listInstitucion: [],

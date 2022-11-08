@@ -77,12 +77,7 @@ export class AulaService {
   async store(createAulaDto: CreateAulaDto) {
     try {
       const aula = this.aulaRepository.create( {
-        fkidunidadadministrativa: createAulaDto.fkidunidadadministrativa,
-        unidadadministrativa: createAulaDto.unidadadministrativa,
-        
-        sigla: createAulaDto.sigla,
-        descripcion: createAulaDto.descripcion,
-        cupo: createAulaDto.cupo,
+        ...createAulaDto,
         created_at: this.getDateTime(),
       } );
       await this.aulaRepository.save( aula );
@@ -154,34 +149,36 @@ export class AulaService {
   }
 
   async update(idaula: string, updateAulaDto: UpdateAulaDto) {
-    const aula = await this.findOne(idaula);
-    if ( aula === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Aula no existe.',
-      };
-    }
-    const aulaPreLoad = await this.aulaRepository.preload( {
-      idaula: idaula,
-      ...updateAulaDto,
-      concurrencia: aula.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
+    try {
+      const aula = await this.findOne(idaula);
+      const aulaPreLoad = await this.aulaRepository.preload( {
+        idaula: idaula,
+        ...updateAulaDto,
+        concurrencia: aula.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
 
-    if ( aulaPreLoad === null ) {
+      if ( aulaPreLoad === null || aula === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Aula no existe.',
+        };
+      }
+      const aulaUpdate = await this.aulaRepository.save( aulaPreLoad );
       return {
-        resp: 0, error: false,
-        message: 'Aula no existe.',
+        resp: 1,
+        error: false,
+        message: 'Aula actualizado éxitosamente.',
+        aula: aula,
+        aulaUpdate: aulaUpdate,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const aulaUpdate = await this.aulaRepository.save( aulaPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Aula actualizado éxitosamente.',
-      aula: aula,
-      aulaUpdate: aulaUpdate,
-    };
   }
 
   async delete(idaula: string) {

@@ -179,6 +179,14 @@ const apiServices = {
 
 
 
+    apiestructurainstitucionalaula_index:  `${module.estructurainstitucional}/aula/index`,
+    apiestructurainstitucionalaula_create: `${module.estructurainstitucional}/aula/create`,
+    apiestructurainstitucionalaula_store:  `${module.estructurainstitucional}/aula/store`,
+    apiestructurainstitucionalaula_edit:   `${module.estructurainstitucional}/aula/edit`,
+    apiestructurainstitucionalaula_show:   `${module.estructurainstitucional}/aula/show`,
+    apiestructurainstitucionalaula_update: `${module.estructurainstitucional}/aula/update`,
+    apiestructurainstitucionalaula_delete: `${module.estructurainstitucional}/aula/delete`,
+
     apiestructurainstitucionalturno_index:  `${module.estructurainstitucional}/turno/index`,
     apiestructurainstitucionalturno_create: `${module.estructurainstitucional}/turno/create`,
     apiestructurainstitucionalturno_store:  `${module.estructurainstitucional}/turno/store`,

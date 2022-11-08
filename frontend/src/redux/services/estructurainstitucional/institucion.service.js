@@ -15,7 +15,7 @@ const getAllInstitucion = async ( {
         esPaginate: esPaginate,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
-            toastr.success( respta.message, '', { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", } );
+            // toastr.success( respta.message, '', { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", } );
         }
         return respta;
     } );

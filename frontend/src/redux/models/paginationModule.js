@@ -38,6 +38,13 @@ const PaginationModule = {
     },
 
 
+    listAula: [],
+    pageAula: 1,
+    paginateAula: 1,
+    paginationAula: {
+        total: 0,
+    },
+
     listTurno: [],
     pageTurno: 1,
     paginateTurno: 1,

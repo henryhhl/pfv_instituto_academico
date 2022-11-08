@@ -39,6 +39,7 @@ import { CargoReducer } from '../reducers/persona/cargo.reducer';
 import { DocenteReducer } from '../reducers/persona/docente.reducer';
 import { AdministrativoReducer } from '../reducers/persona/administrativo.reducer';
 import { CategoriaDocumentoReducer } from '../reducers/persona/categoria_documento.reducer';
+import { AulaReducer } from '../reducers/estructurainstitucional/aula.reducer';
 
 const RootReducer = combineReducers( {
     Rol: RolReducer,
@@ -70,16 +71,17 @@ const RootReducer = combineReducers( {
     UnidadAcademica: UnidadAcademicaReducer,
     UnidadAdministrativa: UnidadAdministrativaReducer,
 
+    Aula: AulaReducer,
     DivisionAcademica: DivisionAcademicaReducer,
     GestionPeriodo: GestionPeriodoReducer,
     Institucion: InstitucionReducer,
     Turno: TurnoReducer,
     
-    TipoIdentificacion: TipoIdentificacionReducer,
-    Cargo: CargoReducer,
-    Docente: DocenteReducer,
     Administrativo: AdministrativoReducer,
+    Cargo: CargoReducer,
     CategoriaDocumento: CategoriaDocumentoReducer,
+    Docente: DocenteReducer,
+    TipoIdentificacion: TipoIdentificacionReducer,
 } );
 
 export default RootReducer;

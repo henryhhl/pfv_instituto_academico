@@ -6,12 +6,6 @@ export class Aula {
     @PrimaryGeneratedColumn('uuid')
     idaula: string;
 
-    @Column('text')
-    fkidunidadadministrativa: string;
-
-    @Column('text')
-    unidadadministrativa: string;
-
     @Column( {
         type: 'text',
         unique: false,
@@ -23,18 +17,6 @@ export class Aula {
         unique: false,
     } )
     descripcion: string;
-
-    @Column( {
-        type: 'text',
-        nullable: true,
-    } )
-    nota?: string;
-
-    @Column( {
-        type: 'int',
-        default: 0,
-    })
-    cupo: number;
 
     @Column( {
         type: 'enum',

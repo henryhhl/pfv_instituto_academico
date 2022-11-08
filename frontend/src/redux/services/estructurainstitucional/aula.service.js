@@ -4,11 +4,11 @@ import { httpRequest } from "../../../utils/httpRequest";
 import Swal from 'sweetalert2';
 import toastr from 'toastr';
 
-const getAllCategoriaDocumento = async ( {
+const getAllAula = async ( {
     page = 1, paginate = 1, 
     search = "", esPaginate = false,
 } ) => {
-    return await httpRequest('get', apiServices.apipersonacategoriadocumento_index, {
+    return await httpRequest('get', apiServices.apiestructurainstitucionalaula_index, {
         search: search,
         offset: page - 1,
         limit: paginate,
@@ -22,7 +22,8 @@ const getAllCategoriaDocumento = async ( {
 };
 
 const onStore = async (body) => {
-    return await httpRequest('post', apiServices.apipersonacategoriadocumento_store, {
+    return await httpRequest('post', apiServices.apiestructurainstitucionalaula_store, {
+        sigla: body.sigla,
         descripcion: body.descripcion,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
@@ -38,8 +39,8 @@ const onStore = async (body) => {
     } );
 };
 
-const onShow = async (idcategoriadocumento) => {
-    return await httpRequest('get', apiServices.apipersonacategoriadocumento_show + `/${idcategoriadocumento}`, {
+const onShow = async (idaula) => {
+    return await httpRequest('get', apiServices.apiestructurainstitucionalaula_show + `/${idaula}`, {
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
@@ -48,8 +49,8 @@ const onShow = async (idcategoriadocumento) => {
     } );
 };
 
-const onEdit = async (idcategoriadocumento) => {
-    return await httpRequest('get', apiServices.apipersonacategoriadocumento_edit + `/${idcategoriadocumento}`, {
+const onEdit = async (idaula) => {
+    return await httpRequest('get', apiServices.apiestructurainstitucionalaula_edit + `/${idaula}`, {
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
@@ -59,7 +60,8 @@ const onEdit = async (idcategoriadocumento) => {
 };
 
 const onUpdate = async (body) => {
-    return await httpRequest('put', apiServices.apipersonacategoriadocumento_update + `/${body.idcategoriadocumento}`, {
+    return await httpRequest('put', apiServices.apiestructurainstitucionalaula_update + `/${body.idaula}`, {
+        sigla: body.sigla,
         descripcion: body.descripcion,
         estado: body.estado,
     } ).then( (respta) => {
@@ -77,7 +79,7 @@ const onUpdate = async (body) => {
 };
 
 const onDelete = async (body) => {
-    return await httpRequest('delete', apiServices.apipersonacategoriadocumento_delete + `/${body.idcategoriadocumento}`, {
+    return await httpRequest('delete', apiServices.apiestructurainstitucionalaula_delete + `/${body.idaula}`, {
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
@@ -92,8 +94,8 @@ const onDelete = async (body) => {
     } );
 };
 
-export const CategoriaDocumentoService = {
-    getAllCategoriaDocumento,
+export const AulaService = {
+    getAllAula,
     onStore,
     onEdit,
     onShow,

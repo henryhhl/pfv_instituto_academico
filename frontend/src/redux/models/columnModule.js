@@ -607,6 +607,33 @@ const ColumnModules = {
         },
     ],
 
+    columnAula: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Aula',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
     columnTurno: [
         {
             id: 'sigla',
