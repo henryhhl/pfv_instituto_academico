@@ -14,32 +14,32 @@ export class UnidadAdministrativaController {
   }
 
   @Post('/store')
-  create(@Body() createUnidadadministrativaDto: CreateUnidadAdministrativaDto) {
-    return this.unidadAdministrativaService.store(createUnidadadministrativaDto);
+  create(@Body() createUnidadAdministrativaDto: CreateUnidadAdministrativaDto) {
+    return this.unidadAdministrativaService.store(createUnidadAdministrativaDto);
   }
 
   @Get('/edit/:idunidadadministrativa')
-  edit(@Param('idunidadadministrativa') id: string) {
-    return this.unidadAdministrativaService.edit(id);
+  edit(@Param('idunidadadministrativa') idunidadadministrativa: string) {
+    return this.unidadAdministrativaService.edit(idunidadadministrativa);
   }
 
   @Get('/show/:idunidadadministrativa')
-  show(@Param('idunidadadministrativa') id: string) {
-    return this.unidadAdministrativaService.show(id);
+  show(@Param('idunidadadministrativa') idunidadadministrativa: string) {
+    return this.unidadAdministrativaService.show(idunidadadministrativa);
   }
 
   @Patch('/update/:idunidadadministrativa')
-  updatePatch(@Param('idunidadadministrativa') id: string, @Body() updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto) {
-    return this.unidadAdministrativaService.update(id, updateUnidadadministrativaDto);
+  updatePatch(@Param('idunidadadministrativa') idunidadadministrativa: string, @Body() updateUnidadAdministrativaDto: UpdateUnidadAdministrativaDto) {
+    return this.unidadAdministrativaService.update(idunidadadministrativa, updateUnidadAdministrativaDto);
   }
 
   @Put('/update/:idunidadadministrativa')
-  updatePut(@Param('idunidadadministrativa') id: string, @Body() updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto) {
-    return this.unidadAdministrativaService.update(id, updateUnidadadministrativaDto);
+  updatePut(@Param('idunidadadministrativa') idunidadadministrativa: string, @Body() updateUnidadAdministrativaDto: UpdateUnidadAdministrativaDto) {
+    return this.unidadAdministrativaService.update(idunidadadministrativa, updateUnidadAdministrativaDto);
   }
 
   @Delete('/delete/:idunidadadministrativa')
-  delete(@Param('idunidadadministrativa') id: string) {
-    return this.unidadAdministrativaService.delete(id);
+  delete(@Param('idunidadadministrativa') idunidadadministrativa: string) {
+    return this.unidadAdministrativaService.delete(idunidadadministrativa);
   }
 }

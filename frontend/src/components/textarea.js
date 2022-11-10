@@ -16,7 +16,7 @@ export default function TextAreaComponent( props ) {
                     }
                 } }
                 readOnly={props.readOnly}
-                rows={4}
+                rows={props.rows}
             />
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
                 { props.message }
@@ -32,6 +32,7 @@ TextAreaComponent.propTypes = {
     readOnly: PropTypes.bool,
     value: PropTypes.any,
     onChange: PropTypes.func,
+    rows: PropTypes.number,
 }
 
 TextAreaComponent.defaultProps = {
@@ -41,4 +42,5 @@ TextAreaComponent.defaultProps = {
     readOnly: false,
     value: null,
     onChange: null,
+    rows: 4,
 }

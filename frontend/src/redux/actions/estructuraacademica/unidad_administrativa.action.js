@@ -17,6 +17,24 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onAddRowTurno = ( ) => ( {
+    type: Constants.unidadadministrativa_onAddRowTurno,
+} );
+
+const onDeleteRowTurno = ( index ) => ( {
+    type: Constants.unidadadministrativa_onDeleteRowTurno,
+    payload: index,
+} );
+
+const onAddRowAula = ( ) => ( {
+    type: Constants.unidadadministrativa_onAddRowAula,
+} );
+
+const onDeleteRowAula = ( index ) => ( {
+    type: Constants.unidadadministrativa_onDeleteRowAula,
+    payload: index,
+} );
+
 const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
     payload: data,
@@ -262,6 +280,11 @@ export const UnidadAdministrativaActions = {
     onPageUnidadAdministrativa,
     getAllUnidadAdministrativa,
     onLimpiar,
+    onChange,
+    onAddRowTurno,
+    onDeleteRowTurno,
+    onAddRowAula,
+    onDeleteRowAula,
     setSigla,
     setDescripcion,
     setFKIDUnidadNegocio,

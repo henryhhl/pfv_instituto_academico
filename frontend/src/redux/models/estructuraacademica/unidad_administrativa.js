@@ -5,6 +5,9 @@ const UnidadAdministrativa = {
     fkidunidadnegocio: "",
     unidadnegocio: "",
 
+    arrayturno: [],
+    arrayaula: [],
+
     sigla: "",
     descripcion: "",
     estado: "",

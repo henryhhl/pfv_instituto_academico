@@ -27,6 +27,8 @@ const onStore = async (body) => {
         unidadnegocio: body.unidadnegocio,
         sigla: body.sigla,
         descripcion: body.descripcion,
+        arrayturno: body.arrayturno,
+        arrayaula: body.arrayaula,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
@@ -68,6 +70,8 @@ const onUpdate = async (body) => {
         sigla: body.sigla,
         descripcion: body.descripcion,
         estado: body.estado,
+        arrayturno: body.arrayturno,
+        arrayaula: body.arrayaula,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {

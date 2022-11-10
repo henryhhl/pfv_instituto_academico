@@ -101,6 +101,10 @@ const Constants = {
     unidadadministrativa_onCreate: "[ON CREATE] Unidad Administtrativa",
     unidadadministrativa_onShow: "[ON SHOW] Unidad Administtrativa",
     unidadadministrativa_onLimpiar: "[ON LIMPIAR] Unidad Administtrativa",
+    unidadadministrativa_onAddRowTurno: "[ON ADD ROW TURNO] Unidad Administtrativa",
+    unidadadministrativa_onDeleteRowTurno: "[ON DELETE ROW TURNO] Unidad Administtrativa",
+    unidadadministrativa_onAddRowAula: "[ON ADD ROW AULA] Unidad Administtrativa",
+    unidadadministrativa_onDeleteRowAula: "[ON DELETE ROW AULA] Unidad Administtrativa",
 
     unidadacademica_setInit: "[SET INIT] Unidad Academica",
     unidadacademica_onChange: "[ON CHANGE] Unidad Academica",

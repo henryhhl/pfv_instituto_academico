@@ -14,7 +14,7 @@ export default function InputComponent( props ) {
             }
             <div className="input-group d-flex justify-content-center align-items-center">
                 <input type={props.type} className={`form-control ${props.error && 'border-danger'}`} 
-                    value={ props.value ? props.value : ""}
+                    value={ ((props.value !== null) && (typeof props.value !== "undefined")) ? props.value : ""}
                     onChange={ (evt) => {
                         if ( props.onChange ) {
                             props.onChange(evt.target.value);

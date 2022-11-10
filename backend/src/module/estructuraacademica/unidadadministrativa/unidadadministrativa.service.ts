@@ -1,19 +1,29 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { CreateUnidadAdministrativaDto } from './dto/create-unidadadministrativa.dto';
 import { UpdateUnidadAdministrativaDto } from './dto/update-unidadadministrativa.dto';
 import { UnidadAdministrativa } from './entities/unidadadministrativa.entity';
+import { UnidadAdministrativaTurnoDetalle } from './entities/unidadadministrativaturnodetalle.entity';
+import { UnidadAdministrativaAulaDetalle } from './entities/unidadadministrativaauladetalle.entity';
 
 @Injectable()
 export class UnidadAdministrativaService {
-  private listUnidadAdministrativa: UnidadAdministrativa[] = [];
   private readonly logger = new Logger('UnidadAdministrativaService');
 
   constructor(
     @InjectRepository(UnidadAdministrativa)
     private readonly unidadAdministrativaRepository: Repository<UnidadAdministrativa>,
+
+    @InjectRepository(UnidadAdministrativaTurnoDetalle)
+    private readonly unidadAdministrativaTurnoDetalleRepository: Repository<UnidadAdministrativaTurnoDetalle>,
+
+    @InjectRepository(UnidadAdministrativaAulaDetalle)
+    private readonly unidadAdministrativaAulaDetalleRepository: Repository<UnidadAdministrativaAulaDetalle>,
+
+    private readonly dataSource: DataSource,
+
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -23,19 +33,14 @@ export class UnidadAdministrativaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listUnidadAdministrativa, totalPagination] = await this.unidadAdministrativaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
+          take: limit, skip: offset,
           where: { },
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       } else {
         [listUnidadAdministrativa, totalPagination] = await this.unidadAdministrativaRepository.findAndCount( {
           where: { },
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       }
       return {
@@ -79,11 +84,23 @@ export class UnidadAdministrativaService {
   async store(createUnidadadministrativaDto: CreateUnidadAdministrativaDto) {
     try {
       const unidadAdministrativa = this.unidadAdministrativaRepository.create( {
-        fkidunidadnegocio: createUnidadadministrativaDto.fkidunidadnegocio,
-        unidadnegocio: createUnidadadministrativaDto.unidadnegocio,
-        sigla: createUnidadadministrativaDto.sigla,
-        descripcion: createUnidadadministrativaDto.descripcion,
+        ...createUnidadadministrativaDto,
         created_at: this.getDateTime(),
+
+        arrayturno: createUnidadadministrativaDto.arrayturno?.filter( ( item ) => ( item.fkidturno !== null ) ).map( ( item ) => {
+          return this.unidadAdministrativaTurnoDetalleRepository.create( {
+            ...item,
+            created_at: this.getDateTime(),
+          } );
+        } ),
+
+        arrayaula: createUnidadadministrativaDto.arrayaula?.filter( ( item ) => ( item.fkidaula !== null ) ).map( ( item ) => {
+          return this.unidadAdministrativaAulaDetalleRepository.create( {
+            ...item,
+            created_at: this.getDateTime(),
+          } );
+        } ),
+
       } );
       await this.unidadAdministrativaRepository.save( unidadAdministrativa );
       return {
@@ -101,8 +118,9 @@ export class UnidadAdministrativaService {
   }
 
   async findOne(idunidadadministrativa: string) {
-    const unidadAdministrativa = await this.unidadAdministrativaRepository.findOneBy( {
-      idunidadadministrativa: idunidadadministrativa,
+    const unidadAdministrativa = await this.unidadAdministrativaRepository.findOne( {
+      where: { idunidadadministrativa: idunidadadministrativa },
+      relations: { arrayturno: true, arrayaula: true, },
     } );
     return unidadAdministrativa;
   }
@@ -154,34 +172,71 @@ export class UnidadAdministrativaService {
   }
 
   async update( idunidadadministrativa: string, updateUnidadadministrativaDto: UpdateUnidadAdministrativaDto ) {
-    const unidadAdministrativa = await this.findOne(idunidadadministrativa);
-    if ( unidadAdministrativa === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Unidad Administrativa no existe.',
-      };
-    }
-    const unidadAdministrativaPreLoad = await this.unidadAdministrativaRepository.preload( {
-      idunidadadministrativa: idunidadadministrativa,
-      ...updateUnidadadministrativaDto,
-      concurrencia: unidadAdministrativa.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
 
-    if ( unidadAdministrativaPreLoad === null ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const unidadAdministrativa = await this.findOne(idunidadadministrativa);
+
+      const { arrayaula, arrayturno, ...toUpdate } = updateUnidadadministrativaDto;
+      const unidadAdministrativaPreLoad = await this.unidadAdministrativaRepository.preload( {
+        idunidadadministrativa: idunidadadministrativa,
+        ...toUpdate,
+        concurrencia: unidadAdministrativa.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
+
+      if ( unidadAdministrativaPreLoad === null || unidadAdministrativa === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Unidad Administrativa no existe.',
+        };
+      }
+
+      if ( arrayturno ) {
+        await queryRunner.manager.delete( UnidadAdministrativaTurnoDetalle, { fkidunidadadministrativa: { idunidadadministrativa: idunidadadministrativa } } );
+        unidadAdministrativaPreLoad.arrayturno = arrayturno.filter( ( item ) => ( item.fkidturno !== null ) ).map( ( item ) => {
+          return this.unidadAdministrativaTurnoDetalleRepository.create( {
+            ...item,
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+
+      if ( arrayaula ) {
+        await queryRunner.manager.delete( UnidadAdministrativaAulaDetalle, { fkidunidadadministrativa: { idunidadadministrativa: idunidadadministrativa } } );
+        unidadAdministrativaPreLoad.arrayaula = arrayaula.filter( ( item ) => ( item.fkidaula !== null ) ).map( ( item ) => {
+          return this.unidadAdministrativaAulaDetalleRepository.create( {
+            ...item,
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+
+      const unidadAdministrativaUpdate = await queryRunner.manager.save( unidadAdministrativaPreLoad );
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
       return {
-        resp: 0, error: false,
-        message: 'Unidad Administrativa no existe.',
+        resp: 1, error: false,
+        message: 'Unidad Administrativa actualizado éxitosamente.',
+        unidadAdministrativa: unidadAdministrativa,
+        unidadAdministrativaUpdate: unidadAdministrativaUpdate,
+      };
+    } catch (error) {
+      
+      await queryRunner.rollbackTransaction();
+      await queryRunner.release();
+      
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const unidadAdministrativaUpdate = await this.unidadAdministrativaRepository.save( unidadAdministrativaPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Unidad Administrativa actualizado éxitosamente.',
-      unidadAdministrativa: unidadAdministrativa,
-      unidadAdministrativaUpdate: unidadAdministrativaUpdate,
-    };
   }
 
   async delete(idunidadadministrativa: string) {

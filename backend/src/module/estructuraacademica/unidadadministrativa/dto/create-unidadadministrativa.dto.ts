@@ -1,4 +1,7 @@
-import { IsNotEmpty, IsString, IsOptional, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, MinLength, ValidateNested, IsArray } from 'class-validator';
+import { Type } from 'class-transformer';
+import { CreateTurnoDetalleDto } from './create-turno.dto';
+import { CreateAulaDetalleDto } from './create-aula.dto';
 
 export class CreateUnidadAdministrativaDto {
     
@@ -11,6 +14,18 @@ export class CreateUnidadAdministrativaDto {
     @IsString( { message: 'Campo Unidad Negocio solo permitido tipo STRING.', } )
     @MinLength(1, { message: 'Campo Unidad Negocio debe ser mayor o igual a 1 carácter.', } )
     readonly unidadnegocio: string;
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateTurnoDetalleDto )
+    @IsOptional()
+    readonly arrayturno?: CreateTurnoDetalleDto[];
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateAulaDetalleDto )
+    @IsOptional()
+    readonly arrayaula?: CreateAulaDetalleDto[];
 
     @IsNotEmpty( { message: 'Campo Sigla es requerido.', } )
     @IsString( { message: 'Campo Sigla solo permitido tipo STRING.', } )

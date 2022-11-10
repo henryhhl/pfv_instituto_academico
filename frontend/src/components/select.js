@@ -23,7 +23,7 @@ export default function SelectComponent( props ) {
                         disabled={ props.disabled }
                         style={style}
                     >
-                        <option value={""}>
+                        <option value={""} disabled={props.disabledDefault}>
                             { "SELECCIONAR..." }
                         </option>
                         { props.data.map( ( item, index ) => {
@@ -67,6 +67,7 @@ SelectComponent.propTypes = {
     error: PropTypes.bool,
     disabled: PropTypes.bool,
     close: PropTypes.bool,
+    disabledDefault: PropTypes.bool,
     value: PropTypes.any,
     onChange: PropTypes.func,
     data: PropTypes.array,
@@ -80,6 +81,7 @@ SelectComponent.defaultProps = {
     error: false,
     disabled: false,
     close: false,
+    disabledDefault: false,
     value: null,
     onChange: null,
     data: [],

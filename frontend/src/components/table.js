@@ -60,6 +60,7 @@ export default function TableComponent( props ) {
                                 </th>
                             }
                         </tr>
+                        {/* e0f3ff */}
                         { props.dataSource.map( ( row, index ) => {
                             let style = {};
                             if ( props.select === true ) style = { cursor: 'pointer', };
