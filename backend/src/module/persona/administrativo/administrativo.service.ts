@@ -1,12 +1,13 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Repository, DataSource, Like } from 'typeorm';
 import { CreateAdministrativoDto } from './dto/create-administrativo.dto';
 import { UpdateAdministrativoDto } from './dto/update-administrativo.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Administrativo } from './entities/administrativo.entity';
-import { Repository, DataSource, Like } from 'typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
 
 @Injectable()
 export class AdministrativoService {
@@ -21,6 +22,9 @@ export class AdministrativoService {
 
     @InjectRepository(AdministrativoReferenciaContactoDetalle)
     private readonly administrativoReferenciaContactoDetalleRepository: Repository<AdministrativoReferenciaContactoDetalle>,
+
+    @InjectRepository(AdministrativoCategoriaDocumentoDetalle)
+    private readonly administrativoCategoriaDocumentoDetalleRepository: Repository<AdministrativoCategoriaDocumentoDetalle>,
 
     private readonly dataSource: DataSource,
   ) {}
@@ -88,13 +92,27 @@ export class AdministrativoService {
     try {
       const administrativo = this.administrativoRepository.create( {
         ...createAdministrativoDto,
-        arraynacionalidad: createAdministrativoDto.arraynacionalidad.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
+
+        arraynacionalidad: createAdministrativoDto.arraynacionalidad?.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
           return this.administrativoNacionalidadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
             created_at: this.getDateTime(),
           } );
         } ),
+
+        arraycategoriadocumento: createAdministrativoDto.arraycategoriadocumento?.filter( ( item ) => ( item.fkidcategoriadocumento !== null ) ).map( ( item ) => {
+          return this.administrativoCategoriaDocumentoDetalleRepository.create( {
+            fkidcategoriadocumento: item.fkidcategoriadocumento,
+            categoriadocumento: item.categoriadocumento,
+            descripcion: item.descripcion,
+            documento: item.documento,
+            extension: item.extension,
+            estado: ( item.estado !== 'A' && item.estado !== 'N' ) ? 'A' : item.estado,
+            created_at: this.getDateTime(),
+          } );
+        } ),
+
         arrayreferenciacontactos: [],
         created_at: this.getDateTime(),
       } );
@@ -116,7 +134,7 @@ export class AdministrativoService {
   async findOne(idadministrativo: string) {
     const administrativo = await this.administrativoRepository.findOne( {
       where: { idadministrativo: idadministrativo },
-      relations: { arraynacionalidad: true, },
+      relations: { arraynacionalidad: true, arraycategoriadocumento: true, },
     } );
     return administrativo;
   }
@@ -181,7 +199,7 @@ export class AdministrativoService {
           message: 'Administrativo no existe.',
         };
       }
-      const { arraynacionalidad, ...toUpdate } = updateAdministrativoDto;
+      const { arraycategoriadocumento, arraynacionalidad, ...toUpdate } = updateAdministrativoDto;
       const administrativoPreLoad = await this.administrativoRepository.preload( {
         idadministrativo: idadministrativo,
         ...toUpdate,
@@ -202,6 +220,22 @@ export class AdministrativoService {
           return this.administrativoNacionalidadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+
+      if ( arraycategoriadocumento ) {
+        await queryRunner.manager.delete( AdministrativoCategoriaDocumentoDetalle, { fkidadministrativo: { idadministrativo: idadministrativo } } );
+        administrativoPreLoad.arraycategoriadocumento = arraycategoriadocumento
+        .filter( ( item ) => ( item.fkidcategoriadocumento !== null ) ).map( ( item ) => {
+          return this.administrativoCategoriaDocumentoDetalleRepository.create( {
+            fkidcategoriadocumento: item.fkidcategoriadocumento,
+            categoriadocumento: item.categoriadocumento,
+            descripcion: item.descripcion,
+            documento: item.documento,
+            extension: item.extension,
+            estado: ( item.estado !== 'A' && item.estado !== 'N' ) ? 'A' : item.estado,
             created_at: this.getDateTime(),
           } );
         } );

@@ -3,6 +3,7 @@ import { DocenteReferenciaContactoDetalle } from './docentereferenciacontacto.en
 import { DocenteCiudadDetalle } from './docenteciudaddetalle.entity';
 import { DocenteMateriaDetalle } from './docentemateriadetalle.entity';
 import { DocenteCategoriaDocumentoDetalle } from './docentecategoriadocumentodetalle.entity';
+import { DocenteEstudioDetalle } from './docenteestudiodetalle.entity';
 
 @Entity('docente')
 export class Docente {
@@ -55,6 +56,13 @@ export class Docente {
         { cascade: true, eager: true, },
     )
     arraycategoriadocumento?: DocenteCategoriaDocumentoDetalle[];
+
+    @OneToMany(
+        () => DocenteEstudioDetalle,
+        ( docenteestudiodetalle ) => docenteestudiodetalle.fkiddocente,
+        { cascade: true, eager: true, },
+    )
+    arrayestudio?: DocenteEstudioDetalle[];
 
     @Column( 'text' )
     nombreprincipal: string;

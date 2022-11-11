@@ -48,6 +48,13 @@ function ShowDocente( props ) {
                             </a>
                         </li>
                         <li className="nav-item">
+                            <a className="nav-link" id="estudio-tab" data-toggle="tab" href="#estudio" 
+                                role="tab" aria-controls="estudio" aria-selected="false"
+                            >
+                                Estudios
+                            </a>
+                        </li>
+                        <li className="nav-item">
                             <a className="nav-link" id="asignaturaespecialidad-tab" data-toggle="tab" href="#asignaturaespecialidad" 
                                 role="tab" aria-controls="asignaturaespecialidad" aria-selected="false"
                             >
@@ -141,7 +148,7 @@ function ShowDocente( props ) {
                                 </div>
                                 <div className="form-group col-2">
                                     <InputComponent
-                                        label="Fecha Nacimiento"
+                                        label="Nacimiento"
                                         value={docente.fechanacimiento}
                                         readOnly
                                     />
@@ -152,6 +159,13 @@ function ShowDocente( props ) {
                                     <h4>Nacionalidades</h4>
                                 </div>
                             </div>
+                            { docente.arraynacionalidad.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Nacionalidades</h4>
+                                    </div>
+                                </div>
+                            }
                             <div className='row' style={{ maxHeight: 350, overflowY: 'auto', overflowX: 'hidden', }}>
                                 { docente.arraynacionalidad.map( ( item, key ) => {
                                     return (
@@ -221,6 +235,60 @@ function ShowDocente( props ) {
                                 </div>
                             </div>
                         </div>
+                        <div className="tab-pane fade pt-4" id="estudio" role="tabpanel" aria-labelledby="estudio-tab">
+                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 550, overflowY: 'auto', overflowX: 'hidden', }}>
+                                <div className="row">
+                                    { docente.arrayestudio.map( ( item, key ) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                                <div className="card card-sm position-relative card-success">
+                                                    <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                        style={ { position: 'absolute', left: -20, top: -28, } }
+                                                    ></i>
+                                                    <div className="card-body">
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Institución"
+                                                                value={item.institucion}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nivel Academico"
+                                                                value={item.nivelacademico}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nombre de Título"
+                                                                value={item.descripcion}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Estado"
+                                                                value={ Functions.getValueConfirmacion( item.esgraduado ) }
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Estado"
+                                                                value={ Functions.getValueEstado( item.estado ) }
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    } ) }
+                                </div>
+                            </div>
+                        </div>
                         <div className="tab-pane fade pt-4" id="asignaturaespecialidad" role="tabpanel" aria-labelledby="asignaturaespecialidad-tab">
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 { docente.arraymateria.map( ( item, key ) => {
@@ -259,47 +327,50 @@ function ShowDocente( props ) {
                         </div>
                         <div className="tab-pane fade pt-4" id="documentodigital" role="tabpanel" aria-labelledby="documentodigital-tab">
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
-                                { docente.arraycategoriadocumento.map( ( item, key ) => {
-                                    return (
-                                        <div key={key} 
-                                            style={{ 
-                                                border: '1px solid #E8E8E8', 
-                                            }}
-                                        >
-                                            <div className='row'>
-                                                <div className="form-group col-1"></div>
-                                                <div className="form-group col-6">
-                                                    <InputComponent
-                                                        label="Nombre Documento"
-                                                        value={item.descripcion}
-                                                        readOnly
-                                                    />
-                                                </div>
-                                                <div className="form-group col-4">
-                                                    <InputComponent
-                                                        label="Categoría"
-                                                        value={item.categoriadocumento}
-                                                        readOnly
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className="form-group col-2"></div>
-                                                <div className="form-group col-8">
-                                                    <div className='input-group'>
-                                                        <InputFileComponent
-                                                            label="Documento"
-                                                            id={`docente-document-details-${key}`}
-                                                            readOnly
-                                                            documento={item.documento}
-                                                            edit={true}
-                                                        />
+                                <div className="row">
+                                    { docente.arraycategoriadocumento.map( ( item, key ) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                                <div className="card card-sm position-relative card-success">
+                                                    <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                        style={ { position: 'absolute', left: -20, top: -28, } }
+                                                    ></i>
+                                                    <div className="card-body">
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Categoría"
+                                                                value={item.categoriadocumento}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nombre Documento"
+                                                                value={item.descripcion}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Estado"
+                                                                value={ Functions.getValueEstado( item.estado ) }
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputFileComponent
+                                                                label="Eligir Documento"
+                                                                id={`docente-document-details-${key}`}
+                                                                disabled
+                                                                documento={item.documento}
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                } ) }
+                                        );
+                                    } ) }
+                                </div>
                             </div>
                         </div>
                     </div>

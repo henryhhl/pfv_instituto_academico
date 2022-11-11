@@ -1,6 +1,6 @@
 import { IsOptional } from 'class-validator';
 
-export class CreateNacionalidadDto {
+export class CreateAdministrativoNacionalidadDto {
 
     @IsOptional()
     readonly fkidnacionalidad?: string;

@@ -29,6 +29,11 @@ const cleanObejct = ( object = {} ) => {
     }
 };
 
+const getValueConfirmacion = ( estado ) => {
+    if ( estado === 'S' ) return 'Si';
+    return 'No';
+};
+
 const getValueEstado = ( estado ) => {
     if ( estado === 'A' ) return 'Activo';
     return 'InActivo';
@@ -106,6 +111,7 @@ export const Functions = {
     dateToString,
     dateToYear,
     cleanObejct,
+    getValueConfirmacion,
     getValueEstado,
     getValueGenero,
     getValueEstadoCivil,

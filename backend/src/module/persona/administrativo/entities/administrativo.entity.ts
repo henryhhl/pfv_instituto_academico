@@ -1,6 +1,7 @@
 import { Entity, OneToMany, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { AdministrativoNacionalidadDetalle } from './administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './administrativoreferenciacontacto.entity';
+import { AdministrativoCategoriaDocumentoDetalle } from './administrativocategoriadocumentodetalle.entity';
 
 @Entity('administrativo')
 export class Administrativo {
@@ -39,6 +40,13 @@ export class Administrativo {
         { cascade: true, eager: true, },
     )
     arraynacionalidad?: AdministrativoNacionalidadDetalle[];
+
+    @OneToMany(
+        () => AdministrativoCategoriaDocumentoDetalle,
+        ( administrativoCategoriaDocumentoDetalle ) => administrativoCategoriaDocumentoDetalle.fkidadministrativo,
+        { cascade: true, eager: true, },
+    )
+    arraycategoriadocumento?: AdministrativoCategoriaDocumentoDetalle[];
 
     @Column( 'text' )
     nombreprincipal: string;

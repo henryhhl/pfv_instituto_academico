@@ -1,39 +1,49 @@
 
-import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Tooltip } from 'antd';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import toastr from 'toastr';
+import { Button, Tooltip } from 'antd';
+import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import DatePickerComponent from '../../../../components/date';
 import InputFileComponent from '../../../../components/inputfile';
 import PaperComponent from '../../../../components/paper';
 import { EstadoData } from '../../../../data/estado.data';
-import { EstadoCivilData } from '../../../../data/estado_civil.data';
 import { GeneroData } from '../../../../data/genero.data';
+import { EstadoCivilData } from '../../../../data/estado_civil.data';
+import { ConfirmacionData } from '../../../../data/confirmacion.data';
 import { DocenteActions } from '../../../../redux/actions/persona/docente.action';
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
 import ListadoCategoriaDocumentoModal from '../categoriadocumento/modal/categoria_documento_listado.modal';
 import ListadoTipoIdentificacionModal from '../tipoidentificacion/modal/tipo_identificacion_listado.modal';
+import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
+import ListadoInstitucionModal from '../../estructurainstitucional/institucion/modal/institucion_listado.modal';
 
 function CreateDocente( props ) {
     const { docente } = props;
-    const [visibleTipoIdentificacion, setVisibleTipoIdentificacion] = React.useState(false);
-    const [ visibleCiudadNacimiento, setVisibleCiudadNacimiento ] = React.useState( false );
-    const [ visibleCiudadResidencia, setVisibleCiudadResidencia ] = React.useState( false );
-
-    const [ indexDetailsNacionalidad, setIndexDestailsNacionalidad ] = React.useState( -1 );
-    const [ visibleNacionalidad, setVisibleNacionalidad ] = React.useState( false );
-
-    const [ indexDetailsMateria, setIndexDestailsMateria ] = React.useState( -1 );
-    const [ visibleMateria, setVisibleMateria ] = React.useState( false );
-
-    const [ indexDetailsCategoriaDocumento, setIndexDestailsCategoriaDocumento ] = React.useState( -1 );
-    const [ visibleCategoriaDocumento, setVisibleCategoriaDocumento ] = React.useState( false );
-
     const navigate = useNavigate();
+
+    const [ visibleTipoIdentificacion, setVisibleTipoIdentificacion ] = React.useState(false);
+    const [ visibleCiudadNacimiento, setVisibleCiudadNacimiento ] = React.useState(false);
+    const [ visibleCiudadResidencia, setVisibleCiudadResidencia ] = React.useState(false);
+
+    const [ indexDetailsNacionalidad, setIndexDestailsNacionalidad ] = React.useState(-1);
+    const [ visibleNacionalidad, setVisibleNacionalidad ] = React.useState(false);
+
+    const [ indexDetailsMateria, setIndexDestailsMateria ] = React.useState(-1);
+    const [ visibleMateria, setVisibleMateria ] = React.useState(false);
+
+    const [ indexDetailsCategoriaDocumento, setIndexDestailsCategoriaDocumento ] = React.useState(-1);
+    const [ visibleCategoriaDocumento, setVisibleCategoriaDocumento ] = React.useState(false);
+
+    const [ indexDetailsInstitucion, setIndexDestailsInstitucion ] = React.useState(-1);
+    const [ visibleInstitucion, setVisibleInstitucion ] = React.useState(false);
+
+    const [ indexDetailsNivelAcademico, setIndexDestailsNivelAcademico ] = React.useState(-1);
+    const [ visibleNivelAcademico, setVisibleNivelAcademico ] = React.useState(false);
 
     React.useEffect( () => {
         props.onCreate();
@@ -87,6 +97,14 @@ function CreateDocente( props ) {
         );
     };
 
+    const existNacionalidad = ( idciudad ) => {
+        for (let index = 0; index < docente.arraynacionalidad.length; index++) {
+            const element = docente.arraynacionalidad[index];
+            if ( element.fkidnacionalidad === idciudad ) return true;
+        }
+        return false;
+    };
+
     const onComponentNacionalidadDetalle = () => {
         if ( !visibleNacionalidad ) return null;
         return (
@@ -95,14 +113,26 @@ function CreateDocente( props ) {
                 visible={visibleNacionalidad}
                 onClose={ () => setVisibleNacionalidad(false) }
                 onSelect={ (ciudad) => {
-                    let detalle = docente.arraynacionalidad[indexDetailsNacionalidad];
-                    detalle.fkidnacionalidad = ciudad.idciudad;
-                    detalle.nacionalidad = ciudad.descripcion;
-                    props.onChange(docente);
-                    setVisibleNacionalidad(false);
+                    if ( !existNacionalidad( ciudad.idciudad ) ) {
+                        let detalle = docente.arraynacionalidad[indexDetailsNacionalidad];
+                        detalle.fkidnacionalidad = ciudad.idciudad;
+                        detalle.nacionalidad = ciudad.descripcion;
+                        props.onChange(docente);
+                        setVisibleNacionalidad(false);
+                    } else {
+                        toastr.warning( 'Nacionalidad ya seleccionado.', '', { closeButton: true, progressBar: true, } );
+                    }
                 } }
             />
         );
+    };
+
+    const existMateria = ( idmateria ) => {
+        for (let index = 0; index < docente.arraymateria.length; index++) {
+            const element = docente.arraymateria[index];
+            if ( element.fkidmateria === idmateria ) return true;
+        }
+        return false;
     };
 
     const onComponentMateriaDetalle = () => {
@@ -112,11 +142,15 @@ function CreateDocente( props ) {
                 visible={visibleMateria}
                 onClose={ () => setVisibleMateria(false) }
                 onSelect={ (materia) => {
-                    let detalle = docente.arraymateria[indexDetailsMateria];
-                    detalle.fkidmateria = materia.idmateria;
-                    detalle.materia = materia.nombrelargo;
-                    props.onChange(docente);
-                    setVisibleMateria(false);
+                    if ( !existMateria( materia.idmateria ) ) {
+                        let detalle = docente.arraymateria[indexDetailsMateria];
+                        detalle.fkidmateria = materia.idmateria;
+                        detalle.materia = materia.nombrelargo;
+                        props.onChange(docente);
+                        setVisibleMateria(false);
+                    } else {
+                        toastr.warning( 'Materia ya seleccionado.', '', { closeButton: true, progressBar: true, } );
+                    }
                 } }
             />
         );
@@ -139,6 +173,40 @@ function CreateDocente( props ) {
         );
     };
 
+    const onComponentInstitucionDetalle = () => {
+        if ( !visibleInstitucion ) return null;
+        return (
+            <ListadoInstitucionModal
+                visible={visibleInstitucion}
+                onClose={ () => setVisibleInstitucion(false) }
+                onSelect={ (institucion) => {
+                    let detalle = docente.arrayestudio[indexDetailsInstitucion];
+                    detalle.fkidinstitucion = institucion.idinstitucion;
+                    detalle.institucion = institucion.descripcion;
+                    props.onChange(docente);
+                    setVisibleInstitucion(false);
+                } }
+            />
+        );
+    };
+
+    const onComponentNivelAcademicoDetalle = () => {
+        if ( !visibleNivelAcademico ) return null;
+        return (
+            <ListadoNivelAcademicoModal
+                visible={visibleNivelAcademico}
+                onClose={ () => setVisibleNivelAcademico(false) }
+                onSelect={ (nivelAcademico) => {
+                    let detalle = docente.arrayestudio[indexDetailsNivelAcademico];
+                    detalle.fkidnivelacademico = nivelAcademico.idnivelacademico;
+                    detalle.nivelacademico = nivelAcademico.descripcion;
+                    props.onChange(docente);
+                    setVisibleNivelAcademico(false);
+                } }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentTipoIdentificacion() }
@@ -147,6 +215,8 @@ function CreateDocente( props ) {
             { onComponentNacionalidadDetalle() }
             { onComponentMateriaDetalle() }
             { onComponentCategoriaDocumentoDetalle() }
+            { onComponentInstitucionDetalle() }
+            { onComponentNivelAcademicoDetalle() }
             <PaperComponent>
                 <CardComponent
                     header={"Nuevo Docente"}
@@ -172,6 +242,13 @@ function CreateDocente( props ) {
                                 aria-controls="home" aria-selected="true"
                             >
                                 Información General
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="estudio-tab" data-toggle="tab" href="#estudio" 
+                                role="tab" aria-controls="estudio" aria-selected="false"
+                            >
+                                Estudios
                             </a>
                         </li>
                         <li className="nav-item">
@@ -297,7 +374,7 @@ function CreateDocente( props ) {
                                 </div>
                                 <div className="form-group col-2">
                                     <DatePickerComponent
-                                        label="Fecha Nacimiento*"
+                                        label="Nacimiento*"
                                         value={docente.fechanacimiento}
                                         onChange={ (value) => props.setFechaNacimiento(docente, value) }
                                         error={docente.error.fechanacimiento}
@@ -322,6 +399,13 @@ function CreateDocente( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
+                            { docente.arraynacionalidad.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Nacionalidades</h4>
+                                    </div>
+                                </div>
+                            }
                             <div className='row' style={{ maxHeight: 350, overflowY: 'auto', overflowX: 'hidden', }}>
                                 { docente.arraynacionalidad.map( ( item, key ) => {
                                     return (
@@ -335,7 +419,7 @@ function CreateDocente( props ) {
                                                 } }
                                                 readOnly
                                                 style={{ background: 'white', cursor: 'pointer', }}
-                                                placeholder="SELECCIONAR Nacionalidad"
+                                                placeholder="SELECCIONAR NACIONALIDAD"
                                                 close
                                                 onClose={ () => props.onDeleteNacionalidad(key) }
                                             />
@@ -401,6 +485,110 @@ function CreateDocente( props ) {
                                 </div>
                             </div>
                         </div>
+                        <div className="tab-pane fade pt-4" id="estudio" role="tabpanel" aria-labelledby="estudio-tab">
+                            <div className="row">
+                                <div className="form-group col-12">
+                                    <ButtonComponent
+                                        fullWidth
+                                        onClick={props.onAddRowEstudio}
+                                    >
+                                        Agregar
+                                    </ButtonComponent>
+                                </div>
+                            </div>
+                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 550, overflowY: 'auto', overflowX: 'hidden', }}>
+                                <div className="row">
+                                    { docente.arrayestudio.map( ( item, key ) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                                <div className="card card-sm position-relative card-success">
+                                                    <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                        style={ { position: 'absolute', left: -20, top: -28, } }
+                                                    ></i>
+                                                    <div className="card-options dropdown">
+                                                        <CloseOutlined
+                                                            style={ {
+                                                                padding: 4, borderRadius: 50, background: 'white', 
+                                                                fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
+                                                                position: 'relative', top: -8, left: 8, cursor: 'pointer',
+                                                            } }
+                                                            onClick={() => {
+                                                                props.onDeleteRowEstudio(key);
+                                                            } }
+                                                        />
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Institución"
+                                                                value={item.institucion}
+                                                                onClick={ () => {
+                                                                    setIndexDestailsInstitucion(key);
+                                                                    setVisibleInstitucion(true);
+                                                                } }
+                                                                readOnly
+                                                                style={{ background: 'white', cursor: 'pointer', }}
+                                                                placeholder="SELECCIONAR INSTITUCIÓN"
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nivel Academico"
+                                                                value={item.nivelacademico}
+                                                                onClick={ () => {
+                                                                    setIndexDestailsNivelAcademico(key);
+                                                                    setVisibleNivelAcademico(true);
+                                                                } }
+                                                                readOnly
+                                                                style={{ background: 'white', cursor: 'pointer', }}
+                                                                placeholder="SELECCIONAR NIVEL ACADEMICO"
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nombre de Título"
+                                                                value={item.descripcion}
+                                                                onChange={ (value) => {
+                                                                    item.descripcion = value;
+                                                                    props.onChange(docente);
+                                                                } }
+                                                                readOnly={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <SelectComponent 
+                                                                data={ConfirmacionData}
+                                                                label={"Es Graduado"}
+                                                                value={item.estado}
+                                                                onChange={ (value) => {
+                                                                    item.estado = value;
+                                                                    props.onChange(docente);
+                                                                } }
+                                                                disabledDefault={true}
+                                                                disabled={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <SelectComponent 
+                                                                data={EstadoData}
+                                                                label={"Estado"}
+                                                                value={item.estado}
+                                                                onChange={ (value) => {
+                                                                    item.estado = value;
+                                                                    props.onChange(docente);
+                                                                } }
+                                                                disabledDefault={true}
+                                                                disabled={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    } ) }
+                                </div>
+                            </div>
+                        </div>
                         <div className="tab-pane fade pt-4" id="asignaturaespecialidad" role="tabpanel" aria-labelledby="asignaturaespecialidad-tab">
                             <div className="row">
                                 <div className="form-group col-12">
@@ -442,6 +630,7 @@ function CreateDocente( props ) {
                                                         item.tipoprioridad = value;
                                                         props.onChange(docente);
                                                     } }
+                                                    readOnly={ (item.fkidmateria === null) }
                                                 />
                                             </div>
                                             <div className="form-group col-3">
@@ -453,6 +642,7 @@ function CreateDocente( props ) {
                                                         item.estado = value;
                                                         props.onChange(docente);
                                                     } }
+                                                    disabled={ (item.fkidmateria === null) }
                                                 />
                                             </div>
                                             <div className="form-group col-1 pt-4">
@@ -485,77 +675,82 @@ function CreateDocente( props ) {
                                 </div>
                             </div>
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
-                                { docente.arraycategoriadocumento.map( ( item, key ) => {
-                                    return (
-                                        <div key={key} 
-                                            style={{ 
-                                                border: '1px solid #E8E8E8', 
-                                            }}
-                                        >
-                                            <div className='row'>
-                                                <div className="form-group col-1"></div>
-                                                <div className="form-group col-6">
-                                                    <InputComponent
-                                                        label="Nombre Documento"
-                                                        value={item.descripcion}
-                                                        onChange={ (value) => {
-                                                            item.descripcion = value;
-                                                            props.onChange(docente);
-                                                        } }
-                                                    />
-                                                </div>
-                                                <div className="form-group col-4">
-                                                    <InputComponent
-                                                        label="Categoría"
-                                                        value={item.categoriadocumento}
-                                                        onClick={ () => {
-                                                            setIndexDestailsCategoriaDocumento(key);
-                                                            setVisibleCategoriaDocumento(true);
-                                                        } }
-                                                        readOnly
-                                                        style={{ background: 'white', cursor: 'pointer', }}
-                                                        placeholder="SELECCIONAR CATEGORÍA"
-                                                    />
-                                                </div>
-                                                <div className="form-group col-1 pt-4">
-                                                    <Tooltip placement="top" title={"Eliminar"}>
-                                                        <Button 
+                                <div className="row">
+                                    { docente.arraycategoriadocumento.map( ( item, key ) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                                <div className="card card-sm position-relative card-success">
+                                                    <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                        style={ { position: 'absolute', left: -20, top: -28, } }
+                                                    ></i>
+                                                    <div className="card-options dropdown">
+                                                        <CloseOutlined
+                                                            style={ {
+                                                                padding: 4, borderRadius: 50, background: 'white', 
+                                                                fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
+                                                                position: 'relative', top: -8, left: 8, cursor: 'pointer',
+                                                            } }
                                                             onClick={() => {
                                                                 props.onDeleteRowCategoriaDocumento(key);
                                                             } }
-                                                            size={"small"}
-                                                            style={{ position: 'relative', right: 15, }}
-                                                        >
-                                                            <DeleteOutlined />
-                                                        </Button>
-                                                    </Tooltip>
-                                                </div>
-                                            </div>
-                                            <div className='row'>
-                                                <div className="form-group col-2"></div>
-                                                <div className="form-group col-8">
-                                                    <div className='input-group'>
-                                                        <InputFileComponent
-                                                            label="Eligir Documento"
-                                                            id={`docente-document-details-${key}`}
-                                                            onChange={ (document) => {
-                                                                item.documento = document;
-                                                                props.onChange(docente);
-                                                            } }
-                                                            documento={item.documento}
                                                         />
-                                                        {/* <input type='file' id='img-img'
-                                                            style={{ textAlign: 'left', paddingLeft: 10, paddingTop: 10, paddingRight: 24, }}
-                                                            className={`form-control`}
-                                                            // onChange={this.onChangeFoto.bind(this)}
-                                                        />
-                                                        <EyeOutlined /> */}
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Categoría"
+                                                                value={item.categoriadocumento}
+                                                                onClick={ () => {
+                                                                    setIndexDestailsCategoriaDocumento(key);
+                                                                    setVisibleCategoriaDocumento(true);
+                                                                } }
+                                                                readOnly
+                                                                style={{ background: 'white', cursor: 'pointer', }}
+                                                                placeholder="SELECCIONAR CATEGORÍA"
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nombre Documento"
+                                                                value={item.descripcion}
+                                                                onChange={ (value) => {
+                                                                    item.descripcion = value;
+                                                                    props.onChange(docente);
+                                                                } }
+                                                                readOnly={ (item.fkidcategoriadocumento === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <SelectComponent 
+                                                                data={EstadoData}
+                                                                label={"Estado"}
+                                                                value={item.estado}
+                                                                onChange={ (value) => {
+                                                                    item.estado = value;
+                                                                    props.onChange(docente);
+                                                                } }
+                                                                disabledDefault={true}
+                                                                disabled={ (item.fkidcategoriadocumento === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputFileComponent
+                                                                label="Eligir Documento"
+                                                                id={`docente-document-details-${key}`}
+                                                                onChange={ (document) => {
+                                                                    item.documento = document;
+                                                                    props.onChange(docente);
+                                                                } }
+                                                                documento={item.documento}
+                                                                disabled={ (item.fkidcategoriadocumento === null) }
+                                                            />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                } ) }
+                                        );
+                                    } ) }
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -580,6 +775,8 @@ const mapDispatchToProps = {
     onDeleteRowMateria: DocenteActions.onDeleteRowMateria,
     onAddRowCategoriaDocumento: DocenteActions.onAddRowCategoriaDocumento,
     onDeleteRowCategoriaDocumento: DocenteActions.onDeleteRowCategoriaDocumento,
+    onAddRowEstudio: DocenteActions.onAddRowEstudio,
+    onDeleteRowEstudio: DocenteActions.onDeleteRowEstudio,
     setNombrePrincipal: DocenteActions.setNombrePrincipal,
     setNombreAdicional: DocenteActions.setNombreAdicional,
     setApellidoPrimero: DocenteActions.setApellidoPrimero,

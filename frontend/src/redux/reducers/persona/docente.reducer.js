@@ -70,6 +70,19 @@ export const DocenteReducer = ( state = inititalState, action ) => {
             );
             state = Object.assign( {}, state );
             return state;
+
+        case Constants.docente_onAddRowEstudio:
+            let arrayEstudio = state.arrayestudio;
+            state.arrayestudio = [ ...arrayEstudio, onDefaultEstudio() ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.docente_onDeleteRowEstudio:
+            state.arrayestudio = state.arrayestudio.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
     
         default:
             return state;
@@ -86,8 +99,7 @@ const loadNacionalidadDetalle = () => {
 
 const onDefaultNacionalidad = () => {
     return {
-        fkidnacionalidad: null,
-        nacionalidad: null,
+        fkidnacionalidad: null, nacionalidad: null,
     };
 };
 
@@ -101,10 +113,8 @@ const loadMateriaDetalle = () => {
 
 const onDefaultMateria = () => {
     return {
-        fkidmateria: null,
-        materia: null,
-        tipoprioridad: "A",
-        estado: "A",
+        fkidmateria: null, materia: null,
+        tipoprioridad: "A", estado: "A",
     };
 };
 
@@ -118,11 +128,27 @@ const loadCategoriaDocumentoDetalle = () => {
 
 const onDefaultCategoriaDocumento = () => {
     return {
-        fkidcategoriadocumento: null,
-        categoriadocumento: null,
-        descripcion: null,
-        documento: "",
-        extension: "",
+        fkidcategoriadocumento: null, categoriadocumento: null,
+        descripcion: "", documento: "",
+        extension: "", estado: "A",
+    };
+};
+
+const loadEstudioDetalle = () => {
+    let array = [];
+    for (let index = 0; index < 3; index++) {
+        array = [ ...array, onDefaultEstudio() ];
+    }
+    return array;
+};
+
+const onDefaultEstudio = () => {
+    let date = new Date();
+    return {
+        fkidinstitucion: null, institucion: null,
+        fkidnivelacademico: null, nivelacademico: null,
+        descripcion: "", esgraduado: "S",
+        ultimoyearcursado: date.getFullYear(), estado: "A",
     };
 };
 
@@ -130,6 +156,7 @@ const onCreate = ( state = inititalState ) => {
     state.arraynacionalidad = loadNacionalidadDetalle();
     state.arraymateria = loadMateriaDetalle();
     state.arraycategoriadocumento = loadCategoriaDocumentoDetalle();
+    state.arrayestudio = loadEstudioDetalle();
     state.concurrencia = 1;
     state.estado = 'A';
     state.isdelete = 'A';
@@ -164,6 +191,15 @@ const onSetData = ( state = inititalState, docente ) => {
         return {
             fkidmateria: item.fkidmateria, materia: item.materia,
             tipoprioridad: item.tipoprioridad, estado: item.estado,
+        };
+    } );
+
+    state.arrayestudio = docente.arrayestudio.map( ( item ) => { 
+        return {
+            fkidinstitucion: item.fkidinstitucion, institucion: item.institucion,
+            fkidnivelacademico: item.fkidnivelacademico, nivelacademico: item.nivelacademico,
+            descripcion: item.descripcion, esgraduado: item.esgraduado,
+            ultimoyearcursado: item.ultimoyearcursado, estado: item.estado,
         };
     } );
 

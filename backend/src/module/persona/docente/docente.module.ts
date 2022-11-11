@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { DocenteService } from './docente.service';
 import { DocenteController } from './docente.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Docente } from './entities/docente.entity';
-import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
 import { DocenteCiudadDetalle } from './entities/docenteciudaddetalle.entity';
+import { DocenteEstudioDetalle } from './entities/docenteestudiodetalle.entity';
 import { DocenteMateriaDetalle } from './entities/docentemateriadetalle.entity';
+import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
 import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadocumentodetalle.entity';
 
 @Module({
@@ -15,6 +16,7 @@ import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadoc
     TypeOrmModule.forFeature( [
       Docente, DocenteReferenciaContactoDetalle, DocenteCiudadDetalle,
       DocenteMateriaDetalle, DocenteCategoriaDocumentoDetalle,
+      DocenteEstudioDetalle,
     ] ),
   ],
 })

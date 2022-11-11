@@ -1,8 +1,9 @@
 import { IsNotEmpty, IsOptional, IsString, MinLength, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateNacionalidadDto } from './create-nacionalidad.dto';
 import { CreateMateriaDetalleDto } from './create-materia.dto';
-import { CreateCategoriaDocumentoDetalleDto } from './create-categoriadocumento.dto';
+import { CreateNacionalidadDto } from './create-nacionalidad.dto';
+import { CreateDocenteEstudioDetalleDto } from './create-estudio.dto';
+import { CreateDocenteCategoriaDocumentoDetalleDto } from './create-categoriadocumento.dto';
 
 export class CreateDocenteDto {
 
@@ -55,9 +56,15 @@ export class CreateDocenteDto {
 
     @ValidateNested( { each: true, } )
     @IsArray()
-    @Type(() => CreateCategoriaDocumentoDetalleDto )
+    @Type(() => CreateDocenteCategoriaDocumentoDetalleDto )
     @IsOptional()
-    readonly arraycategoriadocumento?: CreateCategoriaDocumentoDetalleDto[];
+    readonly arraycategoriadocumento?: CreateDocenteCategoriaDocumentoDetalleDto[];
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateDocenteEstudioDetalleDto )
+    @IsOptional()
+    readonly arrayestudio?: CreateDocenteEstudioDetalleDto[];
 
     @IsNotEmpty( { message: 'Campo Nombre Principal es requerido.', } )
     @IsString( { message: 'Campo Nombre Principal solo permitido tipo STRING.', } )

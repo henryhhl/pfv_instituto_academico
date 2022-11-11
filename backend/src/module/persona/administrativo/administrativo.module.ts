@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdministrativoService } from './administrativo.service';
 import { AdministrativoController } from './administrativo.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { Administrativo } from './entities/administrativo.entity';
-import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
+import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
+import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
 
 @Module({
   controllers: [AdministrativoController],
@@ -12,6 +13,7 @@ import { AdministrativoNacionalidadDetalle } from './entities/administrativociud
   imports: [
     TypeOrmModule.forFeature( [
       Administrativo, AdministrativoReferenciaContactoDetalle, AdministrativoNacionalidadDetalle,
+      AdministrativoCategoriaDocumentoDetalle,
     ] ),
   ],
 })

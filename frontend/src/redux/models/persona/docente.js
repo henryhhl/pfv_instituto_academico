@@ -15,6 +15,7 @@ const Docente = {
     arraynacionalidad: [],
     arraymateria: [],
     arraycategoriadocumento: [],
+    arrayestudio: [],
 
     nombreprincipal: "",
     nombreadicional: "",

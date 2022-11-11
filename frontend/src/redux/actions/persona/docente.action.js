@@ -45,6 +45,15 @@ const onDeleteRowCategoriaDocumento = ( index ) => ( {
     payload: index,
 } );
 
+const onAddRowEstudio = ( ) => ( {
+    type: Constants.docente_onAddRowEstudio,
+} );
+
+const onDeleteRowEstudio = ( index ) => ( {
+    type: Constants.docente_onDeleteRowEstudio,
+    payload: index,
+} );
+
 const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
     payload: data,
@@ -467,17 +476,12 @@ const onDelete = ( docente ) => {
 };
 
 export const DocenteActions = {
-    initData,
-    onPageDocente,
-    getAllDocente,
-    onLimpiar,
-    onChange,
-    onAddNacionalidad,
-    onDeleteNacionalidad,
-    onAddRowMateria,
-    onDeleteRowMateria,
-    onAddRowCategoriaDocumento,
-    onDeleteRowCategoriaDocumento,
+    initData, onPageDocente, getAllDocente,
+    onLimpiar, onChange,
+    onAddNacionalidad, onDeleteNacionalidad,
+    onAddRowMateria, onDeleteRowMateria,
+    onAddRowCategoriaDocumento, onDeleteRowCategoriaDocumento,
+    onAddRowEstudio, onDeleteRowEstudio,
     setNombrePrincipal,
     setNombreAdicional,
     setApellidoPrimero,

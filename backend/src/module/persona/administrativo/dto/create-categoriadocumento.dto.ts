@@ -1,6 +1,6 @@
 import { IsOptional, IsIn } from 'class-validator';
 
-export class CreateDocenteCategoriaDocumentoDetalleDto {
+export class CreateAdministrativoCategoriaDocumentoDetalleDto {
 
     @IsOptional()
     readonly fkidcategoriadocumento?: string;

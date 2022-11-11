@@ -55,6 +55,7 @@ export default function InputFileComponent( props ) {
                     readOnly={props.readOnly}
                     style={style}
                     onClick={props.onClick}
+                    disabled={props.disabled}
                     
                 />
                 { ( props.documento !== null && props.documento?.toString().trim().length > 0 ) &&
@@ -113,6 +114,7 @@ InputFileComponent.propTypes = {
     error: PropTypes.bool,
     readOnly: PropTypes.bool,
     edit: PropTypes.bool,
+    disabled: PropTypes.bool,
     type: PropTypes.string,
     id: PropTypes.string,
     documento: PropTypes.any,
@@ -127,6 +129,7 @@ InputFileComponent.defaultProps = {
     error: false,
     readOnly: false,
     edit: false,
+    disabled: false,
     type: "text",
     id: "component-img",
     value: null,

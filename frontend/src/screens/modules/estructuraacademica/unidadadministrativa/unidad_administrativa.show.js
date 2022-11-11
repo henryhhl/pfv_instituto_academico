@@ -103,7 +103,7 @@ function ShowUnidadAdministrativa( props ) {
                                 <div className="row">
                                     { unidadAdministrativa.arrayaula.map( ( item, key ) => {
                                         return (
-                                            <div className="col-12 col-sm-6 col-md-4 col-lg-3" key={key}>
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
                                                 <div className="card card-sm position-relative card-success">
                                                     <i className="card-icon text-danger ion ion-ios-paper-outline"
                                                         style={ { position: 'absolute', left: -20, top: -28, } }

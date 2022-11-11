@@ -44,6 +44,19 @@ export const AdministrativoReducer = ( state = inititalState, action ) => {
             );
             state = Object.assign( {}, state );
             return state;
+
+        case Constants.administrativo_onAddRowCategoriaDocumento:
+            let arrayCategoriaDocumento = state.arraycategoriadocumento;
+            state.arraycategoriadocumento = [ ...arrayCategoriaDocumento, onDefaultNacionalidad() ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.administrativo_onDeleteRowCategoriaDocumento:
+            state.arraycategoriadocumento = state.arraycategoriadocumento.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
     
         default:
             return state;
@@ -60,12 +73,27 @@ const loadNacionalidadDetalle = () => {
 
 const onDefaultNacionalidad = () => {
     return {
-        fkidnacionalidad: null,
-        nacionalidad: null,
+        fkidnacionalidad: null, nacionalidad: null,
+    };
+};
+
+const loadCategoriaDocumentoDetalle = () => {
+    let array = [];
+    for (let index = 0; index < 3; index++) {
+        array = [ ...array, onDefaultCategoriaDocumento() ];
+    }
+    return array;
+};
+
+const onDefaultCategoriaDocumento = () => {
+    return {
+        fkidcategoriadocumento: null, categoriadocumento: null,
+        descripcion: "", documento: "", extension: "", estado: "A",
     };
 };
 
 const onCreate = ( state = inititalState ) => {
+    state.arraycategoriadocumento = loadCategoriaDocumentoDetalle();
     state.arraynacionalidad = loadNacionalidadDetalle();
     state.concurrencia = 1;
     state.estado = 'A';
@@ -89,7 +117,15 @@ const onSetData = ( state = inititalState, administrativo ) => {
         return {
             fkidnacionalidad: item.fkidnacionalidad, nacionalidad: item.nacionalidad,
         };
-     } );
+    } );
+
+    state.arraycategoriadocumento = administrativo.arraycategoriadocumento.map( ( item ) => { 
+        return {
+            fkidcategoriadocumento: item.fkidcategoriadocumento, categoriadocumento: item.categoriadocumento,
+            descripcion: item.descripcion, documento: item.documento,
+            extension: item.extension, estado: item.estado,
+        };
+    } );
 
     state.nombreprincipal = administrativo.nombreprincipal;
     state.nombreadicional = administrativo.nombreadicional;

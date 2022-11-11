@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsOptional, IsString, MinLength, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateNacionalidadDto } from './create-nacionalidad.dto';
+import { CreateAdministrativoNacionalidadDto } from './create-nacionalidad.dto';
+import { CreateAdministrativoCategoriaDocumentoDetalleDto } from './create-categoriadocumento.dto';
 
 export class CreateAdministrativoDto {
 
@@ -41,9 +42,15 @@ export class CreateAdministrativoDto {
 
     @ValidateNested( { each: true, } )
     @IsArray()
-    @Type(() => CreateNacionalidadDto )
+    @Type(() => CreateAdministrativoNacionalidadDto )
     @IsOptional()
-    readonly arraynacionalidad?: CreateNacionalidadDto[];
+    readonly arraynacionalidad?: CreateAdministrativoNacionalidadDto[];
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateAdministrativoCategoriaDocumentoDetalleDto )
+    @IsOptional()
+    readonly arraycategoriadocumento?: CreateAdministrativoCategoriaDocumentoDetalleDto[];
 
     @IsNotEmpty( { message: 'Campo Nombre Principal es requerido.', } )
     @IsString( { message: 'Campo Nombre Principal solo permitido tipo STRING.', } )

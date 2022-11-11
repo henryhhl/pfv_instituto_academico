@@ -13,6 +13,7 @@ const Administrativo = {
 
     arrayreferenciacontactos: [],
     arraynacionalidad: [],
+    arraycategoriadocumento: [],
 
     nombreprincipal: "",
     nombreadicional: "",

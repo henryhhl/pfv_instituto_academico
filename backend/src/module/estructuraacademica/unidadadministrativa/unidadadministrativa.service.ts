@@ -1,7 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Repository, DataSource } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateUnidadAdministrativaDto } from './dto/create-unidadadministrativa.dto';
 import { UpdateUnidadAdministrativaDto } from './dto/update-unidadadministrativa.dto';
 import { UnidadAdministrativa } from './entities/unidadadministrativa.entity';
