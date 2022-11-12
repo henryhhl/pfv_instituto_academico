@@ -206,6 +206,8 @@ const Constants = {
     administrativo_onDeleteRowNacionalidad: "[ON DELETE ROW NACIONALIDAD] Administrativo",
     administrativo_onAddRowCategoriaDocumento: "[ON ADD ROW CATEGORIA DOCUMENTO] Administrativo",
     administrativo_onDeleteRowCategoriaDocumento: "[ON DELETE ROW CATEGORIA DOCUMENTO] Administrativo",
+    administrativo_onAddRowEstudio: "[ON ADD ROW ESTUDIO] Administrativo",
+    administrativo_onDeleteRowEstudio: "[ON DELETE ROW ESTUDIO] Administrativo",
 };
 
 export default Constants;

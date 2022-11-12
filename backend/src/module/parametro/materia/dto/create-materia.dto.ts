@@ -2,14 +2,6 @@ import { IsString, MinLength } from 'class-validator';
 
 export class CreateMateriaDto {
 
-    @IsString( { message: 'Campo ID Tipo Materia es requerido.', } )
-    @MinLength(1, { message: 'Campo ID Tipo Materia debe ser mayor o igual a 1 carácter.', })
-    readonly fkidtipomateria: string;
-
-    @IsString( { message: 'Campo Tipo Materia es requerido.', } )
-    @MinLength(1, { message: 'Campo Tipo Materia debe ser mayor o igual a 1 carácter.', })
-    readonly tipomateria: string;
-
     @IsString( { message: 'Campo código es requerido.', } )
     @MinLength(1, { message: 'Campo código debe ser mayor o igual a 1 carácter.', })
     readonly codigo: string;

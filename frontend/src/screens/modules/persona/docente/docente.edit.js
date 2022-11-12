@@ -496,7 +496,14 @@ function EditDocente( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
-                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 550, overflowY: 'auto', overflowX: 'hidden', }}>
+                            { docente.arrayestudio.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Información</h4>
+                                    </div>
+                                </div>
+                            }
+                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 650, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { docente.arrayestudio.map( ( item, key ) => {
                                         return (
@@ -569,6 +576,22 @@ function EditDocente( props ) {
                                                             />
                                                         </div>
                                                         <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Año Cursado"
+                                                                value={item.ultimoyearcursado}
+                                                                onChange={ (value) => {
+                                                                    if ( value === "" ) value = 0;
+                                                                    if ( !isNaN( value ) ) {
+                                                                        if ( parseInt( value ) >= 0 ) {
+                                                                            item.ultimoyearcursado = parseInt(value);
+                                                                            props.onChange(docente);
+                                                                        }
+                                                                    }
+                                                                } }
+                                                                readOnly={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
                                                             <SelectComponent 
                                                                 data={EstadoData}
                                                                 label={"Estado"}
@@ -600,6 +623,13 @@ function EditDocente( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
+                            { docente.arraymateria.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Documento Digital</h4>
+                                    </div>
+                                </div>
+                            }
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 { docente.arraymateria.map( ( item, key ) => {
                                     return (
@@ -675,6 +705,13 @@ function EditDocente( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
+                            { docente.arraycategoriadocumento.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Documento Digital</h4>
+                                    </div>
+                                </div>
+                            }
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { docente.arraycategoriadocumento.map( ( item, key ) => {

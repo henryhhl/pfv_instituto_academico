@@ -35,6 +35,7 @@ const onStore = async (body) => {
         arrayreferenciacontactos: body.arrayreferenciacontactos,
         arraynacionalidad: body.arraynacionalidad,
         arraycategoriadocumento: body.arraycategoriadocumento,
+        arrayestudio: body.arrayestudio,
 
         nombreprincipal: body.nombreprincipal,
         nombreadicional: body.nombreadicional,
@@ -103,6 +104,7 @@ const onUpdate = async (body) => {
         arrayreferenciacontactos: body.arrayreferenciacontactos,
         arraynacionalidad: body.arraynacionalidad,
         arraycategoriadocumento: body.arraycategoriadocumento,
+        arrayestudio: body.arrayestudio,
 
         nombreprincipal: body.nombreprincipal,
         nombreadicional: body.nombreadicional,

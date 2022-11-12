@@ -1,0 +1,301 @@
+
+html {
+    width: 100%;
+    height: 100%;
+}
+  
+body {
+    /* background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+    color: rgba(0, 0, 0, 0.6);
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+    line-height: 1.6em;
+    box-sizing: border-box;
+    height: 85vh !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale; */
+}
+  
+.overlay, .form-panel-login.one:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    background: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+}
+
+.body-login {
+    max-width: 100%;
+    width: 100%;
+    min-width: 100%;
+    height: 100vh;
+    background: linear-gradient(45deg, rgba(66, 183, 245, 0.8) 0%, rgba(66, 245, 189, 0.4) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-login {
+    z-index: 15;
+    position: relative;
+    background: #FFFFFF;
+    width: 500px;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    /* margin: 100px auto 10px; */
+    overflow: hidden;
+}
+
+.form-login.register {
+    overflow: visible;
+}
+
+.form-toggle-login {
+    z-index: 10;
+    position: absolute;
+    top: calc(-14% + 60px);
+    right: 0;
+    background: #FFFFFF;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    transform-origin: center;
+    transform: translate(0, -25%) scale(0);
+    opacity: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.form-toggle-login:before, .form-toggle-login:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 4px;
+    background: #4285F4;
+    transform: translate(-50%, -50%);
+}
+
+.form-toggle-login:before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.form-toggle-login:after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.form-toggle-login.visible {
+    transform: translate(0, -25%) scale(1);
+    opacity: 1;
+}
+
+.form-group-login {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 0 20px;
+}
+
+.form-group-login:last-child {
+    margin: 0;
+}
+
+.form-group-login label {
+    display: block;
+    margin: 0 0 10px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
+
+.two .form-group-login label {
+    color: #FFFFFF;
+}
+
+.form-group-login input {
+    outline: none;
+    display: block;
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 12px 20px;
+    color: rgba(0, 0, 0, 0.6);
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    transition: 0.3s ease;
+}
+
+.form-group-login input:focus {
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.two .form-group-login input {
+    color: #FFFFFF;
+}
+
+.two .form-group-login input:focus {
+    color: #FFFFFF;
+}
+
+.form-group-login button {
+    outline: none;
+    background: #4285F4;
+    width: 100%;
+    border: 0;
+    border-radius: 4px;
+    padding: 12px 20px;
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: inherit;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.two .form-group-login button {
+    background: #FFFFFF;
+    color: #4285F4;
+}
+
+.form-group-login .form-remember-login {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.form-group-login .form-remember-login input[type=checkbox] {
+    display: inline-block;
+    width: auto;
+    margin: 0 10px 0 0;
+}
+
+.form-group-login .form-recovery-login {
+    color: #4285F4;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.form-panel-login {
+    padding: 60px calc(5% + 60px) 60px 60px;
+    box-sizing: border-box;
+}
+
+.form-panel-login.one:before {
+    content: "";
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+}
+
+.form-panel-login.one.hidden:before {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.form-panel-login.two {
+    z-index: 5;
+    position: absolute;
+    top: -14%;
+    left: 95%;
+    background: #4285F4;
+    width: 100%;
+    min-height: 100%;
+    padding: 60px calc(10% + 60px) 60px 60px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.form-panel-login.two:before, .form-panel-login.two:after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 60px;
+    left: 1.5%;
+    background: rgba(255, 255, 255, 0.2);
+    height: 30px;
+    width: 2px;
+    transition: 0.3s ease;
+}
+
+.form-panel-login.two:after {
+    left: 3%;
+}
+
+.form-panel-login.two:hover {
+    left: 93%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-panel-login.two:hover:before, .form-panel-login.two:hover:after {
+    opacity: 0;
+}
+
+.form-panel-login.two.active {
+    left: 10%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: default;
+}
+
+.form-panel-login.two.active:before, .form-panel-login.two.active:after {
+    opacity: 0;
+}
+
+.form-header-login {
+    margin: 0 0 40px;
+}
+
+.form-header-login h1 {
+    padding: 4px 0;
+    color: #4285F4;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.two .form-header-login h1 {
+    position: relative;
+    z-index: 40;
+    color: #FFFFFF;
+}
+.pen-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 600px;
+    margin: 20px auto 100px;
+}
+
+.pen-footer a {
+    color: #FFFFFF;
+    font-size: 12px;
+    text-decoration: none;
+    text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.1);
+}
+
+.pen-footer a .material-icons {
+    width: 12px;
+    margin: 0 5px;
+    vertical-align: middle;
+    font-size: 12px;
+}
+  
+.cp-fab {
+    background: #FFFFFF !important;
+    color: #4285F4 !important;
+}

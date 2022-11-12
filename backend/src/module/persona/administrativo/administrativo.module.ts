@@ -6,6 +6,7 @@ import { Administrativo } from './entities/administrativo.entity';
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
 import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
+import { AdministrativoEstudioDetalle } from './entities/administrativoestudiodetalle.entity';
 
 @Module({
   controllers: [AdministrativoController],
@@ -13,7 +14,7 @@ import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrati
   imports: [
     TypeOrmModule.forFeature( [
       Administrativo, AdministrativoReferenciaContactoDetalle, AdministrativoNacionalidadDetalle,
-      AdministrativoCategoriaDocumentoDetalle,
+      AdministrativoCategoriaDocumentoDetalle, AdministrativoEstudioDetalle,
     ] ),
   ],
 })

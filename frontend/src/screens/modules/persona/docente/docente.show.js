@@ -236,7 +236,14 @@ function ShowDocente( props ) {
                             </div>
                         </div>
                         <div className="tab-pane fade pt-4" id="estudio" role="tabpanel" aria-labelledby="estudio-tab">
-                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 550, overflowY: 'auto', overflowX: 'hidden', }}>
+                            { docente.arrayestudio.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Información</h4>
+                                    </div>
+                                </div>
+                            }
+                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 650, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { docente.arrayestudio.map( ( item, key ) => {
                                         return (
@@ -269,9 +276,16 @@ function ShowDocente( props ) {
                                                         </div>
                                                         <div className="form-group col-12 pl-1">
                                                             <InputComponent
-                                                                label="Estado"
+                                                                label="Es Graduado"
                                                                 value={ Functions.getValueConfirmacion( item.esgraduado ) }
                                                                 readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Año Cursado"
+                                                                value={item.ultimoyearcursado}
+                                                                readOnly
                                                             />
                                                         </div>
                                                         <div className="form-group col-12 pl-1">
@@ -290,6 +304,13 @@ function ShowDocente( props ) {
                             </div>
                         </div>
                         <div className="tab-pane fade pt-4" id="asignaturaespecialidad" role="tabpanel" aria-labelledby="asignaturaespecialidad-tab">
+                            { docente.arraymateria.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Documento Digital</h4>
+                                    </div>
+                                </div>
+                            }
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 { docente.arraymateria.map( ( item, key ) => {
                                     return (
@@ -326,6 +347,13 @@ function ShowDocente( props ) {
                             </div>
                         </div>
                         <div className="tab-pane fade pt-4" id="documentodigital" role="tabpanel" aria-labelledby="documentodigital-tab">
+                            { docente.arraycategoriadocumento.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Documento Digital</h4>
+                                    </div>
+                                </div>
+                            }
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { docente.arraycategoriadocumento.map( ( item, key ) => {

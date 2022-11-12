@@ -7,12 +7,6 @@ export class Materia {
     @PrimaryGeneratedColumn('uuid')
     idmateria: string;
 
-    @Column('text')
-    fkidtipomateria: string;
-
-    @Column('text')
-    tipomateria: string;
-
     @Column( {
         type: 'text',
         unique: false,

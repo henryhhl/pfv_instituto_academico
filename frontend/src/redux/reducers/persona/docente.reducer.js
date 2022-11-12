@@ -143,12 +143,11 @@ const loadEstudioDetalle = () => {
 };
 
 const onDefaultEstudio = () => {
-    let date = new Date();
     return {
         fkidinstitucion: null, institucion: null,
         fkidnivelacademico: null, nivelacademico: null,
         descripcion: "", esgraduado: "S",
-        ultimoyearcursado: date.getFullYear(), estado: "A",
+        ultimoyearcursado: 0, estado: "A",
     };
 };
 

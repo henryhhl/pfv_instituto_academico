@@ -27,8 +27,6 @@ export const MateriaReducer = ( state = inititalState, action ) => {
 
         case Constants.materia_onShow:
             state.idmateria = action.payload.idmateria;
-            state.fkidtipomateria = action.payload.fkidtipomateria;
-            state.tipomateria = action.payload.tipomateria;
             state.codigo = action.payload.codigo;
             state.sigla = action.payload.sigla;
             state.nombrelargo = action.payload.nombrelargo;

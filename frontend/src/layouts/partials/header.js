@@ -1,7 +1,10 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function HeaderComponent() {
+    const navigate = useNavigate();
+
     return (
         <nav className="navbar navbar-expand-lg main-navbar">
             <form className="form-inline mr-auto">
@@ -73,7 +76,12 @@ export default function HeaderComponent() {
                         <a href="profile.html" className="dropdown-item has-icon">
                             <i className="ion ion-android-person"></i> Profile
                         </a>
-                        <a href="#" className="dropdown-item has-icon">
+                        <a href="#" className="dropdown-item has-icon"
+                            onClick={ (evt) => {
+                                evt.preventDefault();
+                                navigate('/login');
+                            } }
+                        >
                             <i className="ion ion-log-out"></i> Logout
                         </a>
                     </div>

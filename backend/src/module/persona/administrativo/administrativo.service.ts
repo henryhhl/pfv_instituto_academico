@@ -8,6 +8,7 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
 import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
+import { AdministrativoEstudioDetalle } from './entities/administrativoestudiodetalle.entity';
 
 @Injectable()
 export class AdministrativoService {
@@ -25,6 +26,9 @@ export class AdministrativoService {
 
     @InjectRepository(AdministrativoCategoriaDocumentoDetalle)
     private readonly administrativoCategoriaDocumentoDetalleRepository: Repository<AdministrativoCategoriaDocumentoDetalle>,
+
+    @InjectRepository(AdministrativoEstudioDetalle)
+    private readonly administrativoEstudioDetalleRepository: Repository<AdministrativoEstudioDetalle>,
 
     private readonly dataSource: DataSource,
   ) {}
@@ -113,6 +117,15 @@ export class AdministrativoService {
           } );
         } ),
 
+        arrayestudio: createAdministrativoDto.arrayestudio?.filter( 
+          ( item ) => ( item.fkidinstitucion !== null && item.fkidnivelacademico !== null ) 
+        ).map( ( item ) => {
+          return this.administrativoEstudioDetalleRepository.create( {
+            ...item,
+            created_at: this.getDateTime(),
+          } );
+        } ),
+
         arrayreferenciacontactos: [],
         created_at: this.getDateTime(),
       } );
@@ -134,7 +147,10 @@ export class AdministrativoService {
   async findOne(idadministrativo: string) {
     const administrativo = await this.administrativoRepository.findOne( {
       where: { idadministrativo: idadministrativo },
-      relations: { arraynacionalidad: true, arraycategoriadocumento: true, },
+      relations: { 
+        arraynacionalidad: true, arraycategoriadocumento: true, 
+        arrayestudio: true,
+      },
     } );
     return administrativo;
   }
@@ -199,7 +215,7 @@ export class AdministrativoService {
           message: 'Administrativo no existe.',
         };
       }
-      const { arraycategoriadocumento, arraynacionalidad, ...toUpdate } = updateAdministrativoDto;
+      const { arraycategoriadocumento, arrayestudio, arraynacionalidad, ...toUpdate } = updateAdministrativoDto;
       const administrativoPreLoad = await this.administrativoRepository.preload( {
         idadministrativo: idadministrativo,
         ...toUpdate,
@@ -236,6 +252,18 @@ export class AdministrativoService {
             documento: item.documento,
             extension: item.extension,
             estado: ( item.estado !== 'A' && item.estado !== 'N' ) ? 'A' : item.estado,
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+
+      if ( arrayestudio ) {
+        await queryRunner.manager.delete( AdministrativoEstudioDetalle, { fkidadministrativo: { idadministrativo: idadministrativo } } );
+        administrativoPreLoad.arrayestudio = arrayestudio.filter( 
+            ( item ) => ( item.fkidinstitucion !== null && item.fkidnivelacademico !== null ) 
+        ).map( ( item ) => {
+          return this.administrativoEstudioDetalleRepository.create( {
+            ...item,
             created_at: this.getDateTime(),
           } );
         } );

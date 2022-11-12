@@ -81,8 +81,6 @@ export class MateriaService {
   async store(createMateriaDto: CreateMateriaDto) {
     try {
       const materia = this.materiaRepository.create( {
-        fkidtipomateria: createMateriaDto.fkidtipomateria,
-        tipomateria: createMateriaDto.tipomateria,
         codigo: createMateriaDto.codigo,
         sigla: createMateriaDto.sigla,
         nombrelargo: createMateriaDto.nombrelargo,
@@ -160,34 +158,42 @@ export class MateriaService {
   }
 
   async update( idmateria: string, updateMateriaDto: UpdateMateriaDto ) {
-    const materia = await this.findOne(idmateria);
-    if ( materia === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Materia no existe.',
-      };
-    }
-    const materiaPreLoad = await this.materiaRepository.preload( {
-      idmateria: idmateria,
-      ...updateMateriaDto,
-      concurrencia: materia.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
+    try {
+      const materia = await this.findOne(idmateria);
+      if ( materia === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Materia no existe.',
+        };
+      }
+      const materiaPreLoad = await this.materiaRepository.preload( {
+        idmateria: idmateria,
+        ...updateMateriaDto,
+        concurrencia: materia.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
 
-    if ( materiaPreLoad === null ) {
+      if ( materiaPreLoad === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Materia no existe.',
+        };
+      }
+      const materiaUpdate = await this.materiaRepository.save( materiaPreLoad );
       return {
-        resp: 0, error: false,
-        message: 'Materia no existe.',
+        resp: 1,
+        error: false,
+        message: 'Materia actualizado éxitosamente.',
+        materia: materia,
+        materiaUpdate: materiaUpdate,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const materiaUpdate = await this.materiaRepository.save( materiaPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Materia actualizado éxitosamente.',
-      materia: materia,
-      materiaUpdate: materiaUpdate,
-    };
   }
 
   async delete( idmateria: string ) {

@@ -57,6 +57,19 @@ export const AdministrativoReducer = ( state = inititalState, action ) => {
             );
             state = Object.assign( {}, state );
             return state;
+
+        case Constants.administrativo_onAddRowEstudio:
+            let arrayEstudio = state.arrayestudio;
+            state.arrayestudio = [ ...arrayEstudio, onDefaultEstudio() ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.administrativo_onDeleteRowEstudio:
+            state.arrayestudio = state.arrayestudio.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
     
         default:
             return state;
@@ -92,9 +105,27 @@ const onDefaultCategoriaDocumento = () => {
     };
 };
 
+const loadEstudioDetalle = () => {
+    let array = [];
+    for (let index = 0; index < 3; index++) {
+        array = [ ...array, onDefaultEstudio() ];
+    }
+    return array;
+};
+
+const onDefaultEstudio = () => {
+    return {
+        fkidinstitucion: null, institucion: null,
+        fkidnivelacademico: null, nivelacademico: null,
+        descripcion: "", esgraduado: "S",
+        ultimoyearcursado: 0, estado: "A",
+    };
+};
+
 const onCreate = ( state = inititalState ) => {
     state.arraycategoriadocumento = loadCategoriaDocumentoDetalle();
     state.arraynacionalidad = loadNacionalidadDetalle();
+    state.arrayestudio = loadEstudioDetalle();
     state.concurrencia = 1;
     state.estado = 'A';
     state.isdelete = 'A';
@@ -124,6 +155,15 @@ const onSetData = ( state = inititalState, administrativo ) => {
             fkidcategoriadocumento: item.fkidcategoriadocumento, categoriadocumento: item.categoriadocumento,
             descripcion: item.descripcion, documento: item.documento,
             extension: item.extension, estado: item.estado,
+        };
+    } );
+
+    state.arrayestudio = administrativo.arrayestudio.map( ( item ) => { 
+        return {
+            fkidinstitucion: item.fkidinstitucion, institucion: item.institucion,
+            fkidnivelacademico: item.fkidnivelacademico, nivelacademico: item.nivelacademico,
+            descripcion: item.descripcion, esgraduado: item.esgraduado,
+            ultimoyearcursado: item.ultimoyearcursado, estado: item.estado,
         };
     } );
 

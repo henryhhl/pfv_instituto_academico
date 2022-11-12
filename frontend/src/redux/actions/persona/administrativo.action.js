@@ -36,6 +36,15 @@ const onDeleteRowCategoriaDocumento = ( index ) => ( {
     payload: index,
 } );
 
+const onAddRowEstudio = ( ) => ( {
+    type: Constants.administrativo_onAddRowEstudio,
+} );
+
+const onDeleteRowEstudio = ( index ) => ( {
+    type: Constants.administrativo_onDeleteRowEstudio,
+    payload: index,
+} );
+
 const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
     payload: data,
@@ -462,6 +471,7 @@ export const AdministrativoActions = {
     onLimpiar, onChange,
     onAddNacionalidad, onDeleteNacionalidad,
     onAddRowCategoriaDocumento, onDeleteRowCategoriaDocumento,
+    onAddRowEstudio, onDeleteRowEstudio,
     setNombrePrincipal,
     setNombreAdicional,
     setApellidoPrimero,

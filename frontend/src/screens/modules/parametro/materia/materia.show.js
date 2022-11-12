@@ -38,6 +38,7 @@ function ShowMateria( props ) {
                     }
                 >
                     <div className="row">
+                        <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
                                 label="Código"
@@ -49,13 +50,6 @@ function ShowMateria( props ) {
                             <InputComponent
                                 label="Sigla"
                                 value={materia.sigla}
-                                readOnly
-                            />
-                        </div>
-                        <div className="form-group col-4">
-                            <InputComponent
-                                label="Tipo"
-                                value={materia.tipomateria}
                                 readOnly
                             />
                         </div>

@@ -16,6 +16,9 @@ import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../co
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 import ListadoTipoIdentificacionModal from '../tipoidentificacion/modal/tipo_identificacion_listado.modal';
 import ListadoCategoriaDocumentoModal from '../categoriadocumento/modal/categoria_documento_listado.modal';
+import { ConfirmacionData } from '../../../../data/confirmacion.data';
+import ListadoInstitucionModal from '../../estructurainstitucional/institucion/modal/institucion_listado.modal';
+import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
 
 function CreateAdministrativo( props ) {
     const { administrativo } = props;
@@ -30,6 +33,12 @@ function CreateAdministrativo( props ) {
 
     const [ indexDetailsCategoriaDocumento, setIndexDestailsCategoriaDocumento ] = React.useState(-1);
     const [ visibleCategoriaDocumento, setVisibleCategoriaDocumento ] = React.useState(false);
+
+    const [ indexDetailsInstitucion, setIndexDestailsInstitucion ] = React.useState(-1);
+    const [ visibleInstitucion, setVisibleInstitucion ] = React.useState(false);
+
+    const [ indexDetailsNivelAcademico, setIndexDestailsNivelAcademico ] = React.useState(-1);
+    const [ visibleNivelAcademico, setVisibleNivelAcademico ] = React.useState(false);
 
     React.useEffect( () => {
         props.onCreate();
@@ -130,6 +139,40 @@ function CreateAdministrativo( props ) {
         );
     };
 
+    const onComponentInstitucionDetalle = () => {
+        if ( !visibleInstitucion ) return null;
+        return (
+            <ListadoInstitucionModal
+                visible={visibleInstitucion}
+                onClose={ () => setVisibleInstitucion(false) }
+                onSelect={ (institucion) => {
+                    let detalle = administrativo.arrayestudio[indexDetailsInstitucion];
+                    detalle.fkidinstitucion = institucion.idinstitucion;
+                    detalle.institucion = institucion.descripcion;
+                    props.onChange(administrativo);
+                    setVisibleInstitucion(false);
+                } }
+            />
+        );
+    };
+
+    const onComponentNivelAcademicoDetalle = () => {
+        if ( !visibleNivelAcademico ) return null;
+        return (
+            <ListadoNivelAcademicoModal
+                visible={visibleNivelAcademico}
+                onClose={ () => setVisibleNivelAcademico(false) }
+                onSelect={ (nivelAcademico) => {
+                    let detalle = administrativo.arrayestudio[indexDetailsNivelAcademico];
+                    detalle.fkidnivelacademico = nivelAcademico.idnivelacademico;
+                    detalle.nivelacademico = nivelAcademico.descripcion;
+                    props.onChange(administrativo);
+                    setVisibleNivelAcademico(false);
+                } }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentTipoIdentificacion() }
@@ -137,6 +180,8 @@ function CreateAdministrativo( props ) {
             { onComponentCiudadResidencia() }
             { onComponentNacionalidadDetalle() }
             { onComponentCategoriaDocumentoDetalle() }
+            { onComponentInstitucionDetalle() }
+            { onComponentNivelAcademicoDetalle() }
             <PaperComponent>
                 <CardComponent
                     header={"Nuevo Administrativo"}
@@ -162,6 +207,13 @@ function CreateAdministrativo( props ) {
                                 aria-controls="home" aria-selected="true"
                             >
                                 Información General
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" id="estudio-tab" data-toggle="tab" href="#estudio" 
+                                role="tab" aria-controls="estudio" aria-selected="false"
+                            >
+                                Estudios
                             </a>
                         </li>
                         <li className="nav-item">
@@ -391,6 +443,133 @@ function CreateAdministrativo( props ) {
                                 </div>
                             </div>
                         </div>
+                        <div className="tab-pane fade pt-4" id="estudio" role="tabpanel" aria-labelledby="estudio-tab">
+                            <div className="row">
+                                <div className="form-group col-12">
+                                    <ButtonComponent
+                                        fullWidth
+                                        onClick={props.onAddRowEstudio}
+                                    >
+                                        Agregar
+                                    </ButtonComponent>
+                                </div>
+                            </div>
+                            { administrativo.arrayestudio.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Información</h4>
+                                    </div>
+                                </div>
+                            }
+                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 650, overflowY: 'auto', overflowX: 'hidden', }}>
+                                <div className="row">
+                                    { administrativo.arrayestudio.map( ( item, key ) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                                <div className="card card-sm position-relative card-success">
+                                                    <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                        style={ { position: 'absolute', left: -20, top: -28, } }
+                                                    ></i>
+                                                    <div className="card-options dropdown">
+                                                        <CloseOutlined
+                                                            style={ {
+                                                                padding: 4, borderRadius: 50, background: 'white', 
+                                                                fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
+                                                                position: 'relative', top: -8, left: 8, cursor: 'pointer',
+                                                            } }
+                                                            onClick={() => {
+                                                                props.onDeleteRowEstudio(key);
+                                                            } }
+                                                        />
+                                                    </div>
+                                                    <div className="card-body">
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Institución"
+                                                                value={item.institucion}
+                                                                onClick={ () => {
+                                                                    setIndexDestailsInstitucion(key);
+                                                                    setVisibleInstitucion(true);
+                                                                } }
+                                                                readOnly
+                                                                style={{ background: 'white', cursor: 'pointer', }}
+                                                                placeholder="SELECCIONAR INSTITUCIÓN"
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nivel Academico"
+                                                                value={item.nivelacademico}
+                                                                onClick={ () => {
+                                                                    setIndexDestailsNivelAcademico(key);
+                                                                    setVisibleNivelAcademico(true);
+                                                                } }
+                                                                readOnly
+                                                                style={{ background: 'white', cursor: 'pointer', }}
+                                                                placeholder="SELECCIONAR NIVEL ACADEMICO"
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nombre de Título"
+                                                                value={item.descripcion}
+                                                                onChange={ (value) => {
+                                                                    item.descripcion = value;
+                                                                    props.onChange(administrativo);
+                                                                } }
+                                                                readOnly={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <SelectComponent 
+                                                                data={ConfirmacionData}
+                                                                label={"Es Graduado"}
+                                                                value={item.estado}
+                                                                onChange={ (value) => {
+                                                                    item.estado = value;
+                                                                    props.onChange(administrativo);
+                                                                } }
+                                                                disabledDefault={true}
+                                                                disabled={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Año Cursado"
+                                                                value={item.ultimoyearcursado}
+                                                                onChange={ (value) => {
+                                                                    if ( value === "" ) value = 0;
+                                                                    if ( !isNaN( value ) ) {
+                                                                        if ( parseInt( value ) >= 0 ) {
+                                                                            item.ultimoyearcursado = parseInt(value);
+                                                                            props.onChange(administrativo);
+                                                                        }
+                                                                    }
+                                                                } }
+                                                                readOnly={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <SelectComponent 
+                                                                data={EstadoData}
+                                                                label={"Estado"}
+                                                                value={item.estado}
+                                                                onChange={ (value) => {
+                                                                    item.estado = value;
+                                                                    props.onChange(administrativo);
+                                                                } }
+                                                                disabledDefault={true}
+                                                                disabled={ (item.fkidinstitucion === null && item.fkidnivelacademico === null) }
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    } ) }
+                                </div>
+                            </div>
+                        </div>
                         <div className="tab-pane fade pt-4" id="documentodigital" role="tabpanel" aria-labelledby="documentodigital-tab">
                             <div className="row">
                                 <div className="form-group col-12">
@@ -402,6 +581,13 @@ function CreateAdministrativo( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
+                            { administrativo.arraycategoriadocumento.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Documento Digital</h4>
+                                    </div>
+                                </div>
+                            }
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { administrativo.arraycategoriadocumento.map( ( item, key ) => {
@@ -500,6 +686,8 @@ const mapDispatchToProps = {
     onDeleteNacionalidad: AdministrativoActions.onDeleteNacionalidad,
     onAddRowCategoriaDocumento: AdministrativoActions.onAddRowCategoriaDocumento,
     onDeleteRowCategoriaDocumento: AdministrativoActions.onDeleteRowCategoriaDocumento,
+    onAddRowEstudio: AdministrativoActions.onAddRowEstudio,
+    onDeleteRowEstudio: AdministrativoActions.onDeleteRowEstudio,
     setNombrePrincipal: AdministrativoActions.setNombrePrincipal,
     setNombreAdicional: AdministrativoActions.setNombreAdicional,
     setApellidoPrimero: AdministrativoActions.setApellidoPrimero,

@@ -18,7 +18,9 @@ export class Usuario {
     } )
     login: string;
 
-    @Column('text')
+    @Column( 'text', {
+        select: false,
+    } )
     password: string;
 
     @Column( {

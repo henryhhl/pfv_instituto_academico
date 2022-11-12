@@ -23,8 +23,6 @@ const getAllMateria = async ( {
 
 const onStore = async (body) => {
     return await httpRequest('post', apiServices.apiadminmateria_store, {
-        fkidtipomateria: body.fkidtipomateria,
-        tipomateria: body.tipomateria,
         codigo: body.codigo,
         sigla: body.sigla,
         nombrelargo: body.nombrelargo,
@@ -67,8 +65,6 @@ const onEdit = async (idmateria) => {
 
 const onUpdate = async (body) => {
     return await httpRequest('put', apiServices.apiadminmateria_update + `/${body.idmateria}`, {
-        fkidtipomateria: body.fkidtipomateria,
-        tipomateria: body.tipomateria,
         codigo: body.codigo,
         sigla: body.sigla,
         nombrelargo: body.nombrelargo,

@@ -93,16 +93,6 @@ const onLimpiar = () => {
     };
 };
 
-const setFKIDTipoMateria = (materia, tipoMateria) => {
-    return ( dispatch ) => {
-        materia.fkidtipomateria = tipoMateria.idtipomateria;
-        materia.tipomateria = tipoMateria.descripcion;
-        materia.error.fkidtipomateria = false;
-        materia.message.fkidtipomateria = "";
-        dispatch( onChange(materia) );
-    };
-};
-
 const setCodigo = (materia, value) => {
     return ( dispatch ) => {
         materia.codigo = value;
@@ -150,10 +140,15 @@ const setNombreAlternativo = (materia, value) => {
 
 const setCredito = (materia, value) => {
     return ( dispatch ) => {
-        materia.creditos = value;
-        materia.error.creditos = false;
-        materia.message.creditos = "";
-        dispatch( onChange(materia) );
+        if ( value === "" ) value = 0;
+        if ( !isNaN( value ) ) {
+            if ( parseInt( value ) >= 0 ) {
+                materia.creditos = parseInt(value);
+                materia.error.creditos = false;
+                materia.message.creditos = "";
+                dispatch( onChange(materia) );
+            }
+        }
     };
 };
 
@@ -251,11 +246,6 @@ const onUpdate = ( materia, onBack ) => {
 
 function onValidate( data ) {
     let bandera = true;
-    if ( data.fkidtipomateria.toString().trim().length === 0 ) {
-        data.error.fkidtipomateria   = true;
-        data.message.fkidtipomateria = "Campo requerido.";
-        bandera = false;
-    }
     if ( data.codigo.toString().trim().length === 0 ) {
         data.error.codigo   = true;
         data.message.codigo = "Campo requerido.";
@@ -318,7 +308,6 @@ export const MateriaActions = {
     onPageMateria,
     getAllMateria,
     onLimpiar,
-    setFKIDTipoMateria,
     setCodigo,
     setSigla,
     setNombreLargo,

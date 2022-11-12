@@ -48,6 +48,13 @@ function ShowAdministrativo( props ) {
                             </a>
                         </li>
                         <li className="nav-item">
+                            <a className="nav-link" id="estudio-tab" data-toggle="tab" href="#estudio" 
+                                role="tab" aria-controls="estudio" aria-selected="false"
+                            >
+                                Estudios
+                            </a>
+                        </li>
+                        <li className="nav-item">
                             <a className="nav-link" id="documentodigital-tab" data-toggle="tab" href="#documentodigital" 
                                 role="tab" aria-controls="documentodigital" aria-selected="false"
                             >
@@ -221,6 +228,74 @@ function ShowAdministrativo( props ) {
                                 </div>
                             </div>
                         </div>
+                        <div className="tab-pane fade pt-4" id="estudio" role="tabpanel" aria-labelledby="estudio-tab">
+                            { administrativo.arrayestudio.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Información</h4>
+                                    </div>
+                                </div>
+                            }
+                            <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 650, overflowY: 'auto', overflowX: 'hidden', }}>
+                                <div className="row">
+                                    { administrativo.arrayestudio.map( ( item, key ) => {
+                                        return (
+                                            <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                                <div className="card card-sm position-relative card-success">
+                                                    <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                        style={ { position: 'absolute', left: -20, top: -28, } }
+                                                    ></i>
+                                                    <div className="card-body">
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Institución"
+                                                                value={item.institucion}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nivel Academico"
+                                                                value={item.nivelacademico}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Nombre de Título"
+                                                                value={item.descripcion}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Es Graduado"
+                                                                value={ Functions.getValueConfirmacion( item.esgraduado ) }
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Año Cursado"
+                                                                value={item.ultimoyearcursado}
+                                                                readOnly
+                                                            />
+                                                        </div>
+                                                        <div className="form-group col-12 pl-1">
+                                                            <InputComponent
+                                                                label="Estado"
+                                                                value={ Functions.getValueEstado( item.estado ) }
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    } ) }
+                                </div>
+                            </div>
+                        </div>
                         <div className="tab-pane fade pt-4" id="documentodigital" role="tabpanel" aria-labelledby="documentodigital-tab">
                             <div className="row">
                                 <div className="form-group col-12">
@@ -232,6 +307,13 @@ function ShowAdministrativo( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
+                            { administrativo.arraycategoriadocumento.length === 0 &&
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4>Sin Documento Digital</h4>
+                                    </div>
+                                </div>
+                            }
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { administrativo.arraycategoriadocumento.map( ( item, key ) => {

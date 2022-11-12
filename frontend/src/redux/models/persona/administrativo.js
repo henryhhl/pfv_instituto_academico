@@ -14,6 +14,7 @@ const Administrativo = {
     arrayreferenciacontactos: [],
     arraynacionalidad: [],
     arraycategoriadocumento: [],
+    arrayestudio: [],
 
     nombreprincipal: "",
     nombreadicional: "",

@@ -152,13 +152,15 @@ import IndexAdministrativo from '../screens/modules/persona/administrativo/admin
 import CreateAdministrativo from '../screens/modules/persona/administrativo/administrativo.create';
 import ShowAdministrativo from '../screens/modules/persona/administrativo/administrativo.show';
 import EditAdministrativo from '../screens/modules/persona/administrativo/administrativo.edit';
-import SeguridadRoute from './module/seguridad.route';
+
+import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
     return (
         <>
             <Routes>
                 <Route path="/notFound" element={ <InicioPage { ...props } /> }  />
+                <Route path="/login" element={ <LoginPage { ...props } /> }  />
                 <Route path="/" element={<AppMain />}>
                     <Route index path="/inicio" element={ <InicioPage { ...props } /> }  />
 

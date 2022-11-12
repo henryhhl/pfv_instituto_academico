@@ -113,6 +113,7 @@ const setDescripcion = (divisionAcademica, value) => {
 
 const setOrden = (divisionAcademica, value) => {
     return ( dispatch ) => {
+        if ( value === "" ) value = 0;
         if ( !isNaN(value) ) {
             divisionAcademica.orden = value;
             divisionAcademica.error.orden = false;

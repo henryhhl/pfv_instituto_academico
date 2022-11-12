@@ -1,12 +1,6 @@
 import { IsString, MinLength, IsNotEmpty, IsEmail, MaxLength, Matches } from 'class-validator';
 
-export class CreateUsuarioDto {
-
-    @IsNotEmpty( { message: 'Campo email es requerido.', } )
-    @IsString( { message: 'Campo es requerido de tipo String.', } )
-    @IsEmail( { message: 'Campo es requerido de tipo email.', } )
-    @MinLength(1, { message: 'Campo email debe ser mayor o igual a 1 carácter.', })
-    readonly email: string;
+export class LoginAuthDto {
 
     @IsNotEmpty( { message: 'Campo login es requerido.', } )
     @IsString( { message: 'Campo es requerido de tipo String.', } )
