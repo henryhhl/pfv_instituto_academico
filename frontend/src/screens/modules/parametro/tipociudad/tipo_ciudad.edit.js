@@ -46,7 +46,7 @@ function EditTipoCiudad( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Localidad*"
                                 value={tipoCiudad.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoCiudad, value) }
                                 error={tipoCiudad.error.descripcion}
@@ -56,7 +56,7 @@ function EditTipoCiudad( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={tipoCiudad.estado}
                                 onChange={ (value) => props.setEstado(tipoCiudad, value) }
                                 error={tipoCiudad.error.estado}

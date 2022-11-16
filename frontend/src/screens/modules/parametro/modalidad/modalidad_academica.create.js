@@ -45,7 +45,7 @@ function CreateModalidadAcademica( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={modalidadAcademica.sigla}
                                 onChange={ (value) => props.setSigla(modalidadAcademica, value) }
                                 error={modalidadAcademica.error.sigla}
@@ -54,7 +54,7 @@ function CreateModalidadAcademica( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Modalidad Acádemica*"
                                 value={modalidadAcademica.descripcion}
                                 onChange={ (value) => props.setDescripcion(modalidadAcademica, value) }
                                 error={modalidadAcademica.error.descripcion}

@@ -34,6 +34,12 @@ const getValueConfirmacion = ( estado ) => {
     return 'No';
 };
 
+const getValueTipoEmpleado = ( estado ) => {
+    if ( estado === 'N' ) return 'Ninguno';
+    if ( estado === 'D' ) return 'Dependiente';
+    return 'Independiente';
+};
+
 const getValueEstado = ( estado ) => {
     if ( estado === 'A' ) return 'Activo';
     return 'InActivo';
@@ -107,10 +113,17 @@ const validateEmail = ( value ) => {
     return true;
 };
 
+const validatePassword = ( value ) => {
+    let password = /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    if ( !password.test(value) ) return false;
+    return true;
+};
+
 export const Functions = {
     dateToString,
     dateToYear,
     cleanObejct,
+    getValueTipoEmpleado,
     getValueConfirmacion,
     getValueEstado,
     getValueGenero,
@@ -119,4 +132,5 @@ export const Functions = {
     compareInitDateString,
     compareFinishDateString,
     validateEmail,
+    validatePassword,
 };

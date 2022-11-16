@@ -45,7 +45,7 @@ function CreatePeriodo( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={periodo.sigla}
                                 onChange={ (value) => props.setSigla(periodo, value) }
                                 error={periodo.error.sigla}
@@ -54,7 +54,7 @@ function CreatePeriodo( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Periodo*"
                                 value={periodo.descripcion}
                                 onChange={ (value) => props.setDescripcion(periodo, value) }
                                 error={periodo.error.descripcion}

@@ -47,7 +47,7 @@ function ShowTipoIdentificacion( props ) {
                         </div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre Tipo Identificación"
                                 value={tipoIdentificacion.descripcion}
                                 readOnly
                             />

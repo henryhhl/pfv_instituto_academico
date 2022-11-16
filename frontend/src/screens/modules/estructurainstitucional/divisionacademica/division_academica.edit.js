@@ -45,7 +45,7 @@ function EditDivisionAcademica( props ) {
                     <div className="row">
                         <div className="form-group col-3">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={divisionAcademica.sigla}
                                 onChange={ (value) => props.setSigla(divisionAcademica, value) }
                                 error={divisionAcademica.error.sigla}
@@ -54,7 +54,7 @@ function EditDivisionAcademica( props ) {
                         </div>
                         <div className="form-group col-7">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre División Acádemica*"
                                 value={divisionAcademica.descripcion}
                                 onChange={ (value) => props.setDescripcion(divisionAcademica, value) }
                                 error={divisionAcademica.error.descripcion}
@@ -63,7 +63,7 @@ function EditDivisionAcademica( props ) {
                         </div>
                         <div className="form-group col-2">
                             <InputComponent
-                                label="Orden"
+                                label="Orden*"
                                 value={divisionAcademica.orden}
                                 onChange={ (value) => props.setOrden(divisionAcademica, value) }
                                 error={divisionAcademica.error.orden}
@@ -76,7 +76,7 @@ function EditDivisionAcademica( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={divisionAcademica.estado}
                                 onChange={ (value) => props.setEstado(divisionAcademica, value) }
                                 error={divisionAcademica.error.estado}

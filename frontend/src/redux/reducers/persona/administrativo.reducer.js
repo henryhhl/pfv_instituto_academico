@@ -47,7 +47,7 @@ export const AdministrativoReducer = ( state = inititalState, action ) => {
 
         case Constants.administrativo_onAddRowCategoriaDocumento:
             let arrayCategoriaDocumento = state.arraycategoriadocumento;
-            state.arraycategoriadocumento = [ ...arrayCategoriaDocumento, onDefaultNacionalidad() ];
+            state.arraycategoriadocumento = [ ...arrayCategoriaDocumento, onDefaultCategoriaDocumento() ];
             state = Object.assign( {}, state );
             return state;
 

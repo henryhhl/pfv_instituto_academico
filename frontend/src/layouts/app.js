@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import LoadingComponent from '../components/loading';
 import { Functions } from '../utils/functions';
 import HeaderComponent from './partials/header';
@@ -9,13 +9,18 @@ import SidebarComponent from './partials/sidebar';
 
 
 const AppMain = ( props ) => {
-    const { loading } = props;
+    const { loading, sesion } = props;
+    const navigate = useNavigate();
 
     const setLoading = () => {
         return (
             <LoadingComponent visible={loading.visible} />
         );
     };
+
+    if ( sesion.isSesion ) {
+        navigate('/login');
+    }
 
     return (
         <>
@@ -40,6 +45,7 @@ const AppMain = ( props ) => {
 
 const mapStateToProps = ( state ) => ( {
     loading: state.Loading,
+    sesion: state.Sesion,
 } );
 
 const mapDispatchToProps = null;

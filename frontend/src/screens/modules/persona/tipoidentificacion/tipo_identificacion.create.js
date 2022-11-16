@@ -44,7 +44,7 @@ function CreateTipoIdentificacion( props ) {
                     <div className="row">
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={tipoIdentificacion.sigla}
                                 onChange={ (value) => props.setSigla(tipoIdentificacion, value) }
                                 error={tipoIdentificacion.error.sigla}
@@ -53,7 +53,7 @@ function CreateTipoIdentificacion( props ) {
                         </div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre Tipo Identificación"
                                 value={tipoIdentificacion.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoIdentificacion, value) }
                                 error={tipoIdentificacion.error.descripcion}

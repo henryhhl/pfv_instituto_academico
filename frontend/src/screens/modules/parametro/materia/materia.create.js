@@ -45,7 +45,7 @@ function CreateMateria( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Código"
+                                label="Código*"
                                 value={materia.codigo}
                                 onChange={ (value) => props.setCodigo(materia, value) }
                                 error={materia.error.codigo}
@@ -54,7 +54,7 @@ function CreateMateria( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={materia.sigla}
                                 onChange={ (value) => props.setSigla(materia, value) }
                                 error={materia.error.sigla}
@@ -65,7 +65,7 @@ function CreateMateria( props ) {
                     <div className="row">
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Nombre Largo"
+                                label="Nombre Largo*"
                                 value={materia.nombrelargo}
                                 onChange={ (value) => props.setNombreLargo(materia, value) }
                                 error={materia.error.nombrelargo}
@@ -74,7 +74,7 @@ function CreateMateria( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Nombre Corto"
+                                label="Nombre Corto*"
                                 value={materia.nombrecorto}
                                 onChange={ (value) => props.setNombreCorto(materia, value) }
                                 error={materia.error.nombrecorto}
@@ -83,7 +83,7 @@ function CreateMateria( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Nombre Alternativo"
+                                label="Nombre Alternativo*"
                                 value={materia.nombrealternativo}
                                 onChange={ (value) => props.setNombreAlternativo(materia, value) }
                                 error={materia.error.nombrealternativo}
@@ -95,7 +95,7 @@ function CreateMateria( props ) {
                         <div className="form-group col-4"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Créditos"
+                                label="Créditos*"
                                 value={materia.creditos}
                                 onChange={ (value) => props.setCredito(materia, value) }
                                 error={materia.error.creditos}

@@ -45,7 +45,7 @@ function CreateCategoriaDocumento( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre de Categoría Documento*"
                                 value={categoriaDocumento.descripcion}
                                 onChange={ (value) => props.setDescripcion(categoriaDocumento, value) }
                                 error={categoriaDocumento.error.descripcion}

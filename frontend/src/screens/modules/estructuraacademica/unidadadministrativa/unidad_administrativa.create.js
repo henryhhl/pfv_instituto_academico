@@ -160,7 +160,7 @@ function CreateUnidadAdministrativa( props ) {
                             <div className="row">
                                 <div className="form-group col-3">
                                     <InputComponent
-                                        label="Sigla"
+                                        label="Sigla*"
                                         value={unidadAdministrativa.sigla}
                                         onChange={ (value) => props.setSigla(unidadAdministrativa, value) }
                                         error={unidadAdministrativa.error.sigla}
@@ -169,7 +169,7 @@ function CreateUnidadAdministrativa( props ) {
                                 </div>
                                 <div className="form-group col-5">
                                     <InputComponent
-                                        label="Nombre Unidad Administrativa"
+                                        label="Nombre Unidad Administrativa*"
                                         value={unidadAdministrativa.descripcion}
                                         onChange={ (value) => props.setDescripcion(unidadAdministrativa, value) }
                                         error={unidadAdministrativa.error.descripcion}
@@ -178,7 +178,7 @@ function CreateUnidadAdministrativa( props ) {
                                 </div>
                                 <div className="form-group col-4">
                                     <InputComponent
-                                        label="Unidad Negocio"
+                                        label="Unidad Negocio*"
                                         value={unidadAdministrativa.unidadnegocio}
                                         onClick={ () => setVisibleUnidadNegocio(true) }
                                         error={unidadAdministrativa.error.fkidunidadnegocio}

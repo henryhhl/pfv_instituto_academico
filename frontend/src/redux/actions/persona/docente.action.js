@@ -1,9 +1,11 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
-import { Functions } from "../../../utils/functions";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import { Functions } from "../../../utils/functions";
+import ConfirmationComponent from "../../../components/confirmation";
 import { DocenteService } from "../../services/persona/docente.service";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.docente_setInit,
@@ -84,7 +86,7 @@ const onPageDocente = ( page = 1, paginate = 5, search = "" ) => {
         DocenteService.getAllDocente( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -105,6 +107,9 @@ const onPageDocente = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -112,13 +117,18 @@ const onPageDocente = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllDocente = () => {
     return ( dispatch ) => {
-        DocenteService.getAllDocente().then( (result) => {
+        DocenteService.getAllDocente(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listDocente',
                     value: result.arrayDocente,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -328,9 +338,14 @@ const onCreate = () => {
 
 const onShow = ( iddocente ) => {
     return ( dispatch ) => {
-        DocenteService.onShow( iddocente ).then( (result) => {
+        DocenteService.onShow( 
+            iddocente 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.docente ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -338,9 +353,14 @@ const onShow = ( iddocente ) => {
 
 const onEdit = ( iddocente ) => {
     return ( dispatch ) => {
-        DocenteService.onEdit( iddocente ).then( (result) => {
+        DocenteService.onEdit( 
+            iddocente 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.docente ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -354,10 +374,15 @@ const onGrabar = ( docente, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            DocenteService.onStore(docente).then( (result) => {
+            DocenteService.onStore(
+                docente
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -378,10 +403,15 @@ const onUpdate = ( docente, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            DocenteService.onUpdate(docente).then( (result) => {
+            DocenteService.onUpdate(
+                docente
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -453,6 +483,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -460,9 +500,14 @@ const onDelete = ( docente ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            DocenteService.onDelete(docente).then( (result) => {
+            DocenteService.onDelete(
+                docente
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageDocente() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

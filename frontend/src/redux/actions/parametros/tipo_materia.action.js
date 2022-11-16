@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { TipoMateriaService } from "../../services/parametros/tipo_materia.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { TipoMateriaService } from "../../services/parametros/tipo_materia.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.tipoMateria_setInit,
@@ -47,7 +49,7 @@ const onPageTipoMateria = ( page = 1, paginate = 5, search = "" ) => {
         TipoMateriaService.getAllTipoMateria( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageTipoMateria = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageTipoMateria = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllTipoMateria = () => {
     return ( dispatch ) => {
-        TipoMateriaService.getAllTipoMateria().then( (result) => {
+        TipoMateriaService.getAllTipoMateria(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listTipoMateria',
                     value: result.arrayTipoMateria,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idtipomateria ) => {
     return ( dispatch ) => {
-        TipoMateriaService.onShow( idtipomateria ).then( (result) => {
+        TipoMateriaService.onShow( 
+            idtipomateria 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoMateria ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idtipomateria ) => {
 
 const onEdit = ( idtipomateria ) => {
     return ( dispatch ) => {
-        TipoMateriaService.onEdit( idtipomateria ).then( (result) => {
+        TipoMateriaService.onEdit( 
+            idtipomateria 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoMateria ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( tipoMateria, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            TipoMateriaService.onStore(tipoMateria).then( (result) => {
+            TipoMateriaService.onStore(
+                tipoMateria
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( tipoMateria, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            TipoMateriaService.onUpdate(tipoMateria).then( (result) => {
+            TipoMateriaService.onUpdate(
+                tipoMateria
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( tipoMateria ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            TipoMateriaService.onDelete(tipoMateria).then( (result) => {
+            TipoMateriaService.onDelete(
+                tipoMateria
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoMateria() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

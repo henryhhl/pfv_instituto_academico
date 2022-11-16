@@ -1,5 +1,7 @@
 
 import axios from 'axios';
+import { readData } from './toolsStorage';
+import { KeysStorage } from './keysStorage';
 
 // const dateToString = ( date = new Date() ) => {
 //     let year  = date.getFullYear();
@@ -23,6 +25,7 @@ import axios from 'axios';
 // };
 
 export const httpRequest = async ( method = "", uri, data = {} ) => {
+    const token = readData(KeysStorage.token);
 
     let data_aditional = {
         // x_fecha: dateToString(),
@@ -35,10 +38,11 @@ export const httpRequest = async ( method = "", uri, data = {} ) => {
         url: uri,
         responseType: "json",
         headers: {
-            'Access-Control-Allow-Origin': '*',
+            //'Access-Control-Allow-Origin': '*',
             // 'origin': 'x-requested-with',
             // 'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Autorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin,',
-            'Content-type': 'application/json',
+            //'Content-type': 'application/json',
+            'Authorization': `Bearer ${ token ?? '' }`,
         },
         // mode: 'no-cors',
         // withCredentials: true,
@@ -52,17 +56,25 @@ export const httpRequest = async ( method = "", uri, data = {} ) => {
     }
 
     return await axios( config ).then( (respta) => {
-        console.log(respta)
         if ( respta.status === 200 || respta.status === 201 ) {
             return respta.data;
         }
-        if (respta.status === 401) {}
+        if (respta.status === 401) {
+            return { 
+                error: true, message: 'Lo sentimos, su sesión ha expirado.',
+                resp: -2 
+            };
+        }
         if (respta.status === 404) {}
         if (respta.status === 500) {}
         return { resp: -5, };
     } ).catch( (error) => {
-        console.log(error);
-        if ( error.response.status === 401 ) {}
+        if ( error.response.status === 401 ) {
+            return { 
+                error: true, message: 'Lo sentimos, su sesión ha expirado.',
+                resp: -2 
+            };
+        }
         if ( error.response.status === 404 ) {}
         if ( error.response.status === 500 ) {}
         return { resp: -5, error: error };

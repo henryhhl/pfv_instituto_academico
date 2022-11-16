@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { DivisionAcademicaService } from "../../services/estructurainstitucional/division_academica.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { DivisionAcademicaService } from "../../services/estructurainstitucional/division_academica.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.divisionacademica_setInit,
@@ -47,7 +49,7 @@ const onPageDivisionAcademica = ( page = 1, paginate = 5, search = "" ) => {
         DivisionAcademicaService.getAllDivisionAcademica( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageDivisionAcademica = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageDivisionAcademica = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllDivisionAcademica = () => {
     return ( dispatch ) => {
-        DivisionAcademicaService.getAllDivisionAcademica().then( (result) => {
+        DivisionAcademicaService.getAllDivisionAcademica(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listDivisionAcademica',
                     value: result.arrayDivisionAcademica,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -149,9 +159,14 @@ const onCreate = () => {
 
 const onShow = ( iddivisionacademica ) => {
     return ( dispatch ) => {
-        DivisionAcademicaService.onShow( iddivisionacademica ).then( (result) => {
+        DivisionAcademicaService.onShow( 
+            iddivisionacademica 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.divisionAcademica ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -159,9 +174,14 @@ const onShow = ( iddivisionacademica ) => {
 
 const onEdit = ( iddivisionacademica ) => {
     return ( dispatch ) => {
-        DivisionAcademicaService.onEdit( iddivisionacademica ).then( (result) => {
+        DivisionAcademicaService.onEdit( 
+            iddivisionacademica 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.divisionAcademica ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -175,10 +195,15 @@ const onGrabar = ( divisionAcademica, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            DivisionAcademicaService.onStore(divisionAcademica).then( (result) => {
+            DivisionAcademicaService.onStore(
+                divisionAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -199,10 +224,15 @@ const onUpdate = ( divisionAcademica, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            DivisionAcademicaService.onUpdate(divisionAcademica).then( (result) => {
+            DivisionAcademicaService.onUpdate(
+                divisionAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -237,6 +267,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -244,9 +284,14 @@ const onDelete = ( divisionAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            DivisionAcademicaService.onDelete(divisionAcademica).then( (result) => {
+            DivisionAcademicaService.onDelete(
+                divisionAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageDivisionAcademica() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

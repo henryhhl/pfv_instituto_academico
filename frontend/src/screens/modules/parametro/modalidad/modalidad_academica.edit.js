@@ -46,7 +46,7 @@ function EditModalidadAcademica( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={modalidadAcademica.sigla}
                                 onChange={ (value) => props.setSigla(modalidadAcademica, value) }
                                 error={modalidadAcademica.error.sigla}
@@ -55,7 +55,7 @@ function EditModalidadAcademica( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Modalidad Academica*"
                                 value={modalidadAcademica.descripcion}
                                 onChange={ (value) => props.setDescripcion(modalidadAcademica, value) }
                                 error={modalidadAcademica.error.descripcion}
@@ -68,7 +68,7 @@ function EditModalidadAcademica( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={modalidadAcademica.estado}
                                 onChange={ (value) => props.setEstado(modalidadAcademica, value) }
                                 error={modalidadAcademica.error.estado}

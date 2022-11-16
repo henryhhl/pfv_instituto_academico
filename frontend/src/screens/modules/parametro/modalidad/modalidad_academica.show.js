@@ -46,7 +46,7 @@ function ShowModalidadAcademica( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Modalidad Academica"
                                 value={modalidadAcademica.descripcion}
                                 readOnly
                             />

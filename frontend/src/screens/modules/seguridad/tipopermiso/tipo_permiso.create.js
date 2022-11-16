@@ -46,7 +46,7 @@ function CreateTipoPermiso( props ) {
                         <div className="form-group col-3"></div>
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Permiso*"
                                 value={tipoPermiso.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoPermiso, value) }
                                 error={tipoPermiso.error.descripcion}

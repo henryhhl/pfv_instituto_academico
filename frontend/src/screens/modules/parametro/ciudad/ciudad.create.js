@@ -49,7 +49,7 @@ function CreateCiudad( props ) {
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
-                            label="Tipo"
+                            label="Tipo Localidad*"
                             value={ciudad.tipociudad}
                             onClick={ () => setVisibleTipoCiudad(true) }
                             error={ciudad.error.fkidtipociudad}
@@ -62,7 +62,7 @@ function CreateCiudad( props ) {
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
-                            label="Sigla"
+                            label="Sigla*"
                             value={ciudad.sigla}
                             onChange={ (value) => props.setSigla(ciudad, value) }
                             error={ciudad.error.sigla}
@@ -73,7 +73,7 @@ function CreateCiudad( props ) {
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
-                            label="Descripción"
+                            label="Nombre Ciudad*"
                             value={ciudad.descripcion}
                             onChange={ (value) => props.setDescripcion(ciudad, value) }
                             error={ciudad.error.descripcion}

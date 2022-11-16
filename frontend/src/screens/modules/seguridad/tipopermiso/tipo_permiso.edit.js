@@ -46,7 +46,7 @@ function EditTipoPermiso( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Permiso*"
                                 value={tipoPermiso.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoPermiso, value) }
                                 error={tipoPermiso.error.descripcion}
@@ -56,7 +56,7 @@ function EditTipoPermiso( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={tipoPermiso.estado}
                                 onChange={ (value) => props.setEstado(tipoPermiso, value) }
                                 error={tipoPermiso.error.estado}

@@ -45,7 +45,7 @@ function CreateTipoCiudad( props ) {
                         <div className="form-group col-3"></div>
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Localidad*"
                                 value={tipoCiudad.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoCiudad, value) }
                                 error={tipoCiudad.error.descripcion}

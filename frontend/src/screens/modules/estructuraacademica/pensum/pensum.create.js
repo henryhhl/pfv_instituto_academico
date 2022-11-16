@@ -63,7 +63,7 @@ function CreatePensum( props ) {
                         <div className="form-group col-1"></div>
                         <div className="form-group col-3">
                             <DatePickerComponent
-                                label="Fecha Aprobación"
+                                label="Fecha Aprobación*"
                                 value={pensum.fechaaprobacion}
                                 onChange={ (value) => props.setFechaAprobacion(pensum, value) }
                                 error={pensum.error.fechaaprobacion}
@@ -73,7 +73,7 @@ function CreatePensum( props ) {
                         </div>
                         <div className="form-group col-7">
                             <InputComponent
-                                label="Nombre de Pensum"
+                                label="Nombre de Pensum*"
                                 value={pensum.descripcion}
                                 onChange={ (value) => props.setDescripcion(pensum, value) }
                                 error={pensum.error.descripcion}
@@ -93,7 +93,7 @@ function CreatePensum( props ) {
                     <div className="row">
                         <div className="form-group col-12">
                             <InputComponent
-                                label="Programa"
+                                label="Nombre de Programa*"
                                 value={pensum.programa}
                                 onClick={ () => setVisiblePrograma(true) }
                                 error={pensum.error.fkidprograma}

@@ -45,7 +45,7 @@ function CreateCargo( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre de Cargo*"
                                 value={cargo.descripcion}
                                 onChange={ (value) => props.setDescripcion(cargo, value) }
                                 error={cargo.error.descripcion}

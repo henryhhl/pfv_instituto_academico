@@ -41,7 +41,7 @@ function ShowCategoriaDocumento( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre de Categoría Documento"
                                 value={categoriaDocumento.descripcion}
                                 readOnly
                             />

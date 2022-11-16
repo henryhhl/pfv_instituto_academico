@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { UnidadNegocioService } from "../../services/parametros/unidad_negocioServices";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { UnidadNegocioService } from "../../services/parametros/unidad_negocioServices";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.unidadNegocio_setInit,
@@ -47,7 +49,7 @@ const onPageUnidadNegocio = ( page = 1, paginate = 5, search = "" ) => {
         UnidadNegocioService.getAllUnidadNegocio( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageUnidadNegocio = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageUnidadNegocio = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllUnidadNegocio = () => {
     return ( dispatch ) => {
-        UnidadNegocioService.getAllUnidadNegocio().then( (result) => {
+        UnidadNegocioService.getAllUnidadNegocio(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listUnidadNegocio',
                     value: result.arrayUnidadNegocio,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idunidadnegocio ) => {
     return ( dispatch ) => {
-        UnidadNegocioService.onShow( idunidadnegocio ).then( (result) => {
+        UnidadNegocioService.onShow( 
+            idunidadnegocio 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.unidadNegocio ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idunidadnegocio ) => {
 
 const onEdit = ( idunidadnegocio ) => {
     return ( dispatch ) => {
-        UnidadNegocioService.onEdit( idunidadnegocio ).then( (result) => {
+        UnidadNegocioService.onEdit( 
+            idunidadnegocio 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.unidadNegocio ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( unidadNegocio, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            UnidadNegocioService.onStore(unidadNegocio).then( (result) => {
+            UnidadNegocioService.onStore(
+                unidadNegocio
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( unidadNegocio, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            UnidadNegocioService.onUpdate(unidadNegocio).then( (result) => {
+            UnidadNegocioService.onUpdate(
+                unidadNegocio
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( unidadNegocio ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            UnidadNegocioService.onDelete(unidadNegocio).then( (result) => {
+            UnidadNegocioService.onDelete(
+                unidadNegocio
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUnidadNegocio() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

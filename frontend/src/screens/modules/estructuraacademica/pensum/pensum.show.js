@@ -66,7 +66,7 @@ function ShowPensum( props ) {
                     <div className="row">
                         <div className="form-group col-12">
                             <InputComponent
-                                label="Programa"
+                                label="Nombre de Programa"
                                 value={pensum.programa}
                                 readOnly
                             />

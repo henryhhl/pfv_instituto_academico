@@ -45,7 +45,7 @@ function EditCargo( props ) {
                     <div className="row">
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre de Cargo*"
                                 value={cargo.descripcion}
                                 onChange={ (value) => props.setDescripcion(cargo, value) }
                                 error={cargo.error.descripcion}
@@ -55,7 +55,7 @@ function EditCargo( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={cargo.estado}
                                 onChange={ (value) => props.setEstado(cargo, value) }
                                 error={cargo.error.estado}

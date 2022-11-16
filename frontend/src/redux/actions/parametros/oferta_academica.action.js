@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { OfertaAcademicaService } from "../../services/parametros/oferta_academica.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { OfertaAcademicaService } from "../../services/parametros/oferta_academica.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.ofertaAcademica_setInit,
@@ -47,7 +49,7 @@ const onPageOfertaAcademica = ( page = 1, paginate = 5, search = "" ) => {
         OfertaAcademicaService.getAllOfertaAcademica( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageOfertaAcademica = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageOfertaAcademica = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllOfertaAcademica = () => {
     return ( dispatch ) => {
-        OfertaAcademicaService.getAllOfertaAcademica().then( (result) => {
+        OfertaAcademicaService.getAllOfertaAcademica(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listOfertaAcademica',
                     value: result.arrayOfertaAcademica,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idofertaacademica ) => {
     return ( dispatch ) => {
-        OfertaAcademicaService.onShow( idofertaacademica ).then( (result) => {
+        OfertaAcademicaService.onShow( 
+            idofertaacademica 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.ofertaAcademica ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idofertaacademica ) => {
 
 const onEdit = ( idofertaacademica ) => {
     return ( dispatch ) => {
-        OfertaAcademicaService.onEdit( idofertaacademica ).then( (result) => {
+        OfertaAcademicaService.onEdit( 
+            idofertaacademica 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.ofertaAcademica ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( ofertaAcademica, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            OfertaAcademicaService.onStore(ofertaAcademica).then( (result) => {
+            OfertaAcademicaService.onStore(
+                ofertaAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( ofertaAcademica, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            OfertaAcademicaService.onUpdate(ofertaAcademica).then( (result) => {
+            OfertaAcademicaService.onUpdate(
+                ofertaAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( ofertaAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            OfertaAcademicaService.onDelete(ofertaAcademica).then( (result) => {
+            OfertaAcademicaService.onDelete(
+                ofertaAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageOfertaAcademica() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

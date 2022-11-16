@@ -46,7 +46,7 @@ function EditCategoriaDocumento( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Jornada"
+                                label="Nombre de Categoría Documento*"
                                 value={categoriaDocumento.descripcion}
                                 onChange={ (value) => props.setDescripcion(categoriaDocumento, value) }
                                 error={categoriaDocumento.error.descripcion}
@@ -59,7 +59,7 @@ function EditCategoriaDocumento( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={categoriaDocumento.estado}
                                 onChange={ (value) => props.setEstado(categoriaDocumento, value) }
                                 error={categoriaDocumento.error.estado}

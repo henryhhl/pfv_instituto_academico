@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { TipoIdentificacionService } from "../../services/persona/tipo_identificacion.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { TipoIdentificacionService } from "../../services/persona/tipo_identificacion.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.tipoidentificacion_setInit,
@@ -47,7 +49,7 @@ const onPageTipoIdentificacion = ( page = 1, paginate = 5, search = "" ) => {
         TipoIdentificacionService.getAllTipoIdentificacion( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageTipoIdentificacion = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageTipoIdentificacion = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllTipoIdentificacion = () => {
     return ( dispatch ) => {
-        TipoIdentificacionService.getAllTipoIdentificacion().then( (result) => {
+        TipoIdentificacionService.getAllTipoIdentificacion(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listTipoIdentificacion',
                     value: result.arrayTipoIdentificacion,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idtipoidentificacion ) => {
     return ( dispatch ) => {
-        TipoIdentificacionService.onShow( idtipoidentificacion ).then( (result) => {
+        TipoIdentificacionService.onShow( 
+            idtipoidentificacion 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoIdentificacion ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idtipoidentificacion ) => {
 
 const onEdit = ( idtipoidentificacion ) => {
     return ( dispatch ) => {
-        TipoIdentificacionService.onEdit( idtipoidentificacion ).then( (result) => {
+        TipoIdentificacionService.onEdit( 
+            idtipoidentificacion 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoIdentificacion ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( tipoIdentificacion, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            TipoIdentificacionService.onStore(tipoIdentificacion).then( (result) => {
+            TipoIdentificacionService.onStore(
+                tipoIdentificacion
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( tipoIdentificacion, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            TipoIdentificacionService.onUpdate(tipoIdentificacion).then( (result) => {
+            TipoIdentificacionService.onUpdate(
+                tipoIdentificacion
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( tipoIdentificacion ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            TipoIdentificacionService.onDelete(tipoIdentificacion).then( (result) => {
+            TipoIdentificacionService.onDelete(
+                tipoIdentificacion
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoIdentificacion() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { TurnoService } from "../../services/estructurainstitucional/turno.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { TurnoService } from "../../services/estructurainstitucional/turno.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.turno_setInit,
@@ -47,7 +49,7 @@ const onPageTurno = ( page = 1, paginate = 5, search = "" ) => {
         TurnoService.getAllTurno( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageTurno = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageTurno = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllTurno = () => {
     return ( dispatch ) => {
-        TurnoService.getAllTurno().then( (result) => {
+        TurnoService.getAllTurno(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listTurno',
                     value: result.arrayTurno,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idturno ) => {
     return ( dispatch ) => {
-        TurnoService.onShow( idturno ).then( (result) => {
+        TurnoService.onShow( 
+            idturno 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.turno ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idturno ) => {
 
 const onEdit = ( idturno ) => {
     return ( dispatch ) => {
-        TurnoService.onEdit( idturno ).then( (result) => {
+        TurnoService.onEdit( 
+            idturno 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.turno ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( turno, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            TurnoService.onStore(turno).then( (result) => {
+            TurnoService.onStore(
+                turno
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( turno, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            TurnoService.onUpdate(turno).then( (result) => {
+            TurnoService.onUpdate(
+                turno
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( turno ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            TurnoService.onDelete(turno).then( (result) => {
+            TurnoService.onDelete(
+                turno
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTurno() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

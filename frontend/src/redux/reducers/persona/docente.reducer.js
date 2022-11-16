@@ -182,7 +182,7 @@ const onSetData = ( state = inititalState, docente ) => {
     state.arraycategoriadocumento = docente.arraycategoriadocumento.map( ( item ) => { 
         return {
             fkidcategoriadocumento: item.fkidcategoriadocumento, categoriadocumento: item.categoriadocumento,
-            descripcion: item.descripcion, documento: item.documento, extension: item.extension,
+            descripcion: item.descripcion, documento: item.documento, extension: item.extension, estado: item.estado,
         };
     } );
 

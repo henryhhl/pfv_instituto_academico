@@ -62,7 +62,7 @@ function CreateRol( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Rol*"
                                 value={rol.descripcion}
                                 onChange={ (value) => props.setDescripcion(rol, value) }
                                 error={rol.error.descripcion}
@@ -71,7 +71,7 @@ function CreateRol( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Tipo"
+                                label="Tipo Rol*"
                                 value={rol.tiporol}
                                 onClick={ () => setVisibleTipoRol(true) }
                                 error={rol.error.fkidtiporol}

@@ -39,7 +39,7 @@ function ShowTipoCiudad( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Localidad"
                                 value={tipoCiudad.descripcion}
                                 readOnly={true}
                             />

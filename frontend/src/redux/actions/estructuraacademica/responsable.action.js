@@ -3,6 +3,7 @@ import ConfirmationComponent from "../../../components/confirmation";
 import Constants from "../../constants/constans";
 import { ResponsableService } from "../../services/estructuraacademica/responsable.service";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from "../common/sesion.action";
 
 const setInit = () => ( {
     type: Constants.responsable_setInit,
@@ -57,13 +58,18 @@ const initData = () => {
 
 const getAllResponsable = () => {
     return ( dispatch ) => {
-        ResponsableService.getAllResponsable().then( (result) => {
+        ResponsableService.getAllResponsable(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listResponsable',
                     value: result.arrayResponsable,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -173,9 +179,14 @@ const onCreate = () => {
 
 const onShow = ( idresponsable ) => {
     return ( dispatch ) => {
-        ResponsableService.onShow( idresponsable ).then( (result) => {
+        ResponsableService.onShow( 
+            idresponsable 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.responsable ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -183,9 +194,14 @@ const onShow = ( idresponsable ) => {
 
 const onEdit = ( idresponsable ) => {
     return ( dispatch ) => {
-        ResponsableService.onEdit( idresponsable ).then( (result) => {
+        ResponsableService.onEdit( 
+            idresponsable 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.responsable ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -199,10 +215,15 @@ const onGrabar = ( responsable, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            ResponsableService.onStore(responsable).then( (result) => {
+            ResponsableService.onStore(
+                responsable
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -223,10 +244,15 @@ const onUpdate = ( responsable, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            ResponsableService.onUpdate(responsable).then( (result) => {
+            ResponsableService.onUpdate(
+                responsable
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -293,9 +319,14 @@ const onDelete = ( responsable ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            ResponsableService.onDelete(responsable).then( (result) => {
+            ResponsableService.onDelete(
+                responsable
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllResponsable() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

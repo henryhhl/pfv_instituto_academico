@@ -148,6 +148,11 @@ import CreateDocente from '../screens/modules/persona/docente/docente.create';
 import ShowDocente from '../screens/modules/persona/docente/docente.show';
 import EditDocente from '../screens/modules/persona/docente/docente.edit';
 
+import IndexEstudiante from '../screens/modules/persona/estudiante/estudiante.index';
+import CreateEstudiante from '../screens/modules/persona/estudiante/estudiante.create';
+import ShowEstudiante from '../screens/modules/persona/estudiante/estudiante.show';
+import EditEstudiante from '../screens/modules/persona/estudiante/estudiante.edit';
+
 import IndexAdministrativo from '../screens/modules/persona/administrativo/administrativo.index';
 import CreateAdministrativo from '../screens/modules/persona/administrativo/administrativo.create';
 import ShowAdministrativo from '../screens/modules/persona/administrativo/administrativo.show';
@@ -301,6 +306,11 @@ const HomeRoute = (props) => {
                     <Route index path="/docente/create" element={ <CreateDocente { ...props } /> }  />
                     <Route index path="/docente/edit/:iddocente" element={ <EditDocente { ...props } /> }  />
                     <Route index path="/docente/show/:iddocente" element={ <ShowDocente { ...props } /> }  />
+
+                    <Route index path="/estudiante/index" element={ <IndexEstudiante { ...props } /> }  />
+                    <Route index path="/estudiante/create" element={ <CreateEstudiante { ...props } /> }  />
+                    <Route index path="/estudiante/edit/:idestudiante" element={ <EditEstudiante { ...props } /> }  />
+                    <Route index path="/estudiante/show/:idestudiante" element={ <ShowEstudiante { ...props } /> }  />
 
                     <Route index path="/administrativo/index" element={ <IndexAdministrativo { ...props } /> }  />
                     <Route index path="/administrativo/create" element={ <CreateAdministrativo { ...props } /> }  />

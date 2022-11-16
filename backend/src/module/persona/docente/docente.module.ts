@@ -8,6 +8,7 @@ import { DocenteEstudioDetalle } from './entities/docenteestudiodetalle.entity';
 import { DocenteMateriaDetalle } from './entities/docentemateriadetalle.entity';
 import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
 import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadocumentodetalle.entity';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   controllers: [DocenteController],
@@ -18,6 +19,7 @@ import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadoc
       DocenteMateriaDetalle, DocenteCategoriaDocumentoDetalle,
       DocenteEstudioDetalle,
     ] ),
+    AuthModule,
   ],
 })
 export class DocenteModule {}

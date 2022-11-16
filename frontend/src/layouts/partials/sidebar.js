@@ -70,6 +70,11 @@ export default function SidebarComponent() {
                                 </Link>
                             </li>
                             <li>
+                                <Link to={"/estudiante/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Estudiante
+                                </Link>
+                            </li>
+                            <li>
                                 <Link to={"/cargo/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Cargo
                                 </Link>

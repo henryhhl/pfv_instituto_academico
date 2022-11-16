@@ -45,7 +45,7 @@ function CreateOfertaAcademica( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={ofertaAcademica.sigla}
                                 onChange={ (value) => props.setSigla(ofertaAcademica, value) }
                                 error={ofertaAcademica.error.sigla}
@@ -54,7 +54,7 @@ function CreateOfertaAcademica( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Oferta Academica*"
                                 value={ofertaAcademica.descripcion}
                                 onChange={ (value) => props.setDescripcion(ofertaAcademica, value) }
                                 error={ofertaAcademica.error.descripcion}

@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { PeriodoService } from "../../services/parametros/periodo.service";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.periodo_setInit,
@@ -47,7 +49,7 @@ const onPagePeriodo = ( page = 1, paginate = 5, search = "" ) => {
         PeriodoService.getAllPeriodo( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPagePeriodo = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPagePeriodo = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllPeriodo = () => {
     return ( dispatch ) => {
-        PeriodoService.getAllPeriodo().then( (result) => {
+        PeriodoService.getAllPeriodo(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listPeriodo',
                     value: result.arrayPeriodo,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idperiodo ) => {
     return ( dispatch ) => {
-        PeriodoService.onShow( idperiodo ).then( (result) => {
+        PeriodoService.onShow( 
+            idperiodo 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.periodo ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idperiodo ) => {
 
 const onEdit = ( idperiodo ) => {
     return ( dispatch ) => {
-        PeriodoService.onEdit( idperiodo ).then( (result) => {
+        PeriodoService.onEdit( 
+            idperiodo 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.periodo ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( periodo, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            PeriodoService.onStore(periodo).then( (result) => {
+            PeriodoService.onStore(
+                periodo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( periodo, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            PeriodoService.onUpdate(periodo).then( (result) => {
+            PeriodoService.onUpdate(
+                periodo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( periodo ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            PeriodoService.onDelete(periodo).then( (result) => {
+            PeriodoService.onDelete(
+                periodo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPagePeriodo() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

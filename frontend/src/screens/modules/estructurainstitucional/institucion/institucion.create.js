@@ -61,7 +61,7 @@ function CreateInstitucion( props ) {
                     <div className="row">
                         <div className="form-group col-3">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={institucion.sigla}
                                 onChange={ (value) => props.setSigla(institucion, value) }
                                 error={institucion.error.sigla}
@@ -70,7 +70,7 @@ function CreateInstitucion( props ) {
                         </div>
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre Institución*"
                                 value={institucion.descripcion}
                                 onChange={ (value) => props.setDescripcion(institucion, value) }
                                 error={institucion.error.descripcion}
@@ -79,7 +79,7 @@ function CreateInstitucion( props ) {
                         </div>
                         <div className="form-group col-3">
                             <InputComponent
-                                label="Nit"
+                                label="Nit*"
                                 value={institucion.nit}
                                 onChange={ (value) => props.setNit(institucion, value) }
                                 error={institucion.error.nit}
@@ -90,7 +90,7 @@ function CreateInstitucion( props ) {
                     <div className="row">
                         <div className="form-group col-5">
                             <InputComponent
-                                label="Ciudad"
+                                label="Ciudad*"
                                 value={institucion.ciudad}
                                 onClick={ () => setVisibleCiudad(true) }
                                 error={institucion.error.fkidciudad}

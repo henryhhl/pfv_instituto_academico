@@ -4,6 +4,7 @@ const linkBackend = 'http://localhost:5000/api/v1';
 
 const module = {
     // seguridad: linkBackend + '/seguridad',
+    auth: linkBackend + '',
     seguridad: linkBackend + '',
     admin: linkBackend + '',
     parametros: linkBackend + '',
@@ -13,6 +14,9 @@ const module = {
 };
 
 const apiServices = {
+    apiauth_login:  `${module.auth}/auth/login`,
+    apiauth_register:  `${module.auth}/auth/register`,
+
     apiseguridadtiporol_index:  `${module.seguridad}/tiporol/index`,
     apiseguridadtiporol_create: `${module.seguridad}/tiporol/create`,
     apiseguridadtiporol_store:  `${module.seguridad}/tiporol/store`,
@@ -252,6 +256,14 @@ const apiServices = {
     apipersonadocente_show:   `${module.persona}/docente/show`,
     apipersonadocente_update: `${module.persona}/docente/update`,
     apipersonadocente_delete: `${module.persona}/docente/delete`,
+
+    apipersonaestudiante_index:  `${module.persona}/estudiante/index`,
+    apipersonaestudiante_create: `${module.persona}/estudiante/create`,
+    apipersonaestudiante_store:  `${module.persona}/estudiante/store`,
+    apipersonaestudiante_edit:   `${module.persona}/estudiante/edit`,
+    apipersonaestudiante_show:   `${module.persona}/estudiante/show`,
+    apipersonaestudiante_update: `${module.persona}/estudiante/update`,
+    apipersonaestudiante_delete: `${module.persona}/estudiante/delete`,
 
     apipersonaadministrativo_index:  `${module.persona}/administrativo/index`,
     apipersonaadministrativo_create: `${module.persona}/administrativo/create`,

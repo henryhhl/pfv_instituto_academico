@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { TipoPermisoService } from "../../services/seguridad/tipoPermisoServices";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { TipoPermisoService } from "../../services/seguridad/tipoPermisoServices";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.tipoPermiso_setInit,
@@ -80,7 +82,7 @@ const onPageTipoPermiso = ( page = 1, paginate = 5, search = "" ) => {
         TipoPermisoService.getAllTipoPermiso( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -101,6 +103,9 @@ const onPageTipoPermiso = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -108,13 +113,18 @@ const onPageTipoPermiso = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllTipoPermiso = () => {
     return ( dispatch ) => {
-        TipoPermisoService.getAllTipoPermiso().then( (result) => {
+        TipoPermisoService.getAllTipoPermiso(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listTipoPermiso',
                     value: result.arrayTipoPermiso,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -128,9 +138,14 @@ const onCreate = () => {
 
 const onShow = ( idtipopermiso ) => {
     return ( dispatch ) => {
-        TipoPermisoService.onShow( idtipopermiso ).then( (result) => {
+        TipoPermisoService.onShow( 
+            idtipopermiso 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoPermiso ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -138,9 +153,14 @@ const onShow = ( idtipopermiso ) => {
 
 const onEdit = ( idtipopermiso ) => {
     return ( dispatch ) => {
-        TipoPermisoService.onEdit( idtipopermiso ).then( (result) => {
+        TipoPermisoService.onEdit( 
+            idtipopermiso 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoPermiso ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -154,10 +174,15 @@ const onGrabar = ( tipoPermiso, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            TipoPermisoService.onStore(tipoPermiso).then( (result) => {
+            TipoPermisoService.onStore(
+                tipoPermiso
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -178,10 +203,15 @@ const onUpdate = ( tipoPermiso, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            TipoPermisoService.onUpdate(tipoPermiso).then( (result) => {
+            TipoPermisoService.onUpdate(
+                tipoPermiso
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -206,6 +236,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -213,9 +253,14 @@ const onDelete = ( tipoPermiso ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            TipoPermisoService.onDelete(tipoPermiso).then( (result) => {
+            TipoPermisoService.onDelete(
+                tipoPermiso
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoPermiso() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

@@ -45,7 +45,7 @@ function CreateUnidadNegocio( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-3">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={unidadNegocio.sigla}
                                 onChange={ (value) => props.setSigla(unidadNegocio, value) }
                                 error={unidadNegocio.error.sigla}
@@ -54,7 +54,7 @@ function CreateUnidadNegocio( props ) {
                         </div>
                         <div className="form-group col-5">
                             <InputComponent
-                                label="Nombre Unidad Negocio"
+                                label="Nombre Unidad Negocio*"
                                 value={unidadNegocio.descripcion}
                                 onChange={ (value) => props.setDescripcion(unidadNegocio, value) }
                                 error={unidadNegocio.error.descripcion}

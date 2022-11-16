@@ -44,7 +44,7 @@ function CreateAula( props ) {
                     <div className="row">
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={aula.sigla}
                                 onChange={ (value) => props.setSigla(aula, value) }
                                 error={aula.error.sigla}
@@ -53,7 +53,7 @@ function CreateAula( props ) {
                         </div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Jornada"
+                                label="Nombre Aula*"
                                 value={aula.descripcion}
                                 onChange={ (value) => props.setDescripcion(aula, value) }
                                 error={aula.error.descripcion}

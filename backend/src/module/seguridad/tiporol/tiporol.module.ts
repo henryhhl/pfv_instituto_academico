@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TipoRol } from './entities/tipoRol.entity';
 import { TipoRolController } from './tiporol.controller';
 import { TipoRolService } from './tiporol.service';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   controllers: [TipoRolController],
@@ -10,8 +11,9 @@ import { TipoRolService } from './tiporol.service';
   exports: [TipoRolService],
   imports: [
     TypeOrmModule.forFeature( [
-      TipoRol
+      TipoRol,
     ] ),
+    AuthModule,
   ],
 })
 export class TipoRolModule {}

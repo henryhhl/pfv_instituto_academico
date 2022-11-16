@@ -45,7 +45,7 @@ function EditAula( props ) {
                     <div className="row">
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={aula.sigla}
                                 onChange={ (value) => props.setSigla(aula, value) }
                                 error={aula.error.sigla}
@@ -54,7 +54,7 @@ function EditAula( props ) {
                         </div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Jornada"
+                                label="Nombre Aula*"
                                 value={aula.descripcion}
                                 onChange={ (value) => props.setDescripcion(aula, value) }
                                 error={aula.error.descripcion}
@@ -67,7 +67,7 @@ function EditAula( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={aula.estado}
                                 onChange={ (value) => props.setEstado(aula, value) }
                                 error={aula.error.estado}

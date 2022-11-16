@@ -297,16 +297,6 @@ function ShowAdministrativo( props ) {
                             </div>
                         </div>
                         <div className="tab-pane fade pt-4" id="documentodigital" role="tabpanel" aria-labelledby="documentodigital-tab">
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <ButtonComponent
-                                        fullWidth
-                                        onClick={props.onAddRowCategoriaDocumento}
-                                    >
-                                        Agregar
-                                    </ButtonComponent>
-                                </div>
-                            </div>
                             { administrativo.arraycategoriadocumento.length === 0 &&
                                 <div className='card p-0 m-0'>
                                     <div className='card-header'>

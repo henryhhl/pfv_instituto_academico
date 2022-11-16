@@ -45,7 +45,7 @@ function CreateReferenciaContacto( props ) {
                         <div className="form-group col-3"></div>
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Referencia Contacto*"
                                 value={referenciaContacto.descripcion}
                                 onChange={ (value) => props.setDescripcion(referenciaContacto, value) }
                                 error={referenciaContacto.error.descripcion}

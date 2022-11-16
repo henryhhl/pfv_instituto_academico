@@ -97,7 +97,7 @@ function EditPrograma( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Código"
+                                label="Código*"
                                 value={programa.codigo}
                                 onChange={ (value) => props.setCodigo(programa, value) }
                                 error={programa.error.codigo}
@@ -106,7 +106,7 @@ function EditPrograma( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={programa.sigla}
                                 onChange={ (value) => props.setSigla(programa, value) }
                                 error={programa.error.sigla}
@@ -117,7 +117,7 @@ function EditPrograma( props ) {
                     <div className="row">
                         <div className="form-group col-12">
                             <InputComponent
-                                label="Nombre de Programa"
+                                label="Nombre de Programa*"
                                 value={programa.descripcion}
                                 onChange={ (value) => props.setDescripcion(programa, value) }
                                 error={programa.error.descripcion}
@@ -128,7 +128,7 @@ function EditPrograma( props ) {
                     <div className="row">
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Unidad Academica"
+                                label="Unidad Academica*"
                                 value={programa.unidadacademica}
                                 onClick={ () => setVisibleUnidadAcademica(true) }
                                 error={programa.error.fkidunidadacademica}
@@ -157,7 +157,7 @@ function EditPrograma( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Nivel Academico"
+                                label="Nivel Academico*"
                                 value={programa.nivelacademico}
                                 onClick={ () => setVisibleNivelAcademico(true) }
                                 error={programa.error.fkidnivelacademico}
@@ -169,7 +169,7 @@ function EditPrograma( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Modalidad Academica"
+                                label="Modalidad Academica*"
                                 value={programa.modalidadacademica}
                                 onClick={ () => setVisibleModalidadAcademica(true) }
                                 error={programa.error.fkidmodalidadacademica}
@@ -185,7 +185,7 @@ function EditPrograma( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={programa.estado}
                                 onChange={ (value) => props.setEstado(programa, value) }
                                 error={programa.error.estado}

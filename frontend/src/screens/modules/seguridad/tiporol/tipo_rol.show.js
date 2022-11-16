@@ -39,7 +39,7 @@ function ShowTipoRol( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Rol"
                                 value={tipoRol.descripcion}
                                 readOnly={true}
                             />

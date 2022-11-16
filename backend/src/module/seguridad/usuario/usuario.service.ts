@@ -1,9 +1,10 @@
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { Usuario } from './entities/usuario.entity';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
@@ -77,10 +78,10 @@ export class UsuarioService {
 
   async store(createUsuarioDto: CreateUsuarioDto) {
     try {
+      const { password, ...userData } = createUsuarioDto;
       const usuario = this.usuarioRepository.create( {
-        email: createUsuarioDto.email,
-        login: createUsuarioDto.login,
-        password: createUsuarioDto.password,
+        ...userData,
+        password: bcrypt.hashSync( password, 10 ),
         created_at: this.getDateTime(),
       } );
       await this.usuarioRepository.save( usuario );
@@ -152,34 +153,43 @@ export class UsuarioService {
   }
 
   async update( idusuario: string, updateUsuarioDto: UpdateUsuarioDto ) {
-    const usuario = await this.findOne(idusuario);
-    if ( usuario === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Usuario no existe.',
-      };
-    }
-    const usuarioPreLoad = await this.usuarioRepository.preload( {
-      idusuario: idusuario,
-      ...updateUsuarioDto,
-      concurrencia: usuario.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
+    try {
+      const usuario = await this.findOne(idusuario);
+      if ( usuario === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Usuario no existe.',
+        };
+      }
+      const usuarioPreLoad = await this.usuarioRepository.preload( {
+        idusuario: idusuario,
+        ...updateUsuarioDto,
+        password: bcrypt.hashSync( updateUsuarioDto.password, 10 ),
+        concurrencia: usuario.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
 
-    if ( usuarioPreLoad === null ) {
+      if ( usuarioPreLoad === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Usuario no existe.',
+        };
+      }
+      const usuarioUpdate = await this.usuarioRepository.save( usuarioPreLoad );
       return {
-        resp: 0, error: false,
-        message: 'Usuario no existe.',
+        resp: 1,
+        error: false,
+        message: 'Usuario actualizado éxitosamente.',
+        usuario: usuario,
+        usuarioUpdate: usuarioUpdate,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const usuarioUpdate = await this.usuarioRepository.save( usuarioPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Usuario actualizado éxitosamente.',
-      usuario: usuario,
-      usuarioUpdate: usuarioUpdate,
-    };
   }
 
   async delete(idusuario: string) {

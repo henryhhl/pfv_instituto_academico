@@ -4,6 +4,7 @@ import { ProgramaController } from './programa.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Programa } from './entities/programa.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   controllers: [ProgramaController],
@@ -17,8 +18,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     //   },
     // ] ),
     TypeOrmModule.forFeature( [
-      Programa
+      Programa,
     ] ),
+    AuthModule,
   ],
 })
 export class ProgramaModule {}

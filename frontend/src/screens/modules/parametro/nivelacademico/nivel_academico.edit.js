@@ -46,7 +46,7 @@ function EditNivelAcademico( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={nivelAcademico.sigla}
                                 onChange={ (value) => props.setSigla(nivelAcademico, value) }
                                 error={nivelAcademico.error.sigla}
@@ -55,7 +55,7 @@ function EditNivelAcademico( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Nivel Academico*"
                                 value={nivelAcademico.descripcion}
                                 onChange={ (value) => props.setDescripcion(nivelAcademico, value) }
                                 error={nivelAcademico.error.descripcion}
@@ -68,7 +68,7 @@ function EditNivelAcademico( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={nivelAcademico.estado}
                                 onChange={ (value) => props.setEstado(nivelAcademico, value) }
                                 error={nivelAcademico.error.estado}

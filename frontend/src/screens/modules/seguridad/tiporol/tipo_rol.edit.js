@@ -46,7 +46,7 @@ function EditTipoRol( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Rol*"
                                 value={tipoRol.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoRol, value) }
                                 error={tipoRol.error.descripcion}
@@ -56,7 +56,7 @@ function EditTipoRol( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={tipoRol.estado}
                                 onChange={ (value) => props.setEstado(tipoRol, value) }
                                 error={tipoRol.error.estado}

@@ -5,6 +5,7 @@ import { UnidadAdministrativaController } from './unidadadministrativa.controlle
 import { UnidadAdministrativa } from './entities/unidadadministrativa.entity';
 import { UnidadAdministrativaTurnoDetalle } from './entities/unidadadministrativaturnodetalle.entity';
 import { UnidadAdministrativaAulaDetalle } from './entities/unidadadministrativaauladetalle.entity';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   controllers: [UnidadAdministrativaController],
@@ -14,6 +15,7 @@ import { UnidadAdministrativaAulaDetalle } from './entities/unidadadministrativa
       UnidadAdministrativa, UnidadAdministrativaTurnoDetalle,
       UnidadAdministrativaAulaDetalle,
     ] ),
+    AuthModule,
   ],
 })
 export class UnidadAdministrativaModule {}

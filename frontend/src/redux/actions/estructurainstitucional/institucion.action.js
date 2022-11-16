@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { InstitucionService } from "../../services/estructurainstitucional/institucion.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { InstitucionService } from "../../services/estructurainstitucional/institucion.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.institucion_setInit,
@@ -47,7 +49,7 @@ const onPageInstitucion = ( page = 1, paginate = 5, search = "" ) => {
         InstitucionService.getAllInstitucion( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageInstitucion = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageInstitucion = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllInstitucion = () => {
     return ( dispatch ) => {
-        InstitucionService.getAllInstitucion().then( (result) => {
+        InstitucionService.getAllInstitucion(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listInstitucion',
                     value: result.arrayInstitucion,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -193,9 +203,14 @@ const onCreate = () => {
 
 const onShow = ( idinstitucion ) => {
     return ( dispatch ) => {
-        InstitucionService.onShow( idinstitucion ).then( (result) => {
+        InstitucionService.onShow( 
+            idinstitucion 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.institucion ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -203,9 +218,14 @@ const onShow = ( idinstitucion ) => {
 
 const onEdit = ( idinstitucion ) => {
     return ( dispatch ) => {
-        InstitucionService.onEdit( idinstitucion ).then( (result) => {
+        InstitucionService.onEdit( 
+            idinstitucion 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.institucion ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -219,10 +239,15 @@ const onGrabar = ( institucion, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            InstitucionService.onStore(institucion).then( (result) => {
+            InstitucionService.onStore(
+                institucion
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -243,10 +268,15 @@ const onUpdate = ( institucion, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            InstitucionService.onUpdate(institucion).then( (result) => {
+            InstitucionService.onUpdate(
+                institucion
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -286,6 +316,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -293,9 +333,14 @@ const onDelete = ( institucion ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            InstitucionService.onDelete(institucion).then( (result) => {
+            InstitucionService.onDelete(
+                institucion
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageInstitucion() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

@@ -18,7 +18,9 @@ export default function TextAreaComponent( props ) {
                 readOnly={props.readOnly}
                 rows={props.rows}
             />
-            <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
+            <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}
+                style={{ fontSize: 10, }}
+            >
                 { props.message }
             </div>
         </>

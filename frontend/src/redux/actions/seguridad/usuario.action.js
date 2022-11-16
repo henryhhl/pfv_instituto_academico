@@ -1,8 +1,11 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { UsuarioService } from "../../services/seguridad/usuarioServices";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
+import { Functions } from '../../../utils/functions';
 
 const setInit = () => ( {
     type: Constants.usuario_setInit,
@@ -47,7 +50,7 @@ const onPageUsuario = ( page = 1, paginate = 5, search = "" ) => {
         UsuarioService.getAllUsuario( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +71,9 @@ const onPageUsuario = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +81,18 @@ const onPageUsuario = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllUsuario = () => {
     return ( dispatch ) => {
-        UsuarioService.getAllUsuario().then( (result) => {
+        UsuarioService.getAllUsuario(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listUsuario',
                     value: result.arrayUsuario,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -146,9 +157,14 @@ const onCreate = () => {
 
 const onShow = ( idusuario ) => {
     return ( dispatch ) => {
-        UsuarioService.onShow( idusuario ).then( (result) => {
+        UsuarioService.onShow( 
+            idusuario 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.usuario ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -156,9 +172,14 @@ const onShow = ( idusuario ) => {
 
 const onEdit = ( idusuario ) => {
     return ( dispatch ) => {
-        UsuarioService.onEdit( idusuario ).then( (result) => {
+        UsuarioService.onEdit( 
+            idusuario 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.usuario ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -172,10 +193,15 @@ const onGrabar = ( usuario, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            UsuarioService.onStore(usuario).then( (result) => {
+            UsuarioService.onStore(
+                usuario
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -196,10 +222,15 @@ const onUpdate = ( usuario, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            UsuarioService.onUpdate(usuario).then( (result) => {
+            UsuarioService.onUpdate(
+                usuario
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -214,8 +245,7 @@ const onUpdate = ( usuario, onBack ) => {
 
 function onValidate( data ) {
     let bandera = true;
-    let email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!email.test(data.email)) {
+    if ( !Functions.validateEmail( data.email ) ) {
         data.error.email   = true;
         data.message.email = "Email requerido.";
         bandera = false;
@@ -250,6 +280,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -257,9 +297,14 @@ const onDelete = ( usuario ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            UsuarioService.onDelete(usuario).then( (result) => {
+            UsuarioService.onDelete(
+                usuario
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUsuario() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

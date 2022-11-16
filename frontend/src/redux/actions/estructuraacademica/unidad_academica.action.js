@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { UnidadAcademicaService } from "../../services/estructuraacademica/unidad_academica.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { UnidadAcademicaService } from "../../services/estructuraacademica/unidad_academica.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.unidadacademica_setInit,
@@ -47,7 +49,7 @@ const onPageUnidadAcademica = ( page = 1, paginate = 5, search = "" ) => {
         UnidadAcademicaService.getAllUnidadAcademica( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageUnidadAcademica = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageUnidadAcademica = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllUnidadAcademica = () => {
     return ( dispatch ) => {
-        UnidadAcademicaService.getAllUnidadAcademica().then( (result) => {
+        UnidadAcademicaService.getAllUnidadAcademica(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listUnidadAcademica',
                     value: result.arrayUnidadAcademica,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -170,9 +180,14 @@ const onCreate = () => {
 
 const onShow = ( idunidadacademica ) => {
     return ( dispatch ) => {
-        UnidadAcademicaService.onShow( idunidadacademica ).then( (result) => {
+        UnidadAcademicaService.onShow( 
+            idunidadacademica 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.unidadAcademica ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -180,9 +195,14 @@ const onShow = ( idunidadacademica ) => {
 
 const onEdit = ( idunidadacademica ) => {
     return ( dispatch ) => {
-        UnidadAcademicaService.onEdit( idunidadacademica ).then( (result) => {
+        UnidadAcademicaService.onEdit( 
+            idunidadacademica 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.unidadAcademica ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -196,10 +216,15 @@ const onGrabar = ( unidadAcademica, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            UnidadAcademicaService.onStore(unidadAcademica).then( (result) => {
+            UnidadAcademicaService.onStore(
+                unidadAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,10 +245,15 @@ const onUpdate = ( unidadAcademica, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            UnidadAcademicaService.onUpdate(unidadAcademica).then( (result) => {
+            UnidadAcademicaService.onUpdate(
+                unidadAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -268,6 +298,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -275,9 +315,14 @@ const onDelete = ( unidadAcademica ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            UnidadAcademicaService.onDelete(unidadAcademica).then( (result) => {
+            UnidadAcademicaService.onDelete(
+                unidadAcademica
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUnidadAcademica() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

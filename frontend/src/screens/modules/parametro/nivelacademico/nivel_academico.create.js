@@ -45,7 +45,7 @@ function CreateNivelAcademico( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={nivelAcademico.sigla}
                                 onChange={ (value) => props.setSigla(nivelAcademico, value) }
                                 error={nivelAcademico.error.sigla}
@@ -54,7 +54,7 @@ function CreateNivelAcademico( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Nivel Academico*"
                                 value={nivelAcademico.descripcion}
                                 onChange={ (value) => props.setDescripcion(nivelAcademico, value) }
                                 error={nivelAcademico.error.descripcion}

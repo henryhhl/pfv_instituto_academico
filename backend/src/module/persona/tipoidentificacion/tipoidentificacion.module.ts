@@ -3,6 +3,7 @@ import { TipoIdentificacionService } from './tipoidentificacion.service';
 import { TipoIdentificacionController } from './tipoidentificacion.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   controllers: [TipoIdentificacionController],
@@ -11,6 +12,7 @@ import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
     TypeOrmModule.forFeature( [
       TipoIdentificacion
     ] ),
+    AuthModule,
   ],
 })
 export class TipoIdentificacionModule {}

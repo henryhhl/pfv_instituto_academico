@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { CiudadService } from "../../services/parametros/ciudad.service";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.ciudad_setInit,
@@ -40,13 +42,18 @@ const initData = () => {
 
 const getAllCiudad = () => {
     return ( dispatch ) => {
-        CiudadService.getAllCiudad().then( (result) => {
+        CiudadService.getAllCiudad(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listCiudad',
                     value: result.arrayCiudad,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -120,9 +127,14 @@ const onCreate = ( fkidciudadpadre = null ) => {
 
 const onShow = ( idciudad ) => {
     return ( dispatch ) => {
-        CiudadService.onShow( idciudad ).then( (result) => {
+        CiudadService.onShow( 
+            idciudad 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.ciudad ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -130,9 +142,14 @@ const onShow = ( idciudad ) => {
 
 const onEdit = ( idciudad ) => {
     return ( dispatch ) => {
-        CiudadService.onEdit( idciudad ).then( (result) => {
+        CiudadService.onEdit( 
+            idciudad 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.ciudad ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -146,10 +163,15 @@ const onGrabar = ( ciudad, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            CiudadService.onStore(ciudad).then( (result) => {
+            CiudadService.onStore(
+                ciudad
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllCiudad() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -170,10 +192,15 @@ const onUpdate = ( ciudad, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            CiudadService.onUpdate(ciudad).then( (result) => {
+            CiudadService.onUpdate(
+                ciudad
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllCiudad() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -208,6 +235,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -215,9 +252,14 @@ const onDelete = ( ciudad ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            CiudadService.onDelete(ciudad).then( (result) => {
+            CiudadService.onDelete(
+                ciudad
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllCiudad() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

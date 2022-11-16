@@ -46,7 +46,7 @@ function EditTipoMateria( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={tipoMateria.sigla}
                                 onChange={ (value) => props.setSigla(tipoMateria, value) }
                                 error={tipoMateria.error.sigla}
@@ -55,7 +55,7 @@ function EditTipoMateria( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Materia*"
                                 value={tipoMateria.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoMateria, value) }
                                 error={tipoMateria.error.descripcion}
@@ -68,7 +68,7 @@ function EditTipoMateria( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={tipoMateria.estado}
                                 onChange={ (value) => props.setEstado(tipoMateria, value) }
                                 error={tipoMateria.error.estado}

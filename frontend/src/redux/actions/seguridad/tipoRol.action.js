@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { TipoRolService } from "../../services/seguridad/tipoRolServices";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.tipoRol_setInit,
@@ -47,7 +49,7 @@ const onPageTipoRol = ( page = 1, paginate = 5, search = "" ) => {
         TipoRolService.getAllTipoRol( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageTipoRol = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageTipoRol = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllTipoRol = () => {
     return ( dispatch ) => {
-        TipoRolService.getAllTipoRol().then( (result) => {
+        TipoRolService.getAllTipoRol(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listTipoRol',
                     value: result.arrayTipoRol,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -128,9 +138,14 @@ const onCreate = () => {
 
 const onShow = ( idtiporol ) => {
     return ( dispatch ) => {
-        TipoRolService.onShow( idtiporol ).then( (result) => {
+        TipoRolService.onShow( 
+            idtiporol 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoRol ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -138,9 +153,14 @@ const onShow = ( idtiporol ) => {
 
 const onEdit = ( idtiporol ) => {
     return ( dispatch ) => {
-        TipoRolService.onEdit( idtiporol ).then( (result) => {
+        TipoRolService.onEdit( 
+            idtiporol 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoRol ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -154,10 +174,15 @@ const onGrabar = ( tipoRol, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            TipoRolService.onStore(tipoRol).then( (result) => {
+            TipoRolService.onStore(
+                tipoRol
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -178,10 +203,15 @@ const onUpdate = ( tipoRol, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            TipoRolService.onUpdate(tipoRol).then( (result) => {
+            TipoRolService.onUpdate(
+                tipoRol
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -206,6 +236,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -213,9 +253,14 @@ const onDelete = ( tipoRol ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            TipoRolService.onDelete(tipoRol).then( (result) => {
+            TipoRolService.onDelete(
+                tipoRol
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoRol() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

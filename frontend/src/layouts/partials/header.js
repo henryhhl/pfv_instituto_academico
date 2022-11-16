@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { removeAllData } from '../../utils/toolsStorage';
 
 export default function HeaderComponent() {
     const navigate = useNavigate();
@@ -79,6 +80,7 @@ export default function HeaderComponent() {
                         <a href="#" className="dropdown-item has-icon"
                             onClick={ (evt) => {
                                 evt.preventDefault();
+                                removeAllData();
                                 navigate('/login');
                             } }
                         >

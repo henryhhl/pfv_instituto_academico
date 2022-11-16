@@ -47,7 +47,9 @@ export default function SelectComponent( props ) {
                         />
                     }
                 </div>
-                <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
+                <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}
+                    style={{ fontSize: 10, }}
+                >
                     { props.message }
                 </div>
             </>

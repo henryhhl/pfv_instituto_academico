@@ -35,9 +35,11 @@ export default function InputComponent( props ) {
                         onClick={props.onClose}
                     />
                 }
-            </div>
-            <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
-                { props.message }
+                <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}
+                    style={{ fontSize: 10, }}
+                >
+                    { props.message }
+                </div>
             </div>
         </>
     );

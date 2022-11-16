@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { NivelAcademicoService } from "../../services/parametros/nivel_academico.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { NivelAcademicoService } from "../../services/parametros/nivel_academico.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.nivelAcademico_setInit,
@@ -47,7 +49,7 @@ const onPageNivelAcademico = ( page = 1, paginate = 5, search = "" ) => {
         NivelAcademicoService.getAllNivelAcademico( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageNivelAcademico = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageNivelAcademico = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllNivelAcademico = () => {
     return ( dispatch ) => {
-        NivelAcademicoService.getAllNivelAcademico().then( (result) => {
+        NivelAcademicoService.getAllNivelAcademico(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listNivelAcademico',
                     value: result.arrayNivelAcademico,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +147,14 @@ const onCreate = () => {
 
 const onShow = ( idnivelacademico ) => {
     return ( dispatch ) => {
-        NivelAcademicoService.onShow( idnivelacademico ).then( (result) => {
+        NivelAcademicoService.onShow( 
+            idnivelacademico 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.nivelAcademico ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -147,9 +162,14 @@ const onShow = ( idnivelacademico ) => {
 
 const onEdit = ( idnivelacademico ) => {
     return ( dispatch ) => {
-        NivelAcademicoService.onEdit( idnivelacademico ).then( (result) => {
+        NivelAcademicoService.onEdit( 
+            idnivelacademico 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.nivelAcademico ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -163,10 +183,15 @@ const onGrabar = ( nivelacademico, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            NivelAcademicoService.onStore(nivelacademico).then( (result) => {
+            NivelAcademicoService.onStore(
+                nivelacademico
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -187,10 +212,15 @@ const onUpdate = ( nivelacademico, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            NivelAcademicoService.onUpdate(nivelacademico).then( (result) => {
+            NivelAcademicoService.onUpdate(
+                nivelacademico
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,6 +250,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -227,9 +267,14 @@ const onDelete = ( nivelAcademico ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            NivelAcademicoService.onDelete(nivelAcademico).then( (result) => {
+            NivelAcademicoService.onDelete(
+                nivelAcademico
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageNivelAcademico() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

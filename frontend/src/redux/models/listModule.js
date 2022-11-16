@@ -33,6 +33,7 @@ const ListModules = {
     listTipoIdentificacion: [],
     listCargo: [],
     listDocente: [],
+    listEstudiante: [],
     listAdministrativo: [],
     listCategoriaDocumento: [],
 };

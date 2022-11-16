@@ -46,7 +46,7 @@ function ShowOfertaAcademica( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Oferta Academica"
                                 value={ofertaAcademica.descripcion}
                                 readOnly
                             />

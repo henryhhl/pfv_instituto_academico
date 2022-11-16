@@ -43,10 +43,10 @@ function EditReferenciaContacto( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-2"></div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-1"></div>
+                        <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre de Referencia Contacto*"
                                 value={referenciaContacto.descripcion}
                                 onChange={ (value) => props.setDescripcion(referenciaContacto, value) }
                                 error={referenciaContacto.error.descripcion}
@@ -56,7 +56,7 @@ function EditReferenciaContacto( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={referenciaContacto.estado}
                                 onChange={ (value) => props.setEstado(referenciaContacto, value) }
                                 error={referenciaContacto.error.estado}

@@ -46,7 +46,7 @@ function ShowPeriodo( props ) {
                         </div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Periodo"
                                 value={periodo.descripcion}
                                 readOnly
                             />

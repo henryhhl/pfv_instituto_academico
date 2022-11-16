@@ -26,7 +26,7 @@ function ShowCiudad( props ) {
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
-                            label="Tipo"
+                            label="Tipo Localidad"
                             value={ciudad.tipociudad}
                             readOnly
                         />
@@ -44,7 +44,7 @@ function ShowCiudad( props ) {
                 <div className="row">
                     <div className="form-group col-12">
                         <InputComponent
-                            label="Descripción"
+                            label="Nombre Ciudad"
                             value={ciudad.descripcion}
                             readOnly
                         />

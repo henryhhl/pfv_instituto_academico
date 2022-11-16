@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { PensumService } from "../../services/estructuraacademica/pensum.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { PensumService } from "../../services/estructuraacademica/pensum.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.pensum_setInit,
@@ -47,7 +49,7 @@ const onPagePensum = ( page = 1, paginate = 5, search = "" ) => {
         PensumService.getAllPensum( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPagePensum = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPagePensum = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllPensum = () => {
     return ( dispatch ) => {
-        PensumService.getAllPensum().then( (result) => {
+        PensumService.getAllPensum(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listPensum',
                     value: result.arrayPensum,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -173,9 +183,14 @@ const onCreate = () => {
 
 const onShow = ( idpensum ) => {
     return ( dispatch ) => {
-        PensumService.onShow( idpensum ).then( (result) => {
+        PensumService.onShow( 
+            idpensum 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.pensum ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -183,9 +198,14 @@ const onShow = ( idpensum ) => {
 
 const onEdit = ( idpensum ) => {
     return ( dispatch ) => {
-        PensumService.onEdit( idpensum ).then( (result) => {
+        PensumService.onEdit( 
+            idpensum 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.pensum ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -199,10 +219,15 @@ const onGrabar = ( pensum, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            PensumService.onStore(pensum).then( (result) => {
+            PensumService.onStore(
+                pensum
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -223,10 +248,15 @@ const onUpdate = ( pensum, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            PensumService.onUpdate(pensum).then( (result) => {
+            PensumService.onUpdate(
+                pensum
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -276,6 +306,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -283,9 +323,14 @@ const onDelete = ( pensum ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            PensumService.onDelete(pensum).then( (result) => {
+            PensumService.onDelete(
+                pensum
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPagePensum() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

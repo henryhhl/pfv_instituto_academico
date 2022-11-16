@@ -47,7 +47,7 @@ function ShowAula( props ) {
                         </div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Jornada"
+                                label="Nombre Aula"
                                 value={aula.descripcion}
                                 readOnly
                             />

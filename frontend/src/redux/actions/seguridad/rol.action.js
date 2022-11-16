@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
 import { RolService } from "../../services/seguridad/rolServices";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.rol_setInit,
@@ -47,7 +49,7 @@ const onPageRol = ( page = 1, paginate = 5, search = "" ) => {
         RolService.getAllRol( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageRol = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageRol = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllRol = () => {
     return ( dispatch ) => {
-        RolService.getAllRol().then( (result) => {
+        RolService.getAllRol(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listRol',
                     value: result.arrayRol,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -145,9 +155,14 @@ const onCreate = () => {
 
 const onShow = ( idrol ) => {
     return ( dispatch ) => {
-        RolService.onShow( idrol ).then( (result) => {
+        RolService.onShow( 
+            idrol 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.rol ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -155,9 +170,14 @@ const onShow = ( idrol ) => {
 
 const onEdit = ( idrol ) => {
     return ( dispatch ) => {
-        RolService.onEdit( idrol ).then( (result) => {
+        RolService.onEdit( 
+            idrol 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.rol ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -171,10 +191,15 @@ const onGrabar = ( rol, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            RolService.onStore(rol).then( (result) => {
+            RolService.onStore(
+                rol
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -195,10 +220,15 @@ const onUpdate = ( rol, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            RolService.onUpdate(rol).then( (result) => {
+            RolService.onUpdate(
+                rol
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -228,6 +258,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -235,9 +275,14 @@ const onDelete = ( rol ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            RolService.onDelete(rol).then( (result) => {
+            RolService.onDelete(
+                rol
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageRol() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

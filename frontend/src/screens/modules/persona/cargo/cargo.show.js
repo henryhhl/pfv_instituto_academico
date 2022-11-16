@@ -40,7 +40,7 @@ function ShowCargo( props ) {
                     <div className="row">
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre de Cargo"
                                 value={cargo.descripcion}
                                 readOnly
                             />

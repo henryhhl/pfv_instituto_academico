@@ -1,9 +1,11 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
-import { Functions } from "../../../utils/functions";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { AdministrativoService } from "../../services/persona/administrativo.service";
+import { Functions } from "../../../utils/functions";
+import ConfirmationComponent from "../../../components/confirmation";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { AdministrativoService } from "../../services/persona/administrativo.service";
 
 const setInit = () => ( {
     type: Constants.administrativo_setInit,
@@ -75,7 +77,7 @@ const onPageAdministrativo = ( page = 1, paginate = 5, search = "" ) => {
         AdministrativoService.getAllAdministrativo( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -96,6 +98,11 @@ const onPageAdministrativo = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                setTimeout(() => {
+                    dispatch( setHiddenSesion() );
+                }, 1000);
             }
         } ).finally( () => {} );
     };
@@ -103,13 +110,18 @@ const onPageAdministrativo = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllAdministrativo = () => {
     return ( dispatch ) => {
-        AdministrativoService.getAllAdministrativo().then( (result) => {
+        AdministrativoService.getAllAdministrativo(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listAdministrativo',
                     value: result.arrayAdministrativo,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -319,9 +331,14 @@ const onCreate = () => {
 
 const onShow = ( idadministrativo ) => {
     return ( dispatch ) => {
-        AdministrativoService.onShow( idadministrativo ).then( (result) => {
+        AdministrativoService.onShow( 
+            idadministrativo 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.administrativo ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -329,9 +346,14 @@ const onShow = ( idadministrativo ) => {
 
 const onEdit = ( idadministrativo ) => {
     return ( dispatch ) => {
-        AdministrativoService.onEdit( idadministrativo ).then( (result) => {
+        AdministrativoService.onEdit( 
+            idadministrativo 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.administrativo ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -345,10 +367,15 @@ const onGrabar = ( administrativo, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            AdministrativoService.onStore(administrativo).then( (result) => {
+            AdministrativoService.onStore(
+                administrativo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -369,10 +396,15 @@ const onUpdate = ( administrativo, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            AdministrativoService.onUpdate(administrativo).then( (result) => {
+            AdministrativoService.onUpdate(
+                administrativo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -444,6 +476,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -451,9 +493,14 @@ const onDelete = ( administrativo ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            AdministrativoService.onDelete(administrativo).then( (result) => {
+            AdministrativoService.onDelete(
+                administrativo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageAdministrativo() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

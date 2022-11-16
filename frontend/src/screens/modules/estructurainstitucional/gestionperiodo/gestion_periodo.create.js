@@ -46,7 +46,7 @@ function CreateGestionPeriodo( props ) {
                         <div className="form-group col-3"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Periodo"
+                                label="Nombre Periodo*"
                                 value={gestionPeriodo.descripcion}
                                 onChange={ (value) => props.setDescripcion(gestionPeriodo, value) }
                                 error={gestionPeriodo.error.descripcion}
@@ -55,7 +55,7 @@ function CreateGestionPeriodo( props ) {
                         </div>
                         <div className="form-group col-2">
                             <InputComponent
-                                label="Orden"
+                                label="Orden*"
                                 value={gestionPeriodo.orden}
                                 onChange={ (value) => props.setOrden(gestionPeriodo, value) }
                                 error={gestionPeriodo.error.orden}
@@ -67,7 +67,7 @@ function CreateGestionPeriodo( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <DatePickerComponent
-                                label="Fecha Inicio"
+                                label="Fecha Inicio*"
                                 value={gestionPeriodo.fechainicio}
                                 onChange={ (value) => props.setFechaInicio(gestionPeriodo, value) }
                                 error={gestionPeriodo.error.fechainicio}
@@ -77,7 +77,7 @@ function CreateGestionPeriodo( props ) {
                         </div>
                         <div className="form-group col-4">
                             <DatePickerComponent
-                                label="Fecha Final"
+                                label="Fecha Final*"
                                 value={gestionPeriodo.fechafinal}
                                 onChange={ (value) => props.setFechaFinal(gestionPeriodo, value) }
                                 error={gestionPeriodo.error.fechafinal}

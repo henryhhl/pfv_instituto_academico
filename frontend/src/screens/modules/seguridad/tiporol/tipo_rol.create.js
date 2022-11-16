@@ -45,7 +45,7 @@ function CreateTipoRol( props ) {
                         <div className="form-group col-3"></div>
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Tipo Rol*"
                                 value={tipoRol.descripcion}
                                 onChange={ (value) => props.setDescripcion(tipoRol, value) }
                                 error={tipoRol.error.descripcion}

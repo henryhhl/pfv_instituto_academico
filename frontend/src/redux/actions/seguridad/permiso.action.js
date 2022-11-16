@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { PermisoService } from "../../services/seguridad/permiso.service";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.permiso_setInit,
@@ -40,13 +42,18 @@ const initData = () => {
 
 const getAllPermiso = () => {
     return ( dispatch ) => {
-        PermisoService.getAllPermiso().then( (result) => {
+        PermisoService.getAllPermiso(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listPermiso',
                     value: result.arrayPermiso,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -110,9 +117,14 @@ const onCreate = ( fkidpermisopadre = null ) => {
 
 const onShow = ( idpermiso ) => {
     return ( dispatch ) => {
-        PermisoService.onShow( idpermiso ).then( (result) => {
+        PermisoService.onShow( 
+            idpermiso 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.permiso ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -120,9 +132,14 @@ const onShow = ( idpermiso ) => {
 
 const onEdit = ( idpermiso ) => {
     return ( dispatch ) => {
-        PermisoService.onEdit( idpermiso ).then( (result) => {
+        PermisoService.onEdit( 
+            idpermiso 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.permiso ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -136,10 +153,15 @@ const onGrabar = ( permiso, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            PermisoService.onStore(permiso).then( (result) => {
+            PermisoService.onStore(
+                permiso
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllPermiso() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -160,10 +182,15 @@ const onUpdate = ( permiso, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            PermisoService.onUpdate(permiso).then( (result) => {
+            PermisoService.onUpdate(
+                permiso
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllPermiso() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -193,6 +220,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -200,9 +237,14 @@ const onDelete = ( permiso ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            PermisoService.onDelete(permiso).then( (result) => {
+            PermisoService.onDelete(
+                permiso
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( getAllPermiso() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

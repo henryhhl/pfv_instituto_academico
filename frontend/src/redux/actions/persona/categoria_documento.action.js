@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { CategoriaDocumentoService } from "../../services/persona/categoria_documento.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { CategoriaDocumentoService } from "../../services/persona/categoria_documento.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.categoriadocumento_setInit,
@@ -47,7 +49,7 @@ const onPageCategoriaDocumento = ( page = 1, paginate = 5, search = "" ) => {
         CategoriaDocumentoService.getAllCategoriaDocumento( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -68,6 +70,9 @@ const onPageCategoriaDocumento = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -75,13 +80,18 @@ const onPageCategoriaDocumento = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllCategoriaDocumento = () => {
     return ( dispatch ) => {
-        CategoriaDocumentoService.getAllCategoriaDocumento().then( (result) => {
+        CategoriaDocumentoService.getAllCategoriaDocumento(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listCategoriaDocumento',
                     value: result.arrayCategoriaDocumento,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -128,9 +138,14 @@ const onCreate = () => {
 
 const onShow = ( idcategoriaDocumento ) => {
     return ( dispatch ) => {
-        CategoriaDocumentoService.onShow( idcategoriaDocumento ).then( (result) => {
+        CategoriaDocumentoService.onShow( 
+            idcategoriaDocumento 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.categoriaDocumento ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -138,9 +153,14 @@ const onShow = ( idcategoriaDocumento ) => {
 
 const onEdit = ( idcategoriaDocumento ) => {
     return ( dispatch ) => {
-        CategoriaDocumentoService.onEdit( idcategoriaDocumento ).then( (result) => {
+        CategoriaDocumentoService.onEdit( 
+            idcategoriaDocumento 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.categoriaDocumento ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -154,10 +174,15 @@ const onGrabar = ( categoriaDocumento, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            CategoriaDocumentoService.onStore(categoriaDocumento).then( (result) => {
+            CategoriaDocumentoService.onStore(
+                categoriaDocumento
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -178,10 +203,15 @@ const onUpdate = ( categoriaDocumento, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            CategoriaDocumentoService.onUpdate(categoriaDocumento).then( (result) => {
+            CategoriaDocumentoService.onUpdate(
+                categoriaDocumento
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -206,6 +236,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -213,9 +253,14 @@ const onDelete = ( categoriaDocumento ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            CategoriaDocumentoService.onDelete(categoriaDocumento).then( (result) => {
+            CategoriaDocumentoService.onDelete(
+                categoriaDocumento
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageCategoriaDocumento() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

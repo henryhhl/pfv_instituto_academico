@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { UnidadAdministrativaService } from "../../services/estructuraacademica/unidad_administrativa.service";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { UnidadAdministrativaService } from "../../services/estructuraacademica/unidad_administrativa.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.unidadadministrativa_setInit,
@@ -65,7 +67,7 @@ const onPageUnidadAdministrativa = ( page = 1, paginate = 5, search = "" ) => {
         UnidadAdministrativaService.getAllUnidadAdministrativa( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -86,6 +88,9 @@ const onPageUnidadAdministrativa = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -93,13 +98,18 @@ const onPageUnidadAdministrativa = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllUnidadAdministrativa = () => {
     return ( dispatch ) => {
-        UnidadAdministrativaService.getAllUnidadAdministrativa().then( (result) => {
+        UnidadAdministrativaService.getAllUnidadAdministrativa(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listUnidadAdministrativa',
                     value: result.arrayUnidadAdministrativa,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -165,9 +175,14 @@ const onCreate = () => {
 
 const onShow = ( idunidadadministrativa ) => {
     return ( dispatch ) => {
-        UnidadAdministrativaService.onShow( idunidadadministrativa ).then( (result) => {
+        UnidadAdministrativaService.onShow( 
+            idunidadadministrativa 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.unidadAdministrativa ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -175,9 +190,14 @@ const onShow = ( idunidadadministrativa ) => {
 
 const onEdit = ( idunidadadministrativa ) => {
     return ( dispatch ) => {
-        UnidadAdministrativaService.onEdit( idunidadadministrativa ).then( (result) => {
+        UnidadAdministrativaService.onEdit( 
+            idunidadadministrativa 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.unidadAdministrativa ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -191,10 +211,15 @@ const onGrabar = ( unidadAdministrativa, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            UnidadAdministrativaService.onStore(unidadAdministrativa).then( (result) => {
+            UnidadAdministrativaService.onStore(
+                unidadAdministrativa
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -215,10 +240,15 @@ const onUpdate = ( unidadAdministrativa, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            UnidadAdministrativaService.onUpdate(unidadAdministrativa).then( (result) => {
+            UnidadAdministrativaService.onUpdate(
+                unidadAdministrativa
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -253,6 +283,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -260,9 +300,14 @@ const onDelete = ( unidadAdministrativa ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            UnidadAdministrativaService.onDelete(unidadAdministrativa).then( (result) => {
+            UnidadAdministrativaService.onDelete(
+                unidadAdministrativa
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageUnidadAdministrativa() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

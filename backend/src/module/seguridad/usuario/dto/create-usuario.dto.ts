@@ -16,7 +16,7 @@ export class CreateUsuarioDto {
     @IsNotEmpty( { message: 'Campo password es requerido.', } )
     @IsString( { message: 'Campo password es requerido de tipo String.', } )
     @MinLength(6, { message: 'Campo password debe ser mayor o igual a 6 carácter.', } )
-    @MaxLength(50, { message: 'Campo password debe ser menor o igual a 50 carácter.', } )
+    @MaxLength(100, { message: 'Campo password debe ser menor o igual a 100 carácter.', } )
     @Matches(
         /(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
         message: 'La contraseña debe tener una letra mayúscula, minúscula y un número'

@@ -3,6 +3,7 @@ import { PermisoService } from './permiso.service';
 import { PermisoController } from './permiso.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Permiso } from './entities/permiso.entity';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   controllers: [PermisoController],
@@ -10,8 +11,9 @@ import { Permiso } from './entities/permiso.entity';
   exports: [PermisoService],
   imports: [
     TypeOrmModule.forFeature( [
-      Permiso
+      Permiso,
     ] ),
+    AuthModule,
   ],
 })
 export class PermisoModule {}

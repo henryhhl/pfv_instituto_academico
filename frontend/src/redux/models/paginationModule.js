@@ -15,6 +15,13 @@ const PaginationModule = {
         total: 0,
     },
 
+    listEstudiante: [],
+    pageEstudiante: 1,
+    paginateEstudiante: 1,
+    paginationEstudiante: {
+        total: 0,
+    },
+
     listCargo: [],
     pageCargo: 1,
     paginateCargo: 1,

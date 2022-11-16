@@ -1,9 +1,11 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
-import { Functions } from "../../../utils/functions";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { GestionPeriodoService } from "../../services/estructurainstitucional/gestion_periodo.service";
+import { Functions } from "../../../utils/functions";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { GestionPeriodoService } from "../../services/estructurainstitucional/gestion_periodo.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.gestionperiodo_setInit,
@@ -48,7 +50,7 @@ const onPageGestionPeriodo = ( page = 1, paginate = 5, search = "" ) => {
         GestionPeriodoService.getAllGestionPeriodo( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -69,6 +71,9 @@ const onPageGestionPeriodo = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -76,13 +81,18 @@ const onPageGestionPeriodo = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllGestionPeriodo = () => {
     return ( dispatch ) => {
-        GestionPeriodoService.getAllGestionPeriodo().then( (result) => {
+        GestionPeriodoService.getAllGestionPeriodo(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listGestionPeriodo',
                     value: result.arrayGestionPeriodo,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -170,9 +180,14 @@ const onCreate = () => {
 
 const onShow = ( idgestionperiodo ) => {
     return ( dispatch ) => {
-        GestionPeriodoService.onShow( idgestionperiodo ).then( (result) => {
+        GestionPeriodoService.onShow( 
+            idgestionperiodo 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.gestionPeriodo ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -180,9 +195,14 @@ const onShow = ( idgestionperiodo ) => {
 
 const onEdit = ( idgestionperiodo ) => {
     return ( dispatch ) => {
-        GestionPeriodoService.onEdit( idgestionperiodo ).then( (result) => {
+        GestionPeriodoService.onEdit( 
+            idgestionperiodo 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.gestionPeriodo ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -196,10 +216,15 @@ const onGrabar = ( gestionPeriodo, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            GestionPeriodoService.onStore(gestionPeriodo).then( (result) => {
+            GestionPeriodoService.onStore(
+                gestionPeriodo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -220,10 +245,15 @@ const onUpdate = ( gestionPeriodo, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            GestionPeriodoService.onUpdate(gestionPeriodo).then( (result) => {
+            GestionPeriodoService.onUpdate(
+                gestionPeriodo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -263,6 +293,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -270,9 +310,14 @@ const onDelete = ( gestionPeriodo ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            GestionPeriodoService.onDelete(gestionPeriodo).then( (result) => {
+            GestionPeriodoService.onDelete(
+                gestionPeriodo
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageGestionPeriodo() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

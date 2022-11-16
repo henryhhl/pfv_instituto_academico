@@ -36,10 +36,10 @@ function ShowReferenciaContacto( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-2"></div>
-                        <div className="form-group col-4">
+                        <div className="form-group col-1"></div>
+                        <div className="form-group col-6">
                             <InputComponent
-                                label="Descripción"
+                                label="Nombre Referencia Contacto"
                                 value={referenciaContacto.descripcion}
                                 readOnly={true}
                             />

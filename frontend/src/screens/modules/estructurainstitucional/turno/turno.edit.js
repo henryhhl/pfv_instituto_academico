@@ -45,7 +45,7 @@ function EditTurno( props ) {
                     <div className="row">
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={turno.sigla}
                                 onChange={ (value) => props.setSigla(turno, value) }
                                 error={turno.error.sigla}
@@ -54,7 +54,7 @@ function EditTurno( props ) {
                         </div>
                         <div className="form-group col-8">
                             <InputComponent
-                                label="Jornada"
+                                label="Jornada*"
                                 value={turno.descripcion}
                                 onChange={ (value) => props.setDescripcion(turno, value) }
                                 error={turno.error.descripcion}
@@ -67,7 +67,7 @@ function EditTurno( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={turno.estado}
                                 onChange={ (value) => props.setEstado(turno, value) }
                                 error={turno.error.estado}

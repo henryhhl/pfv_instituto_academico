@@ -26,7 +26,7 @@ function ShowDivisionAcademica( props ) {
         <>
             <PaperComponent>
                 <CardComponent
-                    header={"Detalle Division academica"}
+                    header={"Detalle División academica"}
                     footer={
                         <>
                             <ButtonComponent
@@ -47,7 +47,7 @@ function ShowDivisionAcademica( props ) {
                         </div>
                         <div className="form-group col-7">
                             <InputComponent
-                                label="Nombre"
+                                label="Nombre División Acádemica"
                                 value={divisionAcademica.descripcion}
                                 readOnly
                             />

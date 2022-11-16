@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
-import { ReferenciaContactoService } from "../../services/parametros/referencia_contacto.service";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { ReferenciaContactoService } from "../../services/parametros/referencia_contacto.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.referenciaContacto_setInit,
@@ -46,7 +48,7 @@ const onPageReferenciaContacto = ( page = 1, paginate = 5, search = "" ) => {
         ReferenciaContactoService.getAllReferenciaContacto( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -67,6 +69,9 @@ const onPageReferenciaContacto = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -76,13 +81,16 @@ const getAllReferenciaContacto = () => {
     return ( dispatch ) => {
         ReferenciaContactoService.getAllReferenciaContacto( {
             
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listReferenciaContacto',
                     value: result.arrayReferenciaContacto,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -138,9 +146,14 @@ const onCreate = () => {
 
 const onShow = ( idreferenciacontacto ) => {
     return ( dispatch ) => {
-        ReferenciaContactoService.onShow( idreferenciacontacto ).then( (result) => {
+        ReferenciaContactoService.onShow( 
+            idreferenciacontacto 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.referenciaContacto ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -148,9 +161,14 @@ const onShow = ( idreferenciacontacto ) => {
 
 const onEdit = ( idreferenciacontacto ) => {
     return ( dispatch ) => {
-        ReferenciaContactoService.onEdit( idreferenciacontacto ).then( (result) => {
+        ReferenciaContactoService.onEdit( 
+            idreferenciacontacto 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.referenciaContacto ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -164,10 +182,15 @@ const onGrabar = ( referenciaContacto, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            ReferenciaContactoService.onStore(referenciaContacto).then( (result) => {
+            ReferenciaContactoService.onStore(
+                referenciaContacto
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -188,10 +211,15 @@ const onUpdate = ( referenciaContacto, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            ReferenciaContactoService.onUpdate(referenciaContacto).then( (result) => {
+            ReferenciaContactoService.onUpdate(
+                referenciaContacto
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -221,6 +249,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -228,9 +266,14 @@ const onDelete = ( referenciaContacto ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            ReferenciaContactoService.onDelete(referenciaContacto).then( (result) => {
+            ReferenciaContactoService.onDelete(
+                referenciaContacto
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageReferenciaContacto() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

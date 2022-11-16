@@ -62,7 +62,7 @@ function EditUnidadAcademica( props ) {
                     <div className="row">
                         <div className="form-group col-3">
                             <InputComponent
-                                label="Código"
+                                label="Código*"
                                 value={unidadAcademica.codigo}
                                 onChange={ (value) => props.setCodigo(unidadAcademica, value) }
                                 error={unidadAcademica.error.codigo}
@@ -71,7 +71,7 @@ function EditUnidadAcademica( props ) {
                         </div>
                         <div className="form-group col-3">
                             <InputComponent
-                                label="Sigla"
+                                label="Sigla*"
                                 value={unidadAcademica.sigla}
                                 onChange={ (value) => props.setSigla(unidadAcademica, value) }
                                 error={unidadAcademica.error.sigla}
@@ -80,7 +80,7 @@ function EditUnidadAcademica( props ) {
                         </div>
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Nombre Unidad Academica"
+                                label="Nombre Unidad Academica*"
                                 value={unidadAcademica.descripcion}
                                 onChange={ (value) => props.setDescripcion(unidadAcademica, value) }
                                 error={unidadAcademica.error.descripcion}
@@ -92,7 +92,7 @@ function EditUnidadAcademica( props ) {
                         <div className="form-group col-2"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Unidad Administrativa"
+                                label="Unidad Administrativa*"
                                 value={unidadAcademica.unidadadministrativa}
                                 onClick={ () => setVisibleUnidadAdministrativa(true) }
                                 error={unidadAcademica.error.fkidunidadadministrativa}
@@ -115,7 +115,7 @@ function EditUnidadAcademica( props ) {
                         <div className="form-group col-4">
                             <SelectComponent 
                                 data={EstadoData}
-                                label={"Estado"}
+                                label={"Estado*"}
                                 value={unidadAcademica.estado}
                                 onChange={ (value) => props.setEstado(unidadAcademica, value) }
                                 error={unidadAcademica.error.estado}

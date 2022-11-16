@@ -1,8 +1,10 @@
 
-import ConfirmationComponent from "../../../components/confirmation";
-import { TipoCiudadService } from "../../services/parametros/tipo_ciudad.service";
+import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
+import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
+import { TipoCiudadService } from "../../services/parametros/tipo_ciudad.service";
+import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 
 const setInit = () => ( {
     type: Constants.tipociudad_setInit,
@@ -46,7 +48,7 @@ const onPageTipoCiudad = ( page = 1, paginate = 5, search = "" ) => {
         TipoCiudadService.getAllTipoCiudad( {
             page: page, paginate: paginate, 
             search: search, esPaginate: true,
-        } ).then( (result) => {
+        } ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     data: {
@@ -67,6 +69,9 @@ const onPageTipoCiudad = ( page = 1, paginate = 5, search = "" ) => {
                     },
                 };
                 dispatch( onPaginateModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -74,13 +79,18 @@ const onPageTipoCiudad = ( page = 1, paginate = 5, search = "" ) => {
 
 const getAllTipoCiudad = () => {
     return ( dispatch ) => {
-        TipoCiudadService.getAllTipoCiudad().then( (result) => {
+        TipoCiudadService.getAllTipoCiudad(
+
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
                     name: 'listTipoCiudad',
                     value: result.arrayTipoCiudad,
                 };
                 dispatch( onListModule(obj) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -127,9 +137,14 @@ const onCreate = () => {
 
 const onShow = ( idtipociudad ) => {
     return ( dispatch ) => {
-        TipoCiudadService.onShow( idtipociudad ).then( (result) => {
+        TipoCiudadService.onShow( 
+            idtipociudad 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoCiudad ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -137,9 +152,14 @@ const onShow = ( idtipociudad ) => {
 
 const onEdit = ( idtipociudad ) => {
     return ( dispatch ) => {
-        TipoCiudadService.onEdit( idtipociudad ).then( (result) => {
+        TipoCiudadService.onEdit( 
+            idtipociudad 
+        ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.tipoCiudad ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
             }
         } ).finally( () => {} );
     };
@@ -153,10 +173,15 @@ const onGrabar = ( tipoCiudad, onBack ) => {
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            TipoCiudadService.onStore(tipoCiudad).then( (result) => {
+            TipoCiudadService.onStore(
+                tipoCiudad
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -177,10 +202,15 @@ const onUpdate = ( tipoCiudad, onBack ) => {
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            TipoCiudadService.onUpdate(tipoCiudad).then( (result) => {
+            TipoCiudadService.onUpdate(
+                tipoCiudad
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );
@@ -205,6 +235,16 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
+    if ( !bandera ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+    }
     return bandera;
 };
 
@@ -212,9 +252,14 @@ const onDelete = ( tipoCiudad ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            TipoCiudadService.onDelete(tipoCiudad).then( (result) => {
+            TipoCiudadService.onDelete(
+                tipoCiudad
+            ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onPageTipoCiudad() );
+                } else if ( result.resp === -2 ) {
+                    await dispatch( setShowSesion() );
+                    await dispatch( setHiddenSesion() );
                 }
             } ).finally( () => {
                 dispatch( setHiddenLoading() );

@@ -1,5 +1,15 @@
 
 const Constants = {
+
+    login_onChange: "[ON CHANGE] LOGIN",
+    login_onLimpiar: "[ON LIMPIAR] LOGIN",
+
+    register_onChange: "[ON CHANGE] REGISTER",
+    register_onLimpiar: "[ON LIMPIAR] REGISTER",
+
+    setShowSesion: "[SESION] Set Show",
+    setHiddenSesion: "[SESION] Set Hidden",
+
     setShowLoading: "[LOADING] Set Show",
     setHiddenLoading: "[LOADING] Set Hidden",
 
@@ -196,6 +206,18 @@ const Constants = {
     docente_onDeleteRowCategoriaDocumento: "[ON DELETE ROW CATEGORIA DOCUMENTO] Docente",
     docente_onAddRowEstudio: "[ON ADD ROW ESTUDIO] Docente",
     docente_onDeleteRowEstudio: "[ON DELETE ROW ESTUDIO] Docente",
+
+    estudiante_setInit: "[SET INIT] Estudiante",
+    estudiante_onChange: "[ON CHANGE] Estudiante",
+    estudiante_onCreate: "[ON CREATE] Estudiante",
+    estudiante_onShow: "[ON SHOW] Estudiante",
+    estudiante_onLimpiar: "[ON LIMPIAR] Estudiante",
+    estudiante_onAddRowNacionalidad: "[ON ADD ROW NACIONALIDAD] Estudiante",
+    estudiante_onDeleteRowNacionalidad: "[ON DELETE ROW NACIONALIDAD] Estudiante",
+    estudiante_onAddRowCategoriaDocumento: "[ON ADD ROW CATEGORIA DOCUMENTO] Estudiante",
+    estudiante_onDeleteRowCategoriaDocumento: "[ON DELETE ROW CATEGORIA DOCUMENTO] Estudiante",
+    estudiante_onAddRowFamiliar: "[ON ADD ROW FAMILIAR] Estudiante",
+    estudiante_onDeleteRowFamiliar: "[ON DELETE ROW FAMILIAR] Estudiante",
 
     administrativo_setInit: "[SET INIT] Administrativo",
     administrativo_onChange: "[ON CHANGE] Administrativo",

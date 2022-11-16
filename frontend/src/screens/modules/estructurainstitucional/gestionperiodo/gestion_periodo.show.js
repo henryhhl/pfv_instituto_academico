@@ -41,7 +41,7 @@ function ShowGestionPeriodo( props ) {
                         <div className="form-group col-3"></div>
                         <div className="form-group col-4">
                             <InputComponent
-                                label="Periodo"
+                                label="Nombre Periodo"
                                 value={gestionPeriodo.descripcion}
                                 readOnly
                             />
