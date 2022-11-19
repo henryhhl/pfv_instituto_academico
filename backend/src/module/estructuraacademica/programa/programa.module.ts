@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Programa } from './entities/programa.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../../auth/auth.module';
+import { ProgramaDivisionAcademicaDetalle } from './entities/programadivisionacademicadetalle.entity';
+import { ProgramaDivisionAcademicaMateriaDetalle } from './entities/programadivisionacademicamateriadetalle.entity';
 
 @Module({
   controllers: [ProgramaController],
@@ -18,7 +20,8 @@ import { AuthModule } from '../../auth/auth.module';
     //   },
     // ] ),
     TypeOrmModule.forFeature( [
-      Programa,
+      Programa, ProgramaDivisionAcademicaDetalle,
+      ProgramaDivisionAcademicaMateriaDetalle,
     ] ),
     AuthModule,
   ],

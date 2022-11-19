@@ -22,6 +22,12 @@ export class AuthController {
     return this.authService.login(loginAuthDto);
   }
 
+  @Get('/checkAuthToken')
+  @Auth()
+  checkAuthStatus( @GetUser() user: Usuario ) {
+    return this.authService.checkAuthToken(user);
+  }
+
   @Get('/private-route')
   @Auth( /**  N Permissions */ )
   privateRoute( @GetUser() user: Usuario, @RawHeaders() rawHeaders: string[], ) {

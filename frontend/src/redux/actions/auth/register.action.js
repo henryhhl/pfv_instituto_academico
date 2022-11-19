@@ -84,6 +84,12 @@ function onValidate( data ) {
         toastr.warning( 'Campo Email requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
         return false;
     }
+    if ( data.email.toString().indexOf(' ') > -1 ) {
+        data.error.email   = true;
+        data.message.email = "No debe contener espacios.";
+        toastr.warning( 'Campo Email requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
+        return false;
+    }
     if ( data.usuario.toString().trim().length === 0 ) {
         data.error.usuario   = true;
         data.message.usuario = "Campo requerido.";
@@ -96,13 +102,19 @@ function onValidate( data ) {
         toastr.warning( 'Campo Usuario requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
         return false;
     }
-    if ( data.password.toString().trim().length === 0 ) {
+    if ( data.usuario.toString().trim().indexOf(' ') > -1 ) {
+        data.error.usuario   = true;
+        data.message.usuario = "No debe contener espacios.";
+        toastr.warning( 'Campo Usuario requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
+        return false;
+    }
+    if ( data.password.toString().length === 0 ) {
         data.error.password   = true;
         data.message.password = "Campo requerido.";
         toastr.warning( 'Campo Contraseña requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
         return false;
     }
-    if ( data.password.toString().trim().length < 6 ) {
+    if ( data.password.toString().length < 6 ) {
         data.error.password   = true;
         data.message.password = "Campo debe ser mayor o igual a 6 carácter.";
         toastr.warning( 'Campo Contraseña requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
@@ -111,7 +123,13 @@ function onValidate( data ) {
     if ( !Functions.validatePassword( data.password ) ) {
         data.error.password   = true;
         data.message.password = "Campo debe tener una letra mayúscula, minúscula y un número.";
-        toastr.warning( 'Campo Password requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
+        toastr.warning( 'Campo Contraseña requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
+        return false;
+    }
+    if ( data.password.toString().indexOf(' ') > -1 ) {
+        data.error.password   = true;
+        data.message.password = "No debe contener espacios.";
+        toastr.warning( 'Campo Contraseña requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
         return false;
     }
     return true;

@@ -22,6 +22,7 @@ export const MateriaReducer = ( state = inititalState, action ) => {
             state.concurrencia = 1;
             state.estado = 'A';
             state.isdelete = 'A';
+            state.creditos = 0;
             state = Object.assign( {}, state );
             return state;
 

@@ -37,7 +37,7 @@ const onStore = async (body) => {
         nombrelargo: body.nombrelargo,
         nombrecorto: body.nombrecorto,
         nombrealternativo: body.nombrealternativo,
-        creditos: body.creditos,
+        creditos: body.creditos.toString(),
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
@@ -106,7 +106,7 @@ const onUpdate = async (body) => {
         nombrelargo: body.nombrelargo,
         nombrecorto: body.nombrecorto,
         nombrealternativo: body.nombrealternativo,
-        creditos: body.creditos,
+        creditos: body.creditos.toString(),
         estado: body.estado,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {

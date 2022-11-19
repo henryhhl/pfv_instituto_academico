@@ -38,6 +38,22 @@ export const ProgramaReducer = ( state = inititalState, action ) => {
             state.fkidmodalidadacademica = action.payload.fkidmodalidadacademica;
             state.modalidadacademica = action.payload.modalidadacademica;
 
+            state.arraymallacurricular = action.payload.arraydivisionacademica.map( ( item ) => { 
+                return {
+                    fkiddivisionacademica: item.fkiddivisionacademica, divisionacademica: item.divisionacademica,
+                    estado: item.estado, 
+                    arraymateria: item.arraymateria.map( (detail) => {
+                        return {
+                            fkidmateria: detail.fkidmateria,
+                            codmateria: detail.codmateria,
+                            siglamateria: detail.siglamateria,
+                            materia: detail.materia,
+                            estado: detail.estado,
+                        };
+                    } ),
+                };
+            } );
+
             state.codigo = action.payload.codigo;
             state.sigla = action.payload.sigla;
             state.descripcion = action.payload.descripcion;
@@ -56,8 +72,53 @@ export const ProgramaReducer = ( state = inititalState, action ) => {
             Functions.cleanObejct(state)
             state = Object.assign( {}, state );
             return state;
+
+        case Constants.programa_onAddRowMallaCurricular:
+            if ( state.fkiddivisionacademica !== "" || state.fkiddivisionacademica !== null ) {
+                let arrayMallaCurricular = state.arraymallacurricular;
+                state.arraymallacurricular = [ ...arrayMallaCurricular, onDefaultMallaCurricular(state) ];
+                state.fkiddivisionacademica = "";
+                state.divisionacademica = "";
+                state = Object.assign( {}, state );
+            }
+            return state;
+
+        case Constants.programa_onDeleteRowMallaCurricular:
+            state.arraymallacurricular = state.arraymallacurricular.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.programa_onAddRowMateriaDetail:
+            let detalle = state.arraymallacurricular[action.payload.index];
+            let objMateria = {
+                fkidmateria: action.payload.materia.idmateria,
+                codmateria: action.payload.materia.codigo,
+                siglamateria: action.payload.materia.sigla,
+                materia: action.payload.materia.nombrelargo,
+                estado: "A",
+            };
+            detalle.arraymateria = [ ...detalle.arraymateria, objMateria ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.programa_onDeletRowMateriaDetail:
+            const indexMallaCurricular = action.payload.indexMallaCurricular;
+            state.arraymallacurricular[indexMallaCurricular].arraymateria = state.arraymallacurricular[indexMallaCurricular].arraymateria.filter( 
+                (item, index) => action.payload.indexMateria !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
     
         default:
             return state;
     }
+};
+
+const onDefaultMallaCurricular = (programa) => {
+    return {
+        fkiddivisionacademica: programa.fkiddivisionacademica, idprogramadivisionacademicadetalle: null,
+        divisionacademica: programa.divisionacademica, estado: "A", arraymateria: [],
+    };
 };

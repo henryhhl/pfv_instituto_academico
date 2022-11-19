@@ -1,10 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { ProgramaDivisionAcademicaDetalle } from './programadivisionacademicadetalle.entity';
 
 @Entity('programa')
 export class Programa {
 
     @PrimaryGeneratedColumn('uuid')
     idprograma: string;
+
+    @OneToMany(
+        () => ProgramaDivisionAcademicaDetalle,
+        ( programaDivisionAcademicaDetalle ) => programaDivisionAcademicaDetalle.fkidprograma,
+        { cascade: true, eager: true, },
+    )
+    arraydivisionacademica?: ProgramaDivisionAcademicaDetalle[];
 
     @Column('text')
     fkidunidadadministrativa: string;

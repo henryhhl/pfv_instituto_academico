@@ -1,6 +1,14 @@
-import { IsNotEmpty, IsString, IsOptional, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsNotEmpty, IsString, IsOptional, MinLength, ValidateNested, IsArray } from 'class-validator';
+import { CreateProgramaDivisionAcademicaDetalleDto } from './create-divisionacademica.dto';
 
 export class CreateProgramaDto {
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateProgramaDivisionAcademicaDetalleDto )
+    @IsOptional()
+    readonly arraydivisionacademica?: CreateProgramaDivisionAcademicaDetalleDto[];
 
     @IsNotEmpty( { message: 'Campo ID Unidad Negocio es requerido.', } )
     @IsString( { message: 'Campo ID Unidad Negocio solo permitido tipo STRING.', } )

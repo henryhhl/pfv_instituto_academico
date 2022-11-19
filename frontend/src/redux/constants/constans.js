@@ -127,6 +127,10 @@ const Constants = {
     programa_onCreate: "[ON CREATE] Programa",
     programa_onShow: "[ON SHOW] Programa",
     programa_onLimpiar: "[ON LIMPIAR] Programa",
+    programa_onAddRowMallaCurricular: "[ON ADD ROW MALLA CURRICULAR] Programa",
+    programa_onDeleteRowMallaCurricular: "[ON DELETE ROW MALLA CURRICULAR] Programa",
+    programa_onAddRowMateriaDetail: "[ON ADD ROW MATERIA DETAILS] Programa",
+    programa_onDeletRowMateriaDetail: "[ON DELETE ROW MATERIA DETAILS] Programa",
 
     pensum_setInit: "[SET INIT] Pensum",
     pensum_onChange: "[ON CHANGE] Pensum",

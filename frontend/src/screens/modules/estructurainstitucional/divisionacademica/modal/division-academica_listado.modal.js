@@ -8,7 +8,7 @@ import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
 
-export default function ListadoAulaModal( props ) {
+export default function ListadoDivisionAcademicaModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
     const navigate = useNavigate();
 
@@ -18,10 +18,10 @@ export default function ListadoAulaModal( props ) {
     }, [] );
 
     const get_data = () => {
-        httpRequest( 'get', apiServices.apiestructurainstitucionalaula_index, {
+        httpRequest( 'get', apiServices.apiestructurainstitucionaldivisionacademica_index, {
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
-                setArrayData( result.arrayAula );
+                setArrayData( result.arrayDivisionAcademica );
             } if ( result.error === true && result.resp === -2 ) {
                 Swal.fire( {
                     position: 'top-end',
@@ -43,8 +43,8 @@ export default function ListadoAulaModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={550} centered
-                title={"LISTA AULA"}
+                footer={null} width={650} centered
+                title={"LISTA DIVISIÓN ACADEMICA"}
             >
                 <div className="row">
                     <div className="col-12">
@@ -59,7 +59,7 @@ export default function ListadoAulaModal( props ) {
                                         },
                                         {
                                             id: 'descripcion',
-                                            label: 'Aula',
+                                            label: 'Descripción',
                                         },
                                     ] } select
                                     dataSource={array_data}
@@ -74,13 +74,13 @@ export default function ListadoAulaModal( props ) {
     );
 };
 
-ListadoAulaModal.propTypes = {
+ListadoDivisionAcademicaModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
 };
 
-ListadoAulaModal.defaultProps = {
+ListadoDivisionAcademicaModal.defaultProps = {
     onSelect: () => {},
     visible: false,
 };

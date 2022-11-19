@@ -157,6 +157,35 @@ export class AuthService {
     }
   }
 
+  async checkAuthToken(user: Usuario) {
+    try {
+      const token = this.getJwtToken( { idusuario: user.idusuario, } );
+      const usuarioPreLoad = await this.authRepository.preload( {
+        idusuario: user.idusuario,
+        web_token: token,
+        api_token: token,
+      } );
+      const usuarioUpdate = await this.authRepository.save( usuarioPreLoad );
+      const { 
+        api_token, movil_token, web_token, concurrencia, isdelete,
+        created_at, updated_at, deleted_at, ...usuarioRespta 
+      } = usuarioUpdate;
+
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        usuario: usuarioRespta,
+        token: token,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
   private getJwtToken( payload: JwtPayload ) {
     const token = this.jwtService.sign( payload );
     return token;

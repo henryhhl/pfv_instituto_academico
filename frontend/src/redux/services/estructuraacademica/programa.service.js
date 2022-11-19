@@ -45,7 +45,9 @@ const onStore = async (body) => {
         codigo: body.codigo,
         sigla: body.sigla,
         descripcion: body.descripcion,
+        arraydivisionacademica: body.arraymallacurricular,
     } ).then( (respta) => {
+        console.log(respta)
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
                 position: 'top-end',
@@ -71,6 +73,7 @@ const onStore = async (body) => {
 const onShow = async (idprograma) => {
     return await httpRequest('get', apiServices.apiestructuraacademicaprograma_show + `/${idprograma}`, {
     } ).then( (respta) => {
+        console.log(respta)
         if ( respta.resp === 1 && respta.error === false ) {
             toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
         } else if ( respta.error === true && respta.resp === -2 ) {
@@ -122,7 +125,9 @@ const onUpdate = async (body) => {
         sigla: body.sigla,
         descripcion: body.descripcion,
         estado: body.estado,
+        arraydivisionacademica: body.arraymallacurricular,
     } ).then( (respta) => {
+        console.log(respta)
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
                 position: 'top-end',

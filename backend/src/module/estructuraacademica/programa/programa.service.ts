@@ -1,11 +1,13 @@
 
-import { Injectable, Logger } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { Repository } from 'typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Programa } from './entities/programa.entity';
+import { ProgramaDivisionAcademicaDetalle } from './entities/programadivisionacademicadetalle.entity';
+import { ProgramaDivisionAcademicaMateriaDetalle } from './entities/programadivisionacademicamateriadetalle.entity';
 
 @Injectable()
 export class ProgramaService {
@@ -14,6 +16,15 @@ export class ProgramaService {
   constructor(
     @InjectRepository(Programa)
     private readonly programaRepository: Repository<Programa>,
+
+    @InjectRepository(ProgramaDivisionAcademicaDetalle)
+    private readonly programaDivisionAcademicaDetalleRepository: Repository<ProgramaDivisionAcademicaDetalle>,
+
+    @InjectRepository(ProgramaDivisionAcademicaMateriaDetalle)
+    private readonly programaDivisionAcademicaMateriaDetalleRepository: Repository<ProgramaDivisionAcademicaMateriaDetalle>,
+
+    private readonly dataSource: DataSource,
+
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -79,19 +90,24 @@ export class ProgramaService {
   async store(createProgramaDto: CreateProgramaDto) {
     try {
       const programa = this.programaRepository.create( {
-        fkidunidadnegocio: createProgramaDto.fkidunidadnegocio,
-        unidadnegocio: createProgramaDto.unidadnegocio,
-        fkidunidadadministrativa: createProgramaDto.fkidunidadadministrativa,
-        unidadadministrativa: createProgramaDto.unidadadministrativa,
-        fkidunidadacademica: createProgramaDto.fkidunidadacademica,
-        unidadacademica: createProgramaDto.unidadacademica,
-        fkidmodalidadacademica: createProgramaDto.fkidmodalidadacademica,
-        modalidadacademica: createProgramaDto.modalidadacademica,
-        fkidnivelacademico: createProgramaDto.fkidnivelacademico,
-        nivelacademico: createProgramaDto.nivelacademico,
-        codigo: createProgramaDto.codigo,
-        sigla: createProgramaDto.sigla,
-        descripcion: createProgramaDto.descripcion,
+        ...createProgramaDto,
+        arraydivisionacademica: createProgramaDto.arraydivisionacademica?.filter( 
+          ( item ) => ( item.fkiddivisionacademica !== null ) 
+        ).map( ( divisionAcademica ) => {
+          const { idprogramadivisionacademicadetalle, ...toCreate } = divisionAcademica;
+          return this.programaDivisionAcademicaDetalleRepository.create( {
+            ...toCreate,
+            arraymateria: divisionAcademica.arraymateria?.filter( 
+              ( item ) => ( item.fkidmateria !== null ) 
+            ).map( ( materia ) => {
+              return this.programaDivisionAcademicaMateriaDetalleRepository.create( {
+                ...materia,
+                created_at: this.getDateTime(),
+              } );
+            } ),
+            created_at: this.getDateTime(),
+          } );
+        } ),
         created_at: this.getDateTime(),
       } );
       await this.programaRepository.save( programa );
@@ -110,8 +126,9 @@ export class ProgramaService {
   }
 
   async findOne(idprograma: string) {
-    const programa = await this.programaRepository.findOneBy( {
-      idprograma: idprograma,
+    const programa = await this.programaRepository.findOne( {
+      where: { idprograma: idprograma },
+      relations: { arraydivisionacademica: true, }
     } );
     return programa;
   }
@@ -163,34 +180,75 @@ export class ProgramaService {
   }
 
   async update( idprograma: string, updateProgramaDto: UpdateProgramaDto ) {
-    const programa = await this.findOne(idprograma);
-    if ( programa === null ) {
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const programa = await this.findOne(idprograma);
+      if ( programa === null ) {
+        await queryRunner.rollbackTransaction();
+        await queryRunner.release();
+        return {
+          resp: 0, error: false,
+          message: 'Programa no existe.',
+        };
+      }
+      const { arraydivisionacademica, ...toUpdate } = updateProgramaDto;
+      const programaPreLoad = await this.programaRepository.preload( {
+        idprograma: idprograma,
+        ...toUpdate,
+        concurrencia: programa.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
+      if ( programaPreLoad === null ) {
+        await queryRunner.rollbackTransaction();
+        await queryRunner.release();
+        return {
+          resp: 0, error: false,
+          message: 'Programa no existe.',
+        };
+      }
+      if ( arraydivisionacademica ) {
+        programa.arraydivisionacademica.map( async (divisionAcademica) => {
+          await queryRunner.manager.delete( ProgramaDivisionAcademicaMateriaDetalle, { 
+            fkidprogramadivisionacademicadetalle: { idprogramadivisionacademicadetalle: divisionAcademica.idprogramadivisionacademicadetalle } 
+          } );
+        } );
+        await queryRunner.manager.delete( ProgramaDivisionAcademicaDetalle, { fkidprograma: { idprograma: idprograma } } );
+        programaPreLoad.arraydivisionacademica = arraydivisionacademica.map( ( item ) => {
+          return this.programaDivisionAcademicaDetalleRepository.create( {
+            ...item,
+            arraymateria: item.arraymateria?.filter( 
+              ( item ) => ( item.fkidmateria !== null ) 
+            ).map( ( materia ) => {
+              return this.programaDivisionAcademicaMateriaDetalleRepository.create( {
+                ...materia,
+                created_at: this.getDateTime(),
+              } );
+            } ),
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+      const programaUpdate = await queryRunner.manager.save( programaPreLoad );
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
       return {
-        resp: 0, error: false,
-        message: 'Programa no existe.',
+        resp: 1,
+        error: false,
+        message: 'Programa actualizado éxitosamente.',
+        programa: programa,
+        programaUpdate: programaUpdate,
+      };
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      await queryRunner.release();
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const programaPreLoad = await this.programaRepository.preload( {
-      idprograma: idprograma,
-      ...updateProgramaDto,
-      concurrencia: programa.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
-
-    if ( programaPreLoad === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Programa no existe.',
-      };
-    }
-    const programaUpdate = await this.programaRepository.save( programaPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Programa actualizado éxitosamente.',
-      programa: programa,
-      programaUpdate: programaUpdate,
-    };
   }
 
   async delete( idprograma: string ) {

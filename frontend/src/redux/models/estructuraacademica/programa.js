@@ -2,6 +2,11 @@
 const Programa = {
     idprograma: "",
 
+    arraymallacurricular: [],
+    
+    fkiddivisionacademica: "",
+    divisionacademica: "",
+
     fkidunidadnegocio: "",
     unidadnegocio: "",
 

@@ -19,6 +19,25 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onAddRowMallaCurricular = ( ) => ( {
+    type: Constants.programa_onAddRowMallaCurricular,
+} );
+
+const onDeleteRowMallaCurricular = ( index ) => ( {
+    type: Constants.programa_onDeleteRowMallaCurricular,
+    payload: index,
+} );
+
+const onAddRowMateriaDetails = ( index, materia ) => ( {
+    type: Constants.programa_onAddRowMateriaDetail,
+    payload: { index, materia, },
+} );
+
+const onDeleteRowMateriaDetails = ( indexMallaCurricular, indexMateria ) => ( {
+    type: Constants.programa_onDeletRowMateriaDetail,
+    payload: { indexMallaCurricular, indexMateria },
+} );
+
 const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
     payload: data,
@@ -171,6 +190,14 @@ const setFKIDModalidadAcademica = (programa, modalidadAcademica) => {
 
         programa.error.fkidmodalidadacademica = false;
         programa.message.fkidmodalidadacademica = "";
+        dispatch( onChange(programa) );
+    };
+};
+
+const setFKIDDivisionAcademica = (programa, divisionAcademica) => {
+    return ( dispatch ) => {
+        programa.fkiddivisionacademica = divisionAcademica.iddivisionacademica;
+        programa.divisionacademica = divisionAcademica.descripcion;
         dispatch( onChange(programa) );
     };
 };
@@ -376,12 +403,18 @@ export const ProgramaActions = {
     onPagePrograma,
     getAllPrograma,
     onLimpiar,
+    onChange,
+    onAddRowMallaCurricular,
+    onDeleteRowMallaCurricular,
+    onAddRowMateriaDetails,
+    onDeleteRowMateriaDetails,
     setCodigo,
     setSigla,
     setDescripcion,
     setFKIDUnidadAcademica,
     setFKIDNivelAcademico,
     setFKIDModalidadAcademica,
+    setFKIDDivisionAcademica,
     setEstado,
     setISDelete,
     onCreate,

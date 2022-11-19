@@ -8,6 +8,8 @@ import { EstudianteActions } from '../../../../redux/actions/persona/estudiante.
 import { EstadoData } from '../../../../data/estado.data';
 import { GeneroData } from '../../../../data/genero.data';
 import { EstadoCivilData } from '../../../../data/estado_civil.data';
+import { TipoEmpleadoData } from '../../../../data/tipo_empleado.data';
+import { TipoFamiliarData } from '../../../../data/tipo_familiar.data';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
@@ -16,8 +18,6 @@ import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../co
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 import ListadoTipoIdentificacionModal from '../tipoidentificacion/modal/tipo_identificacion_listado.modal';
 import ListadoCategoriaDocumentoModal from '../categoriadocumento/modal/categoria_documento_listado.modal';
-import { TipoFamiliarData } from '../../../../data/tipo_familiar.data';
-import { TipoEmpleadoData } from '../../../../data/tipo_empleado.data';
 import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
 
 function CreateEstudiante( props ) {
