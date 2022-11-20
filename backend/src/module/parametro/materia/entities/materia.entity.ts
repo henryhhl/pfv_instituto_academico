@@ -1,11 +1,18 @@
 
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { PensumDivisionAcademicaMateriaDetalle } from '../../../estructuraacademica/pensum/entities/pensumdivisionacademicamateriadetalle.entity';
 
 @Entity()
 export class Materia {
     
     @PrimaryGeneratedColumn('uuid')
     idmateria: string;
+
+    @OneToMany(
+        () => PensumDivisionAcademicaMateriaDetalle,
+        ( pensumDivisionAcademicaMateriaDetalle ) => pensumDivisionAcademicaMateriaDetalle.materia,
+    )
+    pensumDivisionAcademicaMateriaDetalle?: PensumDivisionAcademicaMateriaDetalle[];
 
     @Column( {
         type: 'text',

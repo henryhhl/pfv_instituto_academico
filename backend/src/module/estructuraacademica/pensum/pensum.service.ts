@@ -1,18 +1,30 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { DataSource, Like, Repository } from 'typeorm';
+import { Pensum } from './entities/pensum.entity';
 import { CreatePensumDto } from './dto/create-pensum.dto';
 import { UpdatePensumDto } from './dto/update-pensum.dto';
-import { Pensum } from './entities/pensum.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { PensumDivisionAcademicaDetalle } from './entities/pensumdivisionacademicadetalle.entity';
+import { PensumDivisionAcademicaMateriaDetalle } from './entities/pensumdivisionacademicamateriadetalle.entity';
 
 @Injectable()
 export class PensumService {
   private readonly logger = new Logger('PensumService');
 
   constructor(
+
     @InjectRepository(Pensum)
     private readonly pensumRepository: Repository<Pensum>,
+
+    @InjectRepository(PensumDivisionAcademicaDetalle)
+    private readonly pensumDivisionAcademicaDetalleRepository: Repository<PensumDivisionAcademicaDetalle>,
+
+    @InjectRepository(PensumDivisionAcademicaMateriaDetalle)
+    private readonly pensumDivisionAcademicaMateriaDetalleRepository: Repository<PensumDivisionAcademicaMateriaDetalle>,
+
+    private readonly dataSource: DataSource,
+
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -22,23 +34,18 @@ export class PensumService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
-          take: limit,
-          skip: offset,
+          take: limit, skip: offset,
           where: [
             { descripcion: Like( '%' + search + '%', ), },
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       } else {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
           where: [
             { descripcion: Like( '%' + search + '%', ), },
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       }
       return {
@@ -81,23 +88,26 @@ export class PensumService {
 
   async store( createPensumDto: CreatePensumDto ) {
     try {
+      const { arraydivisionacademica, ...toCreate } = createPensumDto;
       const pensum = this.pensumRepository.create( {
-        fkidunidadnegocio: createPensumDto.fkidunidadnegocio,
-        unidadnegocio: createPensumDto.unidadnegocio,
+        ...toCreate,
+        arraydivisionacademica: arraydivisionacademica?.filter( 
+          ( item ) => ( item.divisionacademica !== null ) 
+        ).map( ( divisionAcademica ) => {
+          return this.pensumDivisionAcademicaDetalleRepository.create( {
+            ...divisionAcademica,
+            arraymateria: divisionAcademica.arraymateria?.filter( 
+              ( item ) => ( item.materia !== null ) 
+            ).map( ( details ) => {
+              return this.pensumDivisionAcademicaMateriaDetalleRepository.create( {
+                ...details,
+                created_at: this.getDateTime(),
+              } );
+            } ),
+            created_at: this.getDateTime(),
+          } );
+        } ),
 
-        fkidunidadadministrativa: createPensumDto.fkidunidadadministrativa,
-        unidadadministrativa: createPensumDto.unidadadministrativa,
-
-        fkidunidadacademica: createPensumDto.fkidunidadacademica,
-        unidadacademica: createPensumDto.unidadacademica,
-
-        fkidprograma: createPensumDto.fkidprograma,
-        programa: createPensumDto.programa,
-        
-        descripcion: createPensumDto.descripcion,
-        fechaaprobacion: createPensumDto.fechaaprobacion,
-        estadoproceso: createPensumDto.estadoproceso,
-        nota: createPensumDto.nota ? createPensumDto.nota : '',
         created_at: this.getDateTime(),
       } );
       await this.pensumRepository.save( pensum );
@@ -169,34 +179,73 @@ export class PensumService {
   }
 
   async update( idpensum: string, updatePensumDto: UpdatePensumDto ) {
-    const pensum = await this.findOne(idpensum);
-    if ( pensum === null ) {
-      return {
-        resp: 0, error: false,
-        message: 'Pensum no existe.',
-      };
-    }
-    const pensumPreLoad = await this.pensumRepository.preload( {
-      idpensum: idpensum,
-      ...updatePensumDto,
-      concurrencia: pensum.concurrencia + 1,
-      updated_at: this.getDateTime(),
-    } );
+    
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
 
-    if ( pensumPreLoad === null ) {
+    try {
+      const pensum = await this.findOne(idpensum);
+      if ( pensum === null ) {
+        await queryRunner.rollbackTransaction();
+        await queryRunner.release();
+        return {
+          resp: 0, error: false,
+          message: 'Pensum no existe.',
+        };
+      }
+      const { arraydivisionacademica, ...toUpdate } = updatePensumDto;
+      const pensumPreLoad = await this.pensumRepository.preload( {
+        idpensum: idpensum,
+        ...toUpdate,
+        concurrencia: pensum.concurrencia + 1,
+        updated_at: this.getDateTime(),
+      } );
+
+      if ( pensumPreLoad === null ) {
+        await queryRunner.rollbackTransaction();
+        await queryRunner.release();
+        return {
+          resp: 0, error: false,
+          message: 'Pensum no existe.',
+        };
+      }
+      if ( arraydivisionacademica ) {
+        pensum.arraydivisionacademica.map( async (divisionAcademica) => {
+          await queryRunner.manager.delete( PensumDivisionAcademicaMateriaDetalle, { 
+            fkidpensumdivisionacademicadetalle: { idpensumdivisionacademicadetalle: divisionAcademica.idpensumdivisionacademicadetalle } 
+          } );
+        } );
+        await queryRunner.manager.delete( PensumDivisionAcademicaDetalle, { fkidpensum: { idpensum } } );
+        pensumPreLoad.arraydivisionacademica = arraydivisionacademica.map( ( item ) => {
+          return this.pensumDivisionAcademicaDetalleRepository.create( {
+            ...item,
+            arraymateria: item.arraymateria?.map( ( materia ) => {
+              return this.pensumDivisionAcademicaMateriaDetalleRepository.create( {
+                ...materia,
+                created_at: this.getDateTime(),
+              } );
+            } ),
+            created_at: this.getDateTime(),
+          } );
+        } );
+      }
+      const pensumUpdate = await queryRunner.manager.save( pensumPreLoad );
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
       return {
-        resp: 0, error: false,
-        message: 'Pensum no existe.',
+        resp: 1, error: false,
+        message: 'Pensum actualizado éxitosamente.',
+        pensum: pensum, pensumUpdate: pensumUpdate,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
-    const pensumUpdate = await this.pensumRepository.save( pensumPreLoad );
-    return {
-      resp: 1,
-      error: false,
-      message: 'Pensum actualizado éxitosamente.',
-      pensum: pensum,
-      pensumUpdate: pensumUpdate,
-    };
   }
 
   async delete( idpensum: string ) {

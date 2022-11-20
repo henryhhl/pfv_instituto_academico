@@ -137,6 +137,10 @@ const Constants = {
     pensum_onCreate: "[ON CREATE] Pensum",
     pensum_onShow: "[ON SHOW] Pensum",
     pensum_onLimpiar: "[ON LIMPIAR] Pensum",
+    pensum_onAddRowDivisionAcademica: "[ON ADD ROW DIVISION ACADEMICA] Pensum",
+    pensum_onDeleteRowDivisionAcademica: "[ON DELETE ROW DIVISION ACADEMICA] Pensum",
+    pensum_onAddRowMateriaDetails: "[ON ADD ROW MATERIA DETAILS] Pensum",
+    pensum_onDeleteRowMateriaDetails: "[ON DELETE ROW MATERIA DETAILS] Pensum",
 
     responsable_setInit: "[SET INIT] Responsable",
     responsable_onChange: "[ON CHANGE] Responsable",

@@ -14,11 +14,13 @@ export const GestionPeriodoReducer = ( state = inititalState, action ) => {
             return state;
 
         case Constants.gestionperiodo_onCreate:
+            Functions.cleanObejct(state);
             onCreate(state);
             state = Object.assign( {}, state );
             return state;
 
         case Constants.gestionperiodo_onShow:
+            Functions.cleanObejct(state);
             onSetData( state, action.payload );
             state = Object.assign( {}, state );
             return state;

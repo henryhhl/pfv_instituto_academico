@@ -43,8 +43,8 @@ export default function ListadoMateriaModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={650} centered
-                title={"LISTA MATERIA"}
+                footer={null} width={750} centered
+                title={"LISTA DE MATERIA"}
             >
                 <div className="row">
                     <div className="col-12">
@@ -63,7 +63,11 @@ export default function ListadoMateriaModal( props ) {
                                         },
                                         {
                                             id: 'nombrelargo',
-                                            label: 'Nombre',
+                                            label: 'Nombre Largo',
+                                        },
+                                        {
+                                            id: 'nombrecorto',
+                                            label: 'Nombre Corto',
                                         },
                                     ] } select
                                     dataSource={array_data}

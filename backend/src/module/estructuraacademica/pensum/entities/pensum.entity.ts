@@ -1,10 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeUpdate, OneToMany } from 'typeorm';
+import { PensumDivisionAcademicaDetalle } from './pensumdivisionacademicadetalle.entity';
 
 @Entity('pensum')
 export class Pensum {
 
     @PrimaryGeneratedColumn('uuid')
     idpensum: string;
+
+    @OneToMany(
+        () => PensumDivisionAcademicaDetalle,
+        ( pensumDivisionAcademicaDetalle ) => pensumDivisionAcademicaDetalle.fkidpensum,
+        { cascade: true, eager: true, },
+    )
+    arraydivisionacademica?: PensumDivisionAcademicaDetalle[];
 
     @Column('text')
     fkidunidadadministrativa: string;

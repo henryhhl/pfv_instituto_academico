@@ -14,6 +14,7 @@ export const UnidadAcademicaReducer = ( state = inititalState, action ) => {
             return state;
 
         case Constants.unidadacademica_onCreate:
+            Functions.cleanObejct(state);
             state.concurrencia = 1;
             state.estado = 'A';
             state.isdelete = 'A';
@@ -21,6 +22,7 @@ export const UnidadAcademicaReducer = ( state = inititalState, action ) => {
             return state;
 
         case Constants.unidadacademica_onShow:
+            Functions.cleanObejct(state);
             state.idunidadacademica = action.payload.idunidadacademica;
             state.fkidunidadnegocio = action.payload.fkidunidadnegocio;
             state.unidadnegocio = action.payload.unidadnegocio;

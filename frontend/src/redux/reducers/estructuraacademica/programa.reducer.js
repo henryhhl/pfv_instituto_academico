@@ -14,6 +14,7 @@ export const ProgramaReducer = ( state = inititalState, action ) => {
             return state;
 
         case Constants.programa_onCreate:
+            Functions.cleanObejct(state);
             state.concurrencia = 1;
             state.estado = 'A';
             state.isdelete = 'A';
@@ -21,6 +22,7 @@ export const ProgramaReducer = ( state = inititalState, action ) => {
             return state;
 
         case Constants.programa_onShow:
+            Functions.cleanObejct(state);
             state.idprograma = action.payload.idprograma;
 
             state.fkidunidadnegocio = action.payload.fkidunidadnegocio;

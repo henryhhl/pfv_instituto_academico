@@ -14,11 +14,13 @@ export const UnidadAdministrativaReducer = ( state = inititalState, action ) => 
             return state;
 
         case Constants.unidadadministrativa_onCreate:
+            Functions.cleanObejct(state);
             onCreate(state);
             state = Object.assign( {}, state );
             return state;
 
         case Constants.unidadadministrativa_onShow:
+            Functions.cleanObejct(state);
             onSetData( state, action.payload );
             state = Object.assign( {}, state );
             return state;

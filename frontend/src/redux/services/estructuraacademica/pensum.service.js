@@ -32,6 +32,7 @@ const getAllPensum = async ( {
 
 const onStore = async (body) => {
     return await httpRequest('post', apiServices.apiestructuraacademicapensum_store, {
+        arraydivisionacademica: body.arraydivisionacademica,
         fkidunidadnegocio: body.fkidunidadnegocio,
         unidadnegocio: body.unidadnegocio,
         fkidunidadadministrativa: body.fkidunidadadministrativa,
@@ -89,6 +90,7 @@ const onShow = async (idpensum) => {
 const onEdit = async (idpensum) => {
     return await httpRequest('get', apiServices.apiestructuraacademicapensum_edit + `/${idpensum}`, {
     } ).then( (respta) => {
+        console.log(respta)
         if ( respta.resp === 1 && respta.error === false ) {
             toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
         } else if ( respta.error === true && respta.resp === -2 ) {
@@ -107,6 +109,7 @@ const onEdit = async (idpensum) => {
 
 const onUpdate = async (body) => {
     return await httpRequest('put', apiServices.apiestructuraacademicapensum_update + `/${body.idpensum}`, {
+        arraydivisionacademica: body.arraydivisionacademica,
         fkidunidadnegocio: body.fkidunidadnegocio,
         unidadnegocio: body.unidadnegocio,
         fkidunidadadministrativa: body.fkidunidadadministrativa,

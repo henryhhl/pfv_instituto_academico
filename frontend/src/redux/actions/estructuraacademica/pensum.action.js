@@ -19,6 +19,26 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onAddRowDivisionAcademica = ( divisionAcademica ) => ( {
+    type: Constants.pensum_onAddRowDivisionAcademica,
+    payload: divisionAcademica,
+} );
+
+const onDeleteRowDivisionAcademica = ( index ) => ( {
+    type: Constants.pensum_onDeleteRowDivisionAcademica,
+    payload: index,
+} );
+
+const onAddRowMateriaDetails = ( index, materia ) => ( {
+    type: Constants.pensum_onAddRowMateriaDetails,
+    payload: { index, materia, },
+} );
+
+const onDeleteRowMateriaDetails = ( indexDivisionAcademica, indexMateria ) => ( {
+    type: Constants.pensum_onDeleteRowMateriaDetails,
+    payload: { indexDivisionAcademica, indexMateria },
+} );
+
 const onListModule = ( data ) => ( {
     type: Constants.listModules_onChange,
     payload: data,
@@ -344,6 +364,10 @@ const onDelete = ( pensum ) => {
 };
 
 export const PensumActions = {
+    onAddRowDivisionAcademica,
+    onDeleteRowDivisionAcademica,
+    onAddRowMateriaDetails,
+    onDeleteRowMateriaDetails,
     initData,
     onPagePensum,
     getAllPensum,

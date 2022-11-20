@@ -4,6 +4,7 @@ const linkBackend = 'http://localhost:5000/api/v1';
 
 const module = {
     // seguridad: linkBackend + '/seguridad',
+    
     auth: linkBackend + '',
     seguridad: linkBackend + '',
     admin: linkBackend + '',

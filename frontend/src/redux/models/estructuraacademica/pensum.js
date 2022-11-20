@@ -2,6 +2,8 @@
 const Pensum = {
     idpensum: "",
 
+    arraydivisionacademica: [],
+
     fkidunidadnegocio: "",
     unidadnegocio: "",
 
