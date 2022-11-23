@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { TipoMateriaActions } from '../../../../redux/actions/parametros/tipo_materia.action';
 
 function EditTipoMateria( props ) {
@@ -14,13 +15,23 @@ function EditTipoMateria( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idtipomateria );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idtipomateria );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -87,6 +98,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: TipoMateriaActions.onLimpiar,
     setSigla: TipoMateriaActions.setSigla,
     setDescripcion: TipoMateriaActions.setDescripcion,

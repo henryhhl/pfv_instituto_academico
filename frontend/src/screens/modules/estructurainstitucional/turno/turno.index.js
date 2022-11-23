@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { TurnoActions } from '../../../../redux/actions/estructurainstitucional/turno.action';
  
 function IndexTurno(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageTurno();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageTurno();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/turno/create');
@@ -35,7 +43,7 @@ function IndexTurno(props) {
     const setPaginate = (paginate) => {
         props.onPageTurno(1, paginate);
     };
-
+    
     return (
         <>
             <PaperComponent
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageTurno: TurnoActions.onPageTurno,
     onDelete: TurnoActions.onDelete,
 };

@@ -1,26 +1,27 @@
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import toastr from 'toastr';
+import { connect } from 'react-redux';
 import { Button, Tooltip } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
 import InputFileComponent from '../../../../components/inputfile';
-import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import { EstadoCivilData } from '../../../../data/estado_civil.data';
 import { GeneroData } from '../../../../data/genero.data';
-import { DocenteActions } from '../../../../redux/actions/persona/docente.action';
+import { EstadoCivilData } from '../../../../data/estado_civil.data';
+import { ConfirmacionData } from '../../../../data/confirmacion.data';
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
 import ListadoCategoriaDocumentoModal from '../categoriadocumento/modal/categoria_documento_listado.modal';
 import ListadoTipoIdentificacionModal from '../tipoidentificacion/modal/tipo_identificacion_listado.modal';
-import ListadoInstitucionModal from '../../estructurainstitucional/institucion/modal/institucion_listado.modal';
 import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
-import { ConfirmacionData } from '../../../../data/confirmacion.data';
+import ListadoInstitucionModal from '../../estructurainstitucional/institucion/modal/institucion_listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { DocenteActions } from '../../../../redux/actions/persona/docente.action';
 
 function EditDocente( props ) {
     const { docente } = props;
@@ -47,13 +48,23 @@ function EditDocente( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.iddocente );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.iddocente );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     const onComponentTipoIdentificacion = () => {
         if ( !visibleTipoIdentificacion ) return null;
@@ -803,6 +814,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: DocenteActions.onEdit,
     onLimpiar: DocenteActions.onLimpiar,
     onChange: DocenteActions.onChange,

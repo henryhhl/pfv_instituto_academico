@@ -1,17 +1,18 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Button, Tooltip } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import { DeleteOutlined } from '@ant-design/icons';
-import { ResponsableActions } from '../../../../redux/actions/estructuraacademica/responsable.action';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { GeneroData } from '../../../../data/genero.data';
-import ListadoReferenciaContactoModal from '../../persona/referenciacontacto/modal/referenciacontacto_listado.modal';
 import ListadoUnidadAcademicaModal from '../unidadacademica/modal/unidad_academica_listado.modal';
+import ListadoReferenciaContactoModal from '../../persona/referenciacontacto/modal/referenciacontacto_listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { ResponsableActions } from '../../../../redux/actions/estructuraacademica/responsable.action';
 
 function CreateResponsable( props ) {
     const { responsable } = props;
@@ -22,11 +23,20 @@ function CreateResponsable( props ) {
     const [dataUnidadAcademica, setDataUnidadAcademica] = React.useState(null);
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -336,6 +346,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onAddReferenciaContacto: ResponsableActions.onAddReferenciaContacto,
     onDeleteRowReferenciaContacto: ResponsableActions.onDeleteRowReferenciaContacto,
     onAddUnidadAcademica: ResponsableActions.onAddUnidadAcademica,

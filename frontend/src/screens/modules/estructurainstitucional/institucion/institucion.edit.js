@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { InstitucionActions } from '../../../../redux/actions/estructurainstitucional/institucion.action';
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 
@@ -16,15 +17,25 @@ function EditInstitucion( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idinstitucion );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idinstitucion );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
-    function onComponentCiudad() {
+    const onComponentCiudad = () => {
         if ( !visibleCiudad ) return null;
         return (
             <ListadoCiudadModal
@@ -156,6 +167,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: InstitucionActions.onEdit,
     onLimpiar: InstitucionActions.onLimpiar,
     setFKIDCiudad: InstitucionActions.setFKIDCiudad,

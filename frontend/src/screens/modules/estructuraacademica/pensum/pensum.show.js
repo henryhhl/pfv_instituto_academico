@@ -1,10 +1,11 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
+import { useNavigate, useParams } from 'react-router-dom';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { PensumActions } from '../../../../redux/actions/estructuraacademica/pensum.action';
 import { Functions } from '../../../../utils/functions';
 
@@ -14,10 +15,20 @@ function ShowPensum( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idpensum );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idpensum );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -260,6 +271,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onShow: PensumActions.onShow,
     onLimpiar: PensumActions.onLimpiar,
 };

@@ -9,6 +9,7 @@ import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
 import { ButtonComponent ,InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { PensumActions } from '../../../../redux/actions/estructuraacademica/pensum.action';
 import FormMateriaPensumModal from './modal/form_materia.modal';
 import ListadoProgramaModal from '../programa/modal/programa_listado.modal';
@@ -18,6 +19,7 @@ function EditPensum( props ) {
     const { pensum } = props;
     const navigate = useNavigate();
     const params = useParams();
+    
     const [ visiblePrograma, setVisiblePrograma ] = React.useState(false);
     const [ visibleDivisionAcademica, setVisibleDivisionAcademica ] = React.useState(false);
 
@@ -25,10 +27,20 @@ function EditPensum( props ) {
     const [ visibleFormMateriaDetalle, setVisibleFormMateriaDetalle ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onEdit( params.idpensum );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idpensum );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -394,6 +406,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: PensumActions.onEdit,
     onLimpiar: PensumActions.onLimpiar,
     setDescripcion: PensumActions.setDescripcion,

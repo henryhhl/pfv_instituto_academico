@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, ModalComponent, TextAreaComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
-import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
+import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
 import ListadoTipoRolModal from '../tiporol/modal/listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 
 function CreateRol( props ) {
     const { rol } = props;
@@ -14,16 +15,25 @@ function CreateRol( props ) {
     const [ visibleTipoRol, setVisibleTipoRol ] = React.useState( false );
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
-    function onComponentTipoRol() {
+    const onComponentTipoRol = () => {
         if ( !visibleTipoRol ) return null;
         return (
             <ListadoTipoRolModal
@@ -101,6 +111,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: RolActions.onCreate,
     onLimpiar: RolActions.onLimpiar,
     setDescripcion: RolActions.setDescripcion,

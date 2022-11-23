@@ -1,21 +1,29 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { AulaActions } from '../../../../redux/actions/estructurainstitucional/aula.action';
  
 function IndexAula(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageAula();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageAula();
+            }
+        } );
+        return () => {};
     }, [] );
-    
 
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+    
     const onCreate = () => {
         navigate('/aula/create');
     };
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageAula: AulaActions.onPageAula,
     onDelete: AulaActions.onDelete,
 };

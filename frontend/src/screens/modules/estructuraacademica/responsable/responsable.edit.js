@@ -2,13 +2,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ResponsableActions } from '../../../../redux/actions/estructuraacademica/responsable.action';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
-import { GeneroData } from '../../../../data/genero.data';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { GeneroData } from '../../../../data/genero.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { ResponsableActions } from '../../../../redux/actions/estructuraacademica/responsable.action';
 
 function EditResponsable( props ) {
     const { responsable } = props;
@@ -16,10 +17,20 @@ function EditResponsable( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idresponsable );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idresponsable );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -148,6 +159,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: ResponsableActions.onLimpiar,
     onEdit: ResponsableActions.onEdit,
     setCodigo: ResponsableActions.setCodigo,

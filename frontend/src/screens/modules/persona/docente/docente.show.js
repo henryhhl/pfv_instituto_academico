@@ -3,11 +3,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import InputFileComponent from '../../../../components/inputfile';
 import PaperComponent from '../../../../components/paper';
-import { DocenteActions } from '../../../../redux/actions/persona/docente.action';
+import InputFileComponent from '../../../../components/inputfile';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { Functions } from '../../../../utils/functions';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { DocenteActions } from '../../../../redux/actions/persona/docente.action';
 
 function ShowDocente( props ) {
     const { docente } = props;
@@ -15,13 +16,23 @@ function ShowDocente( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.iddocente );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.iddocente );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -413,6 +424,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onShow: DocenteActions.onShow,
     onLimpiar: DocenteActions.onLimpiar,
 };

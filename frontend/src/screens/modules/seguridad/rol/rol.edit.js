@@ -3,11 +3,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 import ListadoTipoRolModal from '../tiporol/modal/listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
 
 function EditRol( props ) {
     const { rol } = props;
@@ -16,15 +17,25 @@ function EditRol( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idrol );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idrol );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
-    function onComponentTipoRol() {
+    const onComponentTipoRol = () => {
         if ( !visibleTipoRol ) return null;
         return (
             <ListadoTipoRolModal
@@ -116,6 +127,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: RolActions.onLimpiar,
     onEdit: RolActions.onEdit,
     setDescripcion: RolActions.setDescripcion,

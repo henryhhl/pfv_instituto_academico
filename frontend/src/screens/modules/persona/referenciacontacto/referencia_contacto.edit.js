@@ -2,11 +2,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ReferenciaContactoActions } from '../../../../redux/actions/parametros/referencia_contacto.action';
+import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import PaperComponent from '../../../../components/paper';
-import CardComponent from '../../../../components/card';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { ReferenciaContactoActions } from '../../../../redux/actions/parametros/referencia_contacto.action';
 
 function EditReferenciaContacto( props ) {
     const { referenciaContacto } = props;
@@ -14,13 +15,23 @@ function EditReferenciaContacto( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idreferenciacontacto );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idreferenciacontacto );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -75,6 +86,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: ReferenciaContactoActions.onLimpiar,
     onEdit: ReferenciaContactoActions.onEdit,
     setDescripcion: ReferenciaContactoActions.setDescripcion,

@@ -1,19 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
-import { UnidadAcademicaActions } from '../../../../redux/actions/estructuraacademica/unidad_academica.action';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { UnidadAcademicaActions } from '../../../../redux/actions/estructuraacademica/unidad_academica.action';
  
 function IndexUnidadAcademica(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageUnidadAcademica();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageUnidadAcademica();
+            }
+        } );
+        return () => {};
     }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
     
 
     const onCreate = () => {
@@ -74,6 +83,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageUnidadAcademica: UnidadAcademicaActions.onPageUnidadAcademica,
     onDelete: UnidadAcademicaActions.onDelete,
 };

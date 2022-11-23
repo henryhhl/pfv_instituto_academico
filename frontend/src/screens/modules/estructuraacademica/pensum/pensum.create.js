@@ -3,19 +3,21 @@ import React from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { CloseOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
 import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
-import ListadoProgramaModal from '../programa/modal/programa_listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { PensumActions } from '../../../../redux/actions/estructuraacademica/pensum.action';
-import ListadoDivisionAcademicaModal from '../../estructurainstitucional/divisionacademica/modal/division-academica_listado.modal';
-import { CloseOutlined } from '@ant-design/icons';
 import FormMateriaPensumModal from './modal/form_materia.modal';
+import ListadoProgramaModal from '../programa/modal/programa_listado.modal';
+import ListadoDivisionAcademicaModal from '../../estructurainstitucional/divisionacademica/modal/division-academica_listado.modal';
 
 function CreatePensum( props ) {
     const { pensum } = props;
     const navigate = useNavigate();
+
     const [ visiblePrograma, setVisiblePrograma ] = React.useState(false);
     const [ visibleDivisionAcademica, setVisibleDivisionAcademica ] = React.useState(false);
 
@@ -23,11 +25,20 @@ function CreatePensum( props ) {
     const [ visibleFormMateriaDetalle, setVisibleFormMateriaDetalle ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -374,6 +385,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: PensumActions.onCreate,
     onLimpiar: PensumActions.onLimpiar,
     setDescripcion: PensumActions.setDescripcion,

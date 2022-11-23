@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 
 export default function SidebarComponent() {
     const [ subMenu, setSubMenu ] = React.useState( {
+        ofertaacademica: {
+            active: false,
+        },
         persona: {
             active: false,
         },

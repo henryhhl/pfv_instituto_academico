@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
-import DatePickerComponent from '../../../../components/date';
 import PaperComponent from '../../../../components/paper';
+import DatePickerComponent from '../../../../components/date';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { GestionPeriodoActions } from '../../../../redux/actions/estructurainstitucional/gestion_periodo.action';
 
 function EditGestionPeriodo( props ) {
@@ -15,13 +16,23 @@ function EditGestionPeriodo( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idgestionperiodo );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idgestionperiodo );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -108,6 +119,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: GestionPeriodoActions.onEdit,
     onLimpiar: GestionPeriodoActions.onLimpiar,
     setDescripcion: GestionPeriodoActions.setDescripcion,

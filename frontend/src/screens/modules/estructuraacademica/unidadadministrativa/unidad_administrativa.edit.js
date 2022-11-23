@@ -1,18 +1,19 @@
 
 import React from 'react';
-import { connect } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import toastr from 'toastr';
+import { connect } from 'react-redux';
 import { Button, Tooltip } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
-import { UnidadAdministrativaActions } from '../../../../redux/actions/estructuraacademica/unidad_administrativa.action';
-import ListadoUnidadNegocioModal from '../../parametro/unidadnegocio/modal/unidad_negocio_listado.modal';
-import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_listado.modal';
 import ListadoAulaModal from '../../estructurainstitucional/aula/modal/aula_listado.modal';
+import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_listado.modal';
+import ListadoUnidadNegocioModal from '../../parametro/unidadnegocio/modal/unidad_negocio_listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { UnidadAdministrativaActions } from '../../../../redux/actions/estructuraacademica/unidad_administrativa.action';
 
 function EditUnidadAdministrativa( props ) {
     const { unidadAdministrativa } = props;
@@ -28,8 +29,18 @@ function EditUnidadAdministrativa( props ) {
     const [ visibleAula, setVisibleAula ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onEdit( params.idunidadadministrativa );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idunidadadministrativa );
+            }
+        } );
+        return () => {};
     }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onBack = () => {
         props.onLimpiar();
@@ -374,6 +385,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: UnidadAdministrativaActions.onEdit,
     onLimpiar: UnidadAdministrativaActions.onLimpiar,
     onChange: UnidadAdministrativaActions.onChange,

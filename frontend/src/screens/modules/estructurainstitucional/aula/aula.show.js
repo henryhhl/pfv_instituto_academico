@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
-import { AulaActions } from '../../../../redux/actions/estructurainstitucional/aula.action';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { Functions } from '../../../../utils/functions';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { AulaActions } from '../../../../redux/actions/estructurainstitucional/aula.action';
 
 function ShowAula( props ) {
     const { aula } = props;
@@ -14,10 +15,20 @@ function ShowAula( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idaula );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idaula );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -74,6 +85,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onShow: AulaActions.onShow,
     onLimpiar: AulaActions.onLimpiar,
 };

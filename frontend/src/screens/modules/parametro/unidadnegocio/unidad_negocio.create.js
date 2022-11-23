@@ -2,24 +2,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { UnidadNegocioActions } from '../../../../redux/actions/parametros/unidad_negocio.action';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { UnidadNegocioActions } from '../../../../redux/actions/parametros/unidad_negocio.action';
 
 function CreateUnidadNegocio( props ) {
     const { unidadNegocio } = props;
     const navigate = useNavigate();
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -73,6 +83,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: UnidadNegocioActions.onLimpiar,
     onCreate: UnidadNegocioActions.onCreate,
     setSigla: UnidadNegocioActions.setSigla,

@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { MateriaActions } from '../../../../redux/actions/parametros/materia.action';
 
 function EditMateria( props ) {
@@ -14,13 +15,23 @@ function EditMateria( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idmateria );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idmateria );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -125,6 +136,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: MateriaActions.onLimpiar,
     onEdit: MateriaActions.onEdit,
     setFKIDTipoMateria: MateriaActions.setFKIDTipoMateria,

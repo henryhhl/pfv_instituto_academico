@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
 
 function CreateTipoPermiso( props ) {
@@ -12,15 +13,23 @@ function CreateTipoPermiso( props ) {
     const navigate = useNavigate();
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
-    
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -65,6 +74,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: TipoPermisoActions.onCreate,
     onLimpiar: TipoPermisoActions.onLimpiar,
     setDescripcion: TipoPermisoActions.setDescripcion,

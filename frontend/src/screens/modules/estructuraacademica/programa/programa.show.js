@@ -6,6 +6,7 @@ import { Functions } from '../../../../utils/functions';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { ProgramaActions } from '../../../../redux/actions/estructuraacademica/programa.action';
 
 function ShowPrograma( props ) {
@@ -14,10 +15,20 @@ function ShowPrograma( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idprograma );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idprograma );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
@@ -214,6 +225,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onShow: ProgramaActions.onShow,
     onLimpiar: ProgramaActions.onLimpiar,
 };

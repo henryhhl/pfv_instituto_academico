@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import DatePickerComponent from '../../../../components/date';
 import PaperComponent from '../../../../components/paper';
+import DatePickerComponent from '../../../../components/date';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { GestionPeriodoActions } from '../../../../redux/actions/estructurainstitucional/gestion_periodo.action';
 
 function CreateGestionPeriodo( props ) {
@@ -13,14 +14,23 @@ function CreateGestionPeriodo( props ) {
     const navigate = useNavigate();
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -98,6 +108,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: GestionPeriodoActions.onCreate,
     onLimpiar: GestionPeriodoActions.onLimpiar,
     setDescripcion: GestionPeriodoActions.setDescripcion,

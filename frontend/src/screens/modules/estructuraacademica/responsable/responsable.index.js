@@ -1,30 +1,39 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
 import TableComponent from '../../../../components/table';
+import PaperComponent from '../../../../components/paper';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { ResponsableActions } from '../../../../redux/actions/estructuraacademica/responsable.action';
  
 function IndexResponsable(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.getAllResponsable();
-      return () => {};
-    }, [])
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.getAllResponsable();
+            }
+        } );
+        return () => {};
+    }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
     
 
-    function onCreate() {
+    const onCreate = () => {
         navigate('/responsable/create');
     }
 
-    function onEdit(responsable) {
+    const onEdit = (responsable) => {
         navigate(`/responsable/edit/${responsable.idresponsable}`);
     }
 
-    function onShow(responsable) {
+    const onShow = (responsable) => {
         navigate(`/responsable/show/${responsable.idresponsable}`);
     }
 
@@ -57,6 +66,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     getAllResponsable: ResponsableActions.getAllResponsable,
     onDelete: ResponsableActions.onDelete,
 };

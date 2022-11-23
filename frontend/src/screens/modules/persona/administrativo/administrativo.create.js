@@ -1,24 +1,25 @@
 
 import React from 'react';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import toastr from 'toastr';
 import { CloseOutlined } from '@ant-design/icons';
-import { AdministrativoActions } from '../../../../redux/actions/persona/administrativo.action';
-import { EstadoData } from '../../../../data/estado.data';
-import { GeneroData } from '../../../../data/genero.data';
-import { EstadoCivilData } from '../../../../data/estado_civil.data';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
 import InputFileComponent from '../../../../components/inputfile';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
+import { GeneroData } from '../../../../data/genero.data';
+import { EstadoCivilData } from '../../../../data/estado_civil.data';
+import { ConfirmacionData } from '../../../../data/confirmacion.data';
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 import ListadoTipoIdentificacionModal from '../tipoidentificacion/modal/tipo_identificacion_listado.modal';
 import ListadoCategoriaDocumentoModal from '../categoriadocumento/modal/categoria_documento_listado.modal';
-import { ConfirmacionData } from '../../../../data/confirmacion.data';
-import ListadoInstitucionModal from '../../estructurainstitucional/institucion/modal/institucion_listado.modal';
 import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
+import ListadoInstitucionModal from '../../estructurainstitucional/institucion/modal/institucion_listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { AdministrativoActions } from '../../../../redux/actions/persona/administrativo.action';
 
 function CreateAdministrativo( props ) {
     const { administrativo } = props;
@@ -41,14 +42,23 @@ function CreateAdministrativo( props ) {
     const [ visibleNivelAcademico, setVisibleNivelAcademico ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     const onComponentTipoIdentificacion = () => {
         if ( !visibleTipoIdentificacion ) return null;
@@ -679,6 +689,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: AdministrativoActions.onCreate,
     onLimpiar: AdministrativoActions.onLimpiar,
     onChange: AdministrativoActions.onChange,

@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
 import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { InstitucionActions } from '../../../../redux/actions/estructurainstitucional/institucion.action';
  
 function IndexInstitucion(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageInstitucion();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageInstitucion();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/institucion/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageInstitucion: InstitucionActions.onPageInstitucion,
     onDelete: InstitucionActions.onDelete,
 };

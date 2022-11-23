@@ -1,39 +1,49 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { PermisoActions } from '../../../../redux/actions/seguridad/permiso.action';
+import { useNavigate } from 'react-router-dom';
+import CardComponent from '../../../../components/card';
 import TreeComponent from '../../../../components/tree';
 import ModalComponent from '../../../../components/modal';
-import CreatePermiso from './permiso.create';
+import PaperComponent from '../../../../components/paper';
 import ShowPermiso from'./permiso.show';
 import EditPermiso from './permiso.edit';
-import PaperComponent from '../../../../components/paper';
-import CardComponent from '../../../../components/card';
+import CreatePermiso from './permiso.create';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { PermisoActions } from '../../../../redux/actions/seguridad/permiso.action';
  
 function IndexPermiso(props) {
+    const navigate = useNavigate();
     const [ visibleCreate, setVisibleCreate ] = React.useState( false );
     const [ visibleShow, setVisibleShow ] = React.useState( false );
     const [ visibleEdit, setVisibleEdit ] = React.useState( false );
 
-    useEffect(() => {
-      props.getAllPermiso();
-      return () => {};
-    }, [])
-    
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.getAllPermiso();
+            }
+        } );
+        return () => {};
+    }, [] );
 
-    function onCreate() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onCreate = () => {
         props.onCreate();
         setTimeout(() => {
             setVisibleCreate( true );
         }, 500);
     }
 
-    function onCloseCreate() {
+    const onCloseCreate = () => {
         props.onLimpiar();
         setVisibleCreate( false );
     };
 
-    function onComponentCreate() {
+    const onComponentCreate = () => {
         if ( !visibleCreate ) return null;
         return (
             <ModalComponent
@@ -49,12 +59,12 @@ function IndexPermiso(props) {
         );
     };
 
-    function onCloseShow() {
+    const onCloseShow = () => {
         props.onLimpiar();
         setVisibleShow( false );
     };
 
-    function onComponentShow() {
+    const onComponentShow = () => {
         if ( !visibleShow ) return null;
         return (
             <ModalComponent
@@ -70,12 +80,12 @@ function IndexPermiso(props) {
         );
     };
 
-    function onCloseEdit() {
+    const onCloseEdit = () => {
         props.onLimpiar();
         setVisibleEdit( false );
     };
 
-    function onComponentEdit() {
+    const onComponentEdit = () => {
         if ( !visibleEdit ) return null;
         return (
             <ModalComponent
@@ -137,6 +147,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     getAllPermiso: PermisoActions.getAllPermiso,
     onLimpiar: PermisoActions.onLimpiar,
     onCreate: PermisoActions.onCreate,

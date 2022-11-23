@@ -17,6 +17,7 @@ const module = {
 const apiServices = {
     apiauth_login:  `${module.auth}/auth/login`,
     apiauth_register:  `${module.auth}/auth/register`,
+    apiauth_validateToken:  `${module.auth}/auth/validateToken`,
 
     apiseguridadtiporol_index:  `${module.seguridad}/tiporol/index`,
     apiseguridadtiporol_create: `${module.seguridad}/tiporol/create`,

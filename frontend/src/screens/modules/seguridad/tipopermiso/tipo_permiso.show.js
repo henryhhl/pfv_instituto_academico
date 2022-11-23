@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
-import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { Functions } from '../../../../utils/functions';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
 
 function ShowTipoPermiso( props ) {
     const { tipoPermiso } = props;
@@ -14,13 +15,23 @@ function ShowTipoPermiso( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idtipopermiso );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idtipopermiso );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -63,6 +74,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: TipoPermisoActions.onLimpiar,
     onShow: TipoPermisoActions.onShow,
 };

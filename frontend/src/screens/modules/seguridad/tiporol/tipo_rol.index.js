@@ -1,21 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
-import { TipoRolActions } from '../../../../redux/actions/seguridad/tipoRol.action';
-import TableComponent from '../../../../components/table';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
+import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { TipoRolActions } from '../../../../redux/actions/seguridad/tipoRol.action';
  
 function IndexTipoRol(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageTipoRol();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageTipoRol();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/tipo_rol/create');
@@ -75,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageTipoRol: TipoRolActions.onPageTipoRol,
     onDelete: TipoRolActions.onDelete,
 };

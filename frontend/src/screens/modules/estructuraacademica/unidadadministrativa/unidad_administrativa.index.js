@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
-import { UnidadAdministrativaActions } from '../../../../redux/actions/estructuraacademica/unidad_administrativa.action';
 import CardComponent from '../../../../components/card';
 import TableComponent from '../../../../components/table';
+import PaperComponent from '../../../../components/paper';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { UnidadAdministrativaActions } from '../../../../redux/actions/estructuraacademica/unidad_administrativa.action';
  
 function IndexUnidadAdministrativa(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageUnidadAdministrativa();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageUnidadAdministrativa();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/unidadadministrativa/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageUnidadAdministrativa: UnidadAdministrativaActions.onPageUnidadAdministrativa,
     onDelete: UnidadAdministrativaActions.onDelete,
 };

@@ -2,16 +2,31 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@
 import { PensumService } from './pensum.service';
 import { CreatePensumDto } from './dto/create-pensum.dto';
 import { UpdatePensumDto } from './dto/update-pensum.dto';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { GetUser } from '../../auth/decorators/get-user.decorator';
+import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
+import { AuthService } from '../../auth/auth.service';
 
 @Controller('pensum')
 export class PensumController {
-  constructor(private readonly pensumService: PensumService) {}
+  constructor(
+    private readonly pensumService: PensumService,
+    private readonly authService: AuthService
+  ) {}
 
   @Get('/index')
   @Auth( /**  N Permissions */ )
   findAll( @Query() paginationDto: PaginationDto ) {
+    // const checkAuth = await this.authService.checkAuthToken(user);
+    // if ( checkAuth.resp === 1 && checkAuth.error === false ) {
+    //   const result = await this.pensumService.findAll(paginationDto);
+    //   result['token'] = checkAuth.token;
+    //   result['usuario'] = checkAuth.usuario;
+    //   return result;
+    // } else {
+    //   return checkAuth;
+    // }
     return this.pensumService.findAll(paginationDto);
   }
 

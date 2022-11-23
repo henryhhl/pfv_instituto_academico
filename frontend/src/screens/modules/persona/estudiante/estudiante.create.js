@@ -1,24 +1,25 @@
 
 import React from 'react';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import toastr from 'toastr';
 import { CloseOutlined } from '@ant-design/icons';
-import { EstudianteActions } from '../../../../redux/actions/persona/estudiante.action';
-import { EstadoData } from '../../../../data/estado.data';
-import { GeneroData } from '../../../../data/genero.data';
-import { EstadoCivilData } from '../../../../data/estado_civil.data';
-import { TipoEmpleadoData } from '../../../../data/tipo_empleado.data';
-import { TipoFamiliarData } from '../../../../data/tipo_familiar.data';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
 import InputFileComponent from '../../../../components/inputfile';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
+import { EstadoData } from '../../../../data/estado.data';
+import { GeneroData } from '../../../../data/genero.data';
+import { EstadoCivilData } from '../../../../data/estado_civil.data';
+import { TipoEmpleadoData } from '../../../../data/tipo_empleado.data';
+import { TipoFamiliarData } from '../../../../data/tipo_familiar.data';
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 import ListadoTipoIdentificacionModal from '../tipoidentificacion/modal/tipo_identificacion_listado.modal';
 import ListadoCategoriaDocumentoModal from '../categoriadocumento/modal/categoria_documento_listado.modal';
 import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { EstudianteActions } from '../../../../redux/actions/persona/estudiante.action';
 
 function CreateEstudiante( props ) {
     const { estudiante } = props;
@@ -47,14 +48,23 @@ function CreateEstudiante( props ) {
     const [ visibleNivelAcademicoDetalle, setVisibleNivelAcademicoDetalle ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     const onComponentTipoIdentificacion = () => {
         if ( !visibleTipoIdentificacion ) return null;
@@ -991,6 +1001,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: EstudianteActions.onCreate,
     onLimpiar: EstudianteActions.onLimpiar,
     onChange: EstudianteActions.onChange,

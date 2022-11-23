@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
-import { TipoIdentificacionActions } from '../../../../redux/actions/persona/tipo_identificacion.action';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { Functions } from '../../../../utils/functions';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { TipoIdentificacionActions } from '../../../../redux/actions/persona/tipo_identificacion.action';
 
 function ShowTipoIdentificacion( props ) {
     const { tipoIdentificacion } = props;
@@ -14,13 +15,23 @@ function ShowTipoIdentificacion( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idtipoidentificacion );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idtipoidentificacion );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -74,6 +85,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onShow: TipoIdentificacionActions.onShow,
     onLimpiar: TipoIdentificacionActions.onLimpiar,
 };

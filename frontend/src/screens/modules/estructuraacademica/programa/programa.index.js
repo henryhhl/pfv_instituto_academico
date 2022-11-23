@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
 import TableComponent from '../../../../components/table';
+import PaperComponent from '../../../../components/paper';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { ProgramaActions } from '../../../../redux/actions/estructuraacademica/programa.action';
  
 function IndexPrograma(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPagePrograma();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPagePrograma();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/programa/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPagePrograma: ProgramaActions.onPagePrograma,
     onDelete: ProgramaActions.onDelete,
 };

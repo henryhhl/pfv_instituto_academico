@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { OfertaAcademicaActions } from '../../../../redux/actions/parametros/oferta_academica.action';
-import TableComponent from '../../../../components/table';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
+import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { OfertaAcademicaActions } from '../../../../redux/actions/parametros/oferta_academica.action';
  
 function IndexOfertaAcademica(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.onPageOfertaAcademica();
-      return () => {};
-    }, [])
-    
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageOfertaAcademica();
+            }
+        } );
+        return () => {};
+    }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/ofertaacademica/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageOfertaAcademica: OfertaAcademicaActions.onPageOfertaAcademica,
     onDelete: OfertaAcademicaActions.onDelete,
 };

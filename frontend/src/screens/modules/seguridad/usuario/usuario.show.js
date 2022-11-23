@@ -3,10 +3,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
-import { UsuarioActions } from '../../../../redux/actions/seguridad/usuario.action';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { Functions } from '../../../../utils/functions';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { UsuarioActions } from '../../../../redux/actions/seguridad/usuario.action';
 
 function ShowUsuario( props ) {
     const { usuario } = props;
@@ -14,13 +15,23 @@ function ShowUsuario( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idusuario );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idusuario );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -73,6 +84,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: UsuarioActions.onLimpiar,
     onShow: UsuarioActions.onShow,
 };

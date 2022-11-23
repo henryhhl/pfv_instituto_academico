@@ -3,8 +3,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { InstitucionActions } from '../../../../redux/actions/estructurainstitucional/institucion.action';
 import ListadoCiudadModal from '../../parametro/ciudad/modal/ciudad_listado.modal';
 
@@ -14,16 +15,25 @@ function CreateInstitucion( props ) {
     const navigate = useNavigate();
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
-    function onComponentCiudad() {
+    const onComponentCiudad = () => {
         if ( !visibleCiudad ) return null;
         return (
             <ListadoCiudadModal
@@ -142,6 +152,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: InstitucionActions.onCreate,
     onLimpiar: InstitucionActions.onLimpiar,
     setFKIDCiudad: InstitucionActions.setFKIDCiudad,

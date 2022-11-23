@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
-import TableComponent from '../../../../components/table';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
+import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { RolActions } from '../../../../redux/actions/seguridad/rol.action';
  
 function IndexRol(props) {
     const navigate = useNavigate();
 
-    useEffect(() => {
-      props.onPageRol();
-      return () => {};
-    }, [])
-    
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageRol();
+            }
+        } );
+        return () => {};
+    }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/rol/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageRol: RolActions.onPageRol,
     onDelete: RolActions.onDelete,
 };

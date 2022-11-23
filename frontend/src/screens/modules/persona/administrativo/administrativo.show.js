@@ -3,11 +3,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent } from '../../../../components/components';
-import InputFileComponent from '../../../../components/inputfile';
 import PaperComponent from '../../../../components/paper';
-import { AdministrativoActions } from '../../../../redux/actions/persona/administrativo.action';
+import InputFileComponent from '../../../../components/inputfile';
+import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { Functions } from '../../../../utils/functions';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { AdministrativoActions } from '../../../../redux/actions/persona/administrativo.action';
 
 function ShowAdministrativo( props ) {
     const { administrativo } = props;
@@ -15,13 +16,23 @@ function ShowAdministrativo( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onShow( params.idadministrativo );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onShow( params.idadministrativo );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -363,6 +374,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onShow: AdministrativoActions.onShow,
     onLimpiar: AdministrativoActions.onLimpiar,
 };

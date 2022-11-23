@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { CargoActions } from '../../../../redux/actions/persona/cargo.action';
 
 function EditCargo( props ) {
@@ -14,8 +15,18 @@ function EditCargo( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idcargo );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idcargo );
+            }
+        } );
+        return () => {};
     }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     function onBack() {
         props.onLimpiar();
@@ -74,6 +85,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: CargoActions.onEdit,
     onLimpiar: CargoActions.onLimpiar,
     setDescripcion: CargoActions.setDescripcion,

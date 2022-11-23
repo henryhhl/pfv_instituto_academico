@@ -22,7 +22,7 @@ export class AuthController {
     return this.authService.login(loginAuthDto);
   }
 
-  @Get('/checkAuthToken')
+  @Get('/validateToken')
   @Auth()
   checkAuthStatus( @GetUser() user: Usuario ) {
     return this.authService.checkAuthToken(user);

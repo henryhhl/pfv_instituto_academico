@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { ModalidadAcademicaActions } from '../../../../redux/actions/parametros/modalidad_academica.action';
+import CardComponent from '../../../../components/card';
 import TableComponent from '../../../../components/table';
 import PaperComponent from '../../../../components/paper';
-import CardComponent from '../../../../components/card';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { ModalidadAcademicaActions } from '../../../../redux/actions/parametros/modalidad_academica.action';
  
 function IndexModalidadAcademica(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageModalidadAcademica();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageModalidadAcademica();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/modalidadacademica/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageModalidadAcademica: ModalidadAcademicaActions.onPageModalidadAcademica,
     onDelete: ModalidadAcademicaActions.onDelete,
 };

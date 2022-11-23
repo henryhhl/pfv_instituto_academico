@@ -3,9 +3,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { UnidadNegocioActions } from '../../../../redux/actions/parametros/unidad_negocio.action';
 
 function EditUnidadNegocio( props ) {
@@ -14,12 +15,22 @@ function EditUnidadNegocio( props ) {
     const params = useParams();
 
     React.useEffect( () => {
-        props.onEdit( params.idunidadnegocio );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idunidadnegocio );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         navigate(-1);
-    }
+    };
 
     return (
         <>
@@ -86,6 +97,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onLimpiar: UnidadNegocioActions.onLimpiar,
     onEdit: UnidadNegocioActions.onEdit,
     setSigla: UnidadNegocioActions.setSigla,

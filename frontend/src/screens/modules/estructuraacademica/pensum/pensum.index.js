@@ -1,19 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
 import TableComponent from '../../../../components/table';
 import { PensumActions } from '../../../../redux/actions/estructuraacademica/pensum.action';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
  
 function IndexPensum(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPagePensum();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPagePensum();
+            }
+        } );
+        return () => {};
     }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
     
 
     const onCreate = () => {
@@ -74,6 +83,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPagePensum: PensumActions.onPagePensum,
     onDelete: PensumActions.onDelete,
 };

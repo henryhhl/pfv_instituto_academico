@@ -1,20 +1,28 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
-import TableComponent from '../../../../components/table';
-import PaperComponent from '../../../../components/paper';
 import CardComponent from '../../../../components/card';
+import PaperComponent from '../../../../components/paper';
+import TableComponent from '../../../../components/table';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
+import { TipoPermisoActions } from '../../../../redux/actions/seguridad/tipoPermiso.action';
  
 function IndexTipoPermiso(props) {
     const navigate = useNavigate();
 
-    useEffect( () => {
-      props.onPageTipoPermiso();
-      return () => {};
+    React.useEffect( () => {
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onPageTipoPermiso();
+            }
+        } );
+        return () => {};
     }, [] );
-    
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onCreate = () => {
         navigate('/tipo_permiso/create');
@@ -74,6 +82,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onPageTipoPermiso: TipoPermisoActions.onPageTipoPermiso,
     onDelete: TipoPermisoActions.onDelete,
 };

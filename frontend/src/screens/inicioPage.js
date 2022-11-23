@@ -1,8 +1,20 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { AuthActions } from '../redux/actions/auth/auth.action';
 
-const InicioPage = () => {
-    console.log('inicio PAGE');
+const InicioPage = ( props ) => {
+    const navigate = useNavigate();
+
+    React.useEffect( () => {
+        props.onValidateToken( onLogin );
+    }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
     return (
         <>
             <div className="main-content">
@@ -17,4 +29,10 @@ const InicioPage = () => {
     )
 };
 
-export default InicioPage;
+const mapStateToProps = null;
+
+const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)( InicioPage );

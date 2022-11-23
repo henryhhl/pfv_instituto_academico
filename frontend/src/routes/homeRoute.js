@@ -167,7 +167,7 @@ const HomeRoute = (props) => {
                 <Route path="/notFound" element={ <InicioPage { ...props } /> }  />
                 <Route path="/login" element={ <LoginPage { ...props } /> }  />
                 <Route path="/" element={<AppMain />}>
-                    <Route index path="/inicio" element={ <InicioPage { ...props } /> }  />
+                    <Route index path="/" element={ <InicioPage { ...props } /> }  />
 
                     <Route index path="/tipo_rol/index" element={ <IndexTipoRol { ...props } /> }  />
                     <Route index path="/tipo_rol/create" element={ <CreateTipoRol { ...props } /> }  />

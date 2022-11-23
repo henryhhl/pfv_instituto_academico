@@ -5,15 +5,16 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CloseOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
-import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import PaperComponent from '../../../../components/paper';
+import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { ProgramaActions } from '../../../../redux/actions/estructuraacademica/programa.action';
-import ListadoDivisionAcademicaModal from '../../estructurainstitucional/divisionacademica/modal/division-academica_listado.modal';
 import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
-import ListadoModalidadAcademicaModal from '../../parametro/modalidad/modal/modalidad_academica_listado.modal';
-import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
 import ListadoUnidadAcademicaModal from '../unidadacademica/modal/unidad_academica_listado.modal';
+import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
+import ListadoModalidadAcademicaModal from '../../parametro/modalidad/modal/modalidad_academica_listado.modal';
+import ListadoDivisionAcademicaModal from '../../estructurainstitucional/divisionacademica/modal/division-academica_listado.modal';
 
 function EditPrograma( props ) {
     const { programa } = props;
@@ -28,15 +29,25 @@ function EditPrograma( props ) {
     const [ visibleMateriaDetalle, setVisibleMateriaDetalle ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onEdit( params.idprograma );
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onEdit( params.idprograma );
+            }
+        } );
+        return () => {};
     }, [] );
 
-    function onBack() {
+    const onLogin = () => {
+        navigate( '/login' );
+    };
+
+    const onBack = () => {
         props.onLimpiar();
         navigate(-1);
     }
 
-    function onComponentUnidadAcademica() {
+    const onComponentUnidadAcademica = () => {
         if ( !visibleUnidadAcademica ) return null;
         return (
             <ListadoUnidadAcademicaModal
@@ -50,7 +61,7 @@ function EditPrograma( props ) {
         );
     };
 
-    function onComponentNivelAcademico() {
+    const onComponentNivelAcademico = () => {
         if ( !visibleNivelAcademico ) return null;
         return (
             <ListadoNivelAcademicoModal
@@ -64,7 +75,7 @@ function EditPrograma( props ) {
         );
     };
 
-    function onComponentmodalidadAcademica() {
+    const onComponentmodalidadAcademica = () => {
         if ( !visibleModalidadAcademica ) return null;
         return (
             <ListadoModalidadAcademicaModal
@@ -417,6 +428,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onEdit: ProgramaActions.onEdit,
     onLimpiar: ProgramaActions.onLimpiar,
     setCodigo: ProgramaActions.setCodigo,

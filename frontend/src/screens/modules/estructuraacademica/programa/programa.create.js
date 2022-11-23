@@ -7,12 +7,13 @@ import { CloseOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
+import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { ProgramaActions } from '../../../../redux/actions/estructuraacademica/programa.action';
+import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
 import ListadoUnidadAcademicaModal from '../unidadacademica/modal/unidad_academica_listado.modal';
 import ListadoNivelAcademicoModal from '../../parametro/nivelacademico/modal/nivel_academico_listado.modal';
 import ListadoModalidadAcademicaModal from '../../parametro/modalidad/modal/modalidad_academica_listado.modal';
 import ListadoDivisionAcademicaModal from '../../estructurainstitucional/divisionacademica/modal/division-academica_listado.modal';
-import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
 
 function CreatePrograma( props ) {
     const { programa } = props;
@@ -26,9 +27,18 @@ function CreatePrograma( props ) {
     const [ visibleMateriaDetalle, setVisibleMateriaDetalle ] = React.useState(false);
 
     React.useEffect( () => {
-        props.onCreate();
+        props.onLimpiar();
+        props.onValidateToken( onLogin ).then( (item) => {
+            if ( item?.resp === 1 ) {
+                props.onCreate();
+            }
+        } );
         return () => {};
     }, [] );
+
+    const onLogin = () => {
+        navigate( '/login' );
+    };
 
     const onBack = () => {
         props.onLimpiar();
@@ -403,6 +413,7 @@ const mapStateToProps = ( state ) => ( {
 } );
 
 const mapDispatchToProps = {
+    onValidateToken: AuthActions.onValidateToken,
     onCreate: ProgramaActions.onCreate,
     onLimpiar: ProgramaActions.onLimpiar,
     onChange: ProgramaActions.onChange,

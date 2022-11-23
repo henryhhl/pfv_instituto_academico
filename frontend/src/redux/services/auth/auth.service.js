@@ -45,7 +45,25 @@ const onRegister = async (body) => {
     } );
 };
 
+const onValidateToken = async (body) => {
+    return await httpRequest('get', apiServices.apiauth_validateToken, {
+    } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            // toastr.success( 'Se registro exitosamente.', '', { closeButton: true, progressBar: true, } );
+        } else if ( respta.error === true && respta.resp === -2 ) {
+            Swal.fire( {
+                position: 'top-end', icon: 'warning',
+                title: 'Usuario no Autorizado',
+                text: respta.message, showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
+        return respta;
+    } );
+};
+
 export const AuthService = {
     onLogin,
     onRegister,
+    onValidateToken,
 };
