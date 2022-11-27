@@ -28,9 +28,9 @@ export default function SidebarComponent() {
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
                 <div className="sidebar-brand">
-                    <a href="index.html">
+                    <Link to={"/"}>
                         SolverTic SRL
-                    </a>
+                    </Link>
                 </div>
                 <div className="sidebar-user">
                     <div className="sidebar-user-picture">
@@ -46,10 +46,53 @@ export default function SidebarComponent() {
                 <ul className="sidebar-menu">
                     <li className="menu-header">Dashboard</li>
                     <li className="active">
-                        <a href="index.html"><i className="ion ion-speedometer"></i><span>Dashboard</span></a>
+                        <Link to={"/"}>
+                            <i className="ion ion-speedometer"></i><span>Dashboard</span>
+                        </Link>
                     </li>
 
                     <li className="menu-header">Componentes</li>
+
+                    <li className={`${ (subMenu.ofertaacademica.active === true ) && 'active' }`}>
+                        <a href="#" className="has-dropdown pl-3"
+                            onClick={ (evt) => {
+                                evt.preventDefault();
+                                subMenu.ofertaacademica.active = !subMenu.ofertaacademica.active;
+                                setSubMenu( { ...subMenu } );
+                            } }
+                        >
+                            <i className="ion ion-ios-albums-outline"></i>
+                            <span style={{ fontSize: 13, }}>Oferta Academica</span>
+                        </a>
+                        <ul className="menu-dropdown">
+                            <li>
+                                <Link to={"/curso/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Curso
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/aperturacierrecurso/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Apertura Cierre Curso
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/cierrecurso/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Cerrar Curso
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/curso_horario/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Horario
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/motivoaperturacierrecurso/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Motivo Apertura Cierre
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li className={`${ (subMenu.persona.active === true ) && 'active' }`}>
                         <a href="#" className="has-dropdown pl-3"
                             onClick={ (evt) => {

@@ -92,6 +92,12 @@ export default function TableComponent( props ) {
                                                     </Tag> : 
                                                     Array.isArray( column.id ) ? 
                                                         showDataArray(column.id, row)
+                                                    : column.tipooperacion === true ?
+                                                        <Tag color={`${ row[column.id] === 'A' ? 'geekblue' : '' }`}>
+                                                            { `${ row[column.id] === 'A' ? 
+                                                                'Aperturado' : row[column.id] === 'N' ? 'Sin Aperturar o Cerrar' : 'Cerrado' 
+                                                            }` }
+                                                        </Tag>
                                                     : row[column.id] 
                                                 }
                                             </td>

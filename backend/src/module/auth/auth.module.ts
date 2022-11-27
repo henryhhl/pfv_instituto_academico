@@ -32,7 +32,7 @@ import { Usuario } from '../seguridad/usuario/entities/usuario.entity';
         return {
           secret: configService.get('JWT_SECRET') || 'E5T0EsUnCodigoS3CR3T0',
           signOptions: {
-            expiresIn: '2h',
+            expiresIn: '8h',
           },
         };
       },

@@ -9,3 +9,20 @@ export const EstadoData = [
         title: 'InActivo',
     },
 ];
+
+export const TipoOperacionData = [
+    {
+        value: 'N',
+        title: 'Ninguno',
+    },
+    {
+        value: 'A',
+        title: 'Aperturar',
+    },
+    {
+        value: 'C',
+        title: 'Cerrar',
+    },
+];
+
+

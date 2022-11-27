@@ -36,6 +36,10 @@ const ListModules = {
     listEstudiante: [],
     listAdministrativo: [],
     listCategoriaDocumento: [],
+
+
+    listCurso: [],
+    listMotivoAperturaCierreCurso: [],
 };
 
 export default ListModules;

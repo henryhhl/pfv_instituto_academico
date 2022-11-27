@@ -46,6 +46,9 @@ import { AdministrativoModule } from './module/persona/administrativo/administra
 import { CategoriaDocumentoModule } from './module/persona/categoriadocumento/categoriadocumento.module';
 import { AuthModule } from './module/auth/auth.module';
 import { EstudianteModule } from './module/persona/estudiante/estudiante.module';
+import { CursoModule } from './module/ofertaacademica/curso/curso.module';
+import { MotivoAperturaCierreCursoModule } from './module/ofertaacademica/motivoaperturacierrecurso/motivoaperturacierrecurso.module';
+import { GrupoModule } from './module/ofertaacademica/grupo/grupo.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -98,7 +101,7 @@ import { EstudianteModule } from './module/persona/estudiante/estudiante.module'
     ResponsablereferenciacontactodetalleModule, CommonModule, TurnoModule, AulaModule, 
     DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, 
     TipoIdentificacionModule, CargoModule, AdministrativoModule, CategoriaDocumentoModule, 
-    AuthModule, EstudianteModule,
+    AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule,
   ],
   controllers: [],
   providers: [],

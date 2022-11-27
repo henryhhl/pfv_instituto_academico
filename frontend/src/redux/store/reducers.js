@@ -44,6 +44,9 @@ import { EstudianteReducer } from '../reducers/persona/estudiante.reducer';
 import { LoginReducer } from '../reducers/auth/login.reducer';
 import { SesionReducer } from '../reducers/sesion.reducer';
 import { RegisterReducer } from '../reducers/auth/register.reducer';
+import { CursoReducer } from '../reducers/ofertaacademica/curso.reducer';
+import { CursoHorarioReducer } from '../reducers/ofertaacademica/curso_horario.reducer';
+import { MotivoAperturaCierreCursoReducer } from '../reducers/ofertaacademica/motivoaperturacierrecurso.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -91,6 +94,10 @@ const RootReducer = combineReducers( {
     Docente: DocenteReducer,
     Estudiante: EstudianteReducer,
     TipoIdentificacion: TipoIdentificacionReducer,
+
+    Curso: CursoReducer,
+    CursoHorario: CursoHorarioReducer,
+    MotivoAperturaCierreCurso: MotivoAperturaCierreCursoReducer,
 } );
 
 export default RootReducer;

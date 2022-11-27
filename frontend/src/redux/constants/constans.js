@@ -238,6 +238,27 @@ const Constants = {
     administrativo_onDeleteRowCategoriaDocumento: "[ON DELETE ROW CATEGORIA DOCUMENTO] Administrativo",
     administrativo_onAddRowEstudio: "[ON ADD ROW ESTUDIO] Administrativo",
     administrativo_onDeleteRowEstudio: "[ON DELETE ROW ESTUDIO] Administrativo",
+
+
+    curso_setInit: "[SET INIT] Curso",
+    curso_onChange: "[ON CHANGE] Curso",
+    curso_onCreate: "[ON CREATE] Curso",
+    curso_onShow: "[ON SHOW] Curso",
+    curso_onLimpiar: "[ON LIMPIAR] Curso",
+    curso_onAddRowDocente: "[ON ADD ROW DOCENTE] Curso",
+    curso_onDeleteRowDocente: "[ON DELETE ROW DOCENTE] Curso",
+
+    cursohorario_onChange: "[ON CHANGE] Curso Horario",
+    cursohorario_onLimpiar: "[ON LIMPIAR] Curso Horario",
+    cursohorario_onAddRowHorario: "[ON ADD ROW HORARIO] Curso Horario",
+    cursohorario_onDeleteRowHorario: "[ON DELETE ROW HORARIO] Curso Horario",
+
+    motivoaperturacierrecurso_setInit: "[SET INIT] Motivo Apertura Cierre Curso",
+    motivoaperturacierrecurso_onChange: "[ON CHANGE] Motivo Apertura Cierre Curso",
+    motivoaperturacierrecurso_onCreate: "[ON CREATE] Motivo Apertura Cierre Curso",
+    motivoaperturacierrecurso_onShow: "[ON SHOW] Motivo Apertura Cierre Curso",
+    motivoaperturacierrecurso_onLimpiar: "[ON LIMPIAR] Motivo Apertura Cierre Curso",
+
 };
 
 export default Constants;

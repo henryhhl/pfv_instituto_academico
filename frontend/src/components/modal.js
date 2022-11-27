@@ -1,14 +1,14 @@
 
 import React from 'react';
-import PropTypes from 'prop-types';
-// import Draggable from 'react-draggable';
 import { Modal } from 'antd';
+import PropTypes from 'prop-types';
+import Draggable from 'react-draggable';
 import { CloseOutlined } from '@ant-design/icons';
 
 function ModalComponent( props ) {
     const [ draggable, setDraggable ] = React.useState( false );
-    // const [ bounds, setBounds ] = React.useState( { left: 0, top: 0, bottom: 0, right: 0, } );
-    // const draggleRef = React.useRef(null);
+    const [ bounds, setBounds ] = React.useState( { left: 0, top: 0, bottom: 0, right: 0, } );
+    const draggleRef = React.useRef(null);
 
     let bodyStyle = { padding: '2px 3px 6px 3px', paddingLeft: 8, paddingRight: 8, };
     bodyStyle = Object.assign( bodyStyle, props.bodyStyle );
@@ -28,38 +28,38 @@ function ModalComponent( props ) {
                 maskClosable={ props.maskClosable }
                 closable={ props.closable }
 
-                // modalRender={
-                //     ( modal ) => {
-                //         return (
-                //             <Draggable
-                //                 disabled={ draggable }
-                //                 bounds={ bounds }
-                //                 onStart={ ( event, uiData ) => {
-                //                     const { clientWidth, clientHeight } = window?.document?.documentElement;
-                //                     const targetRect = draggleRef?.current?.getBoundingClientRect();
-                //                     if (!targetRect) {
-                //                         return;
-                //                     }
-                //                     setBounds( {
-                //                         left:   -targetRect?.left + uiData?.x,
-                //                         right:  clientWidth       - ( targetRect?.right - uiData?.x ),
-                //                         top:    -targetRect?.top  + uiData?.y,
-                //                         bottom: clientHeight      - ( targetRect?.bottom - uiData?.y ),
-                //                     } );
-                //                 } }
-                //             >
-                //                 <div ref={ draggleRef }>
-                //                     { modal }
-                //                 </div>
-                //             </Draggable>
-                //         );
-                //     }
-                // }
+                modalRender={
+                    ( modal ) => {
+                        return (
+                            <Draggable
+                                disabled={ draggable }
+                                bounds={ bounds }
+                                onStart={ ( event, uiData ) => {
+                                    const { clientWidth, clientHeight } = window?.document?.documentElement;
+                                    const targetRect = draggleRef?.current?.getBoundingClientRect();
+                                    if (!targetRect) {
+                                        return;
+                                    }
+                                    setBounds( {
+                                        left:   -targetRect?.left + uiData?.x,
+                                        right:  clientWidth       - ( targetRect?.right - uiData?.x ),
+                                        top:    -targetRect?.top  + uiData?.y,
+                                        bottom: clientHeight      - ( targetRect?.bottom - uiData?.y ),
+                                    } );
+                                } }
+                            >
+                                <div ref={ draggleRef }>
+                                    { modal }
+                                </div>
+                            </Draggable>
+                        );
+                    }
+                }
                 title={
                     <div
                         style={ {
                             width: '100%', minWidth: '100%', 
-                            // cursor: 'move',
+                            cursor: 'move',
                         } }
                         onMouseOver={ () => {
                             if ( draggable ) {

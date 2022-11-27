@@ -10,12 +10,26 @@ export default function HeaderComponent() {
         <nav className="navbar navbar-expand-lg main-navbar">
             <form className="form-inline mr-auto">
                 <ul className="navbar-nav mr-3">
-                    <li><a href="#" data-toggle="sidebar" className="nav-link nav-link-lg">
-                        <i className="ion ion-navicon-round"></i>
-                    </a></li>
-                    <li><a href="#" data-toggle="search" className="nav-link nav-link-lg d-sm-none">
-                        <i className="ion ion-search"></i></a>
+                    <li>
+                        <a href="#" data-toggle="sidebar" className="nav-link nav-link-lg" 
+                            onClick={ (evt) => {
+                                evt.preventDefault();
+                                let body = document.querySelector('body');
+                                if ( body.className === "sidebar-show" ) {
+                                    body.className = "";
+                                    body.className = "sidebar-gone";
+                                } else {
+                                    body.className = "";
+                                    body.className = "sidebar-show";
+                                }
+                            } }
+                        >
+                            <i className="ion ion-navicon-round"></i>
+                        </a>
                     </li>
+                    {/* <li><a href="#" data-toggle="search" className="nav-link nav-link-lg d-sm-none">
+                        <i className="ion ion-search"></i></a>
+                    </li> */}
                 </ul>
             </form>
             <ul className="navbar-nav navbar-right">

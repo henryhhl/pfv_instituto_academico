@@ -875,7 +875,7 @@ const ColumnModules = {
     columnAdministrativo: [
         {
             id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
-            label: 'Docente',
+            label: 'Administrativo',
             numeric: false,
             visible: true,
             width: null,
@@ -918,7 +918,7 @@ const ColumnModules = {
     columnEstudiante: [
         {
             id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
-            label: 'Docente',
+            label: 'Estudiante',
             numeric: false,
             visible: true,
             width: null,
@@ -976,6 +976,102 @@ const ColumnModules = {
             state: true,
         },
     ],
+
+
+    columnCurso: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Curso',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'materia',
+            label: 'Materia',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'turno',
+            label: 'Turno',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'modalidadacademica',
+            label: 'Modalidad',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'gestionperiodo',
+            label: 'Periodo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estadoproceso',
+            label: 'Tipo Op.',
+            numeric: false,
+            visible: true,
+            width: null,
+            tipooperacion: true,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+    columnMotivoAperturaCierreCurso: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Motivo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
 };
 
 export default ColumnModules;

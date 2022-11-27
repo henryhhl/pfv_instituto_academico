@@ -1,6 +1,21 @@
 
 const PaginationModule = {
 
+    listCurso: [],
+    pageCurso: 1,
+    paginateCurso: 1,
+    paginationCurso: {
+        total: 0,
+    },
+
+    listMotivoAperturaCierreCurso: [],
+    pageMotivoAperturaCierreCurso: 1,
+    paginateMotivoAperturaCierreCurso: 1,
+    paginationMotivoAperturaCierreCurso: {
+        total: 0,
+    },
+
+
     listAdministrativo: [],
     pageAdministrativo: 1,
     paginateAdministrativo: 1,

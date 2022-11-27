@@ -158,6 +158,23 @@ import CreateAdministrativo from '../screens/modules/persona/administrativo/admi
 import ShowAdministrativo from '../screens/modules/persona/administrativo/administrativo.show';
 import EditAdministrativo from '../screens/modules/persona/administrativo/administrativo.edit';
 
+
+import IndexCurso from '../screens/modules/ofertaacademica/curso/curso.index';
+import CreateCurso from '../screens/modules/ofertaacademica/curso/curso.create';
+import ShowCurso from '../screens/modules/ofertaacademica/curso/curso.show';
+import EditCurso from '../screens/modules/ofertaacademica/curso/curso.edit';
+
+import IndexCursoHorario from '../screens/modules/ofertaacademica/horario/horario.index';
+
+import IndexMotivoAperturaCierreCurso from '../screens/modules/ofertaacademica/motivoaperturacierrecurso/motivoaperturacierrecurso.index';
+import CreateMotivoAperturaCierreCurso from '../screens/modules/ofertaacademica/motivoaperturacierrecurso/motivoaperturacierrecurso.create';
+import ShowMotivoAperturaCierreCurso from '../screens/modules/ofertaacademica/motivoaperturacierrecurso/motivoaperturacierrecurso.show';
+import EditMotivoAperturaCierreCurso from '../screens/modules/ofertaacademica/motivoaperturacierrecurso/motivoaperturacierrecurso.edit';
+
+import IndexAperturaCierreCurso from '../screens/modules/ofertaacademica/aperturacierrecurso/aperturacierrecurso.index';
+
+import IndexCierreCurso from '../screens/modules/ofertaacademica/cierrecurso/cierrecurso.index';
+
 import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
@@ -321,6 +338,23 @@ const HomeRoute = (props) => {
                     <Route index path="/categoriadocumento/create" element={ <CreateCategoriaDocumento { ...props } /> }  />
                     <Route index path="/categoriadocumento/edit/:idcategoriadocumento" element={ <EditCategoriaDocumento { ...props } /> }  />
                     <Route index path="/categoriadocumento/show/:idcategoriadocumento" element={ <ShowCategoriaDocumento { ...props } /> }  />
+
+
+                    <Route index path="/curso/index" element={ <IndexCurso { ...props } /> }  />
+                    <Route index path="/curso/create" element={ <CreateCurso { ...props } /> }  />
+                    <Route index path="/curso/edit/:idcurso" element={ <EditCurso { ...props } /> }  />
+                    <Route index path="/curso/show/:idcurso" element={ <ShowCurso { ...props } /> }  />
+
+                    <Route index path="/curso_horario/index" element={ <IndexCursoHorario { ...props } /> }  />
+
+                    <Route index path="/motivoaperturacierrecurso/index" element={ <IndexMotivoAperturaCierreCurso { ...props } /> }  />
+                    <Route index path="/motivoaperturacierrecurso/create" element={ <CreateMotivoAperturaCierreCurso { ...props } /> }  />
+                    <Route index path="/motivoaperturacierrecurso/edit/:idmotivoaperturacierrecurso" element={ <EditMotivoAperturaCierreCurso { ...props } /> }  />
+                    <Route index path="/motivoaperturacierrecurso/show/:idmotivoaperturacierrecurso" element={ <ShowMotivoAperturaCierreCurso { ...props } /> }  />
+
+                    <Route index path="/aperturacierrecurso/index" element={ <IndexAperturaCierreCurso { ...props } /> }  />
+
+                    <Route index path="/cierrecurso/index" element={ <IndexCierreCurso { ...props } /> }  />
 
                     <Route
                         path='*'

@@ -12,6 +12,7 @@ const module = {
     estructuraacademica: linkBackend + '',
     estructurainstitucional: linkBackend + '',
     persona: linkBackend + '',
+    ofertaacademica: linkBackend + '',
 };
 
 const apiServices = {
@@ -274,6 +275,25 @@ const apiServices = {
     apipersonaadministrativo_show:   `${module.persona}/administrativo/show`,
     apipersonaadministrativo_update: `${module.persona}/administrativo/update`,
     apipersonaadministrativo_delete: `${module.persona}/administrativo/delete`,
+
+
+    apiofertaacademicacurso_index:  `${module.ofertaacademica}/curso/index`,
+    apiofertaacademicacurso_create: `${module.ofertaacademica}/curso/create`,
+    apiofertaacademicacurso_store:  `${module.ofertaacademica}/curso/store`,
+    apiofertaacademicacurso_edit:   `${module.ofertaacademica}/curso/edit`,
+    apiofertaacademicacurso_show:   `${module.ofertaacademica}/curso/show`,
+    apiofertaacademicacurso_update: `${module.ofertaacademica}/curso/update`,
+    apiofertaacademicacurso_delete: `${module.ofertaacademica}/curso/delete`,
+    apiofertaacademicacurso_aperturarcerrarcurso: `${module.ofertaacademica}/curso/aperturarcerrarcurso`,
+    apiofertaacademicacurso_cierrecurso: `${module.ofertaacademica}/curso/cierrecurso`,
+
+    apiofertaacademicamotivoaperturacierrecurso_index:  `${module.ofertaacademica}/motivoaperturacierrecurso/index`,
+    apiofertaacademicamotivoaperturacierrecurso_create: `${module.ofertaacademica}/motivoaperturacierrecurso/create`,
+    apiofertaacademicamotivoaperturacierrecurso_store:  `${module.ofertaacademica}/motivoaperturacierrecurso/store`,
+    apiofertaacademicamotivoaperturacierrecurso_edit:   `${module.ofertaacademica}/motivoaperturacierrecurso/edit`,
+    apiofertaacademicamotivoaperturacierrecurso_show:   `${module.ofertaacademica}/motivoaperturacierrecurso/show`,
+    apiofertaacademicamotivoaperturacierrecurso_update: `${module.ofertaacademica}/motivoaperturacierrecurso/update`,
+    apiofertaacademicamotivoaperturacierrecurso_delete: `${module.ofertaacademica}/motivoaperturacierrecurso/delete`,
 };
 
 export default apiServices;
