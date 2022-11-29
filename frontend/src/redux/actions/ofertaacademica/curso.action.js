@@ -388,6 +388,18 @@ const onGrabar = ( curso, onBack ) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === 0 ) {
+                    Swal.fire( {
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'No se pudo registrar.',
+                        text: result.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                    } );
+                    curso.error.sigla   = true;
+                    curso.message.sigla = "Sigla ya existente.";
+                    dispatch( onChange(curso) );
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );
@@ -417,6 +429,18 @@ const onUpdate = ( curso, onBack ) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
                     onBack();
+                } else if ( result.resp === 0 ) {
+                    Swal.fire( {
+                        position: 'top-end',
+                        icon: 'warning',
+                        title: 'No se pudo actualizar.',
+                        text: result.message,
+                        showConfirmButton: false,
+                        timer: 3000,
+                    } );
+                    curso.error.sigla   = true;
+                    curso.message.sigla = "Sigla ya existente.";
+                    dispatch( onChange(curso) );
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );

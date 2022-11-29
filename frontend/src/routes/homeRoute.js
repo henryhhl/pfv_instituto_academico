@@ -175,6 +175,11 @@ import IndexAperturaCierreCurso from '../screens/modules/ofertaacademica/apertur
 
 import IndexCierreCurso from '../screens/modules/ofertaacademica/cierrecurso/cierrecurso.index';
 
+import IndexGrupo from '../screens/modules/ofertaacademica/grupo/grupo.index';
+import CreateGrupo from '../screens/modules/ofertaacademica/grupo/grupo.create';
+import ShowGrupo from '../screens/modules/ofertaacademica/grupo/grupo.show';
+import EditGrupo from '../screens/modules/ofertaacademica/grupo/grupo.edit';
+
 import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
@@ -355,6 +360,11 @@ const HomeRoute = (props) => {
                     <Route index path="/aperturacierrecurso/index" element={ <IndexAperturaCierreCurso { ...props } /> }  />
 
                     <Route index path="/cierrecurso/index" element={ <IndexCierreCurso { ...props } /> }  />
+
+                    <Route index path="/grupo/index" element={ <IndexGrupo { ...props } /> }  />
+                    <Route index path="/grupo/create" element={ <CreateGrupo { ...props } /> }  />
+                    <Route index path="/grupo/edit/:idgrupo" element={ <EditGrupo { ...props } /> }  />
+                    <Route index path="/grupo/show/:idgrupo" element={ <ShowGrupo { ...props } /> }  />
 
                     <Route
                         path='*'

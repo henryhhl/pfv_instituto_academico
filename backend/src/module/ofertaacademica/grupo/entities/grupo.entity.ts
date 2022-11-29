@@ -1,10 +1,20 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { GrupoPensumMateriaDetalle } from './grupopensummateria.entity';
 
 @Entity('grupo')
 export class Grupo {
 
     @PrimaryGeneratedColumn( 'uuid' )
     idgrupo: string;
+
+
+    @OneToMany(
+        () => GrupoPensumMateriaDetalle,
+        ( grupoPensumMateriaDetalle ) => grupoPensumMateriaDetalle.fkidgrupo,
+        { cascade: true, },
+    )
+    arraygrupopensummateriadetalle?: GrupoPensumMateriaDetalle[];
+
 
     @Column( 'text', {
         unique: false,

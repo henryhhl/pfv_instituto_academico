@@ -39,7 +39,7 @@ export default function SidebarComponent() {
                     <div className="sidebar-user-details">
                         <div className="user-name">Ericka Lopez</div>
                         <div className="user-role">
-                            Administrator
+                            Administrador
                         </div>
                     </div>
                 </div>
@@ -65,6 +65,11 @@ export default function SidebarComponent() {
                             <span style={{ fontSize: 13, }}>Oferta Academica</span>
                         </a>
                         <ul className="menu-dropdown">
+                            <li>
+                                <Link to={"/grupo/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Grupo
+                                </Link>
+                            </li>
                             <li>
                                 <Link to={"/curso/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Curso

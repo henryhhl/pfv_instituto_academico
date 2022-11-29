@@ -88,6 +88,13 @@ export class CursoService {
   async store( createCursoDto: CreateCursoDto ) {
     try {
       const { arraydocente, ...toCreate } = createCursoDto;
+      const existsCurso = await this.existsSigla( toCreate.sigla );
+      if ( existsCurso === true ) {
+        return {
+          resp: 0, error: false,
+          message: 'Sigla ya existente, favor ingresar uno nuevo.',
+        };
+      } 
       const curso = this.cursoRepository.create( {
         ...toCreate,
         arraydocente: arraydocente?.filter( 
@@ -113,6 +120,14 @@ export class CursoService {
         message: 'Hubo conflictos al insertar información con el servidor.',
       };
     }
+  }
+
+  private async existsSigla(sigla: string) {
+    const curso = await this.cursoRepository.findOne( {
+      where: { sigla: sigla, },
+      order: { created_at: 'DESC', },
+    } );
+    return curso ? true : false;
   }
 
   async findOne(idcurso: string) {
@@ -184,6 +199,17 @@ export class CursoService {
           resp: 0, error: false,
           message: 'Curso no existe.',
         };
+      }
+      if ( curso.sigla !== updateCursoDto.sigla ) {
+        const existsCurso = await this.existsSigla( updateCursoDto.sigla );
+        if ( existsCurso === true ) {
+          await queryRunner.rollbackTransaction();
+          await queryRunner.release();
+          return {
+            resp: 0, error: false,
+            message: 'Sigla ya existente, favor ingresar uno nuevo.',
+          };
+        } 
       }
       const { arraydocente, ...toUpdate } = updateCursoDto;
       const cursoPreLoad = await this.cursoRepository.preload( {

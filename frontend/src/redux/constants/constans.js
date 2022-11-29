@@ -259,6 +259,14 @@ const Constants = {
     motivoaperturacierrecurso_onShow: "[ON SHOW] Motivo Apertura Cierre Curso",
     motivoaperturacierrecurso_onLimpiar: "[ON LIMPIAR] Motivo Apertura Cierre Curso",
 
+    grupo_setInit: "[SET INIT] Grupo",
+    grupo_onChange: "[ON CHANGE] Grupo",
+    grupo_onCreate: "[ON CREATE] Grupo",
+    grupo_onShow: "[ON SHOW] Grupo",
+    grupo_onLimpiar: "[ON LIMPIAR] Grupo",
+    grupo_onAddRowPensum: "[ON ADD ROW PENSUM] Grupo",
+    grupo_onDeleteRowPensum: "[ON DELETE ROW PENSUM] Grupo",
+
 };
 
 export default Constants;

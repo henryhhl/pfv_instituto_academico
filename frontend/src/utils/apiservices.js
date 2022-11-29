@@ -294,6 +294,14 @@ const apiServices = {
     apiofertaacademicamotivoaperturacierrecurso_show:   `${module.ofertaacademica}/motivoaperturacierrecurso/show`,
     apiofertaacademicamotivoaperturacierrecurso_update: `${module.ofertaacademica}/motivoaperturacierrecurso/update`,
     apiofertaacademicamotivoaperturacierrecurso_delete: `${module.ofertaacademica}/motivoaperturacierrecurso/delete`,
+
+    apiofertaacademicagrupo_index:  `${module.ofertaacademica}/grupo/index`,
+    apiofertaacademicagrupo_create: `${module.ofertaacademica}/grupo/create`,
+    apiofertaacademicagrupo_store:  `${module.ofertaacademica}/grupo/store`,
+    apiofertaacademicagrupo_edit:   `${module.ofertaacademica}/grupo/edit`,
+    apiofertaacademicagrupo_show:   `${module.ofertaacademica}/grupo/show`,
+    apiofertaacademicagrupo_update: `${module.ofertaacademica}/grupo/update`,
+    apiofertaacademicagrupo_delete: `${module.ofertaacademica}/grupo/delete`,
 };
 
 export default apiServices;

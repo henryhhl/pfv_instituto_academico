@@ -4,13 +4,14 @@ import { GrupoService } from './grupo.service';
 import { Grupo } from './entities/grupo.entity';
 import { AuthModule } from '../../auth/auth.module';
 import { GrupoController } from './grupo.controller';
+import { GrupoPensumMateriaDetalle } from './entities/grupopensummateria.entity';
 
 @Module({
   controllers: [GrupoController],
   providers: [GrupoService],
   imports: [
     TypeOrmModule.forFeature( [
-      Grupo,
+      Grupo, GrupoPensumMateriaDetalle,
     ] ),
     AuthModule,
   ],

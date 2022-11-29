@@ -15,6 +15,13 @@ const PaginationModule = {
         total: 0,
     },
 
+    listGrupo: [],
+    pageGrupo: 1,
+    paginateGrupo: 1,
+    paginationGrupo: {
+        total: 0,
+    },
+
 
     listAdministrativo: [],
     pageAdministrativo: 1,

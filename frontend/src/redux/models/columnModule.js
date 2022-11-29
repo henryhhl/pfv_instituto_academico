@@ -977,6 +977,25 @@ const ColumnModules = {
         },
     ],
 
+    columnGrupo: [
+        {
+            id: 'sigla',
+            label: 'Grupo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
 
     columnCurso: [
         {

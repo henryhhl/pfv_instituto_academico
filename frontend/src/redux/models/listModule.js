@@ -40,6 +40,7 @@ const ListModules = {
 
     listCurso: [],
     listMotivoAperturaCierreCurso: [],
+    listGrupo: [],
 };
 
 export default ListModules;
