@@ -13,6 +13,7 @@ const module = {
     estructurainstitucional: linkBackend + '',
     persona: linkBackend + '',
     ofertaacademica: linkBackend + '',
+    oportunidad: linkBackend + '',
 };
 
 const apiServices = {
@@ -135,14 +136,6 @@ const apiServices = {
     apiparametrosadminciudad_show:   `${module.parametros}/ciudad/show`,
     apiparametrosadminciudad_update: `${module.parametros}/ciudad/update`,
     apiparametrosadminciudad_delete: `${module.parametros}/ciudad/delete`,
-
-    apiparametrosadminreferenciacontacto_index:  `${module.parametros}/referenciacontacto/index`,
-    apiparametrosadminreferenciacontacto_create: `${module.parametros}/referenciacontacto/create`,
-    apiparametrosadminreferenciacontacto_store:  `${module.parametros}/referenciacontacto/store`,
-    apiparametrosadminreferenciacontacto_edit:   `${module.parametros}/referenciacontacto/edit`,
-    apiparametrosadminreferenciacontacto_show:   `${module.parametros}/referenciacontacto/show`,
-    apiparametrosadminreferenciacontacto_update: `${module.parametros}/referenciacontacto/update`,
-    apiparametrosadminreferenciacontacto_delete: `${module.parametros}/referenciacontacto/delete`,
 
     apiestructuraacademicaunidadadministrativa_index:  `${module.estructuraacademica}/unidadadministrativa/index`,
     apiestructuraacademicaunidadadministrativa_create: `${module.estructuraacademica}/unidadadministrativa/create`,
@@ -302,6 +295,32 @@ const apiServices = {
     apiofertaacademicagrupo_show:   `${module.ofertaacademica}/grupo/show`,
     apiofertaacademicagrupo_update: `${module.ofertaacademica}/grupo/update`,
     apiofertaacademicagrupo_delete: `${module.ofertaacademica}/grupo/delete`,
+
+
+
+    apioportunidadtipoactividad_index:  `${module.oportunidad}/tipoactividad/index`,
+    apioportunidadtipoactividad_create: `${module.oportunidad}/tipoactividad/create`,
+    apioportunidadtipoactividad_store:  `${module.oportunidad}/tipoactividad/store`,
+    apioportunidadtipoactividad_edit:   `${module.oportunidad}/tipoactividad/edit`,
+    apioportunidadtipoactividad_show:   `${module.oportunidad}/tipoactividad/show`,
+    apioportunidadtipoactividad_update: `${module.oportunidad}/tipoactividad/update`,
+    apioportunidadtipoactividad_delete: `${module.oportunidad}/tipoactividad/delete`,
+
+    apioportunidadtipomediopublicitario_index:  `${module.oportunidad}/tipomediopublicitario/index`,
+    apioportunidadtipomediopublicitario_create: `${module.oportunidad}/tipomediopublicitario/create`,
+    apioportunidadtipomediopublicitario_store:  `${module.oportunidad}/tipomediopublicitario/store`,
+    apioportunidadtipomediopublicitario_edit:   `${module.oportunidad}/tipomediopublicitario/edit`,
+    apioportunidadtipomediopublicitario_show:   `${module.oportunidad}/tipomediopublicitario/show`,
+    apioportunidadtipomediopublicitario_update: `${module.oportunidad}/tipomediopublicitario/update`,
+    apioportunidadtipomediopublicitario_delete: `${module.oportunidad}/tipomediopublicitario/delete`,
+
+    apioportunidadtipocontacto_index:  `${module.parametros}/referenciacontacto/index`,
+    apioportunidadtipocontacto_create: `${module.parametros}/referenciacontacto/create`,
+    apioportunidadtipocontacto_store:  `${module.parametros}/referenciacontacto/store`,
+    apioportunidadtipocontacto_edit:   `${module.parametros}/referenciacontacto/edit`,
+    apioportunidadtipocontacto_show:   `${module.parametros}/referenciacontacto/show`,
+    apioportunidadtipocontacto_update: `${module.parametros}/referenciacontacto/update`,
+    apioportunidadtipocontacto_delete: `${module.parametros}/referenciacontacto/delete`,
 };
 
 export default apiServices;

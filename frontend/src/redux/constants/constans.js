@@ -100,12 +100,6 @@ const Constants = {
     ciudad_onShow: "[ON SHOW] Ciudad",
     ciudad_onLimpiar: "[ON LIMPIAR] Ciudad",
 
-    referenciaContacto_setInit: "[SET INIT] Referencia Contacto",
-    referenciaContacto_onChange: "[ON CHANGE] Referencia Contacto",
-    referenciaContacto_onCreate: "[ON CREATE] Referencia Contacto",
-    referenciaContacto_onShow: "[ON SHOW] Referencia Contacto",
-    referenciaContacto_onLimpiar: "[ON LIMPIAR] Referencia Contacto",
-
     unidadadministrativa_setInit: "[SET INIT] Unidad Administtrativa",
     unidadadministrativa_onChange: "[ON CHANGE] Unidad Administtrativa",
     unidadadministrativa_onCreate: "[ON CREATE] Unidad Administtrativa",
@@ -266,6 +260,24 @@ const Constants = {
     grupo_onLimpiar: "[ON LIMPIAR] Grupo",
     grupo_onAddRowPensum: "[ON ADD ROW PENSUM] Grupo",
     grupo_onDeleteRowPensum: "[ON DELETE ROW PENSUM] Grupo",
+
+    tipoactividad_setInit: "[SET INIT] Tipo Actividad",
+    tipoactividad_onChange: "[ON CHANGE] Tipo Actividad",
+    tipoactividad_onCreate: "[ON CREATE] Tipo Actividad",
+    tipoactividad_onShow: "[ON SHOW] Tipo Actividad",
+    tipoactividad_onLimpiar: "[ON LIMPIAR] Tipo Actividad",
+
+    tipomediopublicitario_setInit: "[SET INIT] Tipo Medio Publicitario",
+    tipomediopublicitario_onChange: "[ON CHANGE] Tipo Medio Publicitario",
+    tipomediopublicitario_onCreate: "[ON CREATE] Tipo Medio Publicitario",
+    tipomediopublicitario_onShow: "[ON SHOW] Tipo Medio Publicitario",
+    tipomediopublicitario_onLimpiar: "[ON LIMPIAR] Tipo Medio Publicitario",
+
+    tipocontacto_setInit: "[SET INIT] Tipo Contacto",
+    tipocontacto_onChange: "[ON CHANGE] Tipo Contacto",
+    tipocontacto_onCreate: "[ON CREATE] Tipo Contacto",
+    tipocontacto_onShow: "[ON SHOW] Tipo Contacto",
+    tipocontacto_onLimpiar: "[ON LIMPIAR] Tipo Contacto",
 
 };
 

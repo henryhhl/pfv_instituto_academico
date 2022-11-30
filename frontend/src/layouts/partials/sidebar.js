@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 
 export default function SidebarComponent() {
     const [ subMenu, setSubMenu ] = React.useState( {
+        oportunidad: {
+            active: false,
+        },
         ofertaacademica: {
             active: false,
         },
@@ -52,6 +55,36 @@ export default function SidebarComponent() {
                     </li>
 
                     <li className="menu-header">Componentes</li>
+
+                    <li className={`${ (subMenu.oportunidad.active === true ) && 'active' }`}>
+                        <a href="#" className="has-dropdown pl-3"
+                            onClick={ (evt) => {
+                                evt.preventDefault();
+                                subMenu.oportunidad.active = !subMenu.oportunidad.active;
+                                setSubMenu( { ...subMenu } );
+                            } }
+                        >
+                            <i className="ion ion-ios-albums-outline"></i>
+                            <span style={{ fontSize: 13, }}>Oportunidad</span>
+                        </a>
+                        <ul className="menu-dropdown">
+                            <li>
+                                <Link to={"/tipoactividad/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Actividad
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/tipomediopublicitario/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Medio Publicitario
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/tipocontacto/index"}>
+                                    <i className="ion ion-ios-circle-outline"></i> Tipo Contacto
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
 
                     <li className={`${ (subMenu.ofertaacademica.active === true ) && 'active' }`}>
                         <a href="#" className="has-dropdown pl-3"
@@ -218,11 +251,11 @@ export default function SidebarComponent() {
                                     <i className="ion ion-ios-circle-outline"></i> Pensum
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to={"/responsable/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Responsable
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </li>
                     <li className={`${ (subMenu.parametros.active === true ) && 'active' }`}>
@@ -270,11 +303,6 @@ export default function SidebarComponent() {
                             <li>
                                 <Link to={"/tipomateria/index"}>
                                     <i className="ion ion-ios-circle-outline"></i> Tipo Materia
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={"/referenciacontacto/index"}>
-                                    <i className="ion ion-ios-circle-outline"></i> Referencia Contacto
                                 </Link>
                             </li>
                             <li>

@@ -9,7 +9,6 @@ const ListModules = {
     listTipoMateria: [],
     listMateria: [],
     listTipoCiudad: [],
-    listReferenciaContacto: [],
 
     listRol: [],
     listPermiso: [],
@@ -41,6 +40,11 @@ const ListModules = {
     listCurso: [],
     listMotivoAperturaCierreCurso: [],
     listGrupo: [],
+
+
+    listTipoActividad: [],
+    listTipoMedioPublicitario: [],
+    listTipoContacto: [],
 };
 
 export default ListModules;

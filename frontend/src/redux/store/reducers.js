@@ -23,7 +23,7 @@ import { UnidadNegocioReducer } from '../reducers/parametros/unidad_negocio.redu
 
 import { ProgramaReducer } from '../reducers/estructuraacademica/programa.reducer';
 import { PensumReducer } from '../reducers/estructuraacademica/pensum.reducer';
-import { ReferenciaContactoReducer } from '../reducers/parametros/referencia_contacto.reducer';
+import { TipoContactoReducer } from '../reducers/oportunidad/tipocontacto.reducer';
 import { ResponsableReducer } from '../reducers/estructuraacademica/responsable.reducer';
 import { UnidadAdministrativaReducer } from '../reducers/estructuraacademica/unidad_administrativa.reducer';
 import { UnidadAcademicaReducer } from '../reducers/estructuraacademica/unidad_academica.reducer';
@@ -48,6 +48,8 @@ import { CursoReducer } from '../reducers/ofertaacademica/curso.reducer';
 import { CursoHorarioReducer } from '../reducers/ofertaacademica/curso_horario.reducer';
 import { MotivoAperturaCierreCursoReducer } from '../reducers/ofertaacademica/motivoaperturacierrecurso.reducer';
 import { GrupoReducer } from '../reducers/ofertaacademica/grupo.reducer';
+import { TipoActividadReducer } from '../reducers/oportunidad/tipoactividad.reducer';
+import { TipoMedioPublicitarioReducer } from '../reducers/oportunidad/tipomediopublicitario.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -72,7 +74,6 @@ const RootReducer = combineReducers( {
     NivelAcademico: NivelAcademicoReducer,
     OfertaAcademica: OfertaAcademicaReducer,
     Periodo: PeriodoReducer,
-    ReferenciaContacto: ReferenciaContactoReducer,
     TipoCiudad: TipoCiudadReducer,
     TipoMateria: TipoMateriaReducer,
     UnidadNegocio: UnidadNegocioReducer,
@@ -100,6 +101,10 @@ const RootReducer = combineReducers( {
     CursoHorario: CursoHorarioReducer,
     MotivoAperturaCierreCurso: MotivoAperturaCierreCursoReducer,
     Grupo: GrupoReducer,
+
+    TipoActividad: TipoActividadReducer,
+    TipoMedioPublicitario: TipoMedioPublicitarioReducer,
+    TipoContacto: TipoContactoReducer,
 } );
 
 export default RootReducer;

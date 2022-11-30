@@ -1,6 +1,29 @@
 
 const PaginationModule = {
 
+    listTipoActividad: [],
+    pageTipoActividad: 1,
+    paginateTipoActividad: 1,
+    paginationTipoActividad: {
+        total: 0,
+    },
+
+    listTipoMedioPublicitario: [],
+    pageTipoMedioPublicitario: 1,
+    paginateTipoMedioPublicitario: 1,
+    paginationTipoMedioPublicitario: {
+        total: 0,
+    },
+
+    listTipoContacto: [],
+    pageTipoContacto: 1,
+    paginateTipoContacto: 1,
+    paginationTipoContacto: {
+        total: 0,
+    },
+
+
+
     listCurso: [],
     pageCurso: 1,
     paginateCurso: 1,
@@ -132,12 +155,6 @@ const PaginationModule = {
     },
 
     
-    listReferenciaContacto: [],
-    pageReferenciaContacto: 1,
-    paginateReferenciaContacto: 1,
-    paginationReferenciaContacto: {
-        total: 0,
-    },
 
     listTipoMateria: [],
     pageTipoMateria: 1,

@@ -10,7 +10,7 @@ import DatePickerComponent from '../../../../components/date';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { GeneroData } from '../../../../data/genero.data';
 import ListadoUnidadAcademicaModal from '../unidadacademica/modal/unidad_academica_listado.modal';
-import ListadoReferenciaContactoModal from '../../persona/referenciacontacto/modal/referenciacontacto_listado.modal';
+import ListadoTipoContactoModal from '../../oportunidad/tipocontacto/modal/tipocontacto_listado.modal';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { ResponsableActions } from '../../../../redux/actions/estructuraacademica/responsable.action';
 
@@ -44,7 +44,7 @@ function CreateResponsable( props ) {
     const onComponentReferenciaContacto = () => {
         if ( !visibleReferenciaContacto ) return null;
         return (
-            <ListadoReferenciaContactoModal
+            <ListadoTipoContactoModal
                 visible={visibleReferenciaContacto}
                 onClose={ () => setVisibleReferenciaContacto(false) }
                 onSelect={ (referenciaContacto) => {

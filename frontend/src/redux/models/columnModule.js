@@ -47,10 +47,18 @@ const ColumnModules = {
         },
     ],
 
-    columnReferenciaContacto: [
+    columnTipoContacto: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
         {
             id: 'descripcion',
-            label: 'Descripción',
+            label: 'Tipo',
             numeric: false,
             visible: true,
             width: null,
@@ -1076,6 +1084,62 @@ const ColumnModules = {
         {
             id: 'descripcion',
             label: 'Motivo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+
+
+    columnTipoActividad: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Tipo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
+    columnTipoMedioPublicitario: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Tipo',
             numeric: false,
             visible: true,
             width: null,
