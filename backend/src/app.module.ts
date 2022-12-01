@@ -28,11 +28,8 @@ import { RolPermisoDetalleModule } from './module/seguridad/rolpermisodetalle/ro
 import { UnidadacademicaModule } from './module/estructuraacademica/unidadacademica/unidadacademica.module';
 import { ProgramaModule } from './module/estructuraacademica/programa/programa.module';
 import { PensumModule } from './module/estructuraacademica/pensum/pensum.module';
-import { ResponsableModule } from './module/estructuraacademica/responsable/responsable.module';
 import { ReferenciaContactoModule } from './module/oportunidad/referenciacontacto/referenciacontacto.module';
 import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.module';
-import { ResponsableUnidadAcademicaDetalleModule } from './module/estructuraacademica/responsableunidadacademicadetalle/responsableunidadacademicadetalle.module';
-import { ResponsablereferenciacontactodetalleModule } from './module/estructuraacademica/responsablereferenciacontactodetalle/responsablereferenciacontactodetalle.module';
 import { CommonModule } from './common/common.module';
 import { TurnoModule } from './module/estructurainstitucional/turno/turno.module';
 import { AulaModule } from './module/estructurainstitucional/aula/aula.module';
@@ -51,6 +48,9 @@ import { MotivoAperturaCierreCursoModule } from './module/ofertaacademica/motivo
 import { GrupoModule } from './module/ofertaacademica/grupo/grupo.module';
 import { TipoActividadModule } from './module/oportunidad/tipoactividad/tipoactividad.module';
 import { TipomediopublicitarioModule } from './module/oportunidad/tipomediopublicitario/tipomediopublicitario.module';
+import { EstadoNegocioModule } from './module/oportunidad/estadonegocio/estadonegocio.module';
+import { AsesorResponsableModule } from './module/oportunidad/asesorresponsable/asesorresponsable.module';
+import { NegocioModule } from './module/oportunidad/negocio/negocio.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -98,13 +98,12 @@ import { TipomediopublicitarioModule } from './module/oportunidad/tipomediopubli
     UsuarioModule, UnidadNegocioModule, OfertaAcademicaModule, NivelAcademicoModule, 
     ModalidadAcademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
     UnidadAdministrativaModule, UsuarioRolDetalleModule, 
-    RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, ResponsableModule, 
-    ReferenciaContactoModule, TipoCiudadModule, ResponsableUnidadAcademicaDetalleModule, 
-    ResponsablereferenciacontactodetalleModule, CommonModule, TurnoModule, AulaModule, 
+    RolPermisoDetalleModule, UnidadacademicaModule, ProgramaModule, PensumModule, 
+    ReferenciaContactoModule, TipoCiudadModule, CommonModule, TurnoModule, AulaModule, 
     DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, 
     TipoIdentificacionModule, CargoModule, AdministrativoModule, CategoriaDocumentoModule, 
     AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
-    TipoActividadModule, TipomediopublicitarioModule,
+    TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, AsesorResponsableModule, NegocioModule,
   ],
   controllers: [],
   providers: [],

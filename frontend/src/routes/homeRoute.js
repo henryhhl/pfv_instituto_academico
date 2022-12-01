@@ -191,6 +191,21 @@ import CreateTipoContacto from '../screens/modules/oportunidad/tipocontacto/tipo
 import EditTipoContacto from '../screens/modules/oportunidad/tipocontacto/tipocontacto.edit';
 import ShowTipoContacto from '../screens/modules/oportunidad/tipocontacto/tipocontacto.show';
 
+import IndexEstadoNegocio from '../screens/modules/oportunidad/estadonegocio/estadonegocio.index';
+import CreateEstadoNegocio from '../screens/modules/oportunidad/estadonegocio/estadonegocio.create';
+import EditEstadoNegocio from '../screens/modules/oportunidad/estadonegocio/estadonegocio.edit';
+import ShowEstadoNegocio from '../screens/modules/oportunidad/estadonegocio/estadonegocio.show';
+
+import IndexAsesorResponsable from '../screens/modules/oportunidad/asesorresponsable/asesorresponsable.index';
+import CreateAsesorResponsable from '../screens/modules/oportunidad/asesorresponsable/asesorresponsable.create';
+import EditAsesorResponsable from '../screens/modules/oportunidad/asesorresponsable/asesorresponsable.edit';
+import ShowAsesorResponsable from '../screens/modules/oportunidad/asesorresponsable/asesorresponsable.show';
+
+import IndexNegocio from '../screens/modules/oportunidad/negocio/negocio.index';
+import CreateNegocio from '../screens/modules/oportunidad/negocio/negocio.create';
+import EditNegocio from '../screens/modules/oportunidad/negocio/negocio.edit';
+import ShowNegocio from '../screens/modules/oportunidad/negocio/negocio.show';
+
 import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
@@ -387,6 +402,21 @@ const HomeRoute = (props) => {
                     <Route index path="/tipocontacto/create" element={ <CreateTipoContacto { ...props } /> }  />
                     <Route index path="/tipocontacto/edit/:idtipocontacto" element={ <EditTipoContacto { ...props } /> }  />
                     <Route index path="/tipocontacto/show/:idtipocontacto" element={ <ShowTipoContacto { ...props } /> }  />
+
+                    <Route index path="/estadonegocio/index" element={ <IndexEstadoNegocio { ...props } /> }  />
+                    <Route index path="/estadonegocio/create" element={ <CreateEstadoNegocio { ...props } /> }  />
+                    <Route index path="/estadonegocio/edit/:idestadonegocio" element={ <EditEstadoNegocio { ...props } /> }  />
+                    <Route index path="/estadonegocio/show/:idestadonegocio" element={ <ShowEstadoNegocio { ...props } /> }  />
+
+                    <Route index path="/asesorresponsable/index" element={ <IndexAsesorResponsable { ...props } /> }  />
+                    <Route index path="/asesorresponsable/create" element={ <CreateAsesorResponsable { ...props } /> }  />
+                    <Route index path="/asesorresponsable/edit/:idasesorresponsable" element={ <EditAsesorResponsable { ...props } /> }  />
+                    <Route index path="/asesorresponsable/show/:idasesorresponsable" element={ <ShowAsesorResponsable { ...props } /> }  />
+
+                    <Route index path="/negocio/index" element={ <IndexNegocio { ...props } /> }  />
+                    <Route index path="/negocio/create" element={ <CreateNegocio { ...props } /> }  />
+                    <Route index path="/negocio/edit/:idnegocio" element={ <EditNegocio { ...props } /> }  />
+                    <Route index path="/negocio/show/:idnegocio" element={ <ShowNegocio { ...props } /> }  />
 
                     <Route
                         path='*'

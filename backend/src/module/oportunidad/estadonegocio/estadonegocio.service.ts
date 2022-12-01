@@ -1,27 +1,27 @@
 import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { TipoActividad } from './entities/tipoactividad.entity';
+import { EstadoNegocio } from './entities/estadonegocio.entity';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
-import { CreateTipoActividadDto } from './dto/create-tipoactividad.dto';
-import { UpdateTipoActividadDto } from './dto/update-tipoactividad.dto';
+import { CreateEstadoNegocioDto } from './dto/create-estadonegocio.dto';
+import { UpdateEstadoNegocioDto } from './dto/update-estadonegocio.dto';
 
 @Injectable()
-export class TipoActividadService {
-  private readonly logger = new Logger('TipoActividadService');
+export class EstadoNegocioService {
+  private readonly logger = new Logger('EstadoNegocioService');
 
   constructor(
-    @InjectRepository(TipoActividad)
-    private readonly tipoActividadRepository: Repository<TipoActividad>,
+    @InjectRepository(EstadoNegocio)
+    private readonly estadoNegocioRepository: Repository<EstadoNegocio>,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
     try {
       const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
-      let listTipoActividad = [];
+      let listEstadoNegocio = [];
       let totalPagination = 0;
       if ( esPaginate ) {
-        [listTipoActividad, totalPagination] = await this.tipoActividadRepository.findAndCount( {
+        [listEstadoNegocio, totalPagination] = await this.estadoNegocioRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
             { descripcion: Like( '%' + search + '%', ), },
@@ -29,7 +29,7 @@ export class TipoActividadService {
           order: { created_at: "DESC", },
         } );
       } else {
-        [listTipoActividad, totalPagination] = await this.tipoActividadRepository.findAndCount( {
+        [listEstadoNegocio, totalPagination] = await this.estadoNegocioRepository.findAndCount( {
           where: [
             { descripcion: Like( '%' + search + '%', ), },
           ],
@@ -39,7 +39,7 @@ export class TipoActividadService {
       return {
         resp: 1, error: false,
         message: 'Servicio realizado exitosamente.',
-        arrayTipoActividad: listTipoActividad,
+        arrayEstadoNegocio: listEstadoNegocio,
         pagination: {
           total: totalPagination,
         },
@@ -74,24 +74,32 @@ export class TipoActividadService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createTipoactividadDto: CreateTipoActividadDto) {
+  private async existsDescripcion(descripcion: string) {
+    const estadoNegocio = await this.estadoNegocioRepository.findOne( {
+      where: { descripcion: descripcion, },
+      order: { created_at: 'DESC', },
+    } );
+    return estadoNegocio ? true : false;
+  }
+
+  async store(createEstadonegocioDto: CreateEstadoNegocioDto) {
     try {
-      const existsDescripcion = await this.existsDescripcion( createTipoactividadDto.descripcion );
+      const existsDescripcion = await this.existsDescripcion( createEstadonegocioDto.descripcion );
       if ( existsDescripcion === true ) {
         return {
           resp: 0, error: false,
-          message: 'Tipo ya existente, favor ingresar uno nuevo.',
+          message: 'Nombre Estado ya existente, favor ingresar uno nuevo.',
         };
       } 
-      const tipoActividad = this.tipoActividadRepository.create( {
-        ...createTipoactividadDto,
+      const estadoNegocio = this.estadoNegocioRepository.create( {
+        ...createEstadonegocioDto,
         created_at: this.getDateTime(),
       } );
-      await this.tipoActividadRepository.save( tipoActividad );
+      await this.estadoNegocioRepository.save( estadoNegocio );
       return {
         resp: 1, error: false,
-        message: 'Tipo Actividad registrado éxitosamente.',
-        tipoActividad: tipoActividad,
+        message: 'Estado Negocio registrado éxitosamente.',
+        estadoNegocio: estadoNegocio,
       };
     } catch (error) {
       this.logger.error(error);
@@ -102,34 +110,26 @@ export class TipoActividadService {
     }
   }
 
-  async findOne(idtipoactividad: string) {
-    const tipoActividad = await this.tipoActividadRepository.findOneBy( {
-      idtipoactividad,
+  async findOne(idestadonegocio: string) {
+    const estadoNegocio = await this.estadoNegocioRepository.findOneBy( {
+      idestadonegocio,
     } );
-    return tipoActividad;
+    return estadoNegocio;
   }
 
-  private async existsDescripcion(descrpcion: string) {
-    const tipoActividad = await this.tipoActividadRepository.findOne( {
-      where: { descripcion: descrpcion, },
-      order: { created_at: 'DESC', },
-    } );
-    return tipoActividad ? true : false;
-  }
-
-  async edit(idtipoactividad: string) {
+  async edit(idestadonegocio: string) {
     try {
-      const tipoActividad = await this.findOne(idtipoactividad);
-      if ( tipoActividad ) {
+      const estadoNegocio = await this.findOne(idestadonegocio);
+      if ( estadoNegocio ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
-          tipoActividad: tipoActividad,
+          estadoNegocio: estadoNegocio,
         };
       }
       return {
         resp: 0, error: false,
-        message: 'Tipo Actividad no existe.',
+        message: 'Estado Negocio no existe.',
       };
     } catch (error) {
       this.logger.error(error);
@@ -140,19 +140,19 @@ export class TipoActividadService {
     }
   }
 
-  async show(idtipoactividad: string) {
+  async show(idestadonegocio: string) {
     try {
-      const tipoActividad = await this.findOne(idtipoactividad);
-      if ( tipoActividad ) {
+      const estadoNegocio = await this.findOne(idestadonegocio);
+      if ( estadoNegocio ) {
         return {
           resp: 1, error: false,
           message: 'Servicio realizado exitosamente.',
-          tipoActividad: tipoActividad,
+          estadoNegocio: estadoNegocio,
         };
       }
       return {
         resp: 0, error: false,
-        message: 'Tipo Actividad no existe.',
+        message: 'Estado Negocio no existe.',
       };
     } catch (error) {
       this.logger.error(error);
@@ -163,43 +163,45 @@ export class TipoActividadService {
     }
   }
 
-  async update(idtipoactividad: string, updateTipoactividadDto: UpdateTipoActividadDto) {
+
+
+  async update(idestadonegocio: string, updateEstadonegocioDto: UpdateEstadoNegocioDto) {
     try {
-      const tipoActividad = await this.findOne(idtipoactividad);
-      if ( tipoActividad === null ) {
+      const estadoNegocio = await this.findOne(idestadonegocio);
+      if ( estadoNegocio === null ) {
         return {
           resp: 0, error: false,
-          message: 'Tipo Actividad no existe.',
+          message: 'Estado Negocio no existe.',
         };
       }
-      if ( tipoActividad.descripcion !== updateTipoactividadDto.descripcion ) {
-        const existsDescripcion = await this.existsDescripcion( updateTipoactividadDto.descripcion );
+      if ( estadoNegocio.descripcion !== updateEstadonegocioDto.descripcion ) {
+        const existsDescripcion = await this.existsDescripcion( updateEstadonegocioDto.descripcion );
         if ( existsDescripcion === true ) {
           return {
             resp: 0, error: false,
-            message: 'Tipo ya existente, favor ingresar uno nuevo.',
+            message: 'Nombre de Estado ya existente, favor ingresar uno nuevo.',
           };
         } 
       }
-      const tipoActividadPreLoad = await this.tipoActividadRepository.preload( {
-        idtipoactividad: idtipoactividad,
-        ...updateTipoactividadDto,
-        concurrencia: tipoActividad.concurrencia + 1,
+      const estadoNegocioPreLoad = await this.estadoNegocioRepository.preload( {
+        idestadonegocio: idestadonegocio,
+        ...updateEstadonegocioDto,
+        concurrencia: estadoNegocio.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );
 
-      if ( tipoActividadPreLoad === null ) {
+      if ( estadoNegocioPreLoad === null ) {
         return {
           resp: 0, error: false,
-          message: 'Tipo Actividad no existe.',
+          message: 'Estado Negocio no existe.',
         };
       }
-      const tipoActividadUpdate = await this.tipoActividadRepository.save( tipoActividadPreLoad );
+      const estadoNegocioUpdate = await this.estadoNegocioRepository.save( estadoNegocioPreLoad );
       return {
         resp: 1,
         error: false,
-        message: 'Tipo Actividad actualizado éxitosamente.',
-        tipoActividad: tipoActividadUpdate,
+        message: 'Estado Negocio actualizado éxitosamente.',
+        estadoNegocio: estadoNegocioUpdate,
       };
     } catch (error) {
       this.logger.error(error);
@@ -210,20 +212,20 @@ export class TipoActividadService {
     }
   }
 
-  async delete(idtipoactividad: string) {
+  async delete(idestadonegocio: string) {
     try {
-      let tipoActividad = await this.findOne(idtipoactividad);
-      if ( tipoActividad === null ) {
+      let estadoNegocio = await this.findOne(idestadonegocio);
+      if ( estadoNegocio === null ) {
         return {
           resp: 0, error: true,
-          message: 'Tipo Actividad no existe.',
+          message: 'Estado Negocio no existe.',
         };
       }
-      await this.tipoActividadRepository.remove( tipoActividad );
+      await this.estadoNegocioRepository.remove( estadoNegocio );
       return {
         resp: 1, error: false,
-        message: 'Tipo Actividad eliminado éxitosamente.',
-        tipoActividad: tipoActividad,
+        message: 'Estado Negocio eliminado éxitosamente.',
+        estadoNegocio: estadoNegocio,
       };
     } catch (error) {
       this.logger.error(error);

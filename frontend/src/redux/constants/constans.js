@@ -279,6 +279,24 @@ const Constants = {
     tipocontacto_onShow: "[ON SHOW] Tipo Contacto",
     tipocontacto_onLimpiar: "[ON LIMPIAR] Tipo Contacto",
 
+    estadonegocio_setInit: "[SET INIT] Estado Negocio",
+    estadonegocio_onChange: "[ON CHANGE] Estado Negocio",
+    estadonegocio_onCreate: "[ON CREATE] Estado Negocio",
+    estadonegocio_onShow: "[ON SHOW] Estado Negocio",
+    estadonegocio_onLimpiar: "[ON LIMPIAR] Estado Negocio",
+
+    asesorresponsable_setInit: "[SET INIT] Asesor Responsable",
+    asesorresponsable_onChange: "[ON CHANGE] Asesor Responsable",
+    asesorresponsable_onCreate: "[ON CREATE] Asesor Responsable",
+    asesorresponsable_onShow: "[ON SHOW] Asesor Responsable",
+    asesorresponsable_onLimpiar: "[ON LIMPIAR] Asesor Responsable",
+
+    negocio_setInit: "[SET INIT] Negocio",
+    negocio_onChange: "[ON CHANGE] Negocio",
+    negocio_onCreate: "[ON CREATE] Negocio",
+    negocio_onShow: "[ON SHOW] Negocio",
+    negocio_onLimpiar: "[ON LIMPIAR] Negocio",
+
 };
 
 export default Constants;

@@ -50,6 +50,9 @@ import { MotivoAperturaCierreCursoReducer } from '../reducers/ofertaacademica/mo
 import { GrupoReducer } from '../reducers/ofertaacademica/grupo.reducer';
 import { TipoActividadReducer } from '../reducers/oportunidad/tipoactividad.reducer';
 import { TipoMedioPublicitarioReducer } from '../reducers/oportunidad/tipomediopublicitario.reducer';
+import { EstadoNegocioReducer } from '../reducers/oportunidad/estadonegocio.reducer';
+import { AsesorResponsableReducer } from '../reducers/oportunidad/asesorresponsable.reducer';
+import { NegocioReducer } from '../reducers/oportunidad/negocio.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -105,6 +108,9 @@ const RootReducer = combineReducers( {
     TipoActividad: TipoActividadReducer,
     TipoMedioPublicitario: TipoMedioPublicitarioReducer,
     TipoContacto: TipoContactoReducer,
+    EstadoNegocio: EstadoNegocioReducer,
+    AsesorResponsable: AsesorResponsableReducer,
+    Negocio: NegocioReducer,
 } );
 
 export default RootReducer;
