@@ -48,6 +48,8 @@ const ListModules = {
     listEstadoNegocio: [],
     listAsesorResponsable: [],
     listNegocio: [],
+    listActividad: [],
+    listOportunidad: [],
 };
 
 export default ListModules;

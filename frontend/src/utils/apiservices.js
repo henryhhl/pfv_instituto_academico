@@ -345,6 +345,22 @@ const apiServices = {
     apioportunidadnegocio_show:   `${module.parametros}/negocio/show`,
     apioportunidadnegocio_update: `${module.parametros}/negocio/update`,
     apioportunidadnegocio_delete: `${module.parametros}/negocio/delete`,
+
+    apioportunidadactividad_index:  `${module.parametros}/actividad/index`,
+    apioportunidadactividad_create: `${module.parametros}/actividad/create`,
+    apioportunidadactividad_store:  `${module.parametros}/actividad/store`,
+    apioportunidadactividad_edit:   `${module.parametros}/actividad/edit`,
+    apioportunidadactividad_show:   `${module.parametros}/actividad/show`,
+    apioportunidadactividad_update: `${module.parametros}/actividad/update`,
+    apioportunidadactividad_delete: `${module.parametros}/actividad/delete`,
+
+    apioportunidadoportunidad_index:  `${module.parametros}/oportunidad/index`,
+    apioportunidadoportunidad_create: `${module.parametros}/oportunidad/create`,
+    apioportunidadoportunidad_store:  `${module.parametros}/oportunidad/store`,
+    apioportunidadoportunidad_edit:   `${module.parametros}/oportunidad/edit`,
+    apioportunidadoportunidad_show:   `${module.parametros}/oportunidad/show`,
+    apioportunidadoportunidad_update: `${module.parametros}/oportunidad/update`,
+    apioportunidadoportunidad_delete: `${module.parametros}/oportunidad/delete`,
 };
 
 export default apiServices;

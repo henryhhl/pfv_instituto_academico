@@ -8,7 +8,7 @@ import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
 
-export default function ListadoTipoContactoModal( props ) {
+export default function ListadoAsesorResponsableModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
     const navigate = useNavigate();
 
@@ -18,10 +18,10 @@ export default function ListadoTipoContactoModal( props ) {
     }, [] );
 
     function get_data() {
-        httpRequest( 'get', apiServices.apioportunidadtipocontacto_index, {
+        httpRequest( 'get', apiServices.apioportunidadasesorresponsable_index, {
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
-                setArrayData( result.arrayTipoContacto );
+                setArrayData( result.arrayAsesorResponsable );
             } else if ( result.error === true && result.resp === -2 ) {
                 Swal.fire( {
                     position: 'top-end',
@@ -43,8 +43,8 @@ export default function ListadoTipoContactoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={400} centered
-                title={"LISTA TIPO CONTACTO"}
+                footer={null} width={'85%'} centered
+                title={"LISTA ASESOR ADMINISTRATIVO"}
             >
                 <div className="row">
                     <div className="col-12">
@@ -54,12 +54,24 @@ export default function ListadoTipoContactoModal( props ) {
                                     option={false}
                                     columns={ [
                                         {
-                                            id: 'sigla',
-                                            label: 'Sigla',
+                                            id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
+                                            label: 'Asesor Administrativo',
                                         },
                                         {
-                                            id: 'descripcion',
-                                            label: 'Tipo',
+                                            id: 'tipoidentificacion',
+                                            label: 'Tipo Identificación',
+                                        },
+                                        {
+                                            id: 'numeroidentificacion',
+                                            label: 'Nro. Identificación',
+                                        },
+                                        {
+                                            id: 'ciudadnacimiento',
+                                            label: 'Lugar Nacimiento',
+                                        },
+                                        {
+                                            id: 'ciudadresidencia',
+                                            label: 'Residencia',
                                         },
                                     ] } select
                                     dataSource={array_data}
@@ -74,13 +86,13 @@ export default function ListadoTipoContactoModal( props ) {
     );
 };
 
-ListadoTipoContactoModal.propTypes = {
+ListadoAsesorResponsableModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
 };
 
-ListadoTipoContactoModal.defaultProps = {
+ListadoAsesorResponsableModal.defaultProps = {
     onSelect: () => {},
     visible: false,
 };

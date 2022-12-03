@@ -206,6 +206,16 @@ import CreateNegocio from '../screens/modules/oportunidad/negocio/negocio.create
 import EditNegocio from '../screens/modules/oportunidad/negocio/negocio.edit';
 import ShowNegocio from '../screens/modules/oportunidad/negocio/negocio.show';
 
+import IndexActividad from '../screens/modules/oportunidad/actividad/actividad.index';
+import CreateActividad from '../screens/modules/oportunidad/actividad/actividad.create';
+import EditActividad from '../screens/modules/oportunidad/actividad/actividad.edit';
+import ShowActividad from '../screens/modules/oportunidad/actividad/actividad.show';
+
+import IndexOportunidad from '../screens/modules/oportunidad/oportunidad/oportunidad.index';
+import CreateOportunidad from '../screens/modules/oportunidad/oportunidad/oportunidad.create';
+import EditOportunidad from '../screens/modules/oportunidad/oportunidad/oportunidad.edit';
+import ShowOportunidad from '../screens/modules/oportunidad/oportunidad/oportunidad.show';
+
 import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
@@ -417,6 +427,16 @@ const HomeRoute = (props) => {
                     <Route index path="/negocio/create" element={ <CreateNegocio { ...props } /> }  />
                     <Route index path="/negocio/edit/:idnegocio" element={ <EditNegocio { ...props } /> }  />
                     <Route index path="/negocio/show/:idnegocio" element={ <ShowNegocio { ...props } /> }  />
+
+                    <Route index path="/actividad/index" element={ <IndexActividad { ...props } /> }  />
+                    <Route index path="/actividad/create" element={ <CreateActividad { ...props } /> }  />
+                    <Route index path="/actividad/edit/:idactividad" element={ <EditActividad { ...props } /> }  />
+                    <Route index path="/actividad/show/:idactividad" element={ <ShowActividad { ...props } /> }  />
+
+                    <Route index path="/oportunidad/index" element={ <IndexOportunidad { ...props } /> }  />
+                    <Route index path="/oportunidad/create" element={ <CreateOportunidad { ...props } /> }  />
+                    <Route index path="/oportunidad/edit/:idoportunidad" element={ <EditOportunidad { ...props } /> }  />
+                    <Route index path="/oportunidad/show/:idoportunidad" element={ <ShowOportunidad { ...props } /> }  />
 
                     <Route
                         path='*'

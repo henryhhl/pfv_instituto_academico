@@ -55,7 +55,7 @@ export default function ListadoAdministrativoModal( props ) {
                                     columns={ [
                                         {
                                             id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
-                                            label: 'Docente',
+                                            label: 'Administrativo',
                                         },
                                         {
                                             id: 'tipoidentificacion',

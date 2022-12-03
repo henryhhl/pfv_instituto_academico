@@ -8,7 +8,7 @@ import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
 
-export default function ListadoTipoContactoModal( props ) {
+export default function ListadoTipoMedioPublicitarioModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
     const navigate = useNavigate();
 
@@ -18,10 +18,10 @@ export default function ListadoTipoContactoModal( props ) {
     }, [] );
 
     function get_data() {
-        httpRequest( 'get', apiServices.apioportunidadtipocontacto_index, {
+        httpRequest( 'get', apiServices.apioportunidadtipomediopublicitario_index, {
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
-                setArrayData( result.arrayTipoContacto );
+                setArrayData( result.arrayTipoMedioPublicitario );
             } else if ( result.error === true && result.resp === -2 ) {
                 Swal.fire( {
                     position: 'top-end',
@@ -43,8 +43,8 @@ export default function ListadoTipoContactoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={400} centered
-                title={"LISTA TIPO CONTACTO"}
+                footer={null} width={450} centered
+                title={"LISTA TIPO MEDIO PUBLICITARIO"}
             >
                 <div className="row">
                     <div className="col-12">
@@ -74,13 +74,13 @@ export default function ListadoTipoContactoModal( props ) {
     );
 };
 
-ListadoTipoContactoModal.propTypes = {
+ListadoTipoMedioPublicitarioModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
 };
 
-ListadoTipoContactoModal.defaultProps = {
+ListadoTipoMedioPublicitarioModal.defaultProps = {
     onSelect: () => {},
     visible: false,
 };

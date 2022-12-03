@@ -43,6 +43,20 @@ const PaginationModule = {
         total: 0,
     },
 
+    listActividad: [],
+    pageActividad: 1,
+    paginateActividad: 1,
+    paginationActividad: {
+        total: 0,
+    },
+
+    listOportunidad: [],
+    pageOportunidad: 1,
+    paginateOportunidad: 1,
+    paginationOportunidad: {
+        total: 0,
+    },
+
 
 
     listCurso: [],
