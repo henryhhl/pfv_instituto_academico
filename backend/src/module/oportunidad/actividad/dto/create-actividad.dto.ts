@@ -29,13 +29,13 @@ export class CreateActividadDto {
     readonly estadonegocio: string;
 
 
-    @IsNotEmpty( { message: 'Campo Identificacion es requerido.', } )
-    @IsString( { message: 'Campo Identificacion solo permitido tipo STRING.', } )
-    readonly identificacion: string;
+    @IsNotEmpty( { message: 'Campo ID Negocio es requerido.', } )
+    @IsString( { message: 'Campo ID Negocio solo permitido tipo STRING.', } )
+    readonly fkidnegocio: string;
 
-    @IsNotEmpty( { message: 'Campo Descripción es requerido.', } )
-    @IsString( { message: 'Campo Descripción solo permitido tipo STRING.', } )
-    readonly descripcion: string;
+    @IsNotEmpty( { message: 'Campo Negocio es requerido.', } )
+    @IsString( { message: 'Campo Negocio solo permitido tipo STRING.', } )
+    readonly negocio: string;
 
     @IsNotEmpty( { message: 'Campo Fecha Programada es requerido.', } )
     @IsString( { message: 'Campo Fecha Programada solo permitido tipo STRING.', } )

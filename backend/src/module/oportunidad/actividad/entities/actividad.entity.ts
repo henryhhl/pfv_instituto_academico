@@ -29,20 +29,15 @@ export class Actividad {
 
 
     @Column( 'text', {
-        unique: false,
+        nullable: true,
     } )
-    identificacion: string;
+    fkidnegocio: string;
 
     @Column( 'text', {
-        unique: false,
+        nullable: true,
     } )
-    descripcion: string;
+    negocio: string;
 
-    @Column( 'int', {
-        default: 0,
-        generated: "increment",
-    } )
-    nroactividad: number;
 
     @Column( 'text' )
     fechaprogramada: string;

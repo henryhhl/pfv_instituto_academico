@@ -11,9 +11,9 @@ const Actividad = {
     fkidestadonegocio: "",
     estadonegocio: "",
 
-    identificacion: "",
-    descripcion: "",
-    nroactividad: "",
+    fkidnegocio: "",
+    negocio: "",
+
     fechaprogramada: "",
     horaprogramada: "",
 
@@ -32,9 +32,8 @@ const Actividad = {
         fkidtipoactividad: false,
         fkidasesorresponsable: false,
         fkidestadonegocio: false,
+        fkidnegocio: false,
 
-        identificacion: false,
-        descripcion: false,
         nroactividad: false,
         fechaprogramada: false,
         horaprogramada: false,
@@ -47,9 +46,8 @@ const Actividad = {
         fkidtipoactividad: "",
         fkidasesorresponsable: "",
         fkidestadonegocio: "",
+        fkidnegocio: "",
 
-        identificacion: "",
-        descripcion: "",
         nroactividad: "",
         fechaprogramada: "",
         horaprogramada: "",

@@ -78,6 +78,9 @@ export const httpRequest = async ( method = "", uri, data = {} ) => {
         }
         if ( error.response.status === 404 ) {}
         if ( error.response.status === 500 ) {}
+        if ( error.response.status === 0 ) {
+            
+        }
         return { resp: -5, error: error };
     } );
 };

@@ -1236,16 +1236,8 @@ const ColumnModules = {
 
     columnNegocio: [
         {
-            id: 'identificacion',
-            label: 'Identificación',
-            numeric: false,
-            visible: true,
-            width: null,
-            state: false,
-        },
-        {
-            id: 'descripcion',
-            label: 'Nombre Negocio',
+            id: 'oportunidad',
+            label: 'Negocio',
             numeric: false,
             visible: true,
             width: null,
@@ -1287,24 +1279,8 @@ const ColumnModules = {
 
     columnActividad: [
         {
-            id: 'identificacion',
-            label: 'Identificación',
-            numeric: false,
-            visible: true,
-            width: null,
-            state: false,
-        },
-        {
-            id: 'descripcion',
+            id: 'negocio',
             label: 'Actividad',
-            numeric: false,
-            visible: true,
-            width: null,
-            state: false,
-        },
-        {
-            id: 'nroactividad',
-            label: 'Nro.',
             numeric: false,
             visible: true,
             width: null,
@@ -1320,23 +1296,15 @@ const ColumnModules = {
         },
         {
             id: 'asesorresponsable',
-            label: 'Asesor',
+            label: 'Asesor Administrativo',
             numeric: false,
             visible: true,
             width: null,
             state: false,
         },
         {
-            id: 'fechaprogramada',
-            label: 'Fecha Prog.',
-            numeric: false,
-            visible: true,
-            width: null,
-            state: false,
-        },
-        {
-            id: 'horaprogramada',
-            label: 'Hora Prog.',
+            id: ['fechaprogramada', 'horaprogramada'],
+            label: 'Tiempo Prog.',
             numeric: false,
             visible: true,
             width: null,

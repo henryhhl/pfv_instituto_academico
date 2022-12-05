@@ -41,8 +41,8 @@ const onStore = async (body) => {
         fkidestadonegocio: body.fkidestadonegocio,
         estadonegocio: body.estadonegocio,
 
-        identificacion: body.identificacion,
-        descripcion: body.descripcion,
+        fkidnegocio: body.fkidnegocio,
+        negocio: body.negocio,
 
         fechaprogramada: body.fechaprogramada,
         horaprogramada: body.horaprogramada,
@@ -132,8 +132,8 @@ const onUpdate = async (body) => {
         fkidestadonegocio: body.fkidestadonegocio,
         estadonegocio: body.estadonegocio,
 
-        identificacion: body.identificacion,
-        descripcion: body.descripcion,
+        fkidnegocio: body.fkidnegocio,
+        negocio: body.negocio,
 
         fechaprogramada: body.fechaprogramada,
         horaprogramada: body.horaprogramada,

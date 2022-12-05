@@ -12,15 +12,17 @@ const AppMain = ( props ) => {
     const { loading, sesion } = props;
     const navigate = useNavigate();
 
+    React.useEffect( () => {
+        if ( sesion.isSesion === true ) {
+            navigate('/login');
+        }
+    }, [sesion] );
+
     const setLoading = () => {
         return (
             <LoadingComponent visible={loading.visible} />
         );
     };
-
-    if ( sesion.isSesion ) {
-        navigate('/login');
-    }
 
     return (
         <>

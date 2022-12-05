@@ -31,11 +31,11 @@ export class CreateNegocioDto {
 
     @IsNotEmpty( { message: 'Campo Identificacion es requerido.', } )
     @IsString( { message: 'Campo Identificacion solo permitido tipo STRING.', } )
-    readonly identificacion: string;
+    readonly fkidoportunidad: string;
 
-    @IsNotEmpty( { message: 'Campo Descripción es requerido.', } )
-    @IsString( { message: 'Campo Descripción solo permitido tipo STRING.', } )
-    readonly descripcion: string;
+    @IsNotEmpty( { message: 'Campo ID Oportunidad es requerido.', } )
+    @IsString( { message: 'Campo ID Oportunidad solo permitido tipo STRING.', } )
+    readonly oportunidad: string;
 
     @IsNotEmpty( { message: 'Campo Fecha Inicio es requerido.', } )
     @IsString( { message: 'Campo Fecha Inicio solo permitido tipo STRING.', } )

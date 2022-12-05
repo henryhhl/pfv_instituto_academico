@@ -2,15 +2,30 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { LoginActions } from '../../redux/actions/auth/login.action';
 import '../../public/css/login.css';
+import { readData } from '../../utils/toolsStorage';
+import { KeysStorage } from '../../utils/keysStorage';
 import LoadingComponent from '../../components/loading';
+import { AuthActions } from '../../redux/actions/auth/auth.action';
+import { LoginActions } from '../../redux/actions/auth/login.action';
 import { RegisterActions } from '../../redux/actions/auth/register.action';
 
 function LoginPage( props ) {
   const { loading, login, register } = props;
   const navigate = useNavigate();
   const [ esRegister, setEsRegister ] = React.useState(false);
+
+  React.useEffect( () => {
+    const token = readData(KeysStorage.token);
+    if ( token ) {
+      props.onValidateToken( () => {} ).then( (item) => {
+        if ( item?.resp === 1 ) {
+          onHome();
+        }
+      } );
+    }
+    return () => {};
+}, [] );
 
   const onHome = () => {
     navigate('/');
@@ -177,6 +192,8 @@ const mapDispatchToProps = {
   setEmailRegister: RegisterActions.setEmail,
   setPasswordRegister: RegisterActions.setPassword,
   onRegister: RegisterActions.onRegister,
+
+  onValidateToken: AuthActions.onValidateToken,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( LoginPage );

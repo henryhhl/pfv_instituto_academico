@@ -51,8 +51,9 @@ const onSetData = ( state = inititalState, actividad ) => {
     state.fkidestadonegocio = actividad.fkidestadonegocio;
     state.estadonegocio = actividad.estadonegocio;
 
-    state.identificacion = actividad.identificacion;
-    state.descripcion = actividad.descripcion;
+    state.fkidnegocio = actividad.fkidnegocio;
+    state.negocio = actividad.negocio;
+
     state.nroactividad = actividad.nroactividad;
     state.fechaprogramada = actividad.fechaprogramada;
     state.horaprogramada = actividad.horaprogramada;

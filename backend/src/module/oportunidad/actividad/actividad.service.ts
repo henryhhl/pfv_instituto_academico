@@ -24,14 +24,14 @@ export class ActividadService {
         [listActividad, totalPagination] = await this.actividadRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { negocio: Like( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listActividad, totalPagination] = await this.actividadRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { negocio: Like( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

@@ -11,8 +11,9 @@ const Negocio = {
     fkidestadonegocio: "",
     estadonegocio: "",
 
-    identificacion: "",
-    descripcion: "",
+    fkidoportunidad: "",
+    oportunidad: "",
+
     fechainicio: "",
     fechacierre: "",
 
@@ -27,9 +28,8 @@ const Negocio = {
         fkidprograma: false,
         fkidturno: false,
         fkidestadonegocio: false,
+        fkidoportunidad: false,
 
-        identificacion: false,
-        descripcion: false,
         fechainicio: false,
         fechacierre: false,
 
@@ -41,9 +41,8 @@ const Negocio = {
         fkidprograma: "",
         fkidturno: "",
         fkidestadonegocio: "",
+        fkidoportunidad: "",
 
-        identificacion: "",
-        descripcion: "",
         fechainicio: "",
         fechacierre: "",
 

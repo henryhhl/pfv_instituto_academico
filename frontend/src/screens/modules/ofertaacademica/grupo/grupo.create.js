@@ -239,7 +239,7 @@ function CreateGrupo( props ) {
                                 <div className="form-group col-4"></div>
                                 <div className="form-group col-4">
                                     <InputComponent
-                                        label="Sigla*"
+                                        label="Grupo*"
                                         value={grupo.sigla}
                                         onChange={ (value) => props.setSigla(grupo, value) }
                                         error={grupo.error.sigla}

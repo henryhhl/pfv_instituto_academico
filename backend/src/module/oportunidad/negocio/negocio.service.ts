@@ -24,14 +24,14 @@ export class NegocioService {
         [listNegocio, totalPagination] = await this.negocioRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { oportunidad: Like( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listNegocio, totalPagination] = await this.negocioRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { oportunidad: Like( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

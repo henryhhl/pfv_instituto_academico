@@ -89,7 +89,7 @@ function CreateAsesorResponsable( props ) {
             { onComponentCiudadResidencia() }
             <PaperComponent>
                 <CardComponent
-                    header={"Nuevo Asesor Responsable"}
+                    header={"Nuevo Asesor Administrativo"}
                     footer={
                         <>
                             <ButtonComponent

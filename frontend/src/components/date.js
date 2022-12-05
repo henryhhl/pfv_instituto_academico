@@ -22,7 +22,7 @@ export default function DatePickerComponent( props ) {
                     (props.value === "" || props.value === null || typeof props.value === "undefined") ? 
                         null : moment(props.value, "DD/MM/YYYY")
                 }
-                format={customFormat}
+                format={"DD/MM/YYYY"}
                 disabled={props.disabled}
                 style={{ width: '100%', maxWidth: '100%', minWidth: '100%', }}
                 onClick={props.onClick}

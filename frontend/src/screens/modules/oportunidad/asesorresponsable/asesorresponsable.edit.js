@@ -91,7 +91,7 @@ function EditAsesorResponsable( props ) {
             { onComponentCiudadResidencia() }
             <PaperComponent>
                 <CardComponent
-                    header={"Editar AsesorResponsable"}
+                    header={"Editar Asesor Administrativo"}
                     footer={
                         <>
                             <ButtonComponent

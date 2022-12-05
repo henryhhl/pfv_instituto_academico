@@ -15,6 +15,7 @@ import ListadoDocenteModal from '../../persona/docente/modal/docente_listado.mod
 import ListadoPensumModal from '../../estructuraacademica/pensum/modal/pensum_listado.modal';
 import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_listado.modal';
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
+import FormHorarioGrupoModal from './modal/form_horario.modal';
 
 function EditGrupo( props ) {
     const { grupo } = props;
@@ -35,6 +36,9 @@ function EditGrupo( props ) {
 
     const [ indexDetailsMateria, setIndexDestailsMateria ] = React.useState(-1);
     const [ visibleDetailsMateria, setVisibleDetailsMateria ] = React.useState(false);
+
+    const [ indexDetailsHorario, setIndexDestailsHorario ] = React.useState(-1);
+    const [ visibleDetailsHorario, setVisibleDetailsHorario ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -193,6 +197,37 @@ function EditGrupo( props ) {
         );
     };
 
+    const onComponentDetailsHorario = () => {
+        if ( !visibleDetailsHorario ) return null;
+        // let detalle = grupo.arraypensum[indexDetailsMateria];
+        return (
+            <FormHorarioGrupoModal
+                visible={visibleDetailsHorario}
+                onClose={ () => setVisibleDetailsHorario(false) }
+                onSelect={ (item, details) => {
+                    // if ( !existsMateria( details.materia.idmateria ) ) {
+                    //     detalle.fkiddivisionacademica = item.divisionacademica.iddivisionacademica;
+                    //     detalle.divisionacademica = `${item.divisionacademica.descripcion}`;
+
+                    //     detalle.fkidmateria = details.materia.idmateria;
+                    //     detalle.materia = `${details.materia.nombrelargo}`;
+
+                    //     detalle.error.fkidmateria = false;
+                    //     detalle.message.fkidmateria = "";
+
+                    //     detalle.error.fkiddivisionacademica = false;
+                    //     detalle.message.fkiddivisionacademica = "";
+
+                    //     setVisibleDetailsHorario(false);
+                    // } else {
+                    //     toastr.warning( 'Materia ya seleccionado.', '', { closeButton: true, progressBar: true, } );
+                    // }
+                } }
+                // arraydivisionacademica={detalle.arraydivisionacademica}
+            />
+        );
+    };
+
     return (
         <>
             { onComponentDetailsPensum() }
@@ -200,6 +235,7 @@ function EditGrupo( props ) {
             { onComponentDetailsTurno() }
             { onComponentDetailsGestionPeriodo() }
             { onComponentDetailsMateria() }
+            { onComponentDetailsHorario() }
             <PaperComponent>
                 <CardComponent
                     header={"Editar Grupo"}
@@ -241,7 +277,7 @@ function EditGrupo( props ) {
                                 <div className="form-group col-2"></div>
                                 <div className="form-group col-4">
                                     <InputComponent
-                                        label="Sigla*"
+                                        label="Grupo*"
                                         value={grupo.sigla}
                                         onChange={ (value) => props.setSigla(grupo, value) }
                                         error={grupo.error.sigla}
@@ -465,6 +501,24 @@ function EditGrupo( props ) {
                                                                 />
                                                             </div>
                                                         </div>
+                                                        {/* <div className='row'>
+                                                            <div className="form-group col-12">
+                                                                <ButtonComponent
+                                                                    fullWidth
+                                                                    onClick={ () => {
+                                                                        if ( item.fkidpensum !== null ) {
+                                                                            setVisibleDetailsHorario(true);
+                                                                            setIndexDestailsHorario(key);
+                                                                        } else {
+                                                                            toastr.warning( 'Pensum No Seleccionado.', '' );
+                                                                        }
+                                                                    } }
+                                                                    disabled={ (item.fkidpensum === null) }
+                                                                >
+                                                                    Asignar Horarios
+                                                                </ButtonComponent>
+                                                            </div>
+                                                        </div> */}
                                                     </div>
                                                 </div>
                                             </div>

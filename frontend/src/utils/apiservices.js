@@ -1,6 +1,6 @@
 
 const linkBackend = 'http://localhost:5000/api/v1';
-// const linkBackend = 'https://instituto-academico-backend.herokuapp.com/api/v1';
+// const linkBackend = 'https://institucion-academica.herokuapp.com/api/v1';
 
 const module = {
     // seguridad: linkBackend + '/seguridad',

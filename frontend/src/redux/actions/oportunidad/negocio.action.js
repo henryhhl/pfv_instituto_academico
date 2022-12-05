@@ -134,20 +134,12 @@ const setFKIDEstadoNegocio = (negocio, estadoNegocio) => {
     };
 };
 
-const setIdentificacion = (negocio, value) => {
+const setFKIDOportunidad = (negocio, oportunidad) => {
     return ( dispatch ) => {
-        negocio.identificacion = value;
-        negocio.error.identificacion = false;
-        negocio.message.identificacion = "";
-        dispatch( onChange(negocio) );
-    };
-};
-
-const setDescripcion = (negocio, value) => {
-    return ( dispatch ) => {
-        negocio.descripcion = value;
-        negocio.error.descripcion = false;
-        negocio.message.descripcion = "";
+        negocio.fkidoportunidad = oportunidad.idoportunidad;
+        negocio.oportunidad = oportunidad.descripcion;
+        negocio.error.fkidoportunidad = false;
+        negocio.message.fkidoportunidad = "";
         dispatch( onChange(negocio) );
     };
 };
@@ -314,14 +306,9 @@ function onValidate( data ) {
         data.message.fkidestadonegocio = "Campo requerido.";
         bandera = false;
     }
-    if ( data.identificacion.toString().trim().length === 0 ) {
-        data.error.identificacion   = true;
-        data.message.identificacion = "Campo requerido.";
-        bandera = false;
-    }
-    if ( data.descripcion.toString().trim().length === 0 ) {
-        data.error.descripcion   = true;
-        data.message.descripcion = "Campo requerido.";
+    if ( data.fkidoportunidad.toString().trim().length === 0 ) {
+        data.error.fkidoportunidad   = true;
+        data.message.fkidoportunidad = "Campo requerido.";
         bandera = false;
     }
     if ( data.fechainicio.toString().trim().length === 0 ) {
@@ -384,8 +371,7 @@ export const NegocioActions = {
     setFKIDPrograma,
     setFKIDTurno,
     setFKIDEstadoNegocio,
-    setIdentificacion,
-    setDescripcion,
+    setFKIDOportunidad,
     setFechaInicio,
     setFechaCierre,
     setEstado,

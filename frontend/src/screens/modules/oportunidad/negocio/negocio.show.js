@@ -124,17 +124,10 @@ function ShowNegocio( props ) {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-12">
                             <InputComponent
-                                label="Identificación*"
-                                value={negocio.identificacion}
-                                readOnly
-                            />
-                        </div>
-                        <div className="form-group col-8">
-                            <InputComponent
-                                label="Nombre Negocio*"
-                                value={negocio.descripcion}
+                                label="Oportunidad*"
+                                value={negocio.oportunidad}
                                 readOnly
                             />
                         </div>

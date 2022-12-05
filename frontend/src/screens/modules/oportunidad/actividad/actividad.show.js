@@ -49,17 +49,10 @@ function ShowActividad( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-12">
                             <InputComponent
-                                label="Identificación*"
-                                value={actividad.identificacion}
-                                readOnly
-                            />
-                        </div>
-                        <div className="form-group col-8">
-                            <InputComponent
-                                label="Nombre Negocio*"
-                                value={actividad.descripcion}
+                                label="Negocio*"
+                                value={actividad.negocio}
                                 readOnly
                             />
                         </div>

@@ -38,7 +38,7 @@ function ShowAsesorResponsable( props ) {
         <>
             <PaperComponent>
                 <CardComponent
-                    header={"Detalle Asesor Responsable"}
+                    header={"Detalle Asesor Administrativo"}
                     footer={
                         <>
                             <ButtonComponent

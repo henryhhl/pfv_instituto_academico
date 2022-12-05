@@ -28,15 +28,11 @@ export class Negocio {
     estadonegocio: string;
 
 
-    @Column( 'text', {
-        unique: false,
-    } )
-    identificacion: string;
+    @Column( 'text', { nullable: true, } )
+    fkidoportunidad?: string;
 
-    @Column( 'text', {
-        unique: false,
-    } )
-    descripcion: string;
+    @Column( 'text', { nullable: true, } )
+    oportunidad?: string;
 
     @Column( 'text' )
     fechainicio: string;

@@ -57,7 +57,7 @@ function ShowUnidadAdministrativa( props ) {
                                 Información General
                             </a>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <a className="nav-link" id="aula-tab" data-toggle="tab" href="#aula" 
                                 role="tab" aria-controls="aula" aria-selected="false"
                             >
@@ -70,7 +70,7 @@ function ShowUnidadAdministrativa( props ) {
                             >
                                 Turno
                             </a>
-                        </li>
+                        </li> */}
                     </ul>
                     <div className="tab-content" id="myTabContent">
                         <div className="tab-pane fade pt-4 active show" id="home" role="tabpanel" aria-labelledby="home-tab">

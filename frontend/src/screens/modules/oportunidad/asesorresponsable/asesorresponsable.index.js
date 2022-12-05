@@ -47,7 +47,7 @@ function IndexAsesorResponsable(props) {
     return (
         <>
             <PaperComponent
-                title={"Listado Asesor Responsable"}
+                title={"Listado Asesor Administrativo"}
                 create
                 onCreate={onCreate}
             >

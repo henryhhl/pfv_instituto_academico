@@ -8,6 +8,7 @@ import DatePickerComponent from '../../../../components/date';
 import TimePickerComponent from '../../../../components/time';
 import { ButtonComponent, InputComponent, SelectComponent, TextAreaComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import ListadoNegocioModal from '../negocio/modal/negocio_listado.modal';
 import ListadoEstadoNegocioModal from '../estadonegocio/modal/estadonegocio_listado.modal';
 import ListadoTipoActividadModal from '../tipoactividad/modal/tipoactividad_listado.modal';
 import ListadoAsesorResponsableModal from '../asesorresponsable/modal/asesorresponsable_listado.modal';
@@ -22,6 +23,7 @@ function EditActividad( props ) {
     const [ visibleAsesorResponsable, setVisibleAsesorResponsable ] = React.useState(false);
     const [ visibleTipoActividad, setVisibleTipoActividad ] = React.useState(false);
     const [ visibleEstadoNegocio, setVisibleEstadoNegocio ] = React.useState(false);
+    const [ visibleNegocio, setVisibleNegocio ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -84,11 +86,26 @@ function EditActividad( props ) {
         );
     };
 
+    const onComponentNegocio = () => {
+        if ( !visibleNegocio ) return null;
+        return (
+            <ListadoNegocioModal
+                visible={visibleNegocio}
+                onClose={ () => setVisibleNegocio(false) }
+                onSelect={ (negocio) => {
+                    props.setFKIDNegocio(actividad, negocio);
+                    setVisibleNegocio(false);
+                } }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentAsesorResponsable() }
             { onComponentTipoActividad() }
             { onComponentEstadoNegocio() }
+            { onComponentNegocio() }
             <PaperComponent>
                 <CardComponent
                     header={"Editar Actividad"}
@@ -108,29 +125,23 @@ function EditActividad( props ) {
                     }
                 >
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-12">
                             <InputComponent
-                                label="Identificación*"
-                                value={actividad.identificacion}
-                                onChange={ (value) => props.setIdentificacion(actividad, value) }
-                                error={actividad.error.identificacion}
-                                message={actividad.message.identificacion}
-                            />
-                        </div>
-                        <div className="form-group col-8">
-                            <InputComponent
-                                label="Nombre Negocio*"
-                                value={actividad.descripcion}
-                                onChange={ (value) => props.setDescripcion(actividad, value) }
-                                error={actividad.error.descripcion}
-                                message={actividad.message.descripcion}
+                                label="Negocio*"
+                                value={actividad.negocio}
+                                onClick={ () => setVisibleNegocio(true) }
+                                error={actividad.error.fkidnegocio}
+                                message={actividad.message.fkidnegocio}
+                                readOnly
+                                style={{ background: 'white', cursor: 'pointer', }}
+                                placeholder="SELECCIONAR NEGOCIO"
                             />
                         </div>
                     </div>
                     <div className="row">
                         <div className="form-group col-6">
                             <InputComponent
-                                label="Asesor Responsable*"
+                                label="Asesor Administrativo*"
                                 value={actividad.asesorresponsable}
                                 onClick={ () => setVisibleAsesorResponsable(true) }
                                 error={actividad.error.fkidasesorresponsable}
@@ -224,8 +235,7 @@ const mapDispatchToProps = {
     setFKIDTipoActividad: ActividadActions.setFKIDTipoActividad,
     setFKIDAsesorResponsable: ActividadActions.setFKIDAsesorResponsable,
     setFKIDEstadoNegocio: ActividadActions.setFKIDEstadoNegocio,
-    setIdentificacion: ActividadActions.setIdentificacion,
-    setDescripcion: ActividadActions.setDescripcion,
+    setFKIDNegocio: ActividadActions.setFKIDNegocio,
     setFechaProgramada: ActividadActions.setFechaProgramada,
     setHoraProgramada: ActividadActions.setHoraProgramada,
     setNota: ActividadActions.setNota,

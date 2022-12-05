@@ -71,7 +71,7 @@ function ShowGrupo( props ) {
                                 <div className='form-group col-2'></div>
                                 <div className="form-group col-4">
                                     <InputComponent
-                                        label="Sigla*"
+                                        label="Grupo*"
                                         value={grupo.sigla}
                                         readOnly
                                     />

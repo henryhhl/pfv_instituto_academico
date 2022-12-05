@@ -134,20 +134,12 @@ const setFKIDEstadoNegocio = (actividad, estadoNegocio) => {
     };
 };
 
-const setIdentificacion = (actividad, value) => {
+const setFKIDNegocio = (actividad, negocio) => {
     return ( dispatch ) => {
-        actividad.identificacion = value;
-        actividad.error.identificacion = false;
-        actividad.message.identificacion = "";
-        dispatch( onChange(actividad) );
-    };
-};
-
-const setDescripcion = (actividad, value) => {
-    return ( dispatch ) => {
-        actividad.descripcion = value;
-        actividad.error.descripcion = false;
-        actividad.message.descripcion = "";
+        actividad.fkidnegocio = negocio.idnegocio;
+        actividad.negocio = negocio.oportunidad;
+        actividad.error.fkidnegocio = false;
+        actividad.message.fkidnegocio = "";
         dispatch( onChange(actividad) );
     };
 };
@@ -333,14 +325,9 @@ function onValidate( data ) {
         data.message.fkidestadonegocio = "Campo requerido.";
         bandera = false;
     }
-    if ( data.identificacion.toString().trim().length === 0 ) {
-        data.error.identificacion   = true;
-        data.message.identificacion = "Campo requerido.";
-        bandera = false;
-    }
-    if ( data.descripcion.toString().trim().length === 0 ) {
-        data.error.descripcion   = true;
-        data.message.descripcion = "Campo requerido.";
+    if ( data.fkidnegocio.toString().trim().length === 0 ) {
+        data.error.fkidnegocio   = true;
+        data.message.fkidnegocio = "Campo requerido.";
         bandera = false;
     }
     if ( data.fechaprogramada.toString().trim().length === 0 ) {
@@ -403,8 +390,7 @@ export const ActividadActions = {
     setFKIDTipoActividad,
     setFKIDAsesorResponsable,
     setFKIDEstadoNegocio,
-    setIdentificacion,
-    setDescripcion,
+    setFKIDNegocio,
     setFechaProgramada,
     setHoraProgramada,
     setFechaCierre,

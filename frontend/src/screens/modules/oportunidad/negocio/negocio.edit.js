@@ -7,6 +7,7 @@ import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
 import { ButtonComponent ,InputComponent, SelectComponent } from '../../../../components/components';
 import { EstadoData } from '../../../../data/estado.data';
+import ListadoOportunidadModal from '../oportunidad/modal/oportunidad_listado.modal';
 import ListadoEstadoNegocioModal from '../estadonegocio/modal/estadonegocio_listado.modal';
 import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_listado.modal';
 import ListadoProgramaModal from '../../estructuraacademica/programa/modal/programa_listado.modal';
@@ -21,6 +22,7 @@ function EditNegocio( props ) {
     const [ visiblePrograma, setVisiblePrograma ] = React.useState(false);
     const [ visibleTurno, setVisibleTurno ] = React.useState(false);
     const [ visibleEstadoNegocio, setVisibleEstadoNegocio ] = React.useState(false);
+    const [ visibleOportunidad, setVisibleOportunidad ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -83,11 +85,26 @@ function EditNegocio( props ) {
         );
     };
 
+    const onComponentOportunidad = () => {
+        if ( !visibleOportunidad ) return null;
+        return (
+            <ListadoOportunidadModal
+                visible={visibleOportunidad}
+                onClose={ () => setVisibleOportunidad(false) }
+                onSelect={ (oportunidad) => {
+                    props.setFKIDOportunidad(negocio, oportunidad);
+                    setVisibleOportunidad(false);
+                } }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentPrograma() }
             { onComponentTurno() }
             { onComponentEstadoNegocio() }
+            { onComponentOportunidad() }
             <PaperComponent>
                 <CardComponent
                     header={"Editar Negocio"}
@@ -145,22 +162,16 @@ function EditNegocio( props ) {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="form-group col-4">
+                        <div className="form-group col-12">
                             <InputComponent
-                                label="Identificación*"
-                                value={negocio.identificacion}
-                                onChange={ (value) => props.setIdentificacion(negocio, value) }
-                                error={negocio.error.identificacion}
-                                message={negocio.message.identificacion}
-                            />
-                        </div>
-                        <div className="form-group col-8">
-                            <InputComponent
-                                label="Nombre Negocio*"
-                                value={negocio.descripcion}
-                                onChange={ (value) => props.setDescripcion(negocio, value) }
-                                error={negocio.error.descripcion}
-                                message={negocio.message.descripcion}
+                                label="Oportunidad*"
+                                value={negocio.oportunidad}
+                                onClick={ () => setVisibleOportunidad(true) }
+                                error={negocio.error.fkidoportunidad}
+                                message={negocio.message.fkidoportunidad}
+                                readOnly
+                                style={{ background: 'white', cursor: 'pointer', }}
+                                placeholder="SELECCIONAR OPORTUNIDAD"
                             />
                         </div>
                     </div>
@@ -214,8 +225,7 @@ const mapDispatchToProps = {
     setFKIDPrograma: NegocioActions.setFKIDPrograma,
     setFKIDTurno: NegocioActions.setFKIDTurno,
     setFKIDEstadoNegocio: NegocioActions.setFKIDEstadoNegocio,
-    setIdentificacion: NegocioActions.setIdentificacion,
-    setDescripcion: NegocioActions.setDescripcion,
+    setFKIDOportunidad: NegocioActions.setFKIDOportunidad,
     setFechaInicio: NegocioActions.setFechaInicio,
     setFechaCierre: NegocioActions.setFechaCierre,
     setEstado: NegocioActions.setEstado,

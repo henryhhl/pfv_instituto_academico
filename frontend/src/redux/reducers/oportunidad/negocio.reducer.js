@@ -47,8 +47,8 @@ const onSetData = ( state = inititalState, negocio ) => {
     state.turno = negocio.turno;
     state.fkidestadonegocio = negocio.fkidestadonegocio;
     state.estadonegocio = negocio.estadonegocio;
-    state.identificacion = negocio.identificacion;
-    state.descripcion = negocio.descripcion;
+    state.fkidoportunidad = negocio.fkidoportunidad;
+    state.oportunidad = negocio.oportunidad;
     state.fechainicio = negocio.fechainicio;
     state.fechacierre = negocio.fechacierre;
     state.concurrencia = negocio.concurrencia;
