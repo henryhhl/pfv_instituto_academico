@@ -125,16 +125,8 @@ export class OportunidadService {
         arraynegocio: true, arraytipocontacto: true,
         arraytipomediopublicitario: true,
       },
+      order: { arraynegocio: { created_at: 'ASC', arrayactividad: { created_at: 'ASC', } } },
     } );
-    oportunidad.arraynegocio.sort( (a, b) => {
-      if (a.created_at < b.created_at) {
-        return -1;
-      }
-      if (a.created_at > b.created_at) {
-        return 1;
-      }
-      return 0;
-    } )
     return oportunidad;
   }
 
@@ -265,6 +257,12 @@ export class OportunidadService {
         return {
           resp: 0, error: true,
           message: 'Oportunidad no existe.',
+        };
+      }
+      if ( oportunidad.arraynegocio.length > 0 ) {
+        return {
+          resp: 0, error: true,
+          message: 'Oportunidad no eliminado, ya que tiene negocios registrados.',
         };
       }
       await this.oportunidadRepository.remove( oportunidad );

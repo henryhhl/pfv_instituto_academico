@@ -204,6 +204,15 @@ const onDelete = async (body) => {
                 showConfirmButton: false,
                 timer: 3000,
             } );
+        } else if ( respta.resp === 0 ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'error',
+                title: 'Eliminar Oportunidad no procesada.',
+                text: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
         } else if ( respta.error === true && respta.resp === -2 ) {
             Swal.fire( {
                 position: 'top-end',

@@ -1,20 +1,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ModalComponent from '../../../../../components/modal';
-import InputComponent from '../../../../../components/input';
-import SelectComponent from '../../../../../components/select';
-import ButtonComponent from '../../../../../components/button';
-import TimePickerComponent from '../../../../../components/time';
-import DatePickerComponent from '../../../../../components/date';
-import TextAreaComponent from '../../../../../components/textarea';
-import { ActividadActions } from '../../../../../redux/actions/oportunidad/actividad.action';
 import ListadoTipoActividadModal from '../../tipoactividad/modal/tipoactividad_listado.modal';
 import ListadoTipoResultadoModal from '../../tiporesultado/modal/tiporesultado_listado.modal';
 import ListadoAsesorResponsableModal from '../../asesorresponsable/modal/asesorresponsable_listado.modal';
+import { ActividadActions } from '../../../../../redux/actions/oportunidad/actividad.action';
+import { connect } from 'react-redux';
+import ButtonComponent from '../../../../../components/button';
+import InputComponent from '../../../../../components/input';
+import SelectComponent from '../../../../../components/select';
+import DatePickerComponent from '../../../../../components/date';
+import TimePickerComponent from '../../../../../components/time';
+import TextAreaComponent from '../../../../../components/textarea';
 
-const FormAddActividadModal = ( props ) => {
+const FormUpdateActividadModal = ( props ) => {
     const { actividad } = props;
 
     const [ visibleAsesorResponsable, setVisibleAsesorResponsable ] = React.useState(false);
@@ -28,7 +28,7 @@ const FormAddActividadModal = ( props ) => {
 
     const init_data = () => {
         props.onLimpiar();
-        props.onCreate(props.fkidnegocio);
+        props.onEdit( props.fkidactividad );
     };
 
     const onComponentTipoActividad = () => {
@@ -79,15 +79,15 @@ const FormAddActividadModal = ( props ) => {
                 visible={props.visible}
                 onClose={props.onClose}
                 footer={null} width={500}
-                title={"REGISTRAR ACTIVIDAD"}
+                title={"EDITAR ACTIVIDAD"}
                 style={{ marginBottom: 30, marginTop: 30, }}
                 centered
             >
                 { onComponentTipoActividad() }
                 { onComponentTipoResultado() }
                 { onComponentAsesorResponsable() }
-                <div className='card'>
-                    <div className='card-body'>
+                <div className='card pb-0'>
+                    <div className='card-body pb-0'>
                         <div className="row">
                             <div className="form-group col-12">
                                 <InputComponent
@@ -129,8 +129,8 @@ const FormAddActividadModal = ( props ) => {
                                         placeholder="SELECCIONAR TIPO ACTIVIDAD"
                                     />
                                 </div> : actividad.descripcion === "COMPLETADA" ? 
-                                <>
-                                    <div className="form-group col-12">
+                                    <>
+                                        <div className="form-group col-12">
                                         <InputComponent
                                             label="Tipo Actividad*"
                                             value={actividad.tipoactividad}
@@ -199,11 +199,11 @@ const FormAddActividadModal = ( props ) => {
                             </div>
                         </div>
                     </div>
-                    <div className='card-footer'>
+                    <div className='card-footer pb-0'>
                         <ButtonComponent
-                            onClick={ () => props.onStore(actividad, props.onOk) }
+                            onClick={ () => props.onUpdate(actividad, props.onOk) }
                         >
-                            Guardar
+                            Editar
                         </ButtonComponent>
                         <ButtonComponent
                             type='danger' onClick={props.onClose}
@@ -217,17 +217,17 @@ const FormAddActividadModal = ( props ) => {
     );
 };
 
-FormAddActividadModal.propTypes = {
-    fkidnegocio: PropTypes.string,
+FormUpdateActividadModal.propTypes = {
+    fkidactividad: PropTypes.string,
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onOk: PropTypes.func,
 };
 
-FormAddActividadModal.defaultProps = {
+FormUpdateActividadModal.defaultProps = {
     onOk: () => {},
     visible: false,
-    fkidnegocio: null,
+    fkidactividad: null,
 };
 
 const mapStateToProps = ( state ) => ( {
@@ -236,7 +236,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onLimpiar: ActividadActions.onLimpiar,
-    onCreate: ActividadActions.onCreateActividad,
+    onEdit: ActividadActions.onEdit,
     setActividad: ActividadActions.setActividad,
     setFKIDTipoActividad: ActividadActions.setFKIDTipoActividad,
     setFKIDTipoResultado: ActividadActions.setFKIDTipoResultado,
@@ -244,7 +244,7 @@ const mapDispatchToProps = {
     setFechaProgramada: ActividadActions.setFechaProgramada,
     setHoraProgramada: ActividadActions.setHoraProgramada,
     setNota: ActividadActions.setNota,
-    onStore: ActividadActions.onGrabar,
+    onUpdate: ActividadActions.onUpdate,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)( FormAddActividadModal );
+export default connect(mapStateToProps, mapDispatchToProps)( FormUpdateActividadModal );

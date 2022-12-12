@@ -9,6 +9,7 @@ import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../
 import { Functions } from '../../../../utils/functions';
 import FormAddNegocioModal from '../negocio/modal/form_add_negocio.modal';
 import FormAddActividadModal from '../actividad/modal/form_add_actividad.modal';
+import FormUpdateActividadModal from '../actividad/modal/form_update_actividad.modal';
 import FormUpdateNegocioModal from '../negocio/modal/form_update_negocio.modal';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { NegocioActions } from '../../../../redux/actions/oportunidad/negocio.action';
@@ -20,11 +21,13 @@ const { Step } = Steps;
 function ShowOportunidad( props ) {
     const { oportunidad } = props;
 
-    const [ visibleFormAddNegocio, setVisibleFormAddNegocio ] = React.useState(false);
-
     const [ idNegocio, setIdNegocio ] = React.useState(null);
+    const [ visibleFormAddNegocio, setVisibleFormAddNegocio ] = React.useState(false);
     const [ visibleFormUpdateNegocio, setVisibleFormUpdateNegocio ] = React.useState(false);
+
+    const [ idActividad, setIdActividad ] = React.useState(null);
     const [ visibleFormAddActividad, setVisibleFormAddActividad ] = React.useState(false);
+    const [ visibleFormUpdateActividad, setVisibleFormUpdateActividad ] = React.useState(false);
 
     const navigate = useNavigate();
     const params = useParams();
@@ -93,11 +96,27 @@ function ShowOportunidad( props ) {
         );
     };
 
+    const onComponentFormUpdateActividad = () => {
+        if ( !visibleFormUpdateActividad ) return null;
+        return (
+            <FormUpdateActividadModal
+                visible={visibleFormUpdateActividad}
+                onClose={ () => setVisibleFormUpdateActividad(false) }
+                onOk={ (actividadUpdate) => {
+                    props.setData(actividadUpdate.oportunidad);
+                    setVisibleFormUpdateActividad(false);
+                } }
+                fkidactividad={idActividad}
+            />
+        );
+    };
+
     return (
         <>
             { onComponentFormAddNegocio() }
             { onComponentFormUpdateNegocio() }
             { onComponentFormAddActividad() }
+            { onComponentFormUpdateActividad() }
             <PaperComponent>
                 <CardComponent
                     header={"Detalle Oportunidad"}
@@ -303,7 +322,7 @@ function ShowOportunidad( props ) {
                                     </div>
                                 </div>
                             }
-                            <div className='row' style={{ maxHeight: 450, overflowY: 'auto', overflowX: 'hidden', }}>
+                            <div className='row' style={{ maxHeight: 550, overflowY: 'auto', overflowX: 'hidden', }}>
                                 { oportunidad.arraynegocio?.map( ( item, key ) => {
                                     const arrayactividad = item.arrayactividad;
                                     return (
@@ -389,86 +408,100 @@ function ShowOportunidad( props ) {
                                                     </ButtonComponent>
                                                 </div>
                                             </div>
-                                            <div className='card card-primary p-0 m-0'>
-                                                <div className='card-header'>
-                                                    <h4>Actividades
-                                                    <div className="float-right">
-                                                        <ButtonComponent
-                                                            fullWidth
-                                                            type='info'
-                                                            onClick={ () => {
-                                                                setIdNegocio(item.idnegocio);
-                                                                setVisibleFormAddActividad(true);
-                                                            } }
-                                                        >
-                                                            Agregar Actividad
-                                                        </ButtonComponent>
-                                                    </div>
-                                                    </h4>
-                                                </div>
-                                            </div>
-                                            <div className='card-body mb-2' style={{ width: '100%', border: '4px solid #17a2b8', }}>
-                                                { item.arrayactividad?.length === 0 &&
+                                            <div className='card-body p-4'>
+                                                <div className='card-body mb-2 p-2' style={{ width: '100%', border: '4px solid #17a2b8', }}>
                                                     <div className='card p-0 m-0'>
                                                         <div className='card-header'>
-                                                            <h4>Sin Información</h4>
+                                                            <h4>Actividades
+                                                            <div className="float-right">
+                                                                <ButtonComponent
+                                                                    fullWidth
+                                                                    type='info'
+                                                                    onClick={ () => {
+                                                                        setIdNegocio(item.idnegocio);
+                                                                        setVisibleFormAddActividad(true);
+                                                                    } }
+                                                                >
+                                                                    Agregar Actividad
+                                                                </ButtonComponent>
+                                                            </div>
+                                                            </h4>
                                                         </div>
                                                     </div>
-                                                }
-                                                <Steps className='w-100' 
-                                                    style={{ maxHeight: 300, overflowY: 'auto', overflowX: 'hidden', paddingBottom: 20, }}
-                                                    current={item.arrayactividad?.length}
-                                                    direction="vertical"
-                                                    percent={60}
-                                                    status='finish'
-                                                >
-                                                    { item.arrayactividad?.map( ( item, index ) => {
-                                                        return (
-                                                            <Step 
-                                                                key={index} 
-                                                                title={
-                                                                    <div className='w-100 position-relative' style={{ borderTop: '1px solid #E8E8E8', }}>
-                                                                        {`${item.descripcion} - ${item.nroactividad}` }
-                                                                    </div>
-                                                                }
-                                                                status={"process"}
-                                                                description={
-                                                                    <>
-                                                                        <div>
-                                                                            { `${item.asesorresponsable} - ${item.fechaprogramada} ${item.horaprogramada}` }
+                                                    { item.arrayactividad?.length === 0 &&
+                                                        <div className='card p-0 m-0'>
+                                                            <div className='card-header'>
+                                                                <h4>Sin Información</h4>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <Steps className='w-100' 
+                                                        style={{ 
+                                                            maxHeight: 300, overflowY: 'auto', overflowX: 'hidden', 
+                                                            padding: 15, paddingBottom: 20, 
+                                                        }}
+                                                        current={item.arrayactividad?.length}
+                                                        direction="vertical"
+                                                        percent={60}
+                                                    >
+                                                        { item.arrayactividad?.map( ( item, index ) => {
+                                                            return (
+                                                                <Step 
+                                                                    key={index} 
+                                                                    title={
+                                                                        <div 
+                                                                            className='w-100 position-relative' 
+                                                                            style={{ borderTop: '2px solid #E8E8E8', fontWeight: 'bold', }}
+                                                                        >
+                                                                            {`${item.descripcion} - ${item.nroactividad}` }
                                                                         </div>
-                                                                        { (item.nota !== null && item.nota.toString().length > 0) &&
+                                                                    }
+                                                                    status={`${(item.descripcion === "COMPLETADA") ? 'finish': 'process'}`}
+                                                                    description={
+                                                                        <>
                                                                             <div>
-                                                                                { `${item.nota}` }
+                                                                                { `${item.asesorresponsable} - ${item.fechaprogramada} ${item.horaprogramada}` }
                                                                             </div>
-                                                                        }
-                                                                        <div>
-                                                                            { `${item.tipoactividad}` } 
-                                                                            { (item.tiporesultado !== null && item.tiporesultado.toString().length > 0) &&
-                                                                                ` - ${item.tiporesultado}`
+                                                                            { (item.nota !== null && item.nota.toString().length > 0) &&
+                                                                                <div>
+                                                                                    { `${item.nota}` }
+                                                                                </div>
                                                                             }
-                                                                        </div>
-                                                                        { ((index + 1) === arrayactividad?.length) &&
-                                                                            <div className='float-right'>
-                                                                                <ButtonComponent
-                                                                                    type='danger'
-                                                                                    onClick={ () => props.onDeleteActividad(item, (actividadUpdate) => {
-                                                                                        console.log(actividadUpdate)
-                                                                                        if ( actividadUpdate.oportunidad ) {
-                                                                                            props.setData(actividadUpdate.oportunidad);
-                                                                                        }
-                                                                                    } ) }
-                                                                                >
-                                                                                    Eliminar Actividad
-                                                                                </ButtonComponent>
+                                                                            <div>
+                                                                                { `${item.tipoactividad}` } 
+                                                                                { (item.tiporesultado !== null && item.tiporesultado.toString().length > 0) &&
+                                                                                    ` - ${item.tiporesultado}`
+                                                                                }
                                                                             </div>
-                                                                        }
-                                                                    </>
-                                                                }
-                                                            />
-                                                        );
-                                                    } ) }
-                                                </Steps>
+                                                                            <div className='w-100 text-right pb-1' style={{ borderBottom: '2px solid #E8E8E8', }}>
+                                                                                <ButtonComponent
+                                                                                    onClick={ () => {
+                                                                                        setIdActividad(item.idactividad);
+                                                                                        setVisibleFormUpdateActividad(true);
+                                                                                    } }
+                                                                                >
+                                                                                    Editar Actividad
+                                                                                </ButtonComponent>
+                                                                                { ((index + 1) === arrayactividad?.length) &&
+                                                                                    <ButtonComponent
+                                                                                        type='danger'
+                                                                                        onClick={ () => props.onDeleteActividad(item, (actividadUpdate) => {
+                                                                                            if ( actividadUpdate.oportunidad ) {
+                                                                                                props.setData(actividadUpdate.oportunidad);
+                                                                                            }
+                                                                                        } ) }
+                                                                                    >
+                                                                                        Eliminar Actividad
+                                                                                    </ButtonComponent>
+                                                                                }
+                                                                            </div>
+                                                                        </>
+                                                                    }
+                                                                />
+                                                            );
+                                                        } ) }
+                                                    </Steps>
+                                                </div>
                                             </div>
                                         </div>
                                     );

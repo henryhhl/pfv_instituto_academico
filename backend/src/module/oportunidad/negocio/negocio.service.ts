@@ -260,6 +260,12 @@ export class NegocioService {
           message: 'Negocio no existe.',
         };
       }
+      if ( negocio.arrayactividad.length > 0 ) {
+        return {
+          resp: 0, error: true,
+          message: 'Negocio no eliminado, ya que tiene actividades registrados.',
+        };
+      }
       await this.negocioRepository.remove( negocio );
       const oportunidadUpdate = await this.oportunidadService.findOne( negocio.oportunidad.idoportunidad );
       return {

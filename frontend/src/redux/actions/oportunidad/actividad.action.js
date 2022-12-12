@@ -330,7 +330,7 @@ const onUpdate = ( actividad, onBack ) => {
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
-                    onBack();
+                    onBack(result);
                 } else if ( result.resp === 0 ) {
                     actividad.error.descripcion   = true;
                     actividad.message.descripcion = "Tipo ya existente.";

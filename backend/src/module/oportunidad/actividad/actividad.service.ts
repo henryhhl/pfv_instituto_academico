@@ -201,6 +201,13 @@ export class ActividadService {
 
   async update(idactividad: string, updateActividadDto: UpdateActividadDto) {
     try {
+      const negocio = await this.negocioService.findOne( updateActividadDto.fkidnegocio );
+      if ( negocio === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Negocio no existe.',
+        };
+      }
       const actividad = await this.findOne(idactividad);
       if ( actividad === null ) {
         return {
@@ -223,11 +230,13 @@ export class ActividadService {
         };
       }
       const actividadUpdate = await this.actividadRepository.save( actividadPreLoad );
+      const oportunidadUpdate = await this.oportunidadService.findOne( negocio.oportunidad.idoportunidad );
       return {
         resp: 1,
         error: false,
         message: 'Actividad actualizado éxitosamente.',
         actividad: actividadUpdate,
+        oportunidad: oportunidadUpdate,
       };
     } catch (error) {
       this.logger.error(error);

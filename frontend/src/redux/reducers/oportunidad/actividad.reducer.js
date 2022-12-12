@@ -61,8 +61,8 @@ const onSetData = ( state = inititalState, actividad ) => {
     state.fkidtiporesultado = actividad.fkidtiporesultado;
     state.tiporesultado = actividad.tiporesultado;
 
-    state.fkidnegocio = actividad.fkidnegocio;
-    state.negocio = actividad.negocio;
+    state.fkidnegocio = actividad.negocio.idnegocio;
+    state.negocio = actividad.negocio.descripcion;
 
     state.descripcion = actividad.descripcion;
     state.nroactividad = actividad.nroactividad;
