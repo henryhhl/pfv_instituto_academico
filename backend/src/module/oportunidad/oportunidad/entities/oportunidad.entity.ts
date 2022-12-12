@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Negocio } from '../../negocio/entities/negocio.entity';
 import { OportunidadTipoContactoDetalle } from './oportunidadtipocontactodetalle.entity';
 import { OportunidadTipoMedioPublicitarioDetalle } from './oportunidadtipomediopublicitariodetalle.entity';
 
@@ -22,6 +23,12 @@ export class Oportunidad {
     )
     arraytipomediopublicitario?: OportunidadTipoMedioPublicitarioDetalle[];
 
+    @OneToMany(
+        () => Negocio,
+        ( negocio ) => negocio.oportunidad,
+        { cascade: true, }
+    )
+    arraynegocio?: Negocio[];
 
     @Column( 'text' )
     fkidciudadorigen: string;
@@ -35,21 +42,6 @@ export class Oportunidad {
 
     @Column( 'text' )
     asesorresponsable: string;
-
-
-    // @Column( 'text' )
-    // fkidtipomediopublicitario: string;
-
-    // @Column( 'text' )
-    // tipomediopublicitario: string;
-
-    
-    // @Column( 'text' )
-    // fkidtipocontacto: string;
-
-    // @Column( 'text' )
-    // tipocontacto: string;
-
 
     @Column( 'text' )
     descripcion: string;

@@ -119,9 +119,22 @@ export class OportunidadService {
   }
 
   async findOne(idoportunidad: string) {
-    const oportunidad = await this.oportunidadRepository.findOneBy( {
-      idoportunidad,
+    const oportunidad = await this.oportunidadRepository.findOne( {
+      where: { idoportunidad },
+      relations: {
+        arraynegocio: true, arraytipocontacto: true,
+        arraytipomediopublicitario: true,
+      },
     } );
+    oportunidad.arraynegocio.sort( (a, b) => {
+      if (a.created_at < b.created_at) {
+        return -1;
+      }
+      if (a.created_at > b.created_at) {
+        return 1;
+      }
+      return 0;
+    } )
     return oportunidad;
   }
 
@@ -268,4 +281,30 @@ export class OportunidadService {
       };
     }
   }
+
+  async findAllNegocio( idoportunidad: string ) {
+    try {
+      let listOportunidadNegocio = [];
+      let totalNegocio = 0;
+        [listOportunidadNegocio, totalNegocio] = await this.oportunidadRepository.findAndCount( {
+          where: [
+            { idoportunidad: idoportunidad, },
+          ],
+          order: { created_at: "DESC", },
+        } );
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayNegocio: listOportunidadNegocio,
+        cantidadNegocio: totalNegocio,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
 }

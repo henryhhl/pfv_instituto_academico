@@ -19,6 +19,16 @@ export const ActividadReducer = ( state = inititalState, action ) => {
             state = Object.assign( {}, state );
             return state;
 
+        case Constants.actividad_onCreateActividad:
+            Functions.cleanObejct(state);
+            state.fkidnegocio = action.payload.negocio.idnegocio;
+            state.nroactividad = `Actividad ${action.payload.cantidadActividad}`;
+            state.concurrencia = 1;
+            state.estado = 'A';
+            state.isdelete = 'A';
+            state = Object.assign( {}, state );
+            return state;
+
         case Constants.actividad_onShow:
             Functions.cleanObejct(state);
             onSetData( state, action.payload );
@@ -48,12 +58,13 @@ const onSetData = ( state = inititalState, actividad ) => {
     state.fkidasesorresponsable = actividad.fkidasesorresponsable;
     state.asesorresponsable = actividad.asesorresponsable;
 
-    state.fkidestadonegocio = actividad.fkidestadonegocio;
-    state.estadonegocio = actividad.estadonegocio;
+    state.fkidtiporesultado = actividad.fkidtiporesultado;
+    state.tiporesultado = actividad.tiporesultado;
 
     state.fkidnegocio = actividad.fkidnegocio;
     state.negocio = actividad.negocio;
 
+    state.descripcion = actividad.descripcion;
     state.nroactividad = actividad.nroactividad;
     state.fechaprogramada = actividad.fechaprogramada;
     state.horaprogramada = actividad.horaprogramada;
@@ -68,6 +79,7 @@ const onSetData = ( state = inititalState, actividad ) => {
 }
 
 const onCreate = ( state = inititalState ) => {
+    state.actividad = 'PROGRAMADA';
     state.concurrencia = 1;
     state.estado = 'A';
     state.isdelete = 'A';

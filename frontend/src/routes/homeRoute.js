@@ -216,6 +216,11 @@ import CreateOportunidad from '../screens/modules/oportunidad/oportunidad/oportu
 import EditOportunidad from '../screens/modules/oportunidad/oportunidad/oportunidad.edit';
 import ShowOportunidad from '../screens/modules/oportunidad/oportunidad/oportunidad.show';
 
+import IndexTipoResultado from '../screens/modules/oportunidad/tiporesultado/tiporesultado.index';
+import CreateTipoResultado from '../screens/modules/oportunidad/tiporesultado/tiporesultado.create';
+import EditTipoResultado from '../screens/modules/oportunidad/tiporesultado/tiporesultado.edit';
+import ShowTipoResultado from '../screens/modules/oportunidad/tiporesultado/tiporesultado.show';
+
 import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
@@ -412,6 +417,11 @@ const HomeRoute = (props) => {
                     <Route index path="/tipocontacto/create" element={ <CreateTipoContacto { ...props } /> }  />
                     <Route index path="/tipocontacto/edit/:idtipocontacto" element={ <EditTipoContacto { ...props } /> }  />
                     <Route index path="/tipocontacto/show/:idtipocontacto" element={ <ShowTipoContacto { ...props } /> }  />
+
+                    <Route index path="/tiporesultado/index" element={ <IndexTipoResultado { ...props } /> }  />
+                    <Route index path="/tiporesultado/create" element={ <CreateTipoResultado { ...props } /> }  />
+                    <Route index path="/tiporesultado/edit/:idtiporesultado" element={ <EditTipoResultado { ...props } /> }  />
+                    <Route index path="/tiporesultado/show/:idtiporesultado" element={ <ShowTipoResultado { ...props } /> }  />
 
                     <Route index path="/estadonegocio/index" element={ <IndexEstadoNegocio { ...props } /> }  />
                     <Route index path="/estadonegocio/create" element={ <CreateEstadoNegocio { ...props } /> }  />

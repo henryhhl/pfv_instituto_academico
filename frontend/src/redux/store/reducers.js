@@ -55,6 +55,7 @@ import { AsesorResponsableReducer } from '../reducers/oportunidad/asesorresponsa
 import { NegocioReducer } from '../reducers/oportunidad/negocio.reducer';
 import { ActividadReducer } from '../reducers/oportunidad/actividad.reducer';
 import { OportunidadReducer } from '../reducers/oportunidad/oportunidad.reducer';
+import { TipoResultadoReducer } from '../reducers/oportunidad/tiporesultado.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -111,6 +112,7 @@ const RootReducer = combineReducers( {
     TipoMedioPublicitario: TipoMedioPublicitarioReducer,
     TipoContacto: TipoContactoReducer,
     EstadoNegocio: EstadoNegocioReducer,
+    TipoResultado: TipoResultadoReducer,
     AsesorResponsable: AsesorResponsableReducer,
     Negocio: NegocioReducer,
     Actividad: ActividadReducer,

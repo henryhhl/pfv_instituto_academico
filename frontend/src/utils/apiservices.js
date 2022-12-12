@@ -322,6 +322,14 @@ const apiServices = {
     apioportunidadtipocontacto_update: `${module.parametros}/referenciacontacto/update`,
     apioportunidadtipocontacto_delete: `${module.parametros}/referenciacontacto/delete`,
 
+    apioportunidadtiporesultado_index:  `${module.oportunidad}/tiporesultado/index`,
+    apioportunidadtiporesultado_create: `${module.oportunidad}/tiporesultado/create`,
+    apioportunidadtiporesultado_store:  `${module.oportunidad}/tiporesultado/store`,
+    apioportunidadtiporesultado_edit:   `${module.oportunidad}/tiporesultado/edit`,
+    apioportunidadtiporesultado_show:   `${module.oportunidad}/tiporesultado/show`,
+    apioportunidadtiporesultado_update: `${module.oportunidad}/tiporesultado/update`,
+    apioportunidadtiporesultado_delete: `${module.oportunidad}/tiporesultado/delete`,
+
     apioportunidadestadonegocio_index:  `${module.parametros}/estadonegocio/index`,
     apioportunidadestadonegocio_create: `${module.parametros}/estadonegocio/create`,
     apioportunidadestadonegocio_store:  `${module.parametros}/estadonegocio/store`,

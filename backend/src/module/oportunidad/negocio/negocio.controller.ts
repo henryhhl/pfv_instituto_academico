@@ -1,9 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { NegocioService } from './negocio.service';
-import { CreateNegocioDto } from './dto/create-negocio.dto';
+import { StoreNegocioDto } from './dto/store-negocio.dto';
 import { UpdateNegocioDto } from './dto/update-negocio.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { CreateNegocioDto } from './dto/create-negocio.dto';
 
 @Controller('negocio')
 export class NegocioController {
@@ -15,9 +16,15 @@ export class NegocioController {
     return this.negocioService.findAll(paginationDto);
   }
 
+  @Get('/create')
+  @Auth( /**  N Permissions */ )
+  create( @Query() createNegocioDto: CreateNegocioDto ) {
+    return this.negocioService.create(createNegocioDto);
+  }
+
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store(@Body() createNegocioDto: CreateNegocioDto) {
+  store(@Body() createNegocioDto: StoreNegocioDto) {
     return this.negocioService.store(createNegocioDto);
   }
 

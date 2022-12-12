@@ -34,6 +34,11 @@ const setCreate = () => ( {
     type: Constants.negocio_onCreate,
 } );
 
+const setCreateNegocio = (data) => ( {
+    type: Constants.negocio_onCreateNegocio,
+    payload: data,
+} );
+
 const setShowData = ( data ) => ( {
     type: Constants.negocio_onShow,
     payload: data,
@@ -169,6 +174,13 @@ const setFechaCierre = (negocio, value) => {
     };
 };
 
+const setNota = (negocio, value) => {
+    return ( dispatch ) => {
+        negocio.nota = value;
+        dispatch( onChange(negocio) );
+    };
+};
+
 const setEstado = (negocio, value) => {
     return ( dispatch ) => {
         negocio.estado = value;
@@ -190,6 +202,24 @@ const setISDelete = (negocio, value) => {
 const onCreate = () => {
     return ( dispatch ) => {
         dispatch( setCreate() );
+    };
+};
+
+const onCreateNegocio = ( fkidoportunidad ) => {
+    return ( dispatch ) => {
+        dispatch( setShowLoading() );
+        NegocioService.onCreate( 
+            fkidoportunidad 
+        ).then( async (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( setCreateNegocio( result ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
+            }
+        } ).finally( () => {
+            dispatch( setHiddenLoading() );
+        } );
     };
 };
 
@@ -223,7 +253,7 @@ const onEdit = ( idnegocio ) => {
     };
 };
 
-const onGrabar = ( negocio, onBack ) => {
+const onGrabar = ( negocio, onFunction ) => {
     return ( dispatch ) => {
         if ( !onValidate( negocio ) ) {
             dispatch( onChange( negocio ) );
@@ -236,7 +266,7 @@ const onGrabar = ( negocio, onBack ) => {
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
-                    onBack();
+                    onFunction(result);
                 } else if ( result.resp === 0 ) {
                     negocio.error.descripcion   = true;
                     negocio.message.descripcion = "Tipo ya existente.";
@@ -256,7 +286,7 @@ const onGrabar = ( negocio, onBack ) => {
     };
 };
 
-const onUpdate = ( negocio, onBack ) => {
+const onUpdate = ( negocio, onFunction ) => {
     return ( dispatch ) => {
         if ( !onValidate( negocio ) ) {
             dispatch( onChange( negocio ) );
@@ -269,7 +299,7 @@ const onUpdate = ( negocio, onBack ) => {
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
-                    onBack();
+                    onFunction(result);
                 } else if ( result.resp === 0 ) {
                     negocio.error.descripcion   = true;
                     negocio.message.descripcion = "Tipo ya existente.";
@@ -339,7 +369,7 @@ function onValidate( data ) {
     return bandera;
 };
 
-const onDelete = ( negocio ) => {
+const onDelete = ( negocio, onFunction = () => {}, ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
@@ -347,7 +377,8 @@ const onDelete = ( negocio ) => {
                 negocio
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( onPageNegocio() );
+                    // dispatch( onPageNegocio() );
+                    onFunction(result);
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );
@@ -374,9 +405,11 @@ export const NegocioActions = {
     setFKIDOportunidad,
     setFechaInicio,
     setFechaCierre,
+    setNota,
     setEstado,
     setISDelete,
     onCreate,
+    onCreateNegocio,
     onGrabar,
     onShow,
     onEdit,

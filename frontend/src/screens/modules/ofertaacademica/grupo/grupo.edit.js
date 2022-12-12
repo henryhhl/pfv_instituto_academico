@@ -187,43 +187,31 @@ function EditGrupo( props ) {
                         detalle.error.fkiddivisionacademica = false;
                         detalle.message.fkiddivisionacademica = "";
 
+                        props.onChange(grupo);
                         setVisibleDetailsMateria(false);
                     } else {
                         toastr.warning( 'Materia ya seleccionado.', '', { closeButton: true, progressBar: true, } );
                     }
                 } }
-                arraydivisionacademica={detalle.arraydivisionacademica}
+                arraydivisionacademica={ detalle ? detalle.arraydivisionacademica : []}
             />
         );
     };
 
     const onComponentDetailsHorario = () => {
         if ( !visibleDetailsHorario ) return null;
-        // let detalle = grupo.arraypensum[indexDetailsMateria];
+        let detalle = grupo.arraypensum[indexDetailsHorario];
         return (
             <FormHorarioGrupoModal
                 visible={visibleDetailsHorario}
                 onClose={ () => setVisibleDetailsHorario(false) }
-                onSelect={ (item, details) => {
-                    // if ( !existsMateria( details.materia.idmateria ) ) {
-                    //     detalle.fkiddivisionacademica = item.divisionacademica.iddivisionacademica;
-                    //     detalle.divisionacademica = `${item.divisionacademica.descripcion}`;
-
-                    //     detalle.fkidmateria = details.materia.idmateria;
-                    //     detalle.materia = `${details.materia.nombrelargo}`;
-
-                    //     detalle.error.fkidmateria = false;
-                    //     detalle.message.fkidmateria = "";
-
-                    //     detalle.error.fkiddivisionacademica = false;
-                    //     detalle.message.fkiddivisionacademica = "";
-
-                    //     setVisibleDetailsHorario(false);
-                    // } else {
-                    //     toastr.warning( 'Materia ya seleccionado.', '', { closeButton: true, progressBar: true, } );
-                    // }
+                onAsignar={ (data, index) => {
+                    detalle.arraydia[index].arrayhorario = [ ...detalle.arraydia[index].arrayhorario, data ];
+                    props.onChange(grupo);
                 } }
-                // arraydivisionacademica={detalle.arraydivisionacademica}
+                arraydia={detalle ? detalle.arraydia: []}
+                materia={ detalle ? detalle.materia : "" }
+                docente={ detalle ? detalle.docente : "" }
             />
         );
     };
@@ -501,7 +489,7 @@ function EditGrupo( props ) {
                                                                 />
                                                             </div>
                                                         </div>
-                                                        {/* <div className='row'>
+                                                        <div className='row'>
                                                             <div className="form-group col-12">
                                                                 <ButtonComponent
                                                                     fullWidth
@@ -518,7 +506,7 @@ function EditGrupo( props ) {
                                                                     Asignar Horarios
                                                                 </ButtonComponent>
                                                             </div>
-                                                        </div> */}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

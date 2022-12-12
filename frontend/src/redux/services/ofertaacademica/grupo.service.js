@@ -34,7 +34,7 @@ const onStore = async (body) => {
     return await httpRequest('post', apiServices.apiofertaacademicagrupo_store, {
         sigla: body.sigla,
         arraygrupopensummateria: body.arraypensum?.filter( ( item ) => ( item.fkidpensum !== null ) ).map( 
-            ( { arraydivisionacademica, error, message, disabled, ...item } ) => {
+            ( { arraydia, arraydivisionacademica, error, message, disabled, ...item } ) => {
                 return item;
             }
         ),
@@ -103,7 +103,7 @@ const onUpdate = async (body) => {
     return await httpRequest('put', apiServices.apiofertaacademicagrupo_update + `/${body.idgrupo}`, {
         sigla: body.sigla,
         arraygrupopensummateria: body.arraypensum?.filter( ( item ) => ( item.fkidpensum !== null ) ).map( 
-            ( { arraydivisionacademica, error, message, disabled, ...item } ) => {
+            ( { arraydia, arraydivisionacademica, error, message, disabled, ...item } ) => {
                 return item;
             }
         ),

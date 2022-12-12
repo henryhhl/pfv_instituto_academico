@@ -34,6 +34,11 @@ const setCreate = () => ( {
     type: Constants.actividad_onCreate,
 } );
 
+const setCreateActividad = (data) => ( {
+    type: Constants.actividad_onCreateActividad,
+    payload: data,
+} );
+
 const setShowData = ( data ) => ( {
     type: Constants.actividad_onShow,
     payload: data,
@@ -114,6 +119,16 @@ const setFKIDTipoActividad = (actividad, tipoActividad) => {
     };
 };
 
+const setFKIDTipoResultado = (actividad, tipoResultado) => {
+    return ( dispatch ) => {
+        actividad.fkidtiporesultado = tipoResultado.idtiporesultado;
+        actividad.tiporesultado = tipoResultado.descripcion;
+        actividad.error.fkidtiporesultado = false;
+        actividad.message.fkidtiporesultado = "";
+        dispatch( onChange(actividad) );
+    };
+};
+
 const setFKIDAsesorResponsable = (actividad, asesorResponsable) => {
     return ( dispatch ) => {
         actividad.fkidasesorresponsable = asesorResponsable.idasesorresponsable;
@@ -187,6 +202,14 @@ const setResultado = (actividad, value) => {
     };
 };
 
+const setActividad = (actividad, value) => {
+    return ( dispatch ) => {
+        actividad.descripcion = value;
+        actividad.error.descripcion = false;
+        actividad.message.descripcion = "";
+        dispatch( onChange(actividad) );
+    };
+};
 
 const setEstado = (actividad, value) => {
     return ( dispatch ) => {
@@ -209,6 +232,25 @@ const setISDelete = (actividad, value) => {
 const onCreate = () => {
     return ( dispatch ) => {
         dispatch( setCreate() );
+    };
+};
+
+const onCreateActividad = ( fkidnegocio ) => {
+    return ( dispatch ) => {
+        dispatch( setShowLoading() );
+        ActividadService.onCreate( 
+            fkidnegocio 
+        ).then( async (result) => {
+            console.log(result)
+            if ( result.resp === 1 ) {
+                dispatch( setCreateActividad( result ) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
+            }
+        } ).finally( () => {
+            dispatch( setHiddenLoading() );
+        } );
     };
 };
 
@@ -255,7 +297,7 @@ const onGrabar = ( actividad, onBack ) => {
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
-                    onBack();
+                    onBack(result);
                 } else if ( result.resp === 0 ) {
                     actividad.error.descripcion   = true;
                     actividad.message.descripcion = "Tipo ya existente.";
@@ -310,19 +352,28 @@ const onUpdate = ( actividad, onBack ) => {
 
 function onValidate( data ) {
     let bandera = true;
-    if ( data.fkidtipoactividad.toString().trim().length === 0 ) {
-        data.error.fkidtipoactividad   = true;
-        data.message.fkidtipoactividad = "Campo requerido.";
+    if ( data.descripcion.toString().trim().length === 0 ) {
+        data.error.descripcion   = true;
+        data.message.descripcion = "Campo requerido.";
         bandera = false;
     }
+    if ( data.descripcion === "PROGRAMADA" ) {
+        if ( data.fkidtipoactividad.toString().trim().length === 0 ) {
+            data.error.fkidtipoactividad   = true;
+            data.message.fkidtipoactividad = "Campo requerido.";
+            bandera = false;
+        }
+    } else {
+        if ( data.fkidtiporesultado.toString().trim().length === 0 ) {
+            data.error.fkidtiporesultado   = true;
+            data.message.fkidtiporesultado = "Campo requerido.";
+            bandera = false;
+        }
+    }
+    
     if ( data.fkidasesorresponsable.toString().trim().length === 0 ) {
         data.error.fkidasesorresponsable   = true;
         data.message.fkidasesorresponsable = "Campo requerido.";
-        bandera = false;
-    }
-    if ( data.fkidestadonegocio.toString().trim().length === 0 ) {
-        data.error.fkidestadonegocio   = true;
-        data.message.fkidestadonegocio = "Campo requerido.";
         bandera = false;
     }
     if ( data.fkidnegocio.toString().trim().length === 0 ) {
@@ -358,7 +409,7 @@ function onValidate( data ) {
     return bandera;
 };
 
-const onDelete = ( actividad ) => {
+const onDelete = ( actividad, onFunction = () => {},  ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
@@ -366,7 +417,8 @@ const onDelete = ( actividad ) => {
                 actividad
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( onPageActividad() );
+                    // dispatch( onPageActividad() );
+                    onFunction(result);
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );
@@ -384,10 +436,12 @@ const onDelete = ( actividad ) => {
 
 export const ActividadActions = {
     initData,
+    onChange,
     onPageActividad,
     getAllActividad,
     onLimpiar,
     setFKIDTipoActividad,
+    setFKIDTipoResultado,
     setFKIDAsesorResponsable,
     setFKIDEstadoNegocio,
     setFKIDNegocio,
@@ -396,9 +450,11 @@ export const ActividadActions = {
     setFechaCierre,
     setNota,
     setResultado,
+    setActividad,
     setEstado,
     setISDelete,
     onCreate,
+    onCreateActividad,
     onGrabar,
     onShow,
     onEdit,

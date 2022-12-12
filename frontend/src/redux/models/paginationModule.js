@@ -1,6 +1,13 @@
 
 const PaginationModule = {
 
+    listTipoResultado: [],
+    pageTipoResultado: 1,
+    paginateTipoResultado: 1,
+    paginationTipoResultado: {
+        total: 0,
+    },
+
     listTipoActividad: [],
     pageTipoActividad: 1,
     paginateTipoActividad: 1,

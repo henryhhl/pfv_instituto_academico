@@ -88,6 +88,8 @@ const onSetData = ( state = inititalState, oportunidad ) => {
     state.estado = oportunidad.estado;
     state.isdelete = oportunidad.isdelete;
 
+    state.arraynegocio = [ ...oportunidad.arraynegocio ];
+
     state.arraytipocontacto = oportunidad.arraytipocontacto.map( ( item ) => { 
         return {
             fkidtipocontacto: item.fkidtipocontacto, tipocontacto: item.tipocontacto,

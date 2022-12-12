@@ -4,6 +4,8 @@ import { AuthModule } from '../../auth/auth.module';
 import { ActividadService } from './actividad.service';
 import { Actividad } from './entities/actividad.entity';
 import { ActividadController } from './actividad.controller';
+import { NegocioModule } from '../negocio/negocio.module';
+import { OportunidadModule } from '../oportunidad/oportunidad.module';
 
 @Module({
   controllers: [ActividadController],
@@ -13,6 +15,8 @@ import { ActividadController } from './actividad.controller';
       Actividad,
     ] ),
     AuthModule,
+    NegocioModule,
+    OportunidadModule,
   ],
 })
 export class ActividadModule {}

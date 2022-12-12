@@ -30,6 +30,26 @@ const getAllNegocio = async ( {
     } );
 };
 
+const onCreate = async (fkidoportunidad) => {
+    return await httpRequest('get', apiServices.apioportunidadnegocio_create, {
+        fkidoportunidad: fkidoportunidad,
+    } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
+        } else if ( respta.error === true && respta.resp === -2 ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Usuario no Autorizado',
+                text: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
+        return respta;
+    } );
+};
+
 const onStore = async (body) => {
     return await httpRequest('post', apiServices.apioportunidadnegocio_store, {
         fkidprograma: body.fkidprograma,
@@ -39,9 +59,10 @@ const onStore = async (body) => {
         fkidestadonegocio: body.fkidestadonegocio,
         estadonegocio: body.estadonegocio,
         fkidoportunidad: body.fkidoportunidad,
-        oportunidad: body.oportunidad,
+        descripcion: body.descripcion,
         fechainicio: body.fechainicio,
         fechacierre: body.fechacierre,
+        nota: body.nota,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
@@ -121,9 +142,10 @@ const onUpdate = async (body) => {
         fkidestadonegocio: body.fkidestadonegocio,
         estadonegocio: body.estadonegocio,
         fkidoportunidad: body.fkidoportunidad,
-        oportunidad: body.oportunidad,
+        descripcion: body.descripcion,
         fechainicio: body.fechainicio,
         fechacierre: body.fechacierre,
+        nota: body.nota,
         estado: body.estado,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
@@ -184,6 +206,7 @@ const onDelete = async (body) => {
 
 export const NegocioService = {
     getAllNegocio,
+    onCreate,
     onStore,
     onEdit,
     onShow,

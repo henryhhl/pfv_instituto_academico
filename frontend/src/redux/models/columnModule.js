@@ -1155,6 +1155,33 @@ const ColumnModules = {
         },
     ],
 
+    columnTipoResultado: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'descripcion',
+            label: 'Tipo',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: false,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            numeric: false,
+            visible: true,
+            width: null,
+            state: true,
+        },
+    ],
+
     columnEstadoNegocio: [
         {
             id: 'sigla',
@@ -1176,7 +1203,8 @@ const ColumnModules = {
         {
             id: 'valorporcentaje',
             label: '%Porcentaje',
-            numeric: false,
+            numeric: true,
+            suffix: '%',
             visible: true,
             width: null,
             state: false,
@@ -1322,14 +1350,6 @@ const ColumnModules = {
 
     columnOportunidad: [
         {
-            id: 'identificacion',
-            label: 'Identificación',
-            numeric: false,
-            visible: true,
-            width: null,
-            state: false,
-        },
-        {
             id: 'descripcion',
             label: 'Oportunidad',
             numeric: false,
@@ -1338,8 +1358,8 @@ const ColumnModules = {
             state: false,
         },
         {
-            id: 'ciudadorigen',
-            label: 'Ciudad Origen',
+            id: 'identificacion',
+            label: 'Identificación',
             numeric: false,
             visible: true,
             width: null,
@@ -1347,33 +1367,26 @@ const ColumnModules = {
         },
         {
             id: 'asesorresponsable',
-            label: 'Asesor Administrativo',
+            label: 'Asesor',
             numeric: false,
             visible: true,
             width: null,
             state: false,
         },
         {
-            id: 'celular',
-            label: 'Celular',
+            id: 'ciudadorigen',
+            label: 'Origen',
             numeric: false,
             visible: true,
             width: null,
             state: false,
         },
         {
-            id: 'email',
-            label: 'Email',
+            id: 'fecharegistro',
+            label: 'Fecha Registro',
             numeric: false,
             visible: true,
-            width: null,
-            state: false,
-        },
-        {
-            id: ['fecharegistro', 'horaregistro'],
-            label: 'Tiempo Prog..',
-            numeric: false,
-            visible: true,
+            amountday: true,
             width: null,
             state: false,
         },

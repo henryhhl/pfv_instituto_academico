@@ -2,9 +2,12 @@ import { Repository, Like } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { Actividad } from './entities/actividad.entity';
-import { CreateActividadDto } from './dto/create-actividad.dto';
+import { StoreActividadDto } from './dto/store-actividad.dto';
 import { UpdateActividadDto } from './dto/update-actividad.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { CreateActividadDto } from './dto/create-actividad.dto';
+import { NegocioService } from '../negocio/negocio.service';
+import { OportunidadService } from '../oportunidad/oportunidad.service';
 
 @Injectable()
 export class ActividadService {
@@ -13,6 +16,9 @@ export class ActividadService {
   constructor(
     @InjectRepository(Actividad)
     private readonly actividadRepository: Repository<Actividad>,
+
+    private readonly negocioService: NegocioService,
+    private readonly oportunidadService: OportunidadService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -53,6 +59,39 @@ export class ActividadService {
     }
   }
 
+  async create( createActividadDto: CreateActividadDto ) {
+    try {
+      const negocio = await this.negocioService.findOne( createActividadDto.fkidnegocio );
+      if ( negocio === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Negocio no existe.',
+        };
+      }
+      let listNegocioActividad = [];
+      let totalActividad = 0;
+      [listNegocioActividad, totalActividad] = await this.actividadRepository.findAndCount( {
+        where: [
+          { negocio: negocio, },
+        ],
+        order: { created_at: "DESC", },
+      } );
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        negocio: negocio,
+        arrayActividad: listNegocioActividad,
+        cantidadActividad: (totalActividad + 1),
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
   private getDateTime() {
     let date = new Date();
     let month = (date.getMonth() + 1).toString();
@@ -74,17 +113,28 @@ export class ActividadService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createActividadDto: CreateActividadDto) {
+  async store(createActividadDto: StoreActividadDto) {
     try {
+      const { fkidnegocio, ...toCreate } = createActividadDto;
+      const negocio = await this.negocioService.findOne( fkidnegocio );
+      if ( negocio === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Negocio no existe.',
+        };
+      }
       const actividad = this.actividadRepository.create( {
-        ...createActividadDto,
+        ...toCreate,
+        negocio: negocio,
         created_at: this.getDateTime(),
       } );
-      await this.actividadRepository.save( actividad );
+      const actividadStore = await this.actividadRepository.save( actividad );
+      const oportunidadUpdate = await this.oportunidadService.findOne( negocio.oportunidad.idoportunidad );
       return {
         resp: 1, error: false,
         message: 'Actividad registrado éxitosamente.',
-        actividad: actividad,
+        actividad: actividadStore,
+        oportunidad: oportunidadUpdate,
       };
     } catch (error) {
       this.logger.error(error);
@@ -96,8 +146,9 @@ export class ActividadService {
   }
 
   async findOne(idactividad: string) {
-    const actividad = await this.actividadRepository.findOneBy( {
-      idactividad,
+    const actividad = await this.actividadRepository.findOne( {
+      where: { idactividad },
+      relations: { negocio: true, },
     } );
     return actividad;
   }
@@ -157,9 +208,10 @@ export class ActividadService {
           message: 'Actividad no existe.',
         };
       }
+      const { fkidnegocio, ...toUpdate } = updateActividadDto;
       const actividadPreLoad = await this.actividadRepository.preload( {
         idactividad: idactividad,
-        ...updateActividadDto,
+        ...toUpdate,
         concurrencia: actividad.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );
@@ -195,11 +247,12 @@ export class ActividadService {
           message: 'Actividad no existe.',
         };
       }
-      await this.actividadRepository.remove( actividad );
+      const actividadDelete = await this.actividadRepository.remove( actividad );
+      const oportunidadUpdate = await this.oportunidadService.findOne( actividadDelete.negocio.oportunidad.idoportunidad );
       return {
         resp: 1, error: false,
         message: 'Actividad eliminado éxitosamente.',
-        actividad: actividad,
+        oportunidad: oportunidadUpdate,
       };
     } catch (error) {
       this.logger.error(error);

@@ -19,6 +19,18 @@ export const NegocioReducer = ( state = inititalState, action ) => {
             state = Object.assign( {}, state );
             return state;
 
+        case Constants.negocio_onCreateNegocio:
+            Functions.cleanObejct(state);
+            state.fkidoportunidad = action.payload.oportunidad.idoportunidad;
+            state.identificacion = action.payload.oportunidad.identificacion;
+            state.descripcion = `Negocio ${action.payload.cantidadNegocio}`;
+            state.fechainicio = Functions.dateCurrentToString();
+            state.concurrencia = 1;
+            state.estado = 'A';
+            state.isdelete = 'A';
+            state = Object.assign( {}, state );
+            return state;
+
         case Constants.negocio_onShow:
             Functions.cleanObejct(state);
             onSetData( state, action.payload );
@@ -41,16 +53,20 @@ export const NegocioReducer = ( state = inititalState, action ) => {
 
 const onSetData = ( state = inititalState, negocio ) => {
     state.idnegocio = negocio.idnegocio;
+    state.arrayactividad = [ ...negocio.arrayactividad ];
     state.fkidprograma = negocio.fkidprograma;
     state.programa = negocio.programa;
     state.fkidturno = negocio.fkidturno;
     state.turno = negocio.turno;
     state.fkidestadonegocio = negocio.fkidestadonegocio;
     state.estadonegocio = negocio.estadonegocio;
-    state.fkidoportunidad = negocio.fkidoportunidad;
-    state.oportunidad = negocio.oportunidad;
+    state.fkidoportunidad = negocio.oportunidad.idoportunidad;
+    state.identificacion = negocio.oportunidad.identificacion;
+    state.oportunidad = negocio.oportunidad.descripcion;
+    state.descripcion = negocio.descripcion;
     state.fechainicio = negocio.fechainicio;
     state.fechacierre = negocio.fechacierre;
+    state.nota = negocio.nota;
     state.concurrencia = negocio.concurrencia;
     state.estado = negocio.estado;
     state.isdelete = negocio.isdelete;

@@ -285,6 +285,12 @@ const Constants = {
     estadonegocio_onShow: "[ON SHOW] Estado Negocio",
     estadonegocio_onLimpiar: "[ON LIMPIAR] Estado Negocio",
 
+    tiporesultado_setInit: "[SET INIT] Tipo Resultado",
+    tiporesultado_onChange: "[ON CHANGE] Tipo Resultado",
+    tiporesultado_onCreate: "[ON CREATE] Tipo Resultado",
+    tiporesultado_onShow: "[ON SHOW] Tipo Resultado",
+    tiporesultado_onLimpiar: "[ON LIMPIAR] Tipo Resultado",
+
     asesorresponsable_setInit: "[SET INIT] Asesor Responsable",
     asesorresponsable_onChange: "[ON CHANGE] Asesor Responsable",
     asesorresponsable_onCreate: "[ON CREATE] Asesor Responsable",
@@ -294,12 +300,14 @@ const Constants = {
     negocio_setInit: "[SET INIT] Negocio",
     negocio_onChange: "[ON CHANGE] Negocio",
     negocio_onCreate: "[ON CREATE] Negocio",
+    negocio_onCreateNegocio: "[ON INIT CREATE] Negocio",
     negocio_onShow: "[ON SHOW] Negocio",
     negocio_onLimpiar: "[ON LIMPIAR] Negocio",
 
     actividad_setInit: "[SET INIT] Actividad",
     actividad_onChange: "[ON CHANGE] Actividad",
     actividad_onCreate: "[ON CREATE] Actividad",
+    actividad_onCreateActividad: "[ON INIT CREATE] Actividad",
     actividad_onShow: "[ON SHOW] Actividad",
     actividad_onLimpiar: "[ON LIMPIAR] Actividad",
 
@@ -312,6 +320,8 @@ const Constants = {
     oportundiad_onDeleteRowTipoContacto: "[ON DELETE ROW TIPO CONTACTO] Oportunidad",
     oportundiad_onAddRowTipoMedioPublicitario: "[ON ADD ROW TIPO MEDIO PUBLICITARIO] Oportunidad",
     oportundiad_onDeleteRowTipoMedioPublicitario: "[ON DELETE ROW TIPO MEDIO PUBLICITARIO] Oportunidad",
+    oportundiad_onAddRowNegocio: "[ON ADD ROW NEGOCIO] Oportunidad",
+    oportundiad_onDeleteRowNegocio: "[ON DELETE ROW NEGOCIO] Oportunidad",
 
 };
 

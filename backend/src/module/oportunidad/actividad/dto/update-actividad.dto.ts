@@ -1,8 +1,8 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateActividadDto } from './create-actividad.dto';
+import { StoreActividadDto } from './store-actividad.dto';
 import { IsString, IsIn, IsOptional } from 'class-validator';
 
-export class UpdateActividadDto extends PartialType(CreateActividadDto) {
+export class UpdateActividadDto extends PartialType(StoreActividadDto) {
 
     @IsString( { message: 'Campo Estado solo permitido tipo STRING.', } )
     @IsIn( [ 'A', 'N', ], { message: 'Campo Estado permite valor: A y N', } )

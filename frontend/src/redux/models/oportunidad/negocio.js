@@ -2,6 +2,8 @@
 const Negocio = {
     idnegocio: "",
 
+    arrayactividad: [],
+
     fkidprograma: "",
     programa: "",
 
@@ -14,8 +16,11 @@ const Negocio = {
     fkidoportunidad: "",
     oportunidad: "",
 
+    identificacion: "",
+    descripcion: "",
     fechainicio: "",
     fechacierre: "",
+    nota: "",
 
     estado: "",
     concurrencia: "",
@@ -30,6 +35,7 @@ const Negocio = {
         fkidestadonegocio: false,
         fkidoportunidad: false,
 
+        descripcion: false,
         fechainicio: false,
         fechacierre: false,
 
@@ -43,6 +49,7 @@ const Negocio = {
         fkidestadonegocio: "",
         fkidoportunidad: "",
 
+        descripcion: "",
         fechainicio: "",
         fechacierre: "",
 

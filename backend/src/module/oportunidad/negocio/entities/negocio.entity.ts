@@ -1,10 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Oportunidad } from '../../oportunidad/entities/oportunidad.entity';
+import { Actividad } from '../../actividad/entities/actividad.entity';
 
 @Entity('negocio')
 export class Negocio {
 
     @PrimaryGeneratedColumn( 'uuid' )
     idnegocio: string;
+
+
+    @OneToMany(
+        () => Actividad,
+        ( actividad ) => actividad.negocio,
+        { cascade: true, eager: true, }
+    )
+    arrayactividad?: Actividad[];
 
 
     @Column( 'text' )
@@ -28,17 +38,28 @@ export class Negocio {
     estadonegocio: string;
 
 
-    @Column( 'text', { nullable: true, } )
-    fkidoportunidad?: string;
+    @ManyToOne(
+        ( ) => Oportunidad,
+        ( oportunidad ) => oportunidad.arraynegocio,
+        { eager: true, }
+    )
+    @JoinColumn({ name: 'fkidoportunidad', })
+    oportunidad: Oportunidad;
+
 
     @Column( 'text', { nullable: true, } )
-    oportunidad?: string;
+    descripcion?: string;
 
     @Column( 'text' )
     fechainicio: string;
 
     @Column( 'text' )
     fechacierre: string;
+
+    @Column( 'text', {
+        nullable: true,
+    } )
+    nota?: string;
 
 
     @Column( 'enum', {

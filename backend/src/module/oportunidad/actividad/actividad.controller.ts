@@ -1,9 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { ActividadService } from './actividad.service';
 import { Auth } from '../../auth/decorators/auth.decorator';
-import { CreateActividadDto } from './dto/create-actividad.dto';
+import { StoreActividadDto } from './dto/store-actividad.dto';
 import { UpdateActividadDto } from './dto/update-actividad.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { CreateActividadDto } from './dto/create-actividad.dto';
 
 @Controller('actividad')
 export class ActividadController {
@@ -15,9 +16,15 @@ export class ActividadController {
     return this.actividadService.findAll(paginationDto);
   }
 
+  @Get('/create')
+  @Auth( /**  N Permissions */ )
+  create( @Query() createActividadDto: CreateActividadDto ) {
+    return this.actividadService.create(createActividadDto);
+  }
+
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store(@Body() createActividadDto: CreateActividadDto) {
+  store(@Body() createActividadDto: StoreActividadDto) {
     return this.actividadService.store(createActividadDto);
   }
 

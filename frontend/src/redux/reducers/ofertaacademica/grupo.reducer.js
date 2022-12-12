@@ -68,6 +68,7 @@ const onSetData = ( state = inititalState, grupo ) => {
             fkiddivisionacademica: item.fkiddivisionacademica, divisionacademica: item.divisionacademica,
             fkidgestionperiodo: item.fkidgestionperiodo, gestionperiodo: item.gestionperiodo,
             cupomaximo: item.cupomaximo, disabled: true,
+            arraydia: getHorarioData(),
             arraydivisionacademica: [],
             error: {
                 fkidpensum: false, fkiddocente: false, fkidturno: false, fkidgestionperiodo: false,
@@ -101,6 +102,7 @@ const onDefaultPensum = () => {
         fkidgestionperiodo: null, gestionperiodo: null, 
         // fechacierre: "", 
         // fkidmotivoaperturacierrecurso: null, motivoaperturacierrecurso: null, observaciones: "", estadoproceso: "N",
+        arraydia: getHorarioData(),
         arraydivisionacademica: [],
         error: {
             fkidpensum: false, fkiddocente: false, fkidturno: false, fkidgestionperiodo: false,
@@ -112,4 +114,18 @@ const onDefaultPensum = () => {
         },
         disabled: false,
     };
+};
+
+const getHorarioData = () => {
+    let array = [];
+    for (let index = 0; index < Functions.onDefaultDays().length; index++) {
+        const element = Functions.onDefaultDays()[index];
+        const obj = {
+            codigo: element.codigo,
+            descripcion: element.descripcion,
+            arrayhorario: [],
+        };
+        array = [ ...array, obj ];
+    }
+    return array;
 };

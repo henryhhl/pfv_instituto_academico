@@ -49,8 +49,8 @@ const onStore = async (body) => {
         fkidasesorresponsable: body.fkidasesorresponsable,
         asesorresponsable: body.asesorresponsable,
 
-        fkidnegocio: body.fkidnegocio,
-        negocio: body.negocio,
+        identificacion: body.identificacion,
+        descripcion: body.descripcion,
 
         celular: body.celular,
         email: body.email,
@@ -149,8 +149,8 @@ const onUpdate = async (body) => {
         fkidasesorresponsable: body.fkidasesorresponsable,
         asesorresponsable: body.asesorresponsable,
 
-        fkidnegocio: body.fkidnegocio,
-        negocio: body.negocio,
+        identificacion: body.identificacion,
+        descripcion: body.descripcion,
 
         celular: body.celular,
         email: body.email,

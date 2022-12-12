@@ -10,6 +10,7 @@ import { OportunidadTipoMedioPublicitarioDetalle } from './entities/oportunidadt
 @Module({
   controllers: [OportunidadController],
   providers: [OportunidadService],
+  exports: [OportunidadService],
   imports: [
     TypeOrmModule.forFeature( [
       Oportunidad, OportunidadTipoContactoDetalle,

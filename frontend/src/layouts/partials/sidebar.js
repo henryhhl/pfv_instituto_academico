@@ -82,7 +82,7 @@ export default function SidebarComponent() {
                                 <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Oportunidad
                             </Link>
                         </Menu.Item>
-                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                        {/* <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/negocio/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
@@ -95,7 +95,7 @@ export default function SidebarComponent() {
                             >
                                 <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Actividad
                             </Link>
-                        </Menu.Item>
+                        </Menu.Item> */}
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/asesorresponsable/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
@@ -115,6 +115,13 @@ export default function SidebarComponent() {
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
                                 <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Actividad
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/tiporesultado/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Resultado
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
@@ -339,6 +346,7 @@ export default function SidebarComponent() {
                             </Link>
                         </Menu.Item>
                     </Menu.SubMenu>
+
                     <Menu.SubMenu 
                         title={
                             <a href="#" className="p-0 d-flex align-items-center"
@@ -389,6 +397,377 @@ export default function SidebarComponent() {
                             </Link>
                         </Menu.Item>
                     </Menu.SubMenu>
+
+                    <Menu.SubMenu 
+                        title={
+                            <a href="#" className="p-0 d-flex align-items-center"
+                                onClick={ (evt) => {
+                                    evt.preventDefault();
+                                } }
+                                style={{ lineHeight: 0, height: 50, }}
+                            >
+                                <i className="ion ion-ios-albums-outline"></i>
+                                <span style={{ fontSize: 13, }}>Titulación</span>
+                            </a>
+                        }
+                        className="p-0"
+                    >
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tutores o Tribunales Evaluadores
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Presidente Colegio Profesionales
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Rectores o Directores
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Profesión de Tutores
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Colegio Profesionales
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Áreas Administrativas
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Salas
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Nivel Académico Tribunal Externo
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Perfil Graduación Postulante
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Recepción de Trabajo Finales
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Entrega Trabajo Revisores
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Recepción Trabajo Revisores
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Entrega Trabajo Estudiante
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Control Copia Trabajo Postulante
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Correspondencia Comunicación Estudiante
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Comunicación Interna
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Comunicación Externa
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Reportes/Informes
+                            </Link>
+                        </Menu.Item>
+                    </Menu.SubMenu>
+
+                    <Menu.SubMenu 
+                        title={
+                            <a href="#" className="p-0 d-flex align-items-center"
+                                onClick={ (evt) => {
+                                    evt.preventDefault();
+                                } }
+                                style={{ lineHeight: 0, height: 50, }}
+                            >
+                                <i className="ion ion-ios-albums-outline"></i>
+                                <span style={{ fontSize: 13, }}>Encuesta</span>
+                            </a>
+                        }
+                        className="p-0"
+                    >
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Ponderación documento
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Criterio de Evaluación
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Escala Calificación
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Plantilla de Encuesta
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Responsable de Encuesta
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Evaluación de Estudiante
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Evaluación Encargados de Carreras
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> AutoEvaluaciones
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Evaluaciones Pendientes
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Resportes/Informes
+                            </Link>
+                        </Menu.Item>
+                    </Menu.SubMenu>
+
+                    <Menu.SubMenu 
+                        title={
+                            <a href="#" className="p-0 d-flex align-items-center"
+                                onClick={ (evt) => {
+                                    evt.preventDefault();
+                                } }
+                                style={{ lineHeight: 0, height: 50, }}
+                            >
+                                <i className="ion ion-ios-albums-outline"></i>
+                                <span style={{ fontSize: 13, }}>Convalidación</span>
+                            </a>
+                        }
+                        className="p-0"
+                    >
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Departamento
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Documento Personal
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Documento solicitud
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Origen Externo Institución
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Presentación
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Nivel Programa Analítico
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Pensums Académico
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Carga Horaria
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Solicitud Convalidación
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Documento Evaluación
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Certificados
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Materia Evaluación
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Programa Analítico Origen
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Pre-Convalidación Pendiente
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Pre-Convalidación Realizada
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Convalidación Oficial
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Informe Técnico
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Histórico Convalidación
+                            </Link>
+                        </Menu.Item>
+                    </Menu.SubMenu>
+
                     <Menu.SubMenu 
                         title={
                             <a href="#" className="p-0 d-flex align-items-center"
@@ -489,6 +868,34 @@ export default function SidebarComponent() {
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Usuario Conectado
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Bitacora
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Configuración
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Backup
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/asignar_rol"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
@@ -503,6 +910,13 @@ export default function SidebarComponent() {
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/calificacion/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Activar Permiso
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/rol/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
@@ -510,17 +924,17 @@ export default function SidebarComponent() {
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
-                            <Link to={"/tipo_rol/index"} className="d-flex align-items-center" 
-                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
-                            >
-                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Rol
-                            </Link>
-                        </Menu.Item>
-                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/permiso/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
                                 <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Permiso
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/tipo_rol/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Tipo Rol
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>

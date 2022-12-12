@@ -30,20 +30,41 @@ const getAllActividad = async ( {
     } );
 };
 
+const onCreate = async (fkidnegocio) => {
+    return await httpRequest('get', apiServices.apioportunidadactividad_create, {
+        fkidnegocio: fkidnegocio,
+    } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
+        } else if ( respta.error === true && respta.resp === -2 ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Usuario no Autorizado',
+                text: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
+        return respta;
+    } );
+};
+
 const onStore = async (body) => {
     return await httpRequest('post', apiServices.apioportunidadactividad_store, {
         fkidtipoactividad: body.fkidtipoactividad,
         tipoactividad: body.tipoactividad,
 
+        fkidtiporesultado: body.fkidtiporesultado,
+        tiporesultado: body.tiporesultado,
+
         fkidasesorresponsable: body.fkidasesorresponsable,
         asesorresponsable: body.asesorresponsable,
 
-        fkidestadonegocio: body.fkidestadonegocio,
-        estadonegocio: body.estadonegocio,
-
         fkidnegocio: body.fkidnegocio,
-        negocio: body.negocio,
 
+        nroactividad: body.nroactividad,
+        descripcion: body.descripcion,
         fechaprogramada: body.fechaprogramada,
         horaprogramada: body.horaprogramada,
 
@@ -126,15 +147,16 @@ const onUpdate = async (body) => {
         fkidtipoactividad: body.fkidtipoactividad,
         tipoactividad: body.tipoactividad,
 
+        fkidtiporesultado: body.fkidtiporesultado,
+        tiporesultado: body.tiporesultado,
+
         fkidasesorresponsable: body.fkidasesorresponsable,
         asesorresponsable: body.asesorresponsable,
 
-        fkidestadonegocio: body.fkidestadonegocio,
-        estadonegocio: body.estadonegocio,
-
         fkidnegocio: body.fkidnegocio,
-        negocio: body.negocio,
 
+        nroactividad: body.nroactividad,
+        descripcion: body.descripcion,
         fechaprogramada: body.fechaprogramada,
         horaprogramada: body.horaprogramada,
 
@@ -202,6 +224,7 @@ const onDelete = async (body) => {
 
 export const ActividadService = {
     getAllActividad,
+    onCreate,
     onStore,
     onEdit,
     onShow,

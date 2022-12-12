@@ -45,6 +45,7 @@ const ListModules = {
     listTipoActividad: [],
     listTipoMedioPublicitario: [],
     listTipoContacto: [],
+    listTipoResultado: [],
     listEstadoNegocio: [],
     listAsesorResponsable: [],
     listNegocio: [],

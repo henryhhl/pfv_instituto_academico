@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Negocio } from '../../negocio/entities/negocio.entity';
 
 @Entity('actividad')
 export class Actividad {
@@ -7,10 +8,10 @@ export class Actividad {
     idactividad: string;
 
 
-    @Column( 'text' )
+    @Column( 'text', { nullable: true, } )
     fkidtipoactividad: string;
 
-    @Column( 'text' )
+    @Column( 'text', { nullable: true, } )
     tipoactividad: string;
 
 
@@ -21,22 +22,25 @@ export class Actividad {
     asesorresponsable: string;
 
 
-    @Column( 'text' )
-    fkidestadonegocio: string;
+    @Column( 'text', { nullable: true, } )
+    fkidtiporesultado: string;
 
-    @Column( 'text' )
-    estadonegocio: string;
+    @Column( 'text', { nullable: true, } )
+    tiporesultado: string;
 
 
-    @Column( 'text', {
-        nullable: true,
-    } )
-    fkidnegocio: string;
+    @ManyToOne(
+        ( ) => Negocio,
+        ( negocio ) => negocio.arrayactividad,
+    )
+    @JoinColumn({ name: 'fkidnegocio', })
+    negocio: Negocio;
 
-    @Column( 'text', {
-        nullable: true,
-    } )
-    negocio: string;
+    @Column( 'text', { nullable: true, } )
+    descripcion: string;
+
+    @Column( 'text', { nullable: true, } )
+    nroactividad: string;
 
 
     @Column( 'text' )

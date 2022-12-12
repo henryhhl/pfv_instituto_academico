@@ -53,6 +53,7 @@ import { AsesorResponsableModule } from './module/oportunidad/asesorresponsable/
 import { NegocioModule } from './module/oportunidad/negocio/negocio.module';
 import { ActividadModule } from './module/oportunidad/actividad/actividad.module';
 import { OportunidadModule } from './module/oportunidad/oportunidad/oportunidad.module';
+import { TipoResultadoModule } from './module/oportunidad/tiporesultado/tiporesultado.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -105,7 +106,8 @@ import { OportunidadModule } from './module/oportunidad/oportunidad/oportunidad.
     DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, 
     TipoIdentificacionModule, CargoModule, AdministrativoModule, CategoriaDocumentoModule, 
     AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
-    TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule,
+    TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, 
+    AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule, TipoResultadoModule,
   ],
   controllers: [],
   providers: [],

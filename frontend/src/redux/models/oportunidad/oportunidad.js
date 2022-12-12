@@ -2,6 +2,7 @@
 const Oportunidad = {
     idoportunidad: "",
 
+    arraynegocio: [],
     arraytipocontacto: [],
     arraytipomediopublicitario: [],
 

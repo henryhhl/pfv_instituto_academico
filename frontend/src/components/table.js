@@ -9,6 +9,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { Functions } from '../utils/functions';
 
 export default function TableComponent( props ) {
     const theme = useTheme();
@@ -77,6 +78,27 @@ export default function TableComponent( props ) {
                                         { ( ( (props.page < 1 ? 0 : props.page) ) * props.paginate ) + ( index + 1 ) }
                                     </td>
                                     { props.columns.map( ( column, index ) => {
+                                        let amountday = 'hace';
+                                        if ( column.amountday === true ) {
+                                            let datenow = Functions.dateToString();
+                                            datenow = new Date(datenow);
+                                            
+                                            let array = row[column.id].split('/');
+                                            let dateString = `${array[2]}-${array[1]}-${array[0]}`;
+                                            let dateregister = new Date(dateString);
+
+                                            let milisegundodia = 24 * 60 * 60 * 1000;
+
+                                            let diferenciatime = datenow.getTime() - dateregister.getTime();
+                                            if ( diferenciatime > 0 ) {
+                                                let cantdia = Math.round( ( Math.abs( diferenciatime ) ) / milisegundodia );
+                                                amountday = amountday + ` ${cantdia} días`;
+                                            } else if ( diferenciatime === 0 ) {
+                                                amountday = 'Hoy';
+                                            } else {
+                                                amountday = row[column.id];
+                                            }
+                                        }
                                         return (
                                             <td key={index}
                                                 style={{
@@ -98,8 +120,11 @@ export default function TableComponent( props ) {
                                                                 'Aperturado' : row[column.id] === 'N' ? 'Sin Aperturar o Cerrar' : 'Cerrado' 
                                                             }` }
                                                         </Tag>
-                                                    : row[column.id] 
+                                                    : isNaN(row[column.id]) ? 
+                                                        column.amountday === true ? amountday : row[column.id] : 
+                                                    parseFloat(row[column.id]).toFixed(2) 
                                                 }
+                                                { column.suffix && column.suffix }
                                             </td>
                                         );
                                     } ) }

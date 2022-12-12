@@ -5,14 +5,17 @@ const Actividad = {
     fkidtipoactividad: "",
     tipoactividad: "",
 
+    fkidtiporesultado: "",
+    tiporesultado: "",
+
     fkidasesorresponsable: "",
     asesorresponsable: "",
 
-    fkidestadonegocio: "",
-    estadonegocio: "",
-
     fkidnegocio: "",
     negocio: "",
+
+    descripcion: "",
+    nroactividad: "",
 
     fechaprogramada: "",
     horaprogramada: "",
@@ -33,7 +36,9 @@ const Actividad = {
         fkidasesorresponsable: false,
         fkidestadonegocio: false,
         fkidnegocio: false,
+        fkidtiporesultado: false,
 
+        descripcion: false,
         nroactividad: false,
         fechaprogramada: false,
         horaprogramada: false,
@@ -47,7 +52,9 @@ const Actividad = {
         fkidasesorresponsable: "",
         fkidestadonegocio: "",
         fkidnegocio: "",
+        fkidtiporesultado: "",
 
+        descripcion: "",
         nroactividad: "",
         fechaprogramada: "",
         horaprogramada: "",

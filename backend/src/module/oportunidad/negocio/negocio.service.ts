@@ -1,10 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { CreateNegocioDto } from './dto/create-negocio.dto';
-import { UpdateNegocioDto } from './dto/update-negocio.dto';
-import { Negocio } from './entities/negocio.entity';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { Negocio } from './entities/negocio.entity';
+import { StoreNegocioDto } from './dto/store-negocio.dto';
+import { UpdateNegocioDto } from './dto/update-negocio.dto';
+import { CreateNegocioDto } from './dto/create-negocio.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { OportunidadService } from '../oportunidad/oportunidad.service';
 
 @Injectable()
 export class NegocioService {
@@ -13,6 +15,8 @@ export class NegocioService {
   constructor(
     @InjectRepository(Negocio)
     private readonly negocioRepository: Repository<Negocio>,
+
+    private readonly oportunidadService: OportunidadService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -24,14 +28,14 @@ export class NegocioService {
         [listNegocio, totalPagination] = await this.negocioRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { oportunidad: Like( '%' + search + '%', ), },
+            { descripcion: Like( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listNegocio, totalPagination] = await this.negocioRepository.findAndCount( {
           where: [
-            { oportunidad: Like( '%' + search + '%', ), },
+            { descripcion: Like( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
@@ -49,6 +53,39 @@ export class NegocioService {
       return {
         resp: -1, error: true,
         message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async create( createNegocioDto: CreateNegocioDto ) {
+    try {
+      const oportunidad = await this.oportunidadService.findOne( createNegocioDto.fkidoportunidad );
+      if ( oportunidad === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Oportunidad no existe.',
+        };
+      }
+      let listOportunidadNegocio = [];
+      let totalNegocio = 0;
+      [listOportunidadNegocio, totalNegocio] = await this.negocioRepository.findAndCount( {
+        where: [
+          { oportunidad: oportunidad, },
+        ],
+        order: { created_at: "DESC", },
+      } );
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        oportunidad: oportunidad,
+        arrayNegocio: listOportunidadNegocio,
+        cantidadNegocio: (totalNegocio + 1),
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
       };
     }
   }
@@ -74,17 +111,29 @@ export class NegocioService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createNegocioDto: CreateNegocioDto) {
+  async store(createNegocioDto: StoreNegocioDto) {
     try {
+      const oportunidad = await this.oportunidadService.findOne( createNegocioDto.fkidoportunidad );
+      if ( oportunidad === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Oportunidad no existe.',
+        };
+      }
+      const { fkidoportunidad, ...toCreate } = createNegocioDto;
       const negocio = this.negocioRepository.create( {
-        ...createNegocioDto,
+        ...toCreate,
+        oportunidad: oportunidad,
         created_at: this.getDateTime(),
       } );
-      await this.negocioRepository.save( negocio );
+      const negocioStore = await this.negocioRepository.save( negocio );
+      const oportunidadUpdate = await this.oportunidadService.findOne( createNegocioDto.fkidoportunidad );
+
       return {
         resp: 1, error: false,
         message: 'Negocio registrado éxitosamente.',
-        negocio: negocio,
+        negocio: negocioStore,
+        oportunidad: oportunidadUpdate,
       };
     } catch (error) {
       this.logger.error(error);
@@ -96,8 +145,13 @@ export class NegocioService {
   }
 
   async findOne(idnegocio: string) {
-    const negocio = await this.negocioRepository.findOneBy( {
-      idnegocio,
+    const negocio = await this.negocioRepository.findOne( {
+      where: { idnegocio: idnegocio },
+      relations: {
+        oportunidad: true,
+        arrayactividad: true,
+      },
+      order: { created_at: 'ASC', },
     } );
     return negocio;
   }
@@ -150,6 +204,13 @@ export class NegocioService {
 
   async update(idnegocio: string, updateNegocioDto: UpdateNegocioDto) {
     try {
+      const oportunidad = await this.oportunidadService.findOne( updateNegocioDto.fkidoportunidad );
+      if ( oportunidad === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Oportunidad no existe.',
+        };
+      }
       const negocio = await this.findOne(idnegocio);
       if ( negocio === null ) {
         return {
@@ -157,9 +218,11 @@ export class NegocioService {
           message: 'Negocio no existe.',
         };
       }
+      const { fkidoportunidad, ...toUpdate } = updateNegocioDto;
       const negocioPreLoad = await this.negocioRepository.preload( {
         idnegocio: idnegocio,
-        ...updateNegocioDto,
+        ...toUpdate,
+        oportunidad: oportunidad,
         concurrencia: negocio.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );
@@ -171,11 +234,13 @@ export class NegocioService {
         };
       }
       const negocioUpdate = await this.negocioRepository.save( negocioPreLoad );
+      const oportunidadUpdate = await this.oportunidadService.findOne( updateNegocioDto.fkidoportunidad );
       return {
         resp: 1,
         error: false,
         message: 'Negocio actualizado éxitosamente.',
         negocio: negocioUpdate,
+        oportunidad: oportunidadUpdate,
       };
     } catch (error) {
       this.logger.error(error);
@@ -196,10 +261,11 @@ export class NegocioService {
         };
       }
       await this.negocioRepository.remove( negocio );
+      const oportunidadUpdate = await this.oportunidadService.findOne( negocio.oportunidad.idoportunidad );
       return {
         resp: 1, error: false,
         message: 'Negocio eliminado éxitosamente.',
-        negocio: negocio,
+        oportunidad: oportunidadUpdate,
       };
     } catch (error) {
       this.logger.error(error);

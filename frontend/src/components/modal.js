@@ -28,38 +28,38 @@ function ModalComponent( props ) {
                 maskClosable={ props.maskClosable }
                 closable={ props.closable }
 
-                modalRender={
-                    ( modal ) => {
-                        return (
-                            <Draggable
-                                disabled={ draggable }
-                                bounds={ bounds }
-                                onStart={ ( event, uiData ) => {
-                                    const { clientWidth, clientHeight } = window?.document?.documentElement;
-                                    const targetRect = draggleRef?.current?.getBoundingClientRect();
-                                    if (!targetRect) {
-                                        return;
-                                    }
-                                    setBounds( {
-                                        left:   -targetRect?.left + uiData?.x,
-                                        right:  clientWidth       - ( targetRect?.right - uiData?.x ),
-                                        top:    -targetRect?.top  + uiData?.y,
-                                        bottom: clientHeight      - ( targetRect?.bottom - uiData?.y ),
-                                    } );
-                                } }
-                            >
-                                <div ref={ draggleRef }>
-                                    { modal }
-                                </div>
-                            </Draggable>
-                        );
-                    }
-                }
+                // modalRender={
+                //     ( modal ) => {
+                //         return (
+                //             <Draggable
+                //                 disabled={ draggable }
+                //                 bounds={ bounds }
+                //                 onStart={ ( event, uiData ) => {
+                //                     const { clientWidth, clientHeight } = window?.document?.documentElement;
+                //                     const targetRect = draggleRef?.current?.getBoundingClientRect();
+                //                     if (!targetRect) {
+                //                         return;
+                //                     }
+                //                     setBounds( {
+                //                         left:   -targetRect?.left + uiData?.x,
+                //                         right:  clientWidth       - ( targetRect?.right - uiData?.x ),
+                //                         top:    -targetRect?.top  + uiData?.y,
+                //                         bottom: clientHeight      - ( targetRect?.bottom - uiData?.y ),
+                //                     } );
+                //                 } }
+                //             >
+                //                 <div ref={ draggleRef }>
+                //                     { modal }
+                //                 </div>
+                //             </Draggable>
+                //         );
+                //     }
+                // }
                 title={
                     <div
                         style={ {
                             width: '100%', minWidth: '100%', 
-                            cursor: 'move',
+                            // cursor: 'move',
                         } }
                         onMouseOver={ () => {
                             if ( draggable ) {

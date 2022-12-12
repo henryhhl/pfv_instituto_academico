@@ -485,4 +485,5 @@ export const OportunidadActions = {
     onEdit,
     onUpdate,
     onDelete,
+    setShowData,
 };
