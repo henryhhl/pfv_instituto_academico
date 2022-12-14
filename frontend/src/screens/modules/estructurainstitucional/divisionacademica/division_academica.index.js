@@ -14,7 +14,7 @@ function IndexDivisionAcademica(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageDivisionAcademica();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexDivisionAcademica(props) {
         navigate('/divisionacademica/create');
     };
 
-    const onEdit = (divisionacademica) => {
-        navigate(`/divisionacademica/edit/${divisionacademica.iddivisionacademica}`);
+    const onEdit = (item) => {
+        navigate(`/divisionacademica/edit/${item.iddivisionacademica}`);
     };
 
-    const onShow = (divisionacademica) => {
-        navigate(`/divisionacademica/show/${divisionacademica.iddivisionacademica}`);
+    const onShow = (item) => {
+        navigate(`/divisionacademica/show/${item.iddivisionacademica}`);
     };
 
     const setPage = (page) => {
-        props.onPageDivisionAcademica(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageDivisionAcademica(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexDivisionAcademica(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnDivisionAcademica}
-                        dataSource={props.listDivisionAcademica}
-                        onShow={ ( divisionAcademica ) => onShow(divisionAcademica) }
-                        onEditar={ ( divisionAcademica ) => onEdit(divisionAcademica) }
-                        onDelete={ ( divisionAcademica ) => props.onDelete(divisionAcademica) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexDivisionAcademica(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnDivisionAcademica: state.ColumnModule.columnDivisionAcademica,
-    listDivisionAcademica: state.PaginationModule.listDivisionAcademica,
+    column: state.ColumnModule.columnDivisionAcademica,
+    list: state.PaginationModule.listDivisionAcademica,
     page: state.PaginationModule.pageDivisionAcademica,
     pagination: state.PaginationModule.paginationDivisionAcademica,
     paginate: state.PaginationModule.paginateDivisionAcademica,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageDivisionAcademica: DivisionAcademicaActions.onPageDivisionAcademica,
+    onPage: DivisionAcademicaActions.onPageDivisionAcademica,
     onDelete: DivisionAcademicaActions.onDelete,
 };
 

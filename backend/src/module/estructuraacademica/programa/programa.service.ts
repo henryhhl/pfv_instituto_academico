@@ -1,11 +1,11 @@
 
-import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { DataSource, Repository, ILike } from 'typeorm';
+import { Programa } from './entities/programa.entity';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { Programa } from './entities/programa.entity';
 import { ProgramaDivisionAcademicaDetalle } from './entities/programadivisionacademicadetalle.entity';
 import { ProgramaDivisionAcademicaMateriaDetalle } from './entities/programadivisionacademicamateriadetalle.entity';
 
@@ -34,19 +34,32 @@ export class ProgramaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listPrograma, totalPagination] = await this.programaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
-          where: { },
-          order: {
-            created_at: "DESC",
-          },
+          take: limit, skip: offset,
+          where: [
+            { codigo: ILike( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { unidadadministrativa: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+            { unidadacademica: ILike( '%' + search + '%', ), },
+            { nivelacademico: ILike( '%' + search + '%', ), },
+            { modalidadacademica: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       } else {
         [listPrograma, totalPagination] = await this.programaRepository.findAndCount( {
-          where: { },
-          order: {
-            created_at: "DESC",
-          },
+          where: [
+            { codigo: ILike( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { unidadadministrativa: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+            { unidadacademica: ILike( '%' + search + '%', ), },
+            { nivelacademico: ILike( '%' + search + '%', ), },
+            { modalidadacademica: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       }
       return {

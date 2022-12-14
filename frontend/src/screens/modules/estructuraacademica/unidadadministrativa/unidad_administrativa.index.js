@@ -14,7 +14,7 @@ function IndexUnidadAdministrativa(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageUnidadAdministrativa();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexUnidadAdministrativa(props) {
         navigate('/unidadadministrativa/create');
     }
 
-    const onEdit = (unidadAdministrativa) => {
-        navigate(`/unidadadministrativa/edit/${unidadAdministrativa.idunidadadministrativa}`);
+    const onEdit = (item) => {
+        navigate(`/unidadadministrativa/edit/${item.idunidadadministrativa}`);
     }
 
-    const onShow = (unidadAdministrativa) => {
-        navigate(`/unidadadministrativa/show/${unidadAdministrativa.idunidadadministrativa}`);
+    const onShow = (item) => {
+        navigate(`/unidadadministrativa/show/${item.idunidadadministrativa}`);
     }
 
     const setPage = (page) => {
-        props.onPageUnidadAdministrativa(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageUnidadAdministrativa(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexUnidadAdministrativa(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnUnidadAdministrativa}
-                        dataSource={props.listUnidadAdministrativa}
-                        onShow={ ( unidadAdministrativa ) => onShow(unidadAdministrativa) }
-                        onEditar={ ( unidadAdministrativa ) => onEdit(unidadAdministrativa) }
-                        onDelete={ ( unidadAdministrativa ) => props.onDelete(unidadAdministrativa) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexUnidadAdministrativa(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnUnidadAdministrativa: state.ColumnModule.columnUnidadAdministrativa,
-    listUnidadAdministrativa: state.PaginationModule.listUnidadAdministrativa,
+    column: state.ColumnModule.columnUnidadAdministrativa,
+    list: state.PaginationModule.listUnidadAdministrativa,
     page: state.PaginationModule.pageUnidadAdministrativa,
     pagination: state.PaginationModule.paginationUnidadAdministrativa,
     paginate: state.PaginationModule.paginateUnidadAdministrativa,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageUnidadAdministrativa: UnidadAdministrativaActions.onPageUnidadAdministrativa,
+    onPage: UnidadAdministrativaActions.onPageUnidadAdministrativa,
     onDelete: UnidadAdministrativaActions.onDelete,
 };
 

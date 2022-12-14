@@ -14,7 +14,7 @@ function IndexPensum(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPagePensum();
+                props.onPage();
             }
         } );
         return () => {};
@@ -29,20 +29,24 @@ function IndexPensum(props) {
         navigate('/pensum/create');
     };
 
-    const onEdit = (pensum) => {
-        navigate(`/pensum/edit/${pensum.idpensum}`);
+    const onEdit = (item) => {
+        navigate(`/pensum/edit/${item.idpensum}`);
     };
 
-    const onShow = (pensum) => {
-        navigate(`/pensum/show/${pensum.idpensum}`);
+    const onShow = (item) => {
+        navigate(`/pensum/show/${item.idpensum}`);
     };
 
     const setPage = (page) => {
-        props.onPagePensum(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPagePensum(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -54,13 +58,14 @@ function IndexPensum(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnPensum}
-                        dataSource={props.listPensum}
-                        onShow={ ( pensum ) => onShow(pensum) }
-                        onEditar={ ( pensum ) => onEdit(pensum) }
-                        onDelete={ ( pensum ) => props.onDelete(pensum) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -75,8 +80,8 @@ function IndexPensum(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnPensum: state.ColumnModule.columnPensum,
-    listPensum: state.PaginationModule.listPensum,
+    column: state.ColumnModule.columnPensum,
+    list: state.PaginationModule.listPensum,
     page: state.PaginationModule.pagePensum,
     pagination: state.PaginationModule.paginationPensum,
     paginate: state.PaginationModule.paginatePensum,
@@ -84,7 +89,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPagePensum: PensumActions.onPagePensum,
+    onPage: PensumActions.onPagePensum,
     onDelete: PensumActions.onDelete,
 };
 

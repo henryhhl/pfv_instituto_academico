@@ -1,15 +1,15 @@
-import { Repository, Like, DataSource } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Repository, DataSource, ILike } from 'typeorm';
 import { Docente } from './entities/docente.entity';
 import { CreateDocenteDto } from './dto/create-docente.dto';
 import { UpdateDocenteDto } from './dto/update-docente.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { DocenteCiudadDetalle } from './entities/docenteciudaddetalle.entity';
-import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
-import { DocenteMateriaDetalle } from './entities/docentemateriadetalle.entity';
-import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadocumentodetalle.entity';
 import { DocenteEstudioDetalle } from './entities/docenteestudiodetalle.entity';
+import { DocenteMateriaDetalle } from './entities/docentemateriadetalle.entity';
+import { DocenteReferenciaContactoDetalle } from './entities/docentereferenciacontacto.entity';
+import { DocenteCategoriaDocumentoDetalle } from './entities/docentecategoriadocumentodetalle.entity';
 
 @Injectable()
 export class DocenteService {
@@ -46,14 +46,26 @@ export class DocenteService {
         [listDocente, totalPagination] = await this.docenteRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { nombreadicional: Like( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { apellidoprimero: ILike( '%' + search + '%', ), },
+            { apellidosegundo: ILike( '%' + search + '%', ), },
+            { tipoidentificacion: ILike( '%' + search + '%', ), },
+            { numeroidentificacion: ILike( '%' + search + '%', ), },
+            { ciudadnacimiento: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listDocente, totalPagination] = await this.docenteRepository.findAndCount( {
           where: [
-            { nombreadicional: Like( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { apellidoprimero: ILike( '%' + search + '%', ), },
+            { apellidosegundo: ILike( '%' + search + '%', ), },
+            { tipoidentificacion: ILike( '%' + search + '%', ), },
+            { numeroidentificacion: ILike( '%' + search + '%', ), },
+            { ciudadnacimiento: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

@@ -14,7 +14,7 @@ function IndexPeriodo(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPagePeriodo();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexPeriodo(props) {
         navigate('/periodo/create');
     }
 
-    const onEdit = (periodo) => {
-        navigate(`/periodo/edit/${periodo.idperiodo}`);
+    const onEdit = (item) => {
+        navigate(`/periodo/edit/${item.idperiodo}`);
     }
 
-    const onShow = (periodo) => {
-        navigate(`/periodo/show/${periodo.idperiodo}`);
+    const onShow = (item) => {
+        navigate(`/periodo/show/${item.idperiodo}`);
     }
 
     const setPage = (page) => {
-        props.onPagePeriodo(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPagePeriodo(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexPeriodo(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnPeriodo}
-                        dataSource={props.listPeriodo}
-                        onShow={ ( periodo ) => onShow(periodo) }
-                        onEditar={ ( periodo ) => onEdit(periodo) }
-                        onDelete={ ( periodo ) => props.onDelete(periodo) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexPeriodo(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnPeriodo: state.ColumnModule.columnPeriodo,
-    listPeriodo: state.PaginationModule.listPeriodo,
+    column: state.ColumnModule.columnPeriodo,
+    list: state.PaginationModule.listPeriodo,
     page: state.PaginationModule.pagePeriodo,
     pagination: state.PaginationModule.paginationPeriodo,
     paginate: state.PaginationModule.paginatePeriodo,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPagePeriodo: PeriodoActions.onPagePeriodo,
+    onPage: PeriodoActions.onPagePeriodo,
     onDelete: PeriodoActions.onDelete,
 };
 

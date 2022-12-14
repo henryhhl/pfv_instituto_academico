@@ -1,4 +1,4 @@
-import { Repository, Like, DataSource } from 'typeorm';
+import { Repository, DataSource, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { Oportunidad } from './entities/oportunidad.entity';
@@ -34,14 +34,20 @@ export class OportunidadService {
         [listOportunidad, totalPagination] = await this.oportunidadRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { identificacion: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { asesorresponsable: ILike( '%' + search + '%', ), },
+            { ciudadorigen: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listOportunidad, totalPagination] = await this.oportunidadRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { identificacion: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { asesorresponsable: ILike( '%' + search + '%', ), },
+            { ciudadorigen: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

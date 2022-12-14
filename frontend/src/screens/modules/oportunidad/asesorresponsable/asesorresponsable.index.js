@@ -44,6 +44,10 @@ function IndexAsesorResponsable(props) {
         props.onPage(1, paginate);
     };
 
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
+    };
+
     return (
         <>
             <PaperComponent
@@ -53,6 +57,7 @@ function IndexAsesorResponsable(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
                         columns={props.column}

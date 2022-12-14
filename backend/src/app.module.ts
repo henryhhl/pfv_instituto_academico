@@ -28,7 +28,7 @@ import { RolPermisoDetalleModule } from './module/seguridad/rolpermisodetalle/ro
 import { UnidadacademicaModule } from './module/estructuraacademica/unidadacademica/unidadacademica.module';
 import { ProgramaModule } from './module/estructuraacademica/programa/programa.module';
 import { PensumModule } from './module/estructuraacademica/pensum/pensum.module';
-import { ReferenciaContactoModule } from './module/oportunidad/referenciacontacto/referenciacontacto.module';
+import { ReferenciaContactoModule } from './module/oportunidad/tipocontacto/referenciacontacto.module';
 import { TipoCiudadModule } from './module/parametro/tipociudad/tipociudad.module';
 import { CommonModule } from './common/common.module';
 import { TurnoModule } from './module/estructurainstitucional/turno/turno.module';

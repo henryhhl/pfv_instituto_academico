@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { Repository, DataSource, Like } from 'typeorm';
+import { Repository, DataSource, ILike } from 'typeorm';
 import { Curso } from './entities/curso.entity';
 import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
@@ -33,7 +33,12 @@ export class CursoService {
           relations: { arraydocente: true, },
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { materia: ILike( '%' + search + '%', ), },
+            { turno: ILike( '%' + search + '%', ), },
+            { modalidadacademica: ILike( '%' + search + '%', ), },
+            { gestionperiodo: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
@@ -41,7 +46,12 @@ export class CursoService {
         [listCurso, totalPagination] = await this.cursoRepository.findAndCount( {
           relations: { arraydocente: true, },
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { materia: ILike( '%' + search + '%', ), },
+            { turno: ILike( '%' + search + '%', ), },
+            { modalidadacademica: ILike( '%' + search + '%', ), },
+            { gestionperiodo: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

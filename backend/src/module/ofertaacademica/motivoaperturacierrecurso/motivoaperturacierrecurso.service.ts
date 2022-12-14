@@ -1,10 +1,10 @@
+import { Repository, ILike } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { MotivoAperturaCierreCurso } from './entities/motivoaperturacierrecurso.entity';
 import { CreateMotivoAperturaCierreCursoDto } from './dto/create-motivoaperturacierrecurso.dto';
 import { UpdateMotivoAperturaCierreCursoDto } from './dto/update-motivoaperturacierrecurso.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { MotivoAperturaCierreCurso } from './entities/motivoaperturacierrecurso.entity';
-import { Repository, Like } from 'typeorm';
-import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
 export class MotivoAperturaCierreCursoService {
@@ -24,14 +24,16 @@ export class MotivoAperturaCierreCursoService {
         [listMotivoAperturaCierreCurso, totalPagination] = await this.motivoAperturaCierreCursoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listMotivoAperturaCierreCurso, totalPagination] = await this.motivoAperturaCierreCursoRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

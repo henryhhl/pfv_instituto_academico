@@ -1,9 +1,9 @@
+import { Repository, ILike } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Institucion } from './entities/institucion.entity';
 import { CreateInstitucionDto } from './dto/create-institucion.dto';
 import { UpdateInstitucionDto } from './dto/update-institucion.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
-import { Institucion } from './entities/institucion.entity';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
@@ -24,14 +24,20 @@ export class InstitucionService {
         [listInstitucion, totalPagination] = await this.institucionRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { nit: ILike( '%' + search + '%', ), },
+            { ciudad: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listInstitucion, totalPagination] = await this.institucionRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { nit: ILike( '%' + search + '%', ), },
+            { ciudad: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

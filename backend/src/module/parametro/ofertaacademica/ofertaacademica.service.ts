@@ -1,4 +1,4 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateOfertaAcademicaDto } from './dto/create-ofertaacademica.dto';
@@ -22,23 +22,20 @@ export class OfertaAcademicaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listOfertaAcademica, totalPagination] = await this.ofertaAcademicaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
-          where: {
-            descripcion: Like( '%' + search + '%', ),
-          },
-          order: {
-            created_at: "DESC",
-          },
+          take: limit, skip: offset,
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       } else {
         [listOfertaAcademica, totalPagination] = await this.ofertaAcademicaRepository.findAndCount( {
-          where: {
-            descripcion: Like( '%' + search + '%', ),
-          },
-          order: {
-            created_at: "DESC",
-          },
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       }
       return {

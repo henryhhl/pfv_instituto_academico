@@ -1,10 +1,10 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { GestionPeriodo } from './entities/gestionperiodo.entity';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { CreateGestionPeriodoDto } from './dto/create-gestionperiodo.dto';
 import { UpdateGestionPeriodoDto } from './dto/update-gestionperiodo.dto';
-import { PaginationDto } from '../../../common/dtos/pagination.dto';
-import { GestionPeriodo } from './entities/gestionperiodo.entity';
 
 @Injectable()
 export class GestionPeriodoService {
@@ -24,14 +24,18 @@ export class GestionPeriodoService {
         [listGestionPeriodo, totalPagination] = await this.gestionPeriodoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { fechainicio: ILike( '%' + search + '%', ), },
+            { fechafinal: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listGestionPeriodo, totalPagination] = await this.gestionPeriodoRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { fechainicio: ILike( '%' + search + '%', ), },
+            { fechafinal: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

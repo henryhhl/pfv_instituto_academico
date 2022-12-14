@@ -1,9 +1,9 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Turno } from './entities/turno.entity';
 import { CreateTurnoDto } from './dto/create-turno.dto';
 import { UpdateTurnoDto } from './dto/update-turno.dto';
-import { Turno } from './entities/turno.entity';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
@@ -28,7 +28,8 @@ export class TurnoService {
           // ],
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
@@ -42,7 +43,8 @@ export class TurnoService {
       } else {
         [listTurno, totalPagination] = await this.turnoRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

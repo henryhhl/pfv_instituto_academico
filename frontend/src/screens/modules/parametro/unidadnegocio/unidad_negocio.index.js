@@ -14,7 +14,7 @@ function IndexUnidadNegocio(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageUnidadNegocio();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexUnidadNegocio(props) {
         navigate('/unidadnegocio/create');
     };
 
-    const onEdit = (unidadNegocio) => {
-        navigate(`/unidadnegocio/edit/${unidadNegocio.idunidadnegocio}`);
+    const onEdit = (item) => {
+        navigate(`/unidadnegocio/edit/${item.idunidadnegocio}`);
     };
 
-    const onShow = (unidadNegocio) => {
-        navigate(`/unidadnegocio/show/${unidadNegocio.idunidadnegocio}`);
+    const onShow = (item) => {
+        navigate(`/unidadnegocio/show/${item.idunidadnegocio}`);
     };
 
     const setPage = (page) => {
-        props.onPageUnidadNegocio(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageUnidadNegocio(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexUnidadNegocio(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnUnidadNegocio}
-                        dataSource={props.listUnidadNegocio}
-                        onShow={ ( unidadNegocio ) => onShow(unidadNegocio) }
-                        onEditar={ ( unidadNegocio ) => onEdit(unidadNegocio) }
-                        onDelete={ ( unidadNegocio ) => props.onDelete(unidadNegocio) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexUnidadNegocio(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnUnidadNegocio: state.ColumnModule.columnUnidadNegocio,
-    listUnidadNegocio: state.PaginationModule.listUnidadNegocio,
+    column: state.ColumnModule.columnUnidadNegocio,
+    list: state.PaginationModule.listUnidadNegocio,
     page: state.PaginationModule.pageUnidadNegocio,
     pagination: state.PaginationModule.paginationUnidadNegocio,
     paginate: state.PaginationModule.paginateUnidadNegocio,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageUnidadNegocio: UnidadNegocioActions.onPageUnidadNegocio,
+    onPage: UnidadNegocioActions.onPageUnidadNegocio,
     onDelete: UnidadNegocioActions.onDelete,
 };
 

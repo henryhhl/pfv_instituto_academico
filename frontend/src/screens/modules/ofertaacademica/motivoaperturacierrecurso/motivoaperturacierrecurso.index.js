@@ -28,12 +28,12 @@ function IndexMotivoAperturaCierreCurso(props) {
         navigate('/motivoaperturacierrecurso/create');
     };
 
-    const onEdit = (motivoAperturaCierreCurso) => {
-        navigate(`/motivoaperturacierrecurso/edit/${motivoAperturaCierreCurso.idmotivoaperturacierrecurso}`);
+    const onEdit = (item) => {
+        navigate(`/motivoaperturacierrecurso/edit/${item.idmotivoaperturacierrecurso}`);
     };
 
-    const onShow = (motivoAperturaCierreCurso) => {
-        navigate(`/motivoaperturacierrecurso/show/${motivoAperturaCierreCurso.idmotivoaperturacierrecurso}`);
+    const onShow = (item) => {
+        navigate(`/motivoaperturacierrecurso/show/${item.idmotivoaperturacierrecurso}`);
     };
 
     const setPage = (page) => {
@@ -42,6 +42,10 @@ function IndexMotivoAperturaCierreCurso(props) {
 
     const setPaginate = (paginate) => {
         props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexMotivoAperturaCierreCurso(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnMotivoAperturaCierreCurso}
-                        dataSource={props.listMotivoAperturaCierreCurso}
-                        onShow={ ( motivoAperturaCierreCurso ) => onShow(motivoAperturaCierreCurso) }
-                        onEditar={ ( motivoAperturaCierreCurso ) => onEdit(motivoAperturaCierreCurso) }
-                        onDelete={ ( motivoAperturaCierreCurso ) => props.onDelete(motivoAperturaCierreCurso) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexMotivoAperturaCierreCurso(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnMotivoAperturaCierreCurso: state.ColumnModule.columnMotivoAperturaCierreCurso,
-    listMotivoAperturaCierreCurso: state.PaginationModule.listMotivoAperturaCierreCurso,
+    column: state.ColumnModule.columnMotivoAperturaCierreCurso,
+    list: state.PaginationModule.listMotivoAperturaCierreCurso,
     page: state.PaginationModule.pageMotivoAperturaCierreCurso,
     pagination: state.PaginationModule.paginationMotivoAperturaCierreCurso,
     paginate: state.PaginationModule.paginateMotivoAperturaCierreCurso,

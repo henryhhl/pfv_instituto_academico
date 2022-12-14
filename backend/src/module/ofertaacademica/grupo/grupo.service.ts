@@ -1,9 +1,9 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Repository, DataSource, ILike } from 'typeorm';
+import { Grupo } from './entities/grupo.entity';
 import { CreateGrupoDto } from './dto/create-grupo.dto';
 import { UpdateGrupoDto } from './dto/update-grupo.dto';
-import { Grupo } from './entities/grupo.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, DataSource } from 'typeorm';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { GrupoPensumMateriaDetalle } from './entities/grupopensummateria.entity';
 
@@ -30,14 +30,14 @@ export class GrupoService {
         [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { sigla: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
           where: [
-            { sigla: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

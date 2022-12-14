@@ -14,7 +14,7 @@ function IndexTurno(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageTurno();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexTurno(props) {
         navigate('/turno/create');
     };
 
-    const onEdit = (turno) => {
-        navigate(`/turno/edit/${turno.idturno}`);
+    const onEdit = (item) => {
+        navigate(`/turno/edit/${item.idturno}`);
     };
 
-    const onShow = (turno) => {
-        navigate(`/turno/show/${turno.idturno}`);
+    const onShow = (item) => {
+        navigate(`/turno/show/${item.idturno}`);
     };
 
     const setPage = (page) => {
-        props.onPageTurno(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageTurno(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
     
     return (
@@ -53,13 +57,14 @@ function IndexTurno(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnTurno}
-                        dataSource={props.listTurno}
-                        onShow={ ( turno ) => onShow(turno) }
-                        onEditar={ ( turno ) => onEdit(turno) }
-                        onDelete={ ( turno ) => props.onDelete(turno) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexTurno(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnTurno: state.ColumnModule.columnTurno,
-    listTurno: state.PaginationModule.listTurno,
+    column: state.ColumnModule.columnTurno,
+    list: state.PaginationModule.listTurno,
     page: state.PaginationModule.pageTurno,
     pagination: state.PaginationModule.paginationTurno,
     paginate: state.PaginationModule.paginateTurno,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageTurno: TurnoActions.onPageTurno,
+    onPage: TurnoActions.onPageTurno,
     onDelete: TurnoActions.onDelete,
 };
 

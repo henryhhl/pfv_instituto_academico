@@ -14,7 +14,7 @@ function IndexUnidadAcademica(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageUnidadAcademica();
+                props.onPage();
             }
         } );
         return () => {};
@@ -29,20 +29,24 @@ function IndexUnidadAcademica(props) {
         navigate('/unidadacademica/create');
     };
 
-    const onEdit = (unidadAcademica) => {
-        navigate(`/unidadacademica/edit/${unidadAcademica.idunidadacademica}`);
+    const onEdit = (item) => {
+        navigate(`/unidadacademica/edit/${item.idunidadacademica}`);
     };
 
-    const onShow = (unidadAcademica) => {
-        navigate(`/unidadacademica/show/${unidadAcademica.idunidadacademica}`);
+    const onShow = (item) => {
+        navigate(`/unidadacademica/show/${item.idunidadacademica}`);
     };
 
     const setPage = (page) => {
-        props.onPageUnidadAcademica(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageUnidadAcademica(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -54,13 +58,14 @@ function IndexUnidadAcademica(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnUnidadAcademica}
-                        dataSource={props.listUnidadAcademica}
-                        onShow={ ( unidadAcademica ) => onShow(unidadAcademica) }
-                        onEditar={ ( unidadAcademica ) => onEdit(unidadAcademica) }
-                        onDelete={ ( unidadAcademica ) => props.onDelete(unidadAcademica) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -75,8 +80,8 @@ function IndexUnidadAcademica(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnUnidadAcademica: state.ColumnModule.columnUnidadAcademica,
-    listUnidadAcademica: state.PaginationModule.listUnidadAcademica,
+    column: state.ColumnModule.columnUnidadAcademica,
+    list: state.PaginationModule.listUnidadAcademica,
     page: state.PaginationModule.pageUnidadAcademica,
     pagination: state.PaginationModule.paginationUnidadAcademica,
     paginate: state.PaginationModule.paginateUnidadAcademica,
@@ -84,7 +89,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageUnidadAcademica: UnidadAcademicaActions.onPageUnidadAcademica,
+    onPage: UnidadAcademicaActions.onPageUnidadAcademica,
     onDelete: UnidadAcademicaActions.onDelete,
 };
 

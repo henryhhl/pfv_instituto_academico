@@ -14,7 +14,7 @@ function IndexTipoIdentificacion(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageTipoIdentificacion();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexTipoIdentificacion(props) {
         navigate('/tipoidentificacion/create');
     };
 
-    const onEdit = (tipoIdentificacion) => {
-        navigate(`/tipoidentificacion/edit/${tipoIdentificacion.idtipoidentificacion}`);
+    const onEdit = (item) => {
+        navigate(`/tipoidentificacion/edit/${item.idtipoidentificacion}`);
     };
 
-    const onShow = (tipoIdentificacion) => {
-        navigate(`/tipoidentificacion/show/${tipoIdentificacion.idtipoidentificacion}`);
+    const onShow = (item) => {
+        navigate(`/tipoidentificacion/show/${item.idtipoidentificacion}`);
     };
 
     const setPage = (page) => {
-        props.onPageTipoIdentificacion(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageTipoIdentificacion(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexTipoIdentificacion(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnTipoIdentificacion}
-                        dataSource={props.listTipoIdentificacion}
-                        onShow={ ( tipoIdentificacion ) => onShow(tipoIdentificacion) }
-                        onEditar={ ( tipoIdentificacion ) => onEdit(tipoIdentificacion) }
-                        onDelete={ ( tipoIdentificacion ) => props.onDelete(tipoIdentificacion) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexTipoIdentificacion(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnTipoIdentificacion: state.ColumnModule.columnTipoIdentificacion,
-    listTipoIdentificacion: state.PaginationModule.listTipoIdentificacion,
+    column: state.ColumnModule.columnTipoIdentificacion,
+    list: state.PaginationModule.listTipoIdentificacion,
     page: state.PaginationModule.pageTipoIdentificacion,
     pagination: state.PaginationModule.paginationTipoIdentificacion,
     paginate: state.PaginationModule.paginateTipoIdentificacion,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageTipoIdentificacion: TipoIdentificacionActions.onPageTipoIdentificacion,
+    onPage: TipoIdentificacionActions.onPageTipoIdentificacion,
     onDelete: TipoIdentificacionActions.onDelete,
 };
 

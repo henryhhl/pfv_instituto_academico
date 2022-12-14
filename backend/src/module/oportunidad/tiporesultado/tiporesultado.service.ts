@@ -1,4 +1,4 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { TipoResultado } from './entities/tiporesultado.entity';
@@ -24,14 +24,16 @@ export class TipoResultadoService {
         [listTipoResultado, totalPagination] = await this.tipoResultadoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listTipoResultado, totalPagination] = await this.tipoResultadoRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

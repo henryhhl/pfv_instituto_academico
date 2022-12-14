@@ -1,4 +1,4 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
@@ -24,14 +24,16 @@ export class TipoMedioPublicitarioService {
         [listTipoMedioPublicitario, totalPagination] = await this.tipoMedioPublicitarioRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listTipoMedioPublicitario, totalPagination] = await this.tipoMedioPublicitarioRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

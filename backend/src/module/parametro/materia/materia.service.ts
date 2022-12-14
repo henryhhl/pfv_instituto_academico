@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Like, Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CreateMateriaDto } from './dto/create-materia.dto';
@@ -25,16 +25,26 @@ export class MateriaService {
         [listMateria, totalPagination] = await this.materiaRepository.findAndCount( {
           take: limit,
           skip: offset,
-          where: {
-          },
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { codigo: ILike( '%' + search + '%', ), },
+            { nombrecorto: ILike( '%' + search + '%', ), },
+            { nombrelargo: ILike( '%' + search + '%', ), },
+            { nombrealternativo: ILike( '%' + search + '%', ), },
+          ],
           order: {
             created_at: "DESC",
           },
         } );
       } else {
         [listMateria, totalPagination] = await this.materiaRepository.findAndCount( {
-          where: {
-          },
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { codigo: ILike( '%' + search + '%', ), },
+            { nombrecorto: ILike( '%' + search + '%', ), },
+            { nombrelargo: ILike( '%' + search + '%', ), },
+            { nombrealternativo: ILike( '%' + search + '%', ), },
+          ],
           order: {
             created_at: "DESC",
           },

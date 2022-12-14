@@ -3,7 +3,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function CardComponent( props ) {
-    const search = props.search ? props.search : undefined;
+    const [ search, onSearch ] = React.useState('');
+    const [ timeoutSearch, setTimeoutSearch ] = React.useState( null );
+
+    const setSearch = ( evt ) => {
+        onSearch( evt.target.value );
+        if ( timeoutSearch ) {
+            clearTimeout( timeoutSearch );
+            setTimeoutSearch(null);
+        }
+        let timeoutSearchValue = setTimeout( () => {
+            props.onSearch(evt.target.value);
+        }, 800);
+        setTimeoutSearch( timeoutSearchValue );
+    };
+
     return (
         <>
             <div className="card card-primary" style={props.style}>
@@ -17,7 +31,7 @@ export default function CardComponent( props ) {
                                             className="form-control" 
                                             placeholder="Buscar..." 
                                             value={search}
-                                            onChange={ (evt) => props.onSearch(evt.target.value) }
+                                            onChange={ setSearch }
                                         />
                                     <div className="input-group-btn">
                                         <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
@@ -49,7 +63,6 @@ CardComponent.propTypes = {
     isHeader: PropTypes.bool,
     footer: PropTypes.node,
     isSearch: PropTypes.bool,
-    search: PropTypes.any,
     onSearch: PropTypes.func,
     style: PropTypes.object,
 }
@@ -60,7 +73,6 @@ CardComponent.defaultProps = {
     footer: <></>,
     isSearch: false,
     isHeader: true,
-    search: null,
     onSearch: () => {},
     style: {},
 }

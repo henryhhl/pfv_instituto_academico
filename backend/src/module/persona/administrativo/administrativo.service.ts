@@ -1,14 +1,14 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { Repository, DataSource, Like } from 'typeorm';
+import { Repository, DataSource, ILike } from 'typeorm';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { Administrativo } from './entities/administrativo.entity';
 import { CreateAdministrativoDto } from './dto/create-administrativo.dto';
 import { UpdateAdministrativoDto } from './dto/update-administrativo.dto';
-import { Administrativo } from './entities/administrativo.entity';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { AdministrativoEstudioDetalle } from './entities/administrativoestudiodetalle.entity';
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
 import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
-import { AdministrativoEstudioDetalle } from './entities/administrativoestudiodetalle.entity';
 
 @Injectable()
 export class AdministrativoService {
@@ -42,14 +42,26 @@ export class AdministrativoService {
         [listAdministrativo, totalPagination] = await this.administrativoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { nombreadicional: Like( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { apellidoprimero: ILike( '%' + search + '%', ), },
+            { apellidosegundo: ILike( '%' + search + '%', ), },
+            { tipoidentificacion: ILike( '%' + search + '%', ), },
+            { numeroidentificacion: ILike( '%' + search + '%', ), },
+            { ciudadnacimiento: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listAdministrativo, totalPagination] = await this.administrativoRepository.findAndCount( {
           where: [
-            { nombreadicional: Like( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { apellidoprimero: ILike( '%' + search + '%', ), },
+            { apellidosegundo: ILike( '%' + search + '%', ), },
+            { tipoidentificacion: ILike( '%' + search + '%', ), },
+            { numeroidentificacion: ILike( '%' + search + '%', ), },
+            { ciudadnacimiento: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

@@ -1,4 +1,4 @@
-import { Repository, DataSource } from 'typeorm';
+import { Repository, DataSource, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
@@ -34,12 +34,20 @@ export class UnidadAdministrativaService {
       if ( esPaginate ) {
         [listUnidadAdministrativa, totalPagination] = await this.unidadAdministrativaRepository.findAndCount( {
           take: limit, skip: offset,
-          where: { },
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+          ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listUnidadAdministrativa, totalPagination] = await this.unidadAdministrativaRepository.findAndCount( {
-          where: { },
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+          ],
           order: { created_at: "DESC", },
         } );
       }

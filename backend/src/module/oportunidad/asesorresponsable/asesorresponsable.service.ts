@@ -1,4 +1,4 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, Like, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
@@ -24,14 +24,26 @@ export class AsesorResponsableService {
         [listAsesorResponsable, totalPagination] = await this.asesorResponsableRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { nombreprincipal: Like( '%' + search + '%', ), },
+            { nombreprincipal: ILike( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { apellidoprimero: ILike( '%' + search + '%', ), },
+            { apellidosegundo: ILike( '%' + search + '%', ), },
+            { numeroidentificacion: ILike( '%' + search + '%', ), },
+            { ciudadnacimiento: ILike( '%' + search + '%', ), },
+            { tipoidentificacion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listAsesorResponsable, totalPagination] = await this.asesorResponsableRepository.findAndCount( {
           where: [
-            { nombreprincipal: Like( '%' + search + '%', ), },
+            { nombreprincipal: ILike( '%' + search + '%', ), },
+            { nombreadicional: ILike( '%' + search + '%', ), },
+            { apellidoprimero: ILike( '%' + search + '%', ), },
+            { apellidosegundo: ILike( '%' + search + '%', ), },
+            { numeroidentificacion: ILike( '%' + search + '%', ), },
+            { ciudadnacimiento: ILike( '%' + search + '%', ), },
+            { tipoidentificacion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

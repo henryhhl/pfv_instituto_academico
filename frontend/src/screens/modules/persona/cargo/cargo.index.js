@@ -14,7 +14,7 @@ function IndexCargo(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageCargo();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexCargo(props) {
         navigate('/cargo/create');
     };
 
-    const onEdit = (cargo) => {
-        navigate(`/cargo/edit/${cargo.idcargo}`);
+    const onEdit = (item) => {
+        navigate(`/cargo/edit/${item.idcargo}`);
     };
 
-    const onShow = (cargo) => {
-        navigate(`/cargo/show/${cargo.idcargo}`);
+    const onShow = (item) => {
+        navigate(`/cargo/show/${item.idcargo}`);
     };
 
     const setPage = (page) => {
-        props.onPageCargo(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageCargo(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexCargo(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnCargo}
-                        dataSource={props.listCargo}
-                        onShow={ ( cargo ) => onShow(cargo) }
-                        onEditar={ ( cargo ) => onEdit(cargo) }
-                        onDelete={ ( cargo ) => props.onDelete(cargo) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexCargo(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnCargo: state.ColumnModule.columnCargo,
-    listCargo: state.PaginationModule.listCargo,
+    column: state.ColumnModule.columnCargo,
+    list: state.PaginationModule.listCargo,
     page: state.PaginationModule.pageCargo,
     pagination: state.PaginationModule.paginationCargo,
     paginate: state.PaginationModule.paginateCargo,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageCargo: CargoActions.onPageCargo,
+    onPage: CargoActions.onPageCargo,
     onDelete: CargoActions.onDelete,
 };
 

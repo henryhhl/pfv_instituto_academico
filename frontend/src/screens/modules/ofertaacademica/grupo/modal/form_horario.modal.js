@@ -67,16 +67,6 @@ export default function FormHorarioGrupoModal( props ) {
                         </div>
                     </div>
                 </div>
-                {/* <div className='col-12'>
-                    <div className='card p-0 m-0'>
-                        <div className='card-header'>
-                            <h4> 
-                                <span className='text-danger'>DOCENTE: </span>
-                                {props.docente && props.docente} 
-                            </h4>
-                        </div>
-                    </div>
-                </div> */}
                 <div className="col-12">
                     <div className='w-100 p-1' 
                         style={{ 

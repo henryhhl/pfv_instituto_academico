@@ -14,7 +14,7 @@ function IndexNivelAcademico(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageNivelAcademico();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexNivelAcademico(props) {
         navigate('/nivelacademico/create');
     };
 
-    const onEdit = (nivelAcademico) => {
-        navigate(`/nivelacademico/edit/${nivelAcademico.idnivelacademico}`);
+    const onEdit = (item) => {
+        navigate(`/nivelacademico/edit/${item.idnivelacademico}`);
     };
 
-    const onShow = (nivelAcademico) => {
-        navigate(`/nivelacademico/show/${nivelAcademico.idnivelacademico}`);
+    const onShow = (item) => {
+        navigate(`/nivelacademico/show/${item.idnivelacademico}`);
     };
 
     const setPage = (page) => {
-        props.onPageNivelAcademico(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageNivelAcademico(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexNivelAcademico(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnNivelAcademico}
-                        dataSource={props.listNivelAcademico}
-                        onShow={ ( nivelAcademico ) => onShow(nivelAcademico) }
-                        onEditar={ ( nivelAcademico ) => onEdit(nivelAcademico) }
-                        onDelete={ ( nivelAcademico ) => props.onDelete(nivelAcademico) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexNivelAcademico(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnNivelAcademico: state.ColumnModule.columnNivelAcademico,
-    listNivelAcademico: state.PaginationModule.listNivelAcademico,
+    column: state.ColumnModule.columnNivelAcademico,
+    list: state.PaginationModule.listNivelAcademico,
     page: state.PaginationModule.pageNivelAcademico,
     pagination: state.PaginationModule.paginationNivelAcademico,
     paginate: state.PaginationModule.paginateNivelAcademico,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageNivelAcademico: NivelAcademicoActions.onPageNivelAcademico,
+    onPage: NivelAcademicoActions.onPageNivelAcademico,
     onDelete: NivelAcademicoActions.onDelete,
 };
 

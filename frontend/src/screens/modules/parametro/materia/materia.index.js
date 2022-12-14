@@ -14,7 +14,7 @@ function IndexMateria(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageMateria();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexMateria(props) {
         navigate('/materia/create');
     };
 
-    const onEdit = (materia) => {
-        navigate(`/materia/edit/${materia.idmateria}`);
+    const onEdit = (item) => {
+        navigate(`/materia/edit/${item.idmateria}`);
     };
 
-    const onShow = (materia) => {
-        navigate(`/materia/show/${materia.idmateria}`);
+    const onShow = (item) => {
+        navigate(`/materia/show/${item.idmateria}`);
     };
 
     const setPage = (page) => {
-        props.onPageMateria(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageMateria(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexMateria(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnMateria}
-                        dataSource={props.listMateria}
-                        onShow={ ( materia ) => onShow(materia) }
-                        onEditar={ ( materia ) => onEdit(materia) }
-                        onDelete={ ( materia ) => props.onDelete(materia) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexMateria(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnMateria: state.ColumnModule.columnMateria,
-    listMateria: state.PaginationModule.listMateria,
+    column: state.ColumnModule.columnMateria,
+    list: state.PaginationModule.listMateria,
     page: state.PaginationModule.pageMateria,
     pagination: state.PaginationModule.paginationMateria,
     paginate: state.PaginationModule.paginateMateria,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageMateria: MateriaActions.onPageMateria,
+    onPage: MateriaActions.onPageMateria,
     onDelete: MateriaActions.onDelete,
 };
 

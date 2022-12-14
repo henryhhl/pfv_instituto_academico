@@ -14,7 +14,7 @@ function IndexModalidadAcademica(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageModalidadAcademica();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexModalidadAcademica(props) {
         navigate('/modalidadacademica/create');
     };
 
-    const onEdit = (modalidadAcademica) => {
-        navigate(`/modalidadacademica/edit/${modalidadAcademica.idmodalidadacademica}`);
+    const onEdit = (item) => {
+        navigate(`/modalidadacademica/edit/${item.idmodalidadacademica}`);
     };
 
-    const onShow = (modalidadAcademica) => {
-        navigate(`/modalidadacademica/show/${modalidadAcademica.idmodalidadacademica}`);
+    const onShow = (item) => {
+        navigate(`/modalidadacademica/show/${item.idmodalidadacademica}`);
     };
 
     const setPage = (page) => {
-        props.onPageModalidadAcademica(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageModalidadAcademica(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexModalidadAcademica(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnModalidadAcademica}
-                        dataSource={props.listModalidadAcademica}
-                        onShow={ ( modalidadAcademica ) => onShow(modalidadAcademica) }
-                        onEditar={ ( modalidadAcademica ) => onEdit(modalidadAcademica) }
-                        onDelete={ ( modalidadAcademica ) => props.onDelete(modalidadAcademica) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexModalidadAcademica(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnModalidadAcademica: state.ColumnModule.columnModalidadAcademica,
-    listModalidadAcademica: state.PaginationModule.listModalidadAcademica,
+    column: state.ColumnModule.columnModalidadAcademica,
+    list: state.PaginationModule.listModalidadAcademica,
     page: state.PaginationModule.pageModalidadAcademica,
     pagination: state.PaginationModule.paginationModalidadAcademica,
     paginate: state.PaginationModule.paginateModalidadAcademica,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageModalidadAcademica: ModalidadAcademicaActions.onPageModalidadAcademica,
+    onPage: ModalidadAcademicaActions.onPageModalidadAcademica,
     onDelete: ModalidadAcademicaActions.onDelete,
 };
 

@@ -1,10 +1,10 @@
+import { Repository, ILike } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { CategoriaDocumento } from './entities/categoriadocumento.entity';
 import { CreateCategoriaDocumentoDto } from './dto/create-categoriadocumento.dto';
 import { UpdateCategoriaDocumentoDto } from './dto/update-categoriadocumento.dto';
-import { CategoriaDocumento } from './entities/categoriadocumento.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 @Injectable()
 export class CategoriaDocumentoService {
@@ -24,14 +24,14 @@ export class CategoriaDocumentoService {
         [listCategoriaDocumento, totalPagination] = await this.categoriaDocumentoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listCategoriaDocumento, totalPagination] = await this.categoriaDocumentoRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

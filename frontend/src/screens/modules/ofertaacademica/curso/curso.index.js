@@ -14,7 +14,7 @@ function IndexCurso(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageCurso();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexCurso(props) {
         navigate('/curso/create');
     };
 
-    const onEdit = (curso) => {
-        navigate(`/curso/edit/${curso.idcurso}`);
+    const onEdit = (item) => {
+        navigate(`/curso/edit/${item.idcurso}`);
     };
 
-    const onShow = (curso) => {
-        navigate(`/curso/show/${curso.idcurso}`);
+    const onShow = (item) => {
+        navigate(`/curso/show/${item.idcurso}`);
     };
 
     const setPage = (page) => {
-        props.onPageCurso(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageCurso(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexCurso(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnCurso}
-                        dataSource={props.listCurso}
-                        onShow={ ( curso ) => onShow(curso) }
-                        onEditar={ ( curso ) => onEdit(curso) }
-                        onDelete={ ( curso ) => props.onDelete(curso) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexCurso(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnCurso: state.ColumnModule.columnCurso,
-    listCurso: state.PaginationModule.listCurso,
+    column: state.ColumnModule.columnCurso,
+    list: state.PaginationModule.listCurso,
     page: state.PaginationModule.pageCurso,
     pagination: state.PaginationModule.paginationCurso,
     paginate: state.PaginationModule.paginateCurso,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageCurso: CursoActions.onPageCurso,
+    onPage: CursoActions.onPageCurso,
     onDelete: CursoActions.onDelete,
 };
 

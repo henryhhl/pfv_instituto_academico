@@ -1,9 +1,9 @@
+import { Repository, ILike } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Cargo } from './entities/cargo.entity';
 import { CreateCargoDto } from './dto/create-cargo.dto';
 import { UpdateCargoDto } from './dto/update-cargo.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like } from 'typeorm';
-import { Cargo } from './entities/cargo.entity';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
@@ -24,14 +24,14 @@ export class CargoService {
         [listCargo, totalPagination] = await this.cargoRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listCargo, totalPagination] = await this.cargoRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

@@ -14,7 +14,7 @@ function IndexRol(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageRol();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexRol(props) {
         navigate('/rol/create');
     }
 
-    const onEdit = (rol) => {
-        navigate(`/rol/edit/${rol.idrol}`);
+    const onEdit = (item) => {
+        navigate(`/rol/edit/${item.idrol}`);
     }
 
-    const onShow = (rol) => {
-        navigate(`/rol/show/${rol.idrol}`);
+    const onShow = (item) => {
+        navigate(`/rol/show/${item.idrol}`);
     }
 
     const setPage = (page) => {
-        props.onPageRol(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageRol(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexRol(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnRol}
-                        dataSource={props.listRol}
-                        onShow={ ( rol ) => onShow(rol) }
-                        onEditar={ ( rol ) => onEdit(rol) }
-                        onDelete={ ( rol ) => props.onDelete(rol) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexRol(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnRol: state.ColumnModule.columnRol,
-    listRol: state.PaginationModule.listRol,
+    column: state.ColumnModule.columnRol,
+    list: state.PaginationModule.listRol,
     page: state.PaginationModule.pageRol,
     pagination: state.PaginationModule.paginationRol,
     paginate: state.PaginationModule.paginateRol,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageRol: RolActions.onPageRol,
+    onPage: RolActions.onPageRol,
     onDelete: RolActions.onDelete,
 };
 

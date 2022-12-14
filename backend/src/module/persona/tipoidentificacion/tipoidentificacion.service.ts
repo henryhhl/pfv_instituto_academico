@@ -1,10 +1,10 @@
+import { Repository, ILike } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
 import { CreateTipoIdentificacionDto } from './dto/create-tipoidentificacion.dto';
 import { UpdateTipoIdentificacionDto } from './dto/update-tipoidentificacion.dto';
-import { PaginationDto } from '../../../common/dtos/pagination.dto';
-import { Like, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
 
 @Injectable()
 export class TipoIdentificacionService {
@@ -24,14 +24,16 @@ export class TipoIdentificacionService {
         [listTipoIdentificacion, totalPagination] = await this.tipoIdentificacionRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listTipoIdentificacion, totalPagination] = await this.tipoIdentificacionRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

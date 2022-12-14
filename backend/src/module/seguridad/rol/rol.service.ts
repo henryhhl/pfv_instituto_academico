@@ -1,11 +1,11 @@
 
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { CreateRolDto } from './dto/create-rol.dto';
-import { UpdateRolDto } from './dto/update-rol.dto';
 import { Rol } from './entities/rol.entity';
+import { UpdateRolDto } from './dto/update-rol.dto';
+import { CreateRolDto } from './dto/create-rol.dto';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
 export class RolService {
@@ -23,21 +23,20 @@ export class RolService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listRol, totalPagination] = await this.rolRepository.findAndCount( {
-            take: limit,
-            skip: offset,
-            where: {
-            },
-            order: {
-                created_at: "DESC",
-            },
+          take: limit, skip: offset,
+          where: [
+            { descripcion: ILike( '%' + search + '%', ), },
+            { tiporol: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       } else {
         [listRol, totalPagination] = await this.rolRepository.findAndCount( {
-            where: {
-            },
-            order: {
-                created_at: "DESC",
-            },
+          where: [
+            { descripcion: ILike( '%' + search + '%', ), },
+            { tiporol: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       }
       return {

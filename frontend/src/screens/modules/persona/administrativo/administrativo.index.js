@@ -14,7 +14,7 @@ function IndexAdministrativo(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageAdministrativo();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexAdministrativo(props) {
         navigate('/administrativo/create');
     };
 
-    const onEdit = (administrativo) => {
-        navigate(`/administrativo/edit/${administrativo.idadministrativo}`);
+    const onEdit = (item) => {
+        navigate(`/administrativo/edit/${item.idadministrativo}`);
     };
 
-    const onShow = (administrativo) => {
-        navigate(`/administrativo/show/${administrativo.idadministrativo}`);
+    const onShow = (item) => {
+        navigate(`/administrativo/show/${item.idadministrativo}`);
     };
 
     const setPage = (page) => {
-        props.onPageAdministrativo(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageAdministrativo(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexAdministrativo(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnAdministrativo}
-                        dataSource={props.listAdministrativo}
-                        onShow={ ( administrativo ) => onShow(administrativo) }
-                        onEditar={ ( administrativo ) => onEdit(administrativo) }
-                        onDelete={ ( administrativo ) => props.onDelete(administrativo) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexAdministrativo(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnAdministrativo: state.ColumnModule.columnAdministrativo,
-    listAdministrativo: state.PaginationModule.listAdministrativo,
+    column: state.ColumnModule.columnAdministrativo,
+    list: state.PaginationModule.listAdministrativo,
     page: state.PaginationModule.pageAdministrativo,
     pagination: state.PaginationModule.paginationAdministrativo,
     paginate: state.PaginationModule.paginateAdministrativo,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageAdministrativo: AdministrativoActions.onPageAdministrativo,
+    onPage: AdministrativoActions.onPageAdministrativo,
     onDelete: AdministrativoActions.onDelete,
 };
 

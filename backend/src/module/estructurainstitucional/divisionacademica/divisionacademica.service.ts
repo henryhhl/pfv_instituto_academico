@@ -1,10 +1,10 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { DivisionAcademica } from './entities/divisionacademica.entity';
 import { CreateDivisionAcademicaDto } from './dto/create-divisionacademica.dto';
 import { UpdateDivisionAcademicaDto } from './dto/update-divisionacademica.dto';
-import { DivisionAcademica } from './entities/divisionacademica.entity';
-import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
 export class DivisionAcademicaService {
@@ -24,14 +24,16 @@ export class DivisionAcademicaService {
         [listDivionAcademica, totalPagination] = await this.divionAcademicaRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listDivionAcademica, totalPagination] = await this.divionAcademicaRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

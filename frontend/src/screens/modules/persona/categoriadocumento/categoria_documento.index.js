@@ -14,7 +14,7 @@ function IndexCategoriaDocumento(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageCategoriaDocumento();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexCategoriaDocumento(props) {
         navigate('/categoriadocumento/create');
     };
 
-    const onEdit = (categoriaDocumento) => {
-        navigate(`/categoriadocumento/edit/${categoriaDocumento.idcategoriadocumento}`);
+    const onEdit = (item) => {
+        navigate(`/categoriadocumento/edit/${item.idcategoriadocumento}`);
     };
 
-    const onShow = (categoriaDocumento) => {
-        navigate(`/categoriadocumento/show/${categoriaDocumento.idcategoriadocumento}`);
+    const onShow = (item) => {
+        navigate(`/categoriadocumento/show/${item.idcategoriadocumento}`);
     };
 
     const setPage = (page) => {
-        props.onPageCategoriaDocumento(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageCategoriaDocumento(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexCategoriaDocumento(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnCategoriaDocumento}
-                        dataSource={props.listCategoriaDocumento}
-                        onShow={ ( categoriaDocumento ) => onShow(categoriaDocumento) }
-                        onEditar={ ( categoriaDocumento ) => onEdit(categoriaDocumento) }
-                        onDelete={ ( categoriaDocumento ) => props.onDelete(categoriaDocumento) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexCategoriaDocumento(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnCategoriaDocumento: state.ColumnModule.columnCategoriaDocumento,
-    listCategoriaDocumento: state.PaginationModule.listCategoriaDocumento,
+    column: state.ColumnModule.columnCategoriaDocumento,
+    list: state.PaginationModule.listCategoriaDocumento,
     page: state.PaginationModule.pageCategoriaDocumento,
     pagination: state.PaginationModule.paginationCategoriaDocumento,
     paginate: state.PaginationModule.paginateCategoriaDocumento,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageCategoriaDocumento: CategoriaDocumentoActions.onPageCategoriaDocumento,
+    onPage: CategoriaDocumentoActions.onPageCategoriaDocumento,
     onDelete: CategoriaDocumentoActions.onDelete,
 };
 

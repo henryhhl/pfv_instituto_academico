@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { TipoRol } from './entities/tipoRol.entity';
@@ -21,21 +21,18 @@ export class TipoRolService {
             let totalPagination = 0;
             if ( esPaginate ) {
                 [listTipoRol, totalPagination] = await this.tipoRolRepository.findAndCount( {
-                    take: limit,
-                    skip: offset,
-                    where: {
-                    },
-                    order: {
-                        created_at: "DESC",
-                    },
+                    take: limit, skip: offset,
+                    where: [
+                        { descripcion: ILike( '%' + search + '%', ), },
+                    ],
+                    order: { created_at: "DESC", },
                 } );
             } else {
                 [listTipoRol, totalPagination] = await this.tipoRolRepository.findAndCount( {
-                    where: {
-                    },
-                    order: {
-                        created_at: "DESC",
-                    },
+                    where: [
+                        { descripcion: ILike( '%' + search + '%', ), },
+                    ],
+                    order: { created_at: "DESC", },
                 } );
             }
             return {

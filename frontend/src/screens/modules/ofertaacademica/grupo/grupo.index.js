@@ -44,6 +44,10 @@ function IndexGrupo(props) {
         props.onPage(1, paginate);
     };
 
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
+    };
+
     return (
         <>
             <PaperComponent
@@ -53,10 +57,11 @@ function IndexGrupo(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnGrupo}
-                        dataSource={props.listGrupo}
+                        columns={props.column}
+                        dataSource={props.list}
                         onShow={ ( grupo ) => onShow(grupo) }
                         onEditar={ ( grupo ) => onEdit(grupo) }
                         onDelete={ ( grupo ) => props.onDelete(grupo) }
@@ -74,8 +79,8 @@ function IndexGrupo(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnGrupo: state.ColumnModule.columnGrupo,
-    listGrupo: state.PaginationModule.listGrupo,
+    column: state.ColumnModule.columnGrupo,
+    list: state.PaginationModule.listGrupo,
     page: state.PaginationModule.pageGrupo,
     pagination: state.PaginationModule.paginationGrupo,
     paginate: state.PaginationModule.paginateGrupo,

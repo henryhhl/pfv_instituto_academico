@@ -14,7 +14,7 @@ function IndexTipoRol(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageTipoRol();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexTipoRol(props) {
         navigate('/tipo_rol/create');
     };
 
-    const onEdit = (tipoRol) => {
-        navigate(`/tipo_rol/edit/${tipoRol.idtiporol}`);
+    const onEdit = (item) => {
+        navigate(`/tipo_rol/edit/${item.idtiporol}`);
     };
 
-    const onShow = (tipoRol) => {
-        navigate(`/tipo_rol/show/${tipoRol.idtiporol}`);
+    const onShow = (item) => {
+        navigate(`/tipo_rol/show/${item.idtiporol}`);
     };
 
     const setPage = (page) => {
-        props.onPageTipoRol(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageTipoRol(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexTipoRol(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnTipoRol}
-                        dataSource={props.listTipoRol}
-                        onShow={ ( tipoRol ) => onShow(tipoRol) }
-                        onEditar={ ( tipoRol ) => onEdit(tipoRol) }
-                        onDelete={ ( tipoRol ) => props.onDelete(tipoRol) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexTipoRol(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnTipoRol: state.ColumnModule.columnTipoRol,
-    listTipoRol: state.PaginationModule.listTipoRol,
+    column: state.ColumnModule.columnTipoRol,
+    list: state.PaginationModule.listTipoRol,
     page: state.PaginationModule.pageTipoRol,
     pagination: state.PaginationModule.paginationTipoRol,
     paginate: state.PaginationModule.paginateTipoRol,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageTipoRol: TipoRolActions.onPageTipoRol,
+    onPage: TipoRolActions.onPageTipoRol,
     onDelete: TipoRolActions.onDelete,
 };
 

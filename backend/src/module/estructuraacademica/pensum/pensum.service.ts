@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { DataSource, Like, Repository } from 'typeorm';
+import { DataSource, Repository, ILike } from 'typeorm';
 import { Pensum } from './entities/pensum.entity';
 import { CreatePensumDto } from './dto/create-pensum.dto';
 import { UpdatePensumDto } from './dto/update-pensum.dto';
@@ -36,14 +36,24 @@ export class PensumService {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { fechaaprobacion: ILike( '%' + search + '%', ), },
+            { programa: ILike( '%' + search + '%', ), },
+            { unidadacademica: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+            { unidadadministrativa: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { fechaaprobacion: ILike( '%' + search + '%', ), },
+            { programa: ILike( '%' + search + '%', ), },
+            { unidadacademica: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+            { unidadadministrativa: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

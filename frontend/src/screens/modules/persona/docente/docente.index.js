@@ -14,7 +14,7 @@ function IndexDocente(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageDocente();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexDocente(props) {
         navigate('/docente/create');
     };
 
-    const onEdit = (docente) => {
-        navigate(`/docente/edit/${docente.iddocente}`);
+    const onEdit = (item) => {
+        navigate(`/docente/edit/${item.iddocente}`);
     };
 
-    const onShow = (docente) => {
-        navigate(`/docente/show/${docente.iddocente}`);
+    const onShow = (item) => {
+        navigate(`/docente/show/${item.iddocente}`);
     };
 
     const setPage = (page) => {
-        props.onPageDocente(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageDocente(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexDocente(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnDocente}
-                        dataSource={props.listDocente}
-                        onShow={ ( docente ) => onShow(docente) }
-                        onEditar={ ( docente ) => onEdit(docente) }
-                        onDelete={ ( docente ) => props.onDelete(docente) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexDocente(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnDocente: state.ColumnModule.columnDocente,
-    listDocente: state.PaginationModule.listDocente,
+    column: state.ColumnModule.columnDocente,
+    list: state.PaginationModule.listDocente,
     page: state.PaginationModule.pageDocente,
     pagination: state.PaginationModule.paginationDocente,
     paginate: state.PaginationModule.paginateDocente,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageDocente: DocenteActions.onPageDocente,
+    onPage: DocenteActions.onPageDocente,
     onDelete: DocenteActions.onDelete,
 };
 

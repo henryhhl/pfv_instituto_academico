@@ -1,9 +1,9 @@
-import { Repository, Like } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { Aula } from './entities/aula.entity';
 import { CreateAulaDto } from './dto/create-aula.dto';
 import { UpdateAulaDto } from './dto/update-aula.dto';
-import { Aula } from './entities/aula.entity';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 
 @Injectable()
@@ -24,14 +24,16 @@ export class AulaService {
         [listAula, totalPagination] = await this.aulaRepository.findAndCount( {
           take: limit, skip: offset,
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listAula, totalPagination] = await this.aulaRepository.findAndCount( {
           where: [
-            { descripcion: Like( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
           ],
           order: { created_at: "DESC", },
         } );

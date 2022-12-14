@@ -14,7 +14,7 @@ function IndexAula(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageAula();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexAula(props) {
         navigate('/aula/create');
     };
 
-    const onEdit = (aula) => {
-        navigate(`/aula/edit/${aula.idaula}`);
+    const onEdit = (item) => {
+        navigate(`/aula/edit/${item.idaula}`);
     };
 
-    const onShow = (aula) => {
-        navigate(`/aula/show/${aula.idaula}`);
+    const onShow = (item) => {
+        navigate(`/aula/show/${item.idaula}`);
     };
 
     const setPage = (page) => {
-        props.onPageAula(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageAula(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexAula(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnAula}
-                        dataSource={props.listAula}
-                        onShow={ ( aula ) => onShow(aula) }
-                        onEditar={ ( aula ) => onEdit(aula) }
-                        onDelete={ ( aula ) => props.onDelete(aula) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexAula(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnAula: state.ColumnModule.columnAula,
-    listAula: state.PaginationModule.listAula,
+    column: state.ColumnModule.columnAula,
+    list: state.PaginationModule.listAula,
     page: state.PaginationModule.pageAula,
     pagination: state.PaginationModule.paginationAula,
     paginate: state.PaginationModule.paginateAula,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageAula: AulaActions.onPageAula,
+    onPage: AulaActions.onPageAula,
     onDelete: AulaActions.onDelete,
 };
 

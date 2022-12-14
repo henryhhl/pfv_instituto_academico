@@ -14,7 +14,7 @@ function IndexPrograma(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPagePrograma();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexPrograma(props) {
         navigate('/programa/create');
     };
 
-    const onEdit = (programa) => {
-        navigate(`/programa/edit/${programa.idprograma}`);
+    const onEdit = (item) => {
+        navigate(`/programa/edit/${item.idprograma}`);
     };
 
-    const onShow = (programa) => {
-        navigate(`/programa/show/${programa.idprograma}`);
+    const onShow = (item) => {
+        navigate(`/programa/show/${item.idprograma}`);
     };
 
     const setPage = (page) => {
-        props.onPagePrograma(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPagePrograma(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexPrograma(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnPrograma}
-                        dataSource={props.listPrograma}
-                        onShow={ ( programa ) => onShow(programa) }
-                        onEditar={ ( programa ) => onEdit(programa) }
-                        onDelete={ ( programa ) => props.onDelete(programa) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexPrograma(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnPrograma: state.ColumnModule.columnPrograma,
-    listPrograma: state.PaginationModule.listPrograma,
+    column: state.ColumnModule.columnPrograma,
+    list: state.PaginationModule.listPrograma,
     page: state.PaginationModule.pagePrograma,
     pagination: state.PaginationModule.paginationPrograma,
     paginate: state.PaginationModule.paginatePrograma,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPagePrograma: ProgramaActions.onPagePrograma,
+    onPage: ProgramaActions.onPagePrograma,
     onDelete: ProgramaActions.onDelete,
 };
 

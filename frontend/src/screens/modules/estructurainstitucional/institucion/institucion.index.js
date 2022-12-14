@@ -14,7 +14,7 @@ function IndexInstitucion(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageInstitucion();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexInstitucion(props) {
         navigate('/institucion/create');
     };
 
-    const onEdit = (institucion) => {
-        navigate(`/institucion/edit/${institucion.idinstitucion}`);
+    const onEdit = (item) => {
+        navigate(`/institucion/edit/${item.idinstitucion}`);
     };
 
-    const onShow = (institucion) => {
-        navigate(`/institucion/show/${institucion.idinstitucion}`);
+    const onShow = (item) => {
+        navigate(`/institucion/show/${item.idinstitucion}`);
     };
 
     const setPage = (page) => {
-        props.onPageInstitucion(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageInstitucion(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexInstitucion(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnInstitucion}
-                        dataSource={props.listInstitucion}
-                        onShow={ ( institucion ) => onShow(institucion) }
-                        onEditar={ ( institucion ) => onEdit(institucion) }
-                        onDelete={ ( institucion ) => props.onDelete(institucion) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexInstitucion(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnInstitucion: state.ColumnModule.columnInstitucion,
-    listInstitucion: state.PaginationModule.listInstitucion,
+    column: state.ColumnModule.columnInstitucion,
+    list: state.PaginationModule.listInstitucion,
     page: state.PaginationModule.pageInstitucion,
     pagination: state.PaginationModule.paginationInstitucion,
     paginate: state.PaginationModule.paginateInstitucion,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageInstitucion: InstitucionActions.onPageInstitucion,
+    onPage: InstitucionActions.onPageInstitucion,
     onDelete: InstitucionActions.onDelete,
 };
 

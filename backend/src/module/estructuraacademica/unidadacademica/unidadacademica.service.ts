@@ -1,15 +1,13 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { Repository } from 'typeorm';
-import { v4 as uuid } from 'uuid';
+import { UnidadAcademica } from './entities/unidadacademica.entity';
 import { CreateUnidadAcademicaDto } from './dto/create-unidadacademica.dto';
 import { UpdateUnidadAcademicaDto } from './dto/update-unidadacademica.dto';
-import { UnidadAcademica } from './entities/unidadacademica.entity';
 
 @Injectable()
 export class UnidadacademicaService {
-  private listUnidadAcademica: UnidadAcademica[] = [];
   private readonly logger = new Logger('UnidadAcademicaService');
 
   constructor(
@@ -24,19 +22,26 @@ export class UnidadacademicaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listUnidadAcademica, totalPagination] = await this.unidadAcademicaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
-          where: { },
-          order: {
-            created_at: "DESC",
-          },
+          take: limit, skip: offset,
+          where: [
+            { codigo: ILike( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { unidadadministrativa: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       } else {
         [listUnidadAcademica, totalPagination] = await this.unidadAcademicaRepository.findAndCount( {
-          where: { },
-          order: {
-            created_at: "DESC",
-          },
+          where: [
+            { codigo: ILike( '%' + search + '%', ), },
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+            { unidadadministrativa: ILike( '%' + search + '%', ), },
+            { unidadnegocio: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       }
       return {

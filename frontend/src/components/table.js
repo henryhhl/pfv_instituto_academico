@@ -120,9 +120,10 @@ export default function TableComponent( props ) {
                                                                 'Aperturado' : row[column.id] === 'N' ? 'Sin Aperturar o Cerrar' : 'Cerrado' 
                                                             }` }
                                                         </Tag>
-                                                    : isNaN(row[column.id]) ? 
-                                                        column.amountday === true ? amountday : row[column.id] : 
-                                                    parseFloat(row[column.id]).toFixed(2) 
+                                                    : column.numeric === true ? 
+                                                        parseFloat(row[column.id]).toFixed(2) :
+                                                        column.amountday === true ? amountday : row[column.id] 
+                                                    
                                                 }
                                                 { column.suffix && column.suffix }
                                             </td>

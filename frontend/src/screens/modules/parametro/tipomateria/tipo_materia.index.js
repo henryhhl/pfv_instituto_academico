@@ -14,7 +14,7 @@ function IndexTipoMateria(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageTipoMateria();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexTipoMateria(props) {
         navigate('/tipomateria/create');
     };
 
-    const onEdit = (tipoMateria) => {
-        navigate(`/tipomateria/edit/${tipoMateria.idtipomateria}`);
+    const onEdit = (item) => {
+        navigate(`/tipomateria/edit/${item.idtipomateria}`);
     };
 
-    const onShow = (tipoMateria) => {
-        navigate(`/tipomateria/show/${tipoMateria.idtipomateria}`);
+    const onShow = (item) => {
+        navigate(`/tipomateria/show/${item.idtipomateria}`);
     };
 
     const setPage = (page) => {
-        props.onPageTipoMateria(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageTipoMateria(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexTipoMateria(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnTipoMateria}
-                        dataSource={props.listTipoMateria}
-                        onShow={ ( tipoMateria ) => onShow(tipoMateria) }
-                        onEditar={ ( tipoMateria ) => onEdit(tipoMateria) }
-                        onDelete={ ( tipoMateria ) => props.onDelete(tipoMateria) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexTipoMateria(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnTipoMateria: state.ColumnModule.columnTipoMateria,
-    listTipoMateria: state.PaginationModule.listTipoMateria,
+    column: state.ColumnModule.columnTipoMateria,
+    list: state.PaginationModule.listTipoMateria,
     page: state.PaginationModule.pageTipoMateria,
     pagination: state.PaginationModule.paginationTipoMateria,
     paginate: state.PaginationModule.paginateTipoMateria,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageTipoMateria: TipoMateriaActions.onPageTipoMateria,
+    onPage: TipoMateriaActions.onPageTipoMateria,
     onDelete: TipoMateriaActions.onDelete,
 };
 

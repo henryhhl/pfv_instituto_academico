@@ -14,7 +14,7 @@ function IndexTipoPermiso(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageTipoPermiso();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexTipoPermiso(props) {
         navigate('/tipo_permiso/create');
     };
 
-    const onEdit = (tipoPermiso) => {
-        navigate(`/tipo_permiso/edit/${tipoPermiso.idtipopermiso}`);
+    const onEdit = (item) => {
+        navigate(`/tipo_permiso/edit/${item.idtipopermiso}`);
     };
 
-    const onShow = (tipoPermiso) => {
-        navigate(`/tipo_permiso/show/${tipoPermiso.idtipopermiso}`);
+    const onShow = (item) => {
+        navigate(`/tipo_permiso/show/${item.idtipopermiso}`);
     };
 
     const setPage = (page) => {
-        props.onPageTipoPermiso(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageTipoPermiso(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexTipoPermiso(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnTipoPermiso}
-                        dataSource={props.listTipoPermiso}
-                        onShow={ ( tipoPermiso ) => onShow(tipoPermiso) }
-                        onEditar={ ( tipoPermiso ) => onEdit(tipoPermiso) }
-                        onDelete={ ( tipoPermiso ) => props.onDelete(tipoPermiso) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexTipoPermiso(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnTipoPermiso: state.ColumnModule.columnTipoPermiso,
-    listTipoPermiso: state.PaginationModule.listTipoPermiso,
+    column: state.ColumnModule.columnTipoPermiso,
+    list: state.PaginationModule.listTipoPermiso,
     page: state.PaginationModule.pageTipoPermiso,
     pagination: state.PaginationModule.paginationTipoPermiso,
     paginate: state.PaginationModule.paginateTipoPermiso,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageTipoPermiso: TipoPermisoActions.onPageTipoPermiso,
+    onPage: TipoPermisoActions.onPageTipoPermiso,
     onDelete: TipoPermisoActions.onDelete,
 };
 

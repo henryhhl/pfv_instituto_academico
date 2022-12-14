@@ -14,7 +14,7 @@ function IndexTipoCiudad(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageTipoCiudad();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexTipoCiudad(props) {
         navigate('/tipociudad/create');
     };
 
-    const onEdit = (tipoCiudad) => {
-        navigate(`/tipociudad/edit/${tipoCiudad.idtipociudad}`);
+    const onEdit = (item) => {
+        navigate(`/tipociudad/edit/${item.idtipociudad}`);
     };
 
-    const onShow = (tipoCiudad) => {
-        navigate(`/tipociudad/show/${tipoCiudad.idtipociudad}`);
+    const onShow = (item) => {
+        navigate(`/tipociudad/show/${item.idtipociudad}`);
     };
 
     const setPage = (page) => {
-        props.onPageTipoCiudad(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageTipoCiudad(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexTipoCiudad(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnTipoCiudad}
-                        dataSource={props.listTipoCiudad}
-                        onShow={ ( tipoCiudad ) => onShow(tipoCiudad) }
-                        onEditar={ ( tipoCiudad ) => onEdit(tipoCiudad) }
-                        onDelete={ ( tipoCiudad ) => props.onDelete(tipoCiudad) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexTipoCiudad(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnTipoCiudad: state.ColumnModule.columnTipoCiudad,
-    listTipoCiudad: state.PaginationModule.listTipoCiudad,
+    column: state.ColumnModule.columnTipoCiudad,
+    list: state.PaginationModule.listTipoCiudad,
     page: state.PaginationModule.pageTipoCiudad,
     pagination: state.PaginationModule.paginationTipoCiudad,
     paginate: state.PaginationModule.paginateTipoCiudad,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageTipoCiudad: TipoCiudadActions.onPageTipoCiudad,
+    onPage: TipoCiudadActions.onPageTipoCiudad,
     onDelete: TipoCiudadActions.onDelete,
 };
 

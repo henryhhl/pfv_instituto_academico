@@ -1,5 +1,5 @@
 
-import { Like, Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
@@ -23,23 +23,20 @@ export class TipoMateriaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoMateria, totalPagination] = await this.tipoMateriaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
-          where: {
-            descripcion: Like( '%' + search + '%', ),
-          },
-          order: {
-            created_at: "DESC",
-          },
+          take: limit, skip: offset,
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       } else {
         [listTipoMateria, totalPagination] = await this.tipoMateriaRepository.findAndCount( {
-          where: {
-            descripcion: Like( '%' + search + '%', ),
-          },
-          order: {
-            created_at: "DESC",
-          },
+          where: [
+            { sigla: ILike( '%' + search + '%', ), },
+            { descripcion: ILike( '%' + search + '%', ), },
+          ],
+          order: { created_at: "DESC", },
         } );
       }
       

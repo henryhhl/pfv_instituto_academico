@@ -14,7 +14,7 @@ function IndexGestionPeriodo(props) {
     React.useEffect( () => {
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
-                props.onPageGestionPeriodo();
+                props.onPage();
             }
         } );
         return () => {};
@@ -28,20 +28,24 @@ function IndexGestionPeriodo(props) {
         navigate('/gestionperiodo/create');
     };
 
-    const onEdit = (gestionperiodo) => {
-        navigate(`/gestionperiodo/edit/${gestionperiodo.idgestionperiodo}`);
+    const onEdit = (item) => {
+        navigate(`/gestionperiodo/edit/${item.idgestionperiodo}`);
     };
 
-    const onShow = (gestionperiodo) => {
-        navigate(`/gestionperiodo/show/${gestionperiodo.idgestionperiodo}`);
+    const onShow = (item) => {
+        navigate(`/gestionperiodo/show/${item.idgestionperiodo}`);
     };
 
     const setPage = (page) => {
-        props.onPageGestionPeriodo(page + 1, props.paginate);
+        props.onPage(page + 1, props.paginate);
     };
 
     const setPaginate = (paginate) => {
-        props.onPageGestionPeriodo(1, paginate);
+        props.onPage(1, paginate);
+    };
+
+    const setSearch = ( value ) => {
+        props.onPage(1, props.paginate, value);
     };
 
     return (
@@ -53,13 +57,14 @@ function IndexGestionPeriodo(props) {
             >
                 <CardComponent
                     isSearch
+                    onSearch={ setSearch }
                 >
                     <TableComponent 
-                        columns={props.columnGestionPeriodo}
-                        dataSource={props.listGestionPeriodo}
-                        onShow={ ( gestionPeriodo ) => onShow(gestionPeriodo) }
-                        onEditar={ ( gestionPeriodo ) => onEdit(gestionPeriodo) }
-                        onDelete={ ( gestionPeriodo ) => props.onDelete(gestionPeriodo) }
+                        columns={props.column}
+                        dataSource={props.list}
+                        onShow={ ( item ) => onShow(item) }
+                        onEditar={ ( item ) => onEdit(item) }
+                        onDelete={ ( item ) => props.onDelete(item) }
                         isPagination={true}
                         pagination={props.pagination}
                         paginate={props.paginate}
@@ -74,8 +79,8 @@ function IndexGestionPeriodo(props) {
 };
 
 const mapStateToProps = ( state ) => ( {
-    columnGestionPeriodo: state.ColumnModule.columnGestionPeriodo,
-    listGestionPeriodo: state.PaginationModule.listGestionPeriodo,
+    column: state.ColumnModule.columnGestionPeriodo,
+    list: state.PaginationModule.listGestionPeriodo,
     page: state.PaginationModule.pageGestionPeriodo,
     pagination: state.PaginationModule.paginationGestionPeriodo,
     paginate: state.PaginationModule.paginateGestionPeriodo,
@@ -83,7 +88,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onPageGestionPeriodo: GestionPeriodoActions.onPageGestionPeriodo,
+    onPage: GestionPeriodoActions.onPageGestionPeriodo,
     onDelete: GestionPeriodoActions.onDelete,
 };
 
