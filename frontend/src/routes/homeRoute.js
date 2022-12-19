@@ -221,6 +221,9 @@ import CreateTipoResultado from '../screens/modules/oportunidad/tiporesultado/ti
 import EditTipoResultado from '../screens/modules/oportunidad/tiporesultado/tiporesultado.edit';
 import ShowTipoResultado from '../screens/modules/oportunidad/tiporesultado/tiporesultado.show';
 
+import CreateInscripcionPrograma from '../screens/modules/inscripcion/inscripcionprograma/inscripcionprograma.create';
+import CreateInscripcionCurso from '../screens/modules/inscripcion/inscripcioncurso/inscripcioncurso.create';
+
 import LoginPage from '../screens/auth/login.page';
 
 const HomeRoute = (props) => {
@@ -447,6 +450,9 @@ const HomeRoute = (props) => {
                     <Route index path="/oportunidad/create" element={ <CreateOportunidad { ...props } /> }  />
                     <Route index path="/oportunidad/edit/:idoportunidad" element={ <EditOportunidad { ...props } /> }  />
                     <Route index path="/oportunidad/show/:idoportunidad" element={ <ShowOportunidad { ...props } /> }  />
+
+                    <Route index path="/inscripcionprograma/index" element={ <CreateInscripcionPrograma { ...props } /> }  />
+                    <Route index path="/inscripcioncurso/index" element={ <CreateInscripcionCurso { ...props } /> }  />
 
                     <Route
                         path='*'

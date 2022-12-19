@@ -10,6 +10,7 @@ import { PensumDivisionAcademicaMateriaDetalle } from './entities/pensumdivision
 @Module({
   controllers: [PensumController],
   providers: [PensumService],
+  exports: [PensumService],
   imports: [
     TypeOrmModule.forFeature( [
       Pensum, PensumDivisionAcademicaDetalle,

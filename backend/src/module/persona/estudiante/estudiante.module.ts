@@ -11,6 +11,7 @@ import { EstudianteCategoriaDocumentoDetalle } from './entities/estudiantecatego
 @Module({
   controllers: [EstudianteController],
   providers: [EstudianteService],
+  exports: [EstudianteService],
   imports: [
     TypeOrmModule.forFeature( [
       Estudiante, EstudianteCategoriaDocumentoDetalle,

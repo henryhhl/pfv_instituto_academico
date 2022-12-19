@@ -148,6 +148,42 @@ export default function SidebarComponent() {
                                 style={{ lineHeight: 0, height: 50, }}
                             >
                                 <i className="ion ion-ios-albums-outline"></i>
+                                <span style={{ fontSize: 13, }}>Inscripción Preliminar</span>
+                            </a>
+                        }
+                        className="p-0"
+                    >
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/inscripcionprograma/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Insc. a Programa
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/inscripciongrupo/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Insc. a Grupo
+                            </Link>
+                        </Menu.Item>
+                        <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
+                            <Link to={"/inscripcioncurso/index"} className="d-flex align-items-center" 
+                                style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
+                            >
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Insc. a Curso
+                            </Link>
+                        </Menu.Item>
+                    </Menu.SubMenu>
+                    <Menu.SubMenu 
+                        title={
+                            <a href="#" className="p-0 d-flex align-items-center"
+                                onClick={ (evt) => {
+                                    evt.preventDefault();
+                                } }
+                                style={{ lineHeight: 0, height: 50, }}
+                            >
+                                <i className="ion ion-ios-albums-outline"></i>
                                 <span style={{ fontSize: 13, }}>Oferta Academica</span>
                             </a>
                         }

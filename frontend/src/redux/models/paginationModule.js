@@ -1,6 +1,21 @@
 
 const PaginationModule = {
 
+    listInscripcionPrograma: [],
+    pageInscripcionPrograma: 1,
+    paginateInscripcionPrograma: 1,
+    paginationInscripcionPrograma: {
+        total: 0,
+    },
+
+    listInscripcionCurso: [],
+    pageInscripcionCurso: 1,
+    paginateInscripcionCurso: 1,
+    paginationInscripcionCurso: {
+        total: 0,
+    },
+
+
     listTipoResultado: [],
     pageTipoResultado: 1,
     paginateTipoResultado: 1,

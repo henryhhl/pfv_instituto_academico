@@ -51,6 +51,9 @@ const ListModules = {
     listNegocio: [],
     listActividad: [],
     listOportunidad: [],
+    
+    listInscripcionPrograma: [],
+    listInscripcionCurso: [],
 };
 
 export default ListModules;

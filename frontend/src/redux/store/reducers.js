@@ -56,6 +56,8 @@ import { NegocioReducer } from '../reducers/oportunidad/negocio.reducer';
 import { ActividadReducer } from '../reducers/oportunidad/actividad.reducer';
 import { OportunidadReducer } from '../reducers/oportunidad/oportunidad.reducer';
 import { TipoResultadoReducer } from '../reducers/oportunidad/tiporesultado.reducer';
+import { InscripcionProgramaReducer } from '../reducers/inscripcion/inscripcionprograma.reducer';
+import { InscripcionCursoReducer } from '../reducers/inscripcion/inscripcioncurso.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -117,6 +119,10 @@ const RootReducer = combineReducers( {
     Negocio: NegocioReducer,
     Actividad: ActividadReducer,
     Oportunidad: OportunidadReducer,
+
+
+    InscripcionPrograma: InscripcionProgramaReducer,
+    InscripcionCurso: InscripcionCursoReducer,
 } );
 
 export default RootReducer;

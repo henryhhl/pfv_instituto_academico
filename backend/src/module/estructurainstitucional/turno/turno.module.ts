@@ -8,6 +8,7 @@ import { AuthModule } from '../../auth/auth.module';
 @Module({
   controllers: [TurnoController],
   providers: [TurnoService],
+  exports: [TurnoService],
   imports: [
     TypeOrmModule.forFeature( [
       Turno,

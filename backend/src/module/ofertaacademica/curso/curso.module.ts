@@ -9,6 +9,7 @@ import { CursoDocenteDetalle } from './entities/cursodocentedetalle.entity';
 @Module({
   controllers: [CursoController],
   providers: [CursoService],
+  exports: [CursoService],
   imports: [
     TypeOrmModule.forFeature( [
       Curso, CursoDocenteDetalle,

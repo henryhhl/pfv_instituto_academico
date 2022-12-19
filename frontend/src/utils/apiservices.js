@@ -369,6 +369,23 @@ const apiServices = {
     apioportunidadoportunidad_show:   `${module.parametros}/oportunidad/show`,
     apioportunidadoportunidad_update: `${module.parametros}/oportunidad/update`,
     apioportunidadoportunidad_delete: `${module.parametros}/oportunidad/delete`,
+
+
+    apiinscripcioninscripcionprograma_index:  `${module.parametros}/inscripcionprograma/index`,
+    apiinscripcioninscripcionprograma_create: `${module.parametros}/inscripcionprograma/create`,
+    apiinscripcioninscripcionprograma_store:  `${module.parametros}/inscripcionprograma/store`,
+    apiinscripcioninscripcionprograma_edit:   `${module.parametros}/inscripcionprograma/edit`,
+    apiinscripcioninscripcionprograma_show:   `${module.parametros}/inscripcionprograma/show`,
+    apiinscripcioninscripcionprograma_update: `${module.parametros}/inscripcionprograma/update`,
+    apiinscripcioninscripcionprograma_delete: `${module.parametros}/inscripcionprograma/delete`,
+
+    apiinscripcioninscripcioncurso_index:  `${module.parametros}/inscripcioncurso/index`,
+    apiinscripcioninscripcioncurso_create: `${module.parametros}/inscripcioncurso/create`,
+    apiinscripcioninscripcioncurso_store:  `${module.parametros}/inscripcioncurso/store`,
+    apiinscripcioninscripcioncurso_edit:   `${module.parametros}/inscripcioncurso/edit`,
+    apiinscripcioninscripcioncurso_show:   `${module.parametros}/inscripcioncurso/show`,
+    apiinscripcioninscripcioncurso_update: `${module.parametros}/inscripcioncurso/update`,
+    apiinscripcioninscripcioncurso_delete: `${module.parametros}/inscripcioncurso/delete`,
 };
 
 export default apiServices;

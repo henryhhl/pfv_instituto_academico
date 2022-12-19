@@ -1,6 +1,29 @@
 
 const ColumnModules = {
 
+    columnInscripcionPrograma: [
+        {
+            id: 'registroestudiante',
+            label: 'Registro',
+        },
+        {
+            id: 'nameestudiante',
+            label: 'Estudiante',
+        },
+    ],
+
+    columnInscripcionCurso: [
+        {
+            id: 'registroestudiante',
+            label: 'Registro',
+        },
+        {
+            id: 'nameestudiante',
+            label: 'Estudiante',
+        },
+    ],
+
+
     columnUnidadNegocio: [
         {
             id: 'sigla',

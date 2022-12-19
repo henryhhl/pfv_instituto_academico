@@ -10,6 +10,7 @@ import { AuthModule } from '../../auth/auth.module';
 @Module({
   controllers: [UnidadAdministrativaController],
   providers: [UnidadAdministrativaService],
+  exports: [UnidadAdministrativaService],
   imports: [
     TypeOrmModule.forFeature( [
       UnidadAdministrativa, UnidadAdministrativaTurnoDetalle,

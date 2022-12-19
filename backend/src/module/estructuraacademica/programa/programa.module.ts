@@ -11,7 +11,7 @@ import { ProgramaDivisionAcademicaMateriaDetalle } from './entities/programadivi
 @Module({
   controllers: [ProgramaController],
   providers: [ProgramaService],
-  
+  exports: [ProgramaService],
   imports: [
     // MongooseModule.forFeature( [
     //   {

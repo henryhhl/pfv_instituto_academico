@@ -8,6 +8,7 @@ import { AuthModule } from '../../auth/auth.module';
 @Module({
   controllers: [UnidadNegocioController],
   providers: [UnidadNegocioService],
+  exports: [UnidadNegocioService],
   imports: [
     TypeOrmModule.forFeature( [
       UnidadNegocio,

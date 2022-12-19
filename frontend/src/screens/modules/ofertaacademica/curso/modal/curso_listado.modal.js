@@ -43,7 +43,7 @@ export default function ListadoCursoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={'85%'} centered
+                footer={null} width={'90%'} centered
                 title={"LISTA CURSO"}
             >
                 <div className="row">
@@ -70,11 +70,11 @@ export default function ListadoCursoModal( props ) {
                                             label: 'Turno',
                                         },
                                         {
-                                            id: 'modalidad',
+                                            id: 'modalidadacademica',
                                             label: 'Modalidad',
                                         },
                                         {
-                                            id: 'periodo',
+                                            id: 'gestionperiodo',
                                             label: 'Periodo',
                                         },
                                         {

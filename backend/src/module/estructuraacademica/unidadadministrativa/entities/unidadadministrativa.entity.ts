@@ -1,6 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { UnidadAdministrativaTurnoDetalle } from './unidadadministrativaturnodetalle.entity';
 import { UnidadAdministrativaAulaDetalle } from './unidadadministrativaauladetalle.entity';
+import { InscripcionPrograma } from 'src/module/inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
+import { InscripcionCurso } from 'src/module/inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
 
 @Entity('unidadadministrativa')
 export class UnidadAdministrativa {
@@ -27,6 +29,19 @@ export class UnidadAdministrativa {
         { cascade: true, eager: true, },
     )
     arrayaula?: UnidadAdministrativaAulaDetalle[];
+
+
+    @OneToMany(
+        () => InscripcionPrograma,
+        ( inscripcionPrograma ) => inscripcionPrograma.unidadadministrativa,
+    )
+    arrayinscripcionprograma?: InscripcionPrograma[];
+
+    @OneToMany(
+        () => InscripcionCurso,
+        ( inscripcionCurso ) => inscripcionCurso.unidadadministrativa,
+    )
+    arrayinscripcioncurso?: InscripcionCurso[];
 
     @Column( {
         type: 'text',

@@ -1,11 +1,18 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ProgramaDivisionAcademicaDetalle } from './programadivisionacademicadetalle.entity';
+import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 
 @Entity('programa')
 export class Programa {
 
     @PrimaryGeneratedColumn('uuid')
     idprograma: string;
+
+    @OneToMany(
+        () => InscripcionPrograma,
+        ( inscripcionPrograma ) => inscripcionPrograma.programa,
+    )
+    arrayinscripcionprograma?: InscripcionPrograma[];
 
     @OneToMany(
         () => ProgramaDivisionAcademicaDetalle,

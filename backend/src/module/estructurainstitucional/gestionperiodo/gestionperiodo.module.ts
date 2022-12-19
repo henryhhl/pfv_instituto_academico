@@ -8,6 +8,7 @@ import { AuthModule } from '../../auth/auth.module';
 @Module({
   controllers: [GestionPeriodoController],
   providers: [GestionPeriodoService],
+  exports: [GestionPeriodoService],
   imports: [
     TypeOrmModule.forFeature( [
       GestionPeriodo,

@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { CursoDocenteDetalle } from './cursodocentedetalle.entity';
+import { InscripcionCurso } from '../../../inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
 
 @Entity('curso')
 export class Curso {
@@ -13,6 +14,12 @@ export class Curso {
         { cascade: true, },
     )
     arraydocente?: CursoDocenteDetalle[];
+
+    @OneToMany(
+        () => InscripcionCurso,
+        ( inscripcionCurso ) => inscripcionCurso.curso,
+    )
+    arrayinscripcioncurso?: InscripcionCurso[];
 
     @Column('text')
     fkidunidadnegocio: string;

@@ -323,6 +323,19 @@ const Constants = {
     oportundiad_onAddRowNegocio: "[ON ADD ROW NEGOCIO] Oportunidad",
     oportundiad_onDeleteRowNegocio: "[ON DELETE ROW NEGOCIO] Oportunidad",
 
+
+    inscripcionprograma_setInit: "[SET INIT] Inscripción Programa",
+    inscripcionprograma_onChange: "[ON CHANGE] Inscripción Programa",
+    inscripcionprograma_onCreate: "[ON CREATE] Inscripción Programa",
+    inscripcionprograma_onShow: "[ON SHOW] Inscripción Programa",
+    inscripcionprograma_onLimpiar: "[ON LIMPIAR] Inscripción Programa",
+
+    inscripcioncurso_setInit: "[SET INIT] Inscripción Curso",
+    inscripcioncurso_onChange: "[ON CHANGE] Inscripción Curso",
+    inscripcioncurso_onCreate: "[ON CREATE] Inscripción Curso",
+    inscripcioncurso_onShow: "[ON SHOW] Inscripción Curso",
+    inscripcioncurso_onLimpiar: "[ON LIMPIAR] Inscripción Curso",
+
 };
 
 export default Constants;
