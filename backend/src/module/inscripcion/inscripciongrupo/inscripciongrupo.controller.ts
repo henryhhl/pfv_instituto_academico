@@ -1,34 +1,53 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { InscripciongrupoService } from './inscripciongrupo.service';
-import { CreateInscripciongrupoDto } from './dto/create-inscripciongrupo.dto';
-import { UpdateInscripciongrupoDto } from './dto/update-inscripciongrupo.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
+import { Auth } from '../../auth/decorators/auth.decorator';
+import { InscripcionGrupoService } from './inscripciongrupo.service';
+import { InscripcionGrupoPaginationDto } from './dto/pagination.dto';
+import { UpdateInscripcionGrupoDto } from './dto/update-inscripciongrupo.dto';
+import { CreateInscripcionGrupoDto } from './dto/create-inscripciongrupo.dto';
 
 @Controller('inscripciongrupo')
-export class InscripciongrupoController {
-  constructor(private readonly inscripciongrupoService: InscripciongrupoService) {}
+export class InscripcionGrupoController {
+  constructor(private readonly inscripciongrupoService: InscripcionGrupoService) {}
 
-  @Post()
-  create(@Body() createInscripciongrupoDto: CreateInscripciongrupoDto) {
-    return this.inscripciongrupoService.create(createInscripciongrupoDto);
+  @Get('/index')
+  @Auth( /**  N Permissions */ )
+  findAll( @Query() paginationDto: InscripcionGrupoPaginationDto ) {
+    return this.inscripciongrupoService.findAll(paginationDto);
   }
 
-  @Get()
-  findAll() {
-    return this.inscripciongrupoService.findAll();
+  @Post('/store')
+  @Auth( /**  N Permissions */ )
+  store(@Body() createInscripciongrupoDto: CreateInscripcionGrupoDto) {
+    return this.inscripciongrupoService.store(createInscripciongrupoDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.inscripciongrupoService.findOne(+id);
+  @Get('/edit/:idinscripciongrupo')
+  @Auth( /**  N Permissions */ )
+  edit(@Param('idinscripciongrupo') idinscripciongrupo: string) {
+    return this.inscripciongrupoService.edit(idinscripciongrupo);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInscripciongrupoDto: UpdateInscripciongrupoDto) {
-    return this.inscripciongrupoService.update(+id, updateInscripciongrupoDto);
+  @Get('/show/:idinscripciongrupo')
+  @Auth( /**  N Permissions */ )
+  show(@Param('idinscripciongrupo') idinscripciongrupo: string) {
+    return this.inscripciongrupoService.show(idinscripciongrupo);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.inscripciongrupoService.remove(+id);
+  @Patch('/update/:idinscripciongrupo')
+  @Auth( /**  N Permissions */ )
+  updatePatch(@Param('idinscripciongrupo') idinscripciongrupo: string, @Body() updateInscripciongrupoDto: UpdateInscripcionGrupoDto) {
+    return this.inscripciongrupoService.update(idinscripciongrupo, updateInscripciongrupoDto);
+  }
+
+  @Put('/update/:idinscripciongrupo')
+  @Auth( /**  N Permissions */ )
+  update(@Param('idinscripciongrupo') idinscripciongrupo: string, @Body() updateInscripciongrupoDto: UpdateInscripcionGrupoDto) {
+    return this.inscripciongrupoService.update(idinscripciongrupo, updateInscripciongrupoDto);
+  }
+
+  @Delete('/delete/:idinscripciongrupo')
+  @Auth( /**  N Permissions */ )
+  delete(@Param('idinscripciongrupo') idinscripciongrupo: string) {
+    return this.inscripciongrupoService.delete(idinscripciongrupo);
   }
 }

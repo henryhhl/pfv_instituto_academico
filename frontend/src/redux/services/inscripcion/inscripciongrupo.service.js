@@ -4,12 +4,12 @@ import { httpRequest } from "../../../utils/httpRequest";
 import Swal from 'sweetalert2';
 import toastr from 'toastr';
 
-const getAllInscripcionCurso = async ( {
+const getAllInscripcionGrupo = async ( {
     page = 1, paginate = 1, 
     fkidcurso = "",
     search = "", esPaginate = false,
 } ) => {
-    return await httpRequest('get', apiServices.apiinscripcioninscripcioncurso_index, {
+    return await httpRequest('get', apiServices.apiinscripcioninscripciongrupo_index, {
         search: search,
         offset: page - 1,
         limit: paginate,
@@ -33,18 +33,17 @@ const getAllInscripcionCurso = async ( {
 };
 
 const onStore = async (body) => {
-    return await httpRequest('post', apiServices.apiinscripcioninscripcioncurso_store, {
+    return await httpRequest('post', apiServices.apiinscripcioninscripciongrupo_store, {
         fkidunidadadministrativa: body.fkidunidadadministrativa,
         fkidunidadacademica: body.fkidunidadacademica,
         fkidunidadnegocio: body.fkidunidadnegocio,
-        fkidcurso: body.fkidcurso,
-        fkidturno: body.fkidturno,
-        fkidgestionperiodo: body.fkidgestionperiodo,
         fkidestudiante: body.fkidestudiante,
-        fkidmodalidadacademica: body.fkidmodalidadacademica,
+        fkidgestionperiodo: body.fkidgestionperiodo,
+        fkidprograma: body.fkidprograma,
+        fkidpensum: body.fkidpensum,
+        fkidmateria: body.fkidmateria,
+        fkidgrupo: body.fkidgrupo,
         fechainscripcion: body.fechainscripcion,
-        esinscripcionformalizada: body.esinscripcionformalizada,
-        condicion: body.condicion,
         nota: body.nota,
         estado: body.estado,
     } ).then( (respta) => {
@@ -53,15 +52,6 @@ const onStore = async (body) => {
                 position: 'top-end',
                 icon: 'success',
                 title: respta.message,
-                showConfirmButton: false,
-                timer: 3000,
-            } );
-        } else if ( respta.resp === 0 ) {
-            Swal.fire( {
-                position: 'top-end',
-                icon: 'warning',
-                title: 'Funcionalidad interrumpida.',
-                text: respta.message,
                 showConfirmButton: false,
                 timer: 3000,
             } );
@@ -79,8 +69,8 @@ const onStore = async (body) => {
     } );
 };
 
-const onShow = async (idinscripcioncurso) => {
-    return await httpRequest('get', apiServices.apiinscripcioninscripcioncurso_show + `/${idinscripcioncurso}`, {
+const onShow = async (idinscripciongrupo) => {
+    return await httpRequest('get', apiServices.apiinscripcioninscripciongrupo_show + `/${idinscripciongrupo}`, {
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
@@ -98,8 +88,8 @@ const onShow = async (idinscripcioncurso) => {
     } );
 };
 
-const onEdit = async (idinscripcioncurso) => {
-    return await httpRequest('get', apiServices.apiinscripcioninscripcioncurso_edit + `/${idinscripcioncurso}`, {
+const onEdit = async (idinscripciongrupo) => {
+    return await httpRequest('get', apiServices.apiinscripcioninscripciongrupo_edit + `/${idinscripciongrupo}`, {
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             toastr.success( respta.message, '', { closeButton: true, progressBar: true, } );
@@ -118,17 +108,17 @@ const onEdit = async (idinscripcioncurso) => {
 };
 
 const onUpdate = async (body) => {
-    return await httpRequest('put', apiServices.apiinscripcioninscripcioncurso_update + `/${body.idinscripcioncurso}`, {
+    return await httpRequest('put', apiServices.apiinscripcioninscripciongrupo_update + `/${body.idinscripciongrupo}`, {
         fkidunidadadministrativa: body.fkidunidadadministrativa,
         fkidunidadacademica: body.fkidunidadacademica,
         fkidunidadnegocio: body.fkidunidadnegocio,
-        fkidcurso: body.fkidcurso,
-        fkidturno: body.fkidturno,
-        fkidgestionperiodo: body.fkidgestionperiodo,
         fkidestudiante: body.fkidestudiante,
+        fkidgestionperiodo: body.fkidgestionperiodo,
+        fkidprograma: body.fkidprograma,
+        fkidpensum: body.fkidpensum,
+        fkidmateria: body.fkidmateria,
+        fkidgrupo: body.fkidgrupo,
         fechainscripcion: body.fechainscripcion,
-        esinscripcionformalizada: body.esinscripcionformalizada,
-        condicion: body.condicion,
         nota: body.nota,
         estado: body.estado,
     } ).then( (respta) => {
@@ -155,7 +145,7 @@ const onUpdate = async (body) => {
 };
 
 const onDelete = async (body) => {
-    return await httpRequest('delete', apiServices.apiinscripcioninscripcioncurso_delete + `/${body.idinscripcioncurso}`, {
+    return await httpRequest('delete', apiServices.apiinscripcioninscripciongrupo_delete + `/${body.idinscripciongrupo}`, {
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
@@ -179,8 +169,8 @@ const onDelete = async (body) => {
     } );
 };
 
-export const InscripcionCursoService = {
-    getAllInscripcionCurso,
+export const InscripcionGrupoService = {
+    getAllInscripcionGrupo,
     onStore,
     onEdit,
     onShow,

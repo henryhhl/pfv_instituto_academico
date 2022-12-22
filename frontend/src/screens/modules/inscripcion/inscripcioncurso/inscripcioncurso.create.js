@@ -136,7 +136,9 @@ function CreateInscripcionCurso( props ) {
                             <div className='row'>
                                 <div className='col-12 mt-2'>
                                     <TableComponent 
-                                        option={false}
+                                        isSearch={false}
+                                        isEdit={false}
+                                        onDelete={ (item) => props.onDelete( item, curso?.idcurso ) }
                                         columns={props.column}
                                         dataSource={props.list}
                                         isPagination={true}
@@ -322,6 +324,7 @@ function CreateInscripcionCurso( props ) {
                             <div className='row'>
                                 <div className='col-12'>
                                     <ButtonComponent
+                                        fullWidth
                                         onClick={ () => props.onStore(inscripcionCurso) }
                                     >
                                         Inscribir
@@ -347,6 +350,7 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
+    onDelete: InscripcionCursoActions.onDelete,
     onLimpiar: InscripcionCursoActions.onLimpiar,
     onCreate: InscripcionCursoActions.onCreate,
     onPage: InscripcionCursoActions.onPageInscripcionCurso,

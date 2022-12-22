@@ -55,6 +55,15 @@ const onStore = async (body) => {
                 showConfirmButton: false,
                 timer: 3000,
             } );
+        } else if ( respta.resp === 0 ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Funcionalidad interrumpida.',
+                text: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
         } else if ( respta.error === true && respta.resp === -2 ) {
             Swal.fire( {
                 position: 'top-end',

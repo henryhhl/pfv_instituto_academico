@@ -223,6 +223,7 @@ import ShowTipoResultado from '../screens/modules/oportunidad/tiporesultado/tipo
 
 import CreateInscripcionPrograma from '../screens/modules/inscripcion/inscripcionprograma/inscripcionprograma.create';
 import CreateInscripcionCurso from '../screens/modules/inscripcion/inscripcioncurso/inscripcioncurso.create';
+import CreateInscripcionGrupo from '../screens/modules/inscripcion/inscripciongrupo/inscripciongrupo.create';
 
 import LoginPage from '../screens/auth/login.page';
 
@@ -453,6 +454,7 @@ const HomeRoute = (props) => {
 
                     <Route index path="/inscripcionprograma/index" element={ <CreateInscripcionPrograma { ...props } /> }  />
                     <Route index path="/inscripcioncurso/index" element={ <CreateInscripcionCurso { ...props } /> }  />
+                    <Route index path="/inscripciongrupo/index" element={ <CreateInscripcionGrupo { ...props } /> }  />
 
                     <Route
                         path='*'

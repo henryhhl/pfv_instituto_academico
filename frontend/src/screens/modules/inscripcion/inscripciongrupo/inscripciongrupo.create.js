@@ -7,14 +7,15 @@ import PaperComponent from '../../../../components/paper';
 import { ButtonComponent ,InputComponent, SelectComponent, TableComponent, TextAreaComponent } from '../../../../components/components';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import ListadoPensumModal from '../../estructuraacademica/pensum/modal/pensum_listado.modal';
-import { InscripcionProgramaActions } from '../../../../redux/actions/inscripcion/inscripcionprograma.action';
 import ListadoEstudianteModal from '../../persona/estudiante/modal/estudiante_listado.modal';
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
 import DatePickerComponent from '../../../../components/date';
 import ListadoProgramaModal from '../../estructuraacademica/programa/modal/programa_listado.modal';
+import { InscripcionGrupoActions } from '../../../../redux/actions/inscripcion/inscripciongrupo.action';
+import ListadoGrupoPensumModal from '../../ofertaacademica/grupo/modal/grupopensum_listado.modal';
 
-function CreateInscripcionPrograma( props ) {
-    const { inscripcionPrograma } = props;
+function CreateInscripcionGrupo( props ) {
+    const { inscripcionGrupo } = props;
     const navigate = useNavigate();
 
     const [ programa, setPrograma ] = React.useState(null);
@@ -25,6 +26,8 @@ function CreateInscripcionPrograma( props ) {
     const [ visiblePensum, setVisiblePensum ] = React.useState(false);
     const [ visibleEstudiante, setVisibleEstudiante ] = React.useState(false);
     const [ visibleGestionPeriodo, setVisibleGestionPeriodo ] = React.useState(false);
+    const [ visibleGrupo, setVisibleGrupo ] = React.useState(false);
+    const [ visibleMateria, setVisibleMateria ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -49,7 +52,8 @@ function CreateInscripcionPrograma( props ) {
                 visible={visiblePensum}
                 onClose={ () => setVisiblePensum(false) }
                 onSelect={ (pensum) => {
-                    props.setFKIDPensum(inscripcionPrograma, pensum);
+                    console.log(pensum)
+                    props.setFKIDPensum(inscripcionGrupo, pensum);
                     setVisiblePensum(false);
                 } }
             />
@@ -63,7 +67,7 @@ function CreateInscripcionPrograma( props ) {
                 visible={visibleEstudiante}
                 onClose={ () => setVisibleEstudiante(false) }
                 onSelect={ (estudiante) => {
-                    props.setFKIDEstudiante(inscripcionPrograma, estudiante);
+                    props.setFKIDEstudiante(inscripcionGrupo, estudiante);
                     setVisibleEstudiante(false);
                 } }
             />
@@ -77,7 +81,7 @@ function CreateInscripcionPrograma( props ) {
                 visible={visibleGestionPeriodo}
                 onClose={ () => setVisibleGestionPeriodo(false) }
                 onSelect={ (gestionPeriodo) => {
-                    props.setFKIDGestionPeriodo(inscripcionPrograma, gestionPeriodo);
+                    props.setFKIDGestionPeriodo(inscripcionGrupo, gestionPeriodo);
                     setVisibleGestionPeriodo(false);
                 } }
             />
@@ -112,6 +116,26 @@ function CreateInscripcionPrograma( props ) {
         );
     };
 
+    const onComponentGrupo = () => {
+        if ( !visibleGrupo ) return null;
+        return (
+            <ListadoGrupoPensumModal 
+                visible={visibleGrupo}
+                onClose={ () => setVisibleGrupo(false) }
+                onSelect={ (grupoPensum) => {
+                    console.log(grupoPensum);
+                    // setGestionPeriodo(gestionPeriodo);
+                    // setVisibleGestionPeriodoSearch(false);
+                } }
+                fkidpensum={inscripcionGrupo.fkidpensum}
+            />
+        );
+    };
+
+    const onComponentMateria = () => {
+        if ( !visibleMateria ) return null;
+    };
+
     const setPage = (page) => {
         props.onPage(page + 1, props.paginate, programa?.idprograma, gestionperiodo?.idgestionperiodo);
     };
@@ -122,6 +146,8 @@ function CreateInscripcionPrograma( props ) {
 
     return (
         <>
+            { onComponentGrupo() }
+            { onComponentMateria() }
             { onComponentPensum() }
             { onComponentEstudiante() }
             { onComponentGestionPeriodo() }
@@ -129,7 +155,7 @@ function CreateInscripcionPrograma( props ) {
             { onComponentGestionPeriodoSearch() }
             <PaperComponent>
                 <CardComponent
-                    header={"Registrar Inscripción Programa"}
+                    header={"Registrar Inscripción Grupo"}
                 >
                     <div className="row">
                         <div className='col-5'>
@@ -205,12 +231,12 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-12">
                                     <InputComponent
                                         label="Pensum*"
-                                        value={inscripcionPrograma.pensum}
+                                        value={inscripcionGrupo.pensum}
                                         onClick={ () => {
                                             setVisiblePensum(true);
                                         } }
-                                        error={inscripcionPrograma.error?.fkidpensum}
-                                        message={inscripcionPrograma.message?.fkidpensum}
+                                        error={inscripcionGrupo.error?.fkidpensum}
+                                        message={inscripcionGrupo.message?.fkidpensum}
                                         readOnly
                                         style={{ background: 'white', cursor: 'pointer', }}
                                         placeholder="SELECCIONAR PENSUM"
@@ -221,14 +247,14 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-5">
                                     <InputComponent
                                         label="Und. Administrativa*"
-                                        value={inscripcionPrograma.unidadadministrativa}
+                                        value={inscripcionGrupo.unidadadministrativa}
                                         readOnly
                                     />
                                 </div>
                                 <div className="form-group col-7">
                                     <InputComponent
                                         label="Und. Academica*"
-                                        value={inscripcionPrograma.unidadacademica}
+                                        value={inscripcionGrupo.unidadacademica}
                                         readOnly
                                     />
                                 </div>
@@ -237,14 +263,14 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-7">
                                     <InputComponent
                                         label="Programa*"
-                                        value={inscripcionPrograma.programa}
+                                        value={inscripcionGrupo.programa}
                                         readOnly
                                     />
                                 </div>
                                 <div className="form-group col-5">
                                     <InputComponent
                                         label="Und. Negocio*"
-                                        value={inscripcionPrograma.unidadnegocio}
+                                        value={inscripcionGrupo.unidadnegocio}
                                         readOnly
                                     />
                                 </div>
@@ -253,12 +279,12 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-7">
                                     <InputComponent
                                         label="Estudiante*"
-                                        value={inscripcionPrograma.estudiante}
+                                        value={inscripcionGrupo.estudiante}
                                         onClick={ () => {
                                             setVisibleEstudiante(true);
                                         } }
-                                        error={inscripcionPrograma.error?.fkidestudiante}
-                                        message={inscripcionPrograma.message?.fkidestudiante}
+                                        error={inscripcionGrupo.error?.fkidestudiante}
+                                        message={inscripcionGrupo.message?.fkidestudiante}
                                         readOnly
                                         style={{ background: 'white', cursor: 'pointer', }}
                                         placeholder="SELECCIONAR ESTUDIANTE"
@@ -267,21 +293,44 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-5">
                                     <InputComponent
                                         label="Nro. Registro*"
-                                        value={inscripcionPrograma.numeroregistro}
+                                        value={inscripcionGrupo.numeroregistro}
                                         readOnly
                                     />
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className="form-group col-5">
+                                    { (inscripcionGrupo.fkidpensum !== '' && inscripcionGrupo.fkidpensum !== null) ?
+                                        <InputComponent
+                                            label="Grupo*"
+                                            value={inscripcionGrupo.grupo}
+                                            onClick={ () => {
+                                                setVisibleGrupo(true);
+                                            } }
+                                            error={inscripcionGrupo.error?.fkidgrupo}
+                                            message={inscripcionGrupo.message?.fkidgrupo}
+                                            readOnly
+                                            style={{ background: 'white', cursor: 'pointer', }}
+                                            placeholder="SELECCIONAR GRUPO"
+                                        /> : 
+                                        <InputComponent
+                                            label="Grupo*"
+                                            value={inscripcionGrupo.grupo}
+                                            readOnly
+                                        />
+                                    }
                                 </div>
                             </div>
                             <div className='row'>
                                 <div className="form-group col-4">
                                     <InputComponent
                                         label="Periodo*"
-                                        value={inscripcionPrograma.gestionperiodo}
+                                        value={inscripcionGrupo.gestionperiodo}
                                         onClick={ () => {
                                             setVisibleGestionPeriodo(true);
                                         } }
-                                        error={inscripcionPrograma.error?.fkidgestionperiodo}
-                                        message={inscripcionPrograma.message?.fkidgestionperiodo}
+                                        error={inscripcionGrupo.error?.fkidgestionperiodo}
+                                        message={inscripcionGrupo.message?.fkidgestionperiodo}
                                         readOnly
                                         style={{ background: 'white', cursor: 'pointer', }}
                                         placeholder="SELECCIONAR PERIODO"
@@ -290,30 +339,30 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-4">
                                     <DatePickerComponent
                                         label="Fecha*"
-                                        value={inscripcionPrograma.fechainscripcion}
-                                        onChange={ (value) => props.setFechaInscripcion(inscripcionPrograma, value) }
-                                        error={inscripcionPrograma.error.fechainscripcion}
-                                        message={inscripcionPrograma.message.fechainscripcion}
+                                        value={inscripcionGrupo.fechainscripcion}
+                                        onChange={ (value) => props.setFechaInscripcion(inscripcionGrupo, value) }
+                                        error={inscripcionGrupo.error.fechainscripcion}
+                                        message={inscripcionGrupo.message.fechainscripcion}
                                         placeholder="SELECCIONAR FECHA"
                                     />
                                 </div>
                                 <div className="form-group col-4">
-                                    <SelectComponent
+                                <SelectComponent
                                         data={ [
                                             {
-                                                value: 'S',
-                                                title: 'SI',
+                                                value: 'A',
+                                                title: 'ACTIVO',
                                             },
                                             {
                                                 value: 'N',
-                                                title: 'NO',
+                                                title: 'INACTIVO',
                                             },
                                         ] }
-                                        label={"Inscripción Formalizada*"}
-                                        value={inscripcionPrograma.esinscripcionformalizada}
-                                        onChange={ (value) => props.setEsInscripcionFormalizada(inscripcionPrograma, value) }
-                                        error={inscripcionPrograma.error.esinscripcionformalizada}
-                                        message={inscripcionPrograma.message.esinscripcionformalizada}
+                                        label={"Estado*"}
+                                        value={inscripcionGrupo.estado}
+                                        onChange={ (value) => props.setEstado(inscripcionGrupo, value) }
+                                        error={inscripcionGrupo.error.estado}
+                                        message={inscripcionGrupo.message.estado}
                                         disabledDefault
                                     />
                                 </div>
@@ -322,8 +371,8 @@ function CreateInscripcionPrograma( props ) {
                                 <div className="form-group col-12">
                                     <TextAreaComponent 
                                         label="Observaciones"
-                                        value={inscripcionPrograma.nota}
-                                        onChange={ (value) => props.setNota(inscripcionPrograma, value) }
+                                        value={inscripcionGrupo.nota}
+                                        onChange={ (value) => props.setNota(inscripcionGrupo, value) }
                                         rows={2}
                                     />
                                 </div>
@@ -332,7 +381,7 @@ function CreateInscripcionPrograma( props ) {
                                 <div className='col-12'>
                                     <ButtonComponent
                                         fullWidth
-                                        onClick={ () => props.onStore(inscripcionPrograma) }
+                                        onClick={ () => props.onStore(inscripcionGrupo) }
                                     >
                                         Inscribir
                                     </ButtonComponent>
@@ -347,7 +396,7 @@ function CreateInscripcionPrograma( props ) {
 }
 
 const mapStateToProps = ( state ) => ( {
-    inscripcionPrograma: state.InscripcionPrograma,
+    inscripcionGrupo: state.InscripcionGrupo,
     column: state.ColumnModule.columnInscripcionPrograma,
     list: state.PaginationModule.listInscripcionPrograma,
     page: state.PaginationModule.pageInscripcionPrograma,
@@ -357,17 +406,17 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onValidateToken: AuthActions.onValidateToken,
-    onDelete: InscripcionProgramaActions.onDelete,
-    onLimpiar: InscripcionProgramaActions.onLimpiar,
-    onCreate: InscripcionProgramaActions.onCreate,
-    onPage: InscripcionProgramaActions.onPageInscripcionPrograma,
-    setFKIDPensum: InscripcionProgramaActions.setFKIDPensum,
-    setFKIDEstudiante: InscripcionProgramaActions.setFKIDEstudiante,
-    setFKIDGestionPeriodo: InscripcionProgramaActions.setFKIDGestionPeriodo,
-    setFechaInscripcion: InscripcionProgramaActions.setFechaInscripcion,
-    setEsInscripcionFormalizada: InscripcionProgramaActions.setEsInscripcionFormalizada,
-    setNota: InscripcionProgramaActions.setNota,
-    onStore: InscripcionProgramaActions.onGrabar,
+    onDelete: InscripcionGrupoActions.onDelete,
+    onLimpiar: InscripcionGrupoActions.onLimpiar,
+    onCreate: InscripcionGrupoActions.onCreate,
+    onPage: InscripcionGrupoActions.onPageInscripcionGrupo,
+    setFKIDPensum: InscripcionGrupoActions.setFKIDPensum,
+    setFKIDEstudiante: InscripcionGrupoActions.setFKIDEstudiante,
+    setFKIDGestionPeriodo: InscripcionGrupoActions.setFKIDGestionPeriodo,
+    setFechaInscripcion: InscripcionGrupoActions.setFechaInscripcion,
+    setEstado: InscripcionGrupoActions.setEstado,
+    setNota: InscripcionGrupoActions.setNota,
+    onStore: InscripcionGrupoActions.onGrabar,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)( CreateInscripcionPrograma );
+export default connect(mapStateToProps, mapDispatchToProps)( CreateInscripcionGrupo );

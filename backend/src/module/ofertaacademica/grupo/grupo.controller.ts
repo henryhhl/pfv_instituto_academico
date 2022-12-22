@@ -4,6 +4,7 @@ import { CreateGrupoDto } from './dto/create-grupo.dto';
 import { UpdateGrupoDto } from './dto/update-grupo.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { PaginationGrupoPensumDto } from './dto/grupopensum-pagination.dto';
 
 @Controller('grupo')
 export class GrupoController {
@@ -13,6 +14,12 @@ export class GrupoController {
   @Auth( /**  N Permissions */ )
   findAll( @Query() paginationDto: PaginationDto ) {
     return this.grupoService.findAll(paginationDto);
+  }
+
+  @Get('/findgrupoforpensum')
+  @Auth( /**  N Permissions */ )
+  grupopensum( @Query() paginationDto: PaginationGrupoPensumDto ) {
+    return this.grupoService.findAllGrupoForPensum(paginationDto);
   }
 
   @Post('/store')

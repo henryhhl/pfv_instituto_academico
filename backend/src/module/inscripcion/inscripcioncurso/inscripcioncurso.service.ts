@@ -1,18 +1,18 @@
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
+import { InscripcionCursoPaginationDto } from './dto/pagination.dto';
+import { InscripcionCurso } from './entities/inscripcioncurso.entity';
 import { CreateInscripcionCursoDto } from './dto/create-inscripcioncurso.dto';
 import { UpdateInscripcionCursoDto } from './dto/update-inscripcioncurso.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { InscripcionCurso } from './entities/inscripcioncurso.entity';
-import { Repository } from 'typeorm';
-import { UnidadAdministrativaService } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.service';
+import { CursoService } from '../../ofertaacademica/curso/curso.service';
+import { EstudianteService } from '../../persona/estudiante/estudiante.service';
+import { TurnoService } from '../../estructurainstitucional/turno/turno.service';
+import { UnidadNegocioService } from '../../parametro/unidadnegocio/unidadnegocio.service';
 import { ModalidadAcademicaService } from '../../parametro/modalidadacademica/modalidadacademica.service';
 import { UnidadacademicaService } from '../../estructuraacademica/unidadacademica/unidadacademica.service';
 import { GestionPeriodoService } from '../../estructurainstitucional/gestionperiodo/gestionperiodo.service';
-import { UnidadNegocioService } from '../../parametro/unidadnegocio/unidadnegocio.service';
-import { EstudianteService } from '../../persona/estudiante/estudiante.service';
-import { InscripcionCursoPaginationDto } from './dto/pagination.dto';
-import { TurnoService } from '../../estructurainstitucional/turno/turno.service';
-import { CursoService } from '../../ofertaacademica/curso/curso.service';
+import { UnidadAdministrativaService } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.service';
 
 @Injectable()
 export class InscripcionCursoService {
@@ -104,6 +104,7 @@ export class InscripcionCursoService {
 
   async store(createInscripcioncursoDto: CreateInscripcionCursoDto) {
     try {
+
       const unidadAdministrativa = await this.unidadAdministrativaService.findOne(createInscripcioncursoDto.fkidunidadadministrativa);
       if ( unidadAdministrativa === null ) {
         return {
@@ -160,6 +161,22 @@ export class InscripcionCursoService {
           message: 'Modalidad Academica no existe.',
         };
       }
+
+      const inscripcionCursoFirst = await this.inscripcionCursoRepository.findOne( {
+        where: {
+          gestionperiodo: gestionPeriodo,
+          estudiante: estudiante,
+          curso: curso,
+        },
+      } );
+
+      if ( inscripcionCursoFirst ) {
+        return {
+          resp: 0, error: false,
+          message: 'Estudiante ya se encuentra actualmente inscrito en este curso.',
+        };
+      }
+
       const inscripcionCurso = this.inscripcionCursoRepository.create( {
         ...createInscripcioncursoDto,
         unidadadministrativa: unidadAdministrativa,

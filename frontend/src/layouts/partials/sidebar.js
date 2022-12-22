@@ -148,7 +148,7 @@ export default function SidebarComponent() {
                                 style={{ lineHeight: 0, height: 50, }}
                             >
                                 <i className="ion ion-ios-albums-outline"></i>
-                                <span style={{ fontSize: 13, }}>Inscripción Preliminar</span>
+                                <span style={{ fontSize: 13, }}>Inscripción</span>
                             </a>
                         }
                         className="p-0"
@@ -157,21 +157,21 @@ export default function SidebarComponent() {
                             <Link to={"/inscripcionprograma/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
-                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Insc. a Programa
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Programa
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/inscripciongrupo/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
-                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Insc. a Grupo
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Grupo
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
                             <Link to={"/inscripcioncurso/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
-                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Insc. a Curso
+                                <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Curso
                             </Link>
                         </Menu.Item>
                     </Menu.SubMenu>

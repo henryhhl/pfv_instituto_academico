@@ -161,6 +161,23 @@ export class InscripcionProgramaService {
           message: 'Periodo no existe.',
         };
       }
+
+      const inscripcionProgramaFirst = await this.inscripcionProgramaRepository.findOne( {
+        where: {
+          gestionperiodo: gestionPeriodo,
+          estudiante: estudiante,
+          pensum: pensum,
+          programa: programa,
+        },
+      } );
+
+      if ( inscripcionProgramaFirst ) {
+        return {
+          resp: 0, error: false,
+          message: 'Estudiante ya se encuentra actualmente inscrito en este programa.',
+        };
+      }
+      
       const inscripcionPrograma = this.inscripcionProgramaRepository.create( {
         ...createInscripcionprogramaDto,
         unidadadministrativa: unidadAdministrativa,

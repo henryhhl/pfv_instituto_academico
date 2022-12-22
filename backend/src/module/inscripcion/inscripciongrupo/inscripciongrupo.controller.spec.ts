@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InscripciongrupoController } from './inscripciongrupo.controller';
-import { InscripciongrupoService } from './inscripciongrupo.service';
+import { InscripcionGrupoController } from './inscripciongrupo.controller';
+import { InscripcionGrupoService } from './inscripciongrupo.service';
 
-describe('InscripciongrupoController', () => {
-  let controller: InscripciongrupoController;
+describe('InscripcionGrupoController', () => {
+  let controller: InscripcionGrupoController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [InscripciongrupoController],
-      providers: [InscripciongrupoService],
+      controllers: [InscripcionGrupoController],
+      providers: [InscripcionGrupoService],
     }).compile();
 
-    controller = module.get<InscripciongrupoController>(InscripciongrupoController);
+    controller = module.get<InscripcionGrupoController>(InscripcionGrupoController);
   });
 
   it('should be defined', () => {

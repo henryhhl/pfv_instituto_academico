@@ -3,6 +3,7 @@ import { UnidadAdministrativaTurnoDetalle } from './unidadadministrativaturnodet
 import { UnidadAdministrativaAulaDetalle } from './unidadadministrativaauladetalle.entity';
 import { InscripcionPrograma } from 'src/module/inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 import { InscripcionCurso } from 'src/module/inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
+import { InscripcionGrupo } from 'src/module/inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 
 @Entity('unidadadministrativa')
 export class UnidadAdministrativa {
@@ -42,6 +43,12 @@ export class UnidadAdministrativa {
         ( inscripcionCurso ) => inscripcionCurso.unidadadministrativa,
     )
     arrayinscripcioncurso?: InscripcionCurso[];
+
+    @OneToMany(
+        () => InscripcionGrupo,
+        ( inscripcionGrupo ) => inscripcionGrupo.unidadadministrativa,
+    )
+    arrayinscripciongrupo?: InscripcionGrupo[];
 
     @Column( {
         type: 'text',

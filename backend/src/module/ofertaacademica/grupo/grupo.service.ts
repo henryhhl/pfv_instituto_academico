@@ -5,6 +5,7 @@ import { Grupo } from './entities/grupo.entity';
 import { CreateGrupoDto } from './dto/create-grupo.dto';
 import { UpdateGrupoDto } from './dto/update-grupo.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { PaginationGrupoPensumDto } from './dto/grupopensum-pagination.dto';
 import { GrupoPensumMateriaDetalle } from './entities/grupopensummateria.entity';
 
 @Injectable()
@@ -16,7 +17,7 @@ export class GrupoService {
     private readonly grupoRepository: Repository<Grupo>,
 
     @InjectRepository(GrupoPensumMateriaDetalle)
-    private readonly grupoDivisionAcademicaMateriaDetalleDetalleRepository: Repository<GrupoPensumMateriaDetalle>,
+    private readonly grupoPensumMateriaRepository: Repository<GrupoPensumMateriaDetalle>,
 
     private readonly dataSource: DataSource,
   ) {}
@@ -41,6 +42,51 @@ export class GrupoService {
           ],
           order: { created_at: "DESC", },
         } );
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayGrupo: listGrupo,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async findAllGrupoForPensum( paginationDto: PaginationGrupoPensumDto ) {
+    try {
+      const { limit = 1, offset = 0, search = "", esPaginate = false, fkidpensum = null, } = paginationDto;
+      let listGrupo = [];
+      let totalPagination = 0;
+
+      const grupoPensumMateria = await this.grupoPensumMateriaRepository.findOne( {
+        where: { fkidpensum: fkidpensum ?? '' },
+        relations: { fkidgrupo: true, },
+      } );
+      if ( grupoPensumMateria !== null ) {
+        if ( esPaginate ) {
+          [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
+            take: limit, skip: offset,
+            where: [
+              { idgrupo: grupoPensumMateria.fkidgrupo.idgrupo, },
+            ],
+            order: { created_at: "DESC", },
+          } );
+        } else {
+          [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
+            where: [
+              { idgrupo: grupoPensumMateria.fkidgrupo.idgrupo, },
+            ],
+            order: { created_at: "DESC", },
+          } );
+        }
       }
       return {
         resp: 1, error: false,
@@ -95,7 +141,7 @@ export class GrupoService {
         arraygrupopensummateriadetalle: arraygrupopensummateria?.filter(
           ( item ) => ( item.fkidpensum !== null )
         ).map( (item) => {
-          return this.grupoDivisionAcademicaMateriaDetalleDetalleRepository.create( {
+          return this.grupoPensumMateriaRepository.create( {
             ...item,
             created_at: this.getDateTime(),
           } );
@@ -229,7 +275,7 @@ export class GrupoService {
         grupoPreLoad.arraygrupopensummateriadetalle = arraygrupopensummateria.filter( 
           ( item ) => ( item.fkidpensum !== null ) 
         ).map( ( item ) => {
-          return this.grupoDivisionAcademicaMateriaDetalleDetalleRepository.create( {
+          return this.grupoPensumMateriaRepository.create( {
             ...item,
             created_at: this.getDateTime(),
           } );

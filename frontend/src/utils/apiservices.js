@@ -289,6 +289,7 @@ const apiServices = {
     apiofertaacademicamotivoaperturacierrecurso_delete: `${module.ofertaacademica}/motivoaperturacierrecurso/delete`,
 
     apiofertaacademicagrupo_index:  `${module.ofertaacademica}/grupo/index`,
+    apiofertaacademicagrupo_findgrupoforpensum:  `${module.ofertaacademica}/grupo/findgrupoforpensum`,
     apiofertaacademicagrupo_create: `${module.ofertaacademica}/grupo/create`,
     apiofertaacademicagrupo_store:  `${module.ofertaacademica}/grupo/store`,
     apiofertaacademicagrupo_edit:   `${module.ofertaacademica}/grupo/edit`,
@@ -386,6 +387,14 @@ const apiServices = {
     apiinscripcioninscripcioncurso_show:   `${module.parametros}/inscripcioncurso/show`,
     apiinscripcioninscripcioncurso_update: `${module.parametros}/inscripcioncurso/update`,
     apiinscripcioninscripcioncurso_delete: `${module.parametros}/inscripcioncurso/delete`,
+
+    apiinscripcioninscripciongrupo_index:  `${module.parametros}/inscripciongrupo/index`,
+    apiinscripcioninscripciongrupo_create: `${module.parametros}/inscripciongrupo/create`,
+    apiinscripcioninscripciongrupo_store:  `${module.parametros}/inscripciongrupo/store`,
+    apiinscripcioninscripciongrupo_edit:   `${module.parametros}/inscripciongrupo/edit`,
+    apiinscripcioninscripciongrupo_show:   `${module.parametros}/inscripciongrupo/show`,
+    apiinscripcioninscripciongrupo_update: `${module.parametros}/inscripciongrupo/update`,
+    apiinscripcioninscripciongrupo_delete: `${module.parametros}/inscripciongrupo/delete`,
 };
 
 export default apiServices;

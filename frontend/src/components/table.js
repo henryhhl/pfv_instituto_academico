@@ -131,33 +131,39 @@ export default function TableComponent( props ) {
                                     } ) }
                                     { props.option === true &&
                                         <td>
-                                            <Tooltip placement="top" title={"Ver"}>
-                                                <Button 
-                                                    onClick={ () => props.onShow( row ) }
-                                                    size={"small"}
-                                                    style={{ marginLeft: 1, marginRight: 1, }}
-                                                >
-                                                    <EyeOutlined />
-                                                </Button>
-                                            </Tooltip>
-                                            <Tooltip placement="top" title={"Editar"}>
-                                                <Button 
-                                                    onClick={() => props.onEditar( row )}
-                                                    size={"small"}
-                                                    style={{ marginLeft: 1, marginRight: 1, }}
-                                                >
-                                                    <EditOutlined />
-                                                </Button>
-                                            </Tooltip>
-                                            <Tooltip placement="top" title={"Eliminar"}>
-                                                <Button 
-                                                    onClick={() => props.onDelete( row )}
-                                                    size={"small"}
-                                                    style={{ marginLeft: 1, marginRight: 1, }}
-                                                >
-                                                    <DeleteOutlined />
-                                                </Button>
-                                            </Tooltip>
+                                            { props.isSearch === true &&
+                                                <Tooltip placement="top" title={"Ver"}>
+                                                    <Button 
+                                                        onClick={ () => props.onShow( row ) }
+                                                        size={"small"}
+                                                        style={{ marginLeft: 1, marginRight: 1, }}
+                                                    >
+                                                        <EyeOutlined />
+                                                    </Button>
+                                                </Tooltip>
+                                            }
+                                            { props.isEdit === true &&
+                                                <Tooltip placement="top" title={"Editar"}>
+                                                    <Button 
+                                                        onClick={() => props.onEditar( row )}
+                                                        size={"small"}
+                                                        style={{ marginLeft: 1, marginRight: 1, }}
+                                                    >
+                                                        <EditOutlined />
+                                                    </Button>
+                                                </Tooltip>
+                                            }
+                                            { props.isDelete === true && 
+                                                <Tooltip placement="top" title={"Eliminar"}>
+                                                    <Button 
+                                                        onClick={() => props.onDelete( row )}
+                                                        size={"small"}
+                                                        style={{ marginLeft: 1, marginRight: 1, }}
+                                                    >
+                                                        <DeleteOutlined />
+                                                    </Button>
+                                                </Tooltip>
+                                            }
                                         </td>
                                     }
                                 </tr>
@@ -260,6 +266,9 @@ TableComponent.propTypes = {
     option: PropTypes.bool,
     select: PropTypes.bool,
     isPagination: PropTypes.bool,
+    isSearch: PropTypes.bool,
+    isEdit: PropTypes.bool,
+    isDelete: PropTypes.bool,
 
     paginate: PropTypes.number,
     page: PropTypes.number,
@@ -280,6 +289,9 @@ TableComponent.defaultProps = {
     option: true,
     select: false,
     isPagination: false,
+    isSearch: true,
+    isEdit: true,
+    isDelete: true,
 
     paginate: 25,
     page: 0,

@@ -25,7 +25,7 @@ export default function CardComponent( props ) {
                     <div className="card-header">
                         <div className="float-right">
                             { props.isSearch === true &&
-                                <form>
+                                <>
                                     <div className="input-group">
                                         <input type="text" 
                                             className="form-control" 
@@ -34,10 +34,12 @@ export default function CardComponent( props ) {
                                             onChange={ setSearch }
                                         />
                                     <div className="input-group-btn">
-                                        <button className="btn btn-secondary"><i className="ion ion-search"></i></button>
+                                        <button className="btn btn-primary">
+                                            <i className="ion ion-search"></i>
+                                        </button>
                                     </div>
                                     </div>
-                                </form>
+                                </>
                             }
                             { props.actions }
                         </div>

@@ -55,7 +55,7 @@ import { ActividadModule } from './module/oportunidad/actividad/actividad.module
 import { OportunidadModule } from './module/oportunidad/oportunidad/oportunidad.module';
 import { TipoResultadoModule } from './module/oportunidad/tiporesultado/tiporesultado.module';
 import { InscripcionProgramaModule } from './module/inscripcion/inscripcionprograma/inscripcionprograma.module';
-import { InscripciongrupoModule } from './module/inscripcion/inscripciongrupo/inscripciongrupo.module';
+import { InscripcionGrupoModule } from './module/inscripcion/inscripciongrupo/inscripciongrupo.module';
 import { InscripcioncursoModule } from './module/inscripcion/inscripcioncurso/inscripcioncurso.module';
 
 // npm i -g @nestjs/cli
@@ -110,7 +110,8 @@ import { InscripcioncursoModule } from './module/inscripcion/inscripcioncurso/in
     TipoIdentificacionModule, CargoModule, AdministrativoModule, CategoriaDocumentoModule, 
     AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
     TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, 
-    AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule, TipoResultadoModule, InscripcionProgramaModule, InscripciongrupoModule, InscripcioncursoModule,
+    AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule, 
+    TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule,
   ],
   controllers: [],
   providers: [],

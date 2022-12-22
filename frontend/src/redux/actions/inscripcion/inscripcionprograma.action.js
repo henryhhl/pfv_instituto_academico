@@ -372,7 +372,7 @@ function onValidate( data ) {
     return bandera;
 };
 
-const onDelete = ( inscripcionPrograma ) => {
+const onDelete = ( inscripcionPrograma, fkidprograma = null, fkidgestionperiodo = null, ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
@@ -380,7 +380,7 @@ const onDelete = ( inscripcionPrograma ) => {
                 inscripcionPrograma
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( onPageInscripcionPrograma() );
+                    dispatch( onPageInscripcionPrograma(1, 25, '', fkidprograma, fkidgestionperiodo) );
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );
@@ -390,7 +390,7 @@ const onDelete = ( inscripcionPrograma ) => {
             } );
         };
         ConfirmationComponent( {
-            title: "Eliminar Inscripción Programa", onOk: onDelete,
+            title: "Eliminar Estudiante Inscrito a Grupo.", onOk: onDelete,
             content: "Estás seguro de eliminar información?",
         } );
     };

@@ -1,5 +1,6 @@
 
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 import { PensumDivisionAcademicaMateriaDetalle } from '../../../estructuraacademica/pensum/entities/pensumdivisionacademicamateriadetalle.entity';
 
 @Entity()
@@ -7,6 +8,12 @@ export class Materia {
     
     @PrimaryGeneratedColumn('uuid')
     idmateria: string;
+
+    @OneToMany(
+        () => InscripcionGrupo,
+        ( inscripcionGrupo ) => inscripcionGrupo.pensum,
+    )
+    arrayinscripciongrupo?: InscripcionGrupo[];
 
     @OneToMany(
         () => PensumDivisionAcademicaMateriaDetalle,

@@ -8,7 +8,7 @@ import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
 
-export default function ListadoEstudianteModal( props ) {
+export default function ListadoGrupoPensumModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
     const navigate = useNavigate();
 
@@ -18,10 +18,12 @@ export default function ListadoEstudianteModal( props ) {
     }, [] );
 
     function get_data() {
-        httpRequest( 'get', apiServices.apipersonaestudiante_index, {
+        httpRequest( 'get', apiServices.apiofertaacademicagrupo_findgrupoforpensum, {
+            fkidpensum: props.fkidpensum,
         } ) . then( (result) => {
+            console.log(result)
             if ( result.resp === 1 ) {
-                setArrayData( result.arrayEstudiante );
+                setArrayData( result.arrayGrupo );
             } else if ( result.error === true && result.resp === -2 ) {
                 Swal.fire( {
                     position: 'top-end',
@@ -43,9 +45,8 @@ export default function ListadoEstudianteModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={'95%'} 
-                style={{ top: 40, }}
-                title={"LISTA ESTUDIANTE"}
+                footer={null} width={250} centered
+                title={"LISTA GRUPO"}
             >
                 <div className="row">
                     <div className="col-12">
@@ -55,32 +56,8 @@ export default function ListadoEstudianteModal( props ) {
                                     option={false}
                                     columns={ [
                                         {
-                                            id: 'numeroregistro',
-                                            label: 'Nro. Registro',
-                                        },
-                                        {
-                                            id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
-                                            label: 'Estudiante',
-                                        },
-                                        {
-                                            id: 'tipoidentificacion',
-                                            label: 'Tipo Identificación',
-                                        },
-                                        {
-                                            id: 'numeroidentificacion',
-                                            label: 'Nro. Identificación',
-                                        },
-                                        {
-                                            id: 'ciudadnacimiento',
-                                            label: 'Lugar Nacimiento',
-                                        },
-                                        {
-                                            id: 'ciudadresidencia',
-                                            label: 'Residencia',
-                                        },
-                                        {
-                                            id: 'fechanacimiento',
-                                            label: 'F. Nacimiento',
+                                            id: 'sigla',
+                                            label: 'Sigla',
                                         },
                                     ] } select
                                     dataSource={array_data}
@@ -95,13 +72,15 @@ export default function ListadoEstudianteModal( props ) {
     );
 };
 
-ListadoEstudianteModal.propTypes = {
+ListadoGrupoPensumModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
+    fkidpensum: PropTypes.any,
 };
 
-ListadoEstudianteModal.defaultProps = {
+ListadoGrupoPensumModal.defaultProps = {
     onSelect: () => {},
     visible: false,
+    fkidpensum: null,
 };

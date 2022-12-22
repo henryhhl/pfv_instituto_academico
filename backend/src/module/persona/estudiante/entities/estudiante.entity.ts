@@ -3,6 +3,7 @@ import { EstudianteCiudadDetalle } from './estudianteciudaddetalle.entity';
 import { EstudianteFamiliarDetalle } from './estudiantefamiliardetalle.entity';
 import { EstudianteCategoriaDocumentoDetalle } from './estudiantecategoriadocumentodetalle.entity';
 import { InscripcionCurso } from '../../../inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
+import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 
 @Entity('estudiante')
@@ -22,6 +23,12 @@ export class Estudiante {
         ( inscripcionCurso ) => inscripcionCurso.estudiante,
     )
     arrayinscripcioncurso?: InscripcionCurso[];
+
+    @OneToMany(
+        () => InscripcionGrupo,
+        ( inscripcionGrupo ) => inscripcionGrupo.estudiante,
+    )
+    arrayinscripciongrupo?: InscripcionGrupo[];
 
     @OneToMany(
         () => EstudianteCategoriaDocumentoDetalle,

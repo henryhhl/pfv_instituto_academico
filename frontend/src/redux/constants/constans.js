@@ -336,6 +336,12 @@ const Constants = {
     inscripcioncurso_onShow: "[ON SHOW] Inscripción Curso",
     inscripcioncurso_onLimpiar: "[ON LIMPIAR] Inscripción Curso",
 
+    inscripciongrupo_setInit: "[SET INIT] Inscripción Grupo",
+    inscripciongrupo_onChange: "[ON CHANGE] Inscripción Grupo",
+    inscripciongrupo_onCreate: "[ON CREATE] Inscripción Grupo",
+    inscripciongrupo_onShow: "[ON SHOW] Inscripción Grupo",
+    inscripciongrupo_onLimpiar: "[ON LIMPIAR] Inscripción Grupo",
+
 };
 
 export default Constants;

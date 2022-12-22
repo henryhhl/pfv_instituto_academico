@@ -9,6 +9,7 @@ import { GrupoPensumMateriaDetalle } from './entities/grupopensummateria.entity'
 @Module({
   controllers: [GrupoController],
   providers: [GrupoService],
+  exports: [GrupoService],
   imports: [
     TypeOrmModule.forFeature( [
       Grupo, GrupoPensumMateriaDetalle,

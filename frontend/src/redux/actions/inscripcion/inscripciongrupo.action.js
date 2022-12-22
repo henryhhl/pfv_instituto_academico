@@ -4,18 +4,18 @@ import Constants from "../../constants/constans";
 import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
-import { InscripcionCursoService } from '../../services/inscripcion/inscripcioncurso.service';
+import { InscripcionGrupoService } from '../../services/inscripcion/inscripciongrupo.service';
 
 const setInit = () => ( {
-    type: Constants.inscripcioncurso_setInit,
+    type: Constants.inscripciongrupo_setInit,
 } );
 
 const setLimpiar = () => ( {
-    type: Constants.inscripcioncurso_onLimpiar,
+    type: Constants.inscripciongrupo_onLimpiar,
 } );
 
 const onChange = ( data ) => ( {
-    type: Constants.inscripcioncurso_onChange,
+    type: Constants.inscripciongrupo_onChange,
     payload: data,
 } );
 
@@ -30,11 +30,11 @@ const onPaginateModule = ( data ) => ( {
 } );
 
 const setCreate = () => ( {
-    type: Constants.inscripcioncurso_onCreate,
+    type: Constants.inscripciongrupo_onCreate,
 } );
 
 const setShowData = ( data ) => ( {
-    type: Constants.inscripcioncurso_onShow,
+    type: Constants.inscripciongrupo_onShow,
     payload: data,
 } );
 
@@ -44,14 +44,15 @@ const initData = () => {
     };
 };
 
-const onPageInscripcionCurso = ( page = 1, paginate = 20, search = "", fkidcurso = "", ) => {
+const onPageInscripcionGrupo = ( page = 1, paginate = 20, search = "", fkidcurso = "", ) => {
     return ( dispatch ) => {
         dispatch( setShowLoading() );
-        InscripcionCursoService.getAllInscripcionCurso( {
+        InscripcionGrupoService.getAllInscripcionGrupo( {
             page: page, paginate: paginate, 
             fkidcurso: fkidcurso,
             search: search, esPaginate: true,
         } ).then( async (result) => {
+            console.log(result)
             if ( result.resp === 1 ) {
                 result.arrayInscripcionCurso = result.arrayInscripcionCurso?.map( (item) => {
                     return {
@@ -89,9 +90,9 @@ const onPageInscripcionCurso = ( page = 1, paginate = 20, search = "", fkidcurso
     };
 };
 
-const getAllInscripcionCurso = () => {
+const getAllInscripcionGrupo = () => {
     return ( dispatch ) => {
-        InscripcionCursoService.getAllInscripcionCurso(
+        InscripcionGrupoService.getAllInscripcionGrupo(
 
         ).then( async (result) => {
             if ( result.resp === 1 ) {
@@ -114,113 +115,94 @@ const onLimpiar = () => {
     };
 };
 
-const setFKIDCurso = (inscripcionCurso, curso) => {
+const setFKIDPensum = (inscripcionGrupo, pensum) => {
     return ( dispatch ) => {
-        inscripcionCurso.fkidcurso = curso.idcurso;
-        inscripcionCurso.curso = `${curso.sigla} - ${curso.descripcion}`;
+        inscripcionGrupo.fkidpensum = pensum.idpensum;
+        inscripcionGrupo.pensum = `${pensum.descripcion}`;
 
-        inscripcionCurso.fkidunidadadministrativa = curso.fkidunidadadministrativa;
-        inscripcionCurso.unidadadministrativa = curso.unidadadministrativa;
+        inscripcionGrupo.fkidunidadadministrativa = pensum.fkidunidadadministrativa;
+        inscripcionGrupo.unidadadministrativa = pensum.unidadadministrativa;
 
-        inscripcionCurso.fkidunidadacademica = curso.fkidunidadacademica;
-        inscripcionCurso.unidadacademica = curso.unidadacademica;
+        inscripcionGrupo.fkidunidadacademica = pensum.fkidunidadacademica;
+        inscripcionGrupo.unidadacademica = pensum.unidadacademica;
 
-        inscripcionCurso.fkidunidadnegocio = curso.fkidunidadnegocio;
-        inscripcionCurso.unidadnegocio = curso.unidadnegocio;
+        inscripcionGrupo.fkidunidadnegocio = pensum.fkidunidadnegocio;
+        inscripcionGrupo.unidadnegocio = pensum.unidadnegocio;
 
-        inscripcionCurso.fkidgestionperiodo = curso.fkidgestionperiodo;
-        inscripcionCurso.gestionperiodo = curso.gestionperiodo;
+        inscripcionGrupo.fkidprograma = pensum.fkidprorama;
+        inscripcionGrupo.programa = pensum.programa;
 
-        inscripcionCurso.fkidturno = curso.fkidturno;
-        inscripcionCurso.turno = curso.turno;
+        inscripcionGrupo.error.fkidpensum = false;
+        inscripcionGrupo.message.fkidpensum = "";
 
-        inscripcionCurso.fkidmodalidadacademica = curso.fkidmodalidadacademica;
-        inscripcionCurso.modalidadacademica = curso.modalidadacademica;
+        inscripcionGrupo.error.fkidunidadadministrativa = false;
+        inscripcionGrupo.message.fkidunidadadministrativa = "";
 
-        inscripcionCurso.error.fkidcurso = false;
-        inscripcionCurso.message.fkidcurso = "";
+        inscripcionGrupo.error.fkidunidadacademica = false;
+        inscripcionGrupo.message.fkidunidadacademica = "";
 
-        inscripcionCurso.error.fkidunidadadministrativa = false;
-        inscripcionCurso.message.fkidunidadadministrativa = "";
+        inscripcionGrupo.error.fkidunidadnegocio = false;
+        inscripcionGrupo.message.fkidunidadnegocio = "";
 
-        inscripcionCurso.error.fkidunidadacademica = false;
-        inscripcionCurso.message.fkidunidadacademica = "";
+        inscripcionGrupo.error.fkidprograma = false;
+        inscripcionGrupo.message.fkidprograma = "";
 
-        inscripcionCurso.error.fkidunidadnegocio = false;
-        inscripcionCurso.message.fkidunidadnegocio = "";
-
-        inscripcionCurso.error.fkidgestionperiodo = false;
-        inscripcionCurso.message.fkidgestionperiodo = "";
-
-        inscripcionCurso.error.fkidturno = false;
-        inscripcionCurso.message.fkidturno = "";
-
-        inscripcionCurso.error.fkidmodalidadacademica = false;
-        inscripcionCurso.message.fkidmodalidadacademica = "";
-        dispatch( onChange(inscripcionCurso) );
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
-const setFKIDEstudiante = (inscripcionCurso, estudiante) => {
+const setFKIDEstudiante = (inscripcionGrupo, estudiante) => {
     return ( dispatch ) => {
-        inscripcionCurso.fkidestudiante = estudiante.idestudiante;
-        inscripcionCurso.estudiante = `${estudiante.apellidoprimero} ${estudiante.apellidosegundo} ${estudiante.nombreprincipal} ${estudiante.nombreadicional}`;
-        inscripcionCurso.numeroregistro = estudiante.numeroregistro;
-        inscripcionCurso.error.fkidestudiante = false;
-        inscripcionCurso.message.fkidestudiante = "";
-        dispatch( onChange(inscripcionCurso) );
+        inscripcionGrupo.fkidestudiante = estudiante.idestudiante;
+        inscripcionGrupo.estudiante = `${estudiante.apellidoprimero} ${estudiante.apellidosegundo} ${estudiante.nombreprincipal} ${estudiante.nombreadicional}`;
+        inscripcionGrupo.numeroregistro = estudiante.numeroregistro;
+        inscripcionGrupo.error.fkidestudiante = false;
+        inscripcionGrupo.message.fkidestudiante = "";
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
-const setFechaInscripcion = (inscripcionCurso, value) => {
+const setFKIDGestionPeriodo = (inscripcionGrupo, gestionPeriodo) => {
     return ( dispatch ) => {
-        inscripcionCurso.fechainscripcion = value;
-        inscripcionCurso.error.fechainscripcion = false;
-        inscripcionCurso.message.fechainscripcion = "";
-        dispatch( onChange(inscripcionCurso) );
+        inscripcionGrupo.fkidgestionperiodo = gestionPeriodo.idgestionperiodo;
+        inscripcionGrupo.gestionperiodo = gestionPeriodo.descripcion;
+        inscripcionGrupo.error.fkidgestionperiodo = false;
+        inscripcionGrupo.message.fkidgestionperiodo = "";
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
-const setEsInscripcionFormalizada = (inscripcionCurso, value) => {
+const setFechaInscripcion = (inscripcionGrupo, value) => {
     return ( dispatch ) => {
-        inscripcionCurso.esinscripcionformalizada = value;
-        inscripcionCurso.error.esinscripcionformalizada = false;
-        inscripcionCurso.message.esinscripcionformalizada = "";
-        dispatch( onChange(inscripcionCurso) );
+        inscripcionGrupo.fechainscripcion = value;
+        inscripcionGrupo.error.fechainscripcion = false;
+        inscripcionGrupo.message.fechainscripcion = "";
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
-const setCondicion = (inscripcionCurso, value) => {
+const setNota = (inscripcionGrupo, value) => {
     return ( dispatch ) => {
-        inscripcionCurso.condicion = value;
-        inscripcionCurso.error.condicion = false;
-        inscripcionCurso.message.condicion = "";
-        dispatch( onChange(inscripcionCurso) );
+        inscripcionGrupo.nota = value;
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
-const setNota = (inscripcionCurso, value) => {
+const setEstado = (inscripcionGrupo, value) => {
     return ( dispatch ) => {
-        inscripcionCurso.nota = value;
-        dispatch( onChange(inscripcionCurso) );
+        inscripcionGrupo.estado = value;
+        inscripcionGrupo.error.estado = false;
+        inscripcionGrupo.message.estado = "";
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
-const setEstado = (inscripcionCurso, value) => {
+const setISDelete = (inscripcionGrupo, value) => {
     return ( dispatch ) => {
-        inscripcionCurso.estado = value;
-        inscripcionCurso.error.estado = false;
-        inscripcionCurso.message.estado = "";
-        dispatch( onChange(inscripcionCurso) );
-    };
-};
-
-const setISDelete = (inscripcionCurso, value) => {
-    return ( dispatch ) => {
-        inscripcionCurso.isdelete = value;
-        inscripcionCurso.error.isdelete = false;
-        inscripcionCurso.message.isdelete = "";
-        dispatch( onChange(inscripcionCurso) );
+        inscripcionGrupo.isdelete = value;
+        inscripcionGrupo.error.isdelete = false;
+        inscripcionGrupo.message.isdelete = "";
+        dispatch( onChange(inscripcionGrupo) );
     };
 };
 
@@ -232,11 +214,11 @@ const onCreate = () => {
 
 const onShow = ( idinscripcioncurso ) => {
     return ( dispatch ) => {
-        InscripcionCursoService.onShow( 
+        InscripcionGrupoService.onShow( 
             idinscripcioncurso 
         ).then( async (result) => {
             if ( result.resp === 1 ) {
-                dispatch( setShowData( result.inscripcionCurso ) );
+                dispatch( setShowData( result.inscripcionGrupo ) );
             } else if ( result.resp === -2 ) {
                 await dispatch( setShowSesion() );
                 await dispatch( setHiddenSesion() );
@@ -247,11 +229,11 @@ const onShow = ( idinscripcioncurso ) => {
 
 const onEdit = ( idinscripcioncurso ) => {
     return ( dispatch ) => {
-        InscripcionCursoService.onEdit( 
+        InscripcionGrupoService.onEdit( 
             idinscripcioncurso 
         ).then( async (result) => {
             if ( result.resp === 1 ) {
-                dispatch( setShowData( result.inscripcionCurso ) );
+                dispatch( setShowData( result.inscripcionGrupo ) );
             } else if ( result.resp === -2 ) {
                 await dispatch( setShowSesion() );
                 await dispatch( setHiddenSesion() );
@@ -260,17 +242,18 @@ const onEdit = ( idinscripcioncurso ) => {
     };
 };
 
-const onGrabar = ( inscripcionCurso, onBack = () => {} ) => {
+const onGrabar = ( inscripcionGrupo, onBack = () => {} ) => {
     return ( dispatch ) => {
-        if ( !onValidate( inscripcionCurso ) ) {
-            dispatch( onChange( inscripcionCurso ) );
+        if ( !onValidate( inscripcionGrupo ) ) {
+            dispatch( onChange( inscripcionGrupo ) );
             return;
         }
         let onStore = () => {
             dispatch( setShowLoading() );
-            InscripcionCursoService.onStore(
-                inscripcionCurso
+            InscripcionGrupoService.onStore(
+                inscripcionGrupo
             ).then( async (result) => {
+                console.log(result)
                 if ( result.resp === 1 ) {
                     dispatch( setCreate() );
                     onBack();
@@ -289,16 +272,16 @@ const onGrabar = ( inscripcionCurso, onBack = () => {} ) => {
     };
 };
 
-const onUpdate = ( inscripcionCurso, onBack ) => {
+const onUpdate = ( inscripcionGrupo, onBack ) => {
     return ( dispatch ) => {
-        if ( !onValidate( inscripcionCurso ) ) {
-            dispatch( onChange( inscripcionCurso ) );
+        if ( !onValidate( inscripcionGrupo ) ) {
+            dispatch( onChange( inscripcionGrupo ) );
             return;
         }
         let onUpdate = () => {
             dispatch( setShowLoading() );
-            InscripcionCursoService.onUpdate(
-                inscripcionCurso
+            InscripcionGrupoService.onUpdate(
+                inscripcionGrupo
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
                     dispatch( onLimpiar() );
@@ -388,15 +371,15 @@ function onValidate( data ) {
     return bandera;
 };
 
-const onDelete = ( inscripcionCurso, fkidcurso = null ) => {
+const onDelete = ( inscripcionGrupo ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
-            InscripcionCursoService.onDelete(
-                inscripcionCurso
+            InscripcionGrupoService.onDelete(
+                inscripcionGrupo
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( onPageInscripcionCurso(1, 25, '', fkidcurso) );
+                    dispatch( onPageInscripcionGrupo() );
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );
@@ -406,22 +389,21 @@ const onDelete = ( inscripcionCurso, fkidcurso = null ) => {
             } );
         };
         ConfirmationComponent( {
-            title: "Eliminar Estudiante Inscrito a Curso.", onOk: onDelete,
+            title: "Eliminar Inscripción Curso", onOk: onDelete,
             content: "Estás seguro de eliminar información?",
         } );
     };
 };
 
-export const InscripcionCursoActions = {
+export const InscripcionGrupoActions = {
     initData,
-    onPageInscripcionCurso,
-    getAllInscripcionCurso,
+    onPageInscripcionGrupo,
+    getAllInscripcionGrupo,
     onLimpiar,
-    setFKIDCurso,
+    setFKIDPensum,
     setFKIDEstudiante,
+    setFKIDGestionPeriodo,
     setFechaInscripcion,
-    setEsInscripcionFormalizada,
-    setCondicion,
     setNota,
     setEstado,
     setISDelete,
