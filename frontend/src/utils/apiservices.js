@@ -290,6 +290,7 @@ const apiServices = {
 
     apiofertaacademicagrupo_index:  `${module.ofertaacademica}/grupo/index`,
     apiofertaacademicagrupo_findgrupoforpensum:  `${module.ofertaacademica}/grupo/findgrupoforpensum`,
+    apiofertaacademicagrupo_findmateriaforgrupo:  `${module.ofertaacademica}/grupo/findmateriaforgrupo`,
     apiofertaacademicagrupo_create: `${module.ofertaacademica}/grupo/create`,
     apiofertaacademicagrupo_store:  `${module.ofertaacademica}/grupo/store`,
     apiofertaacademicagrupo_edit:   `${module.ofertaacademica}/grupo/edit`,

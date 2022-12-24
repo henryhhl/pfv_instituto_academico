@@ -13,14 +13,19 @@ import DatePickerComponent from '../../../../components/date';
 import ListadoProgramaModal from '../../estructuraacademica/programa/modal/programa_listado.modal';
 import { InscripcionGrupoActions } from '../../../../redux/actions/inscripcion/inscripciongrupo.action';
 import ListadoGrupoPensumModal from '../../ofertaacademica/grupo/modal/grupopensum_listado.modal';
+import ListadoMateriaForGrupoModal from '../../ofertaacademica/grupo/modal/materiagrupo_listado.modal';
+import ListadoGrupoModal from '../../ofertaacademica/grupo/modal/grupo_listado.modal';
+import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
 
 function CreateInscripcionGrupo( props ) {
     const { inscripcionGrupo } = props;
     const navigate = useNavigate();
 
-    const [ programa, setPrograma ] = React.useState(null);
+    const [ grupo, setGrupo ] = React.useState(null);
+    const [ materia, setMateria ] = React.useState(null);
     const [ gestionperiodo, setGestionPeriodo ] = React.useState(null);
-    const [ visibleProgramaSearch, setVisibleProgramaSearch ] = React.useState(false);
+    const [ visibleGrupoSearch, setVisibleGrupoSearch ] = React.useState(false);
+    const [ visibleMateriaSearch, setVisibleMateriaSearch ] = React.useState(false);
     const [ visibleGestionPeriodoSearch, setVisibleGestionPeriodoSearch ] = React.useState(false);
 
     const [ visiblePensum, setVisiblePensum ] = React.useState(false);
@@ -31,7 +36,8 @@ function CreateInscripcionGrupo( props ) {
 
     React.useEffect( () => {
         props.onLimpiar();
-        setPrograma(null);
+        setGrupo(null);
+        setMateria(null);
         setGestionPeriodo(null);
         props.onValidateToken( onLogin ).then( (item) => {
             if ( item?.resp === 1 ) {
@@ -52,10 +58,40 @@ function CreateInscripcionGrupo( props ) {
                 visible={visiblePensum}
                 onClose={ () => setVisiblePensum(false) }
                 onSelect={ (pensum) => {
-                    console.log(pensum)
                     props.setFKIDPensum(inscripcionGrupo, pensum);
                     setVisiblePensum(false);
                 } }
+            />
+        );
+    };
+
+    const onComponentGrupoPensum = () => {
+        if ( !visibleGrupo ) return null;
+        return (
+            <ListadoGrupoPensumModal 
+                visible={visibleGrupo}
+                onClose={ () => setVisibleGrupo(false) }
+                onSelect={ (grupoPensum) => {
+                    props.setFKIDGrupo(inscripcionGrupo, grupoPensum);
+                    setVisibleGrupo(false);
+                } }
+                fkidpensum={inscripcionGrupo.fkidpensum}
+            />
+        );
+    };
+
+    const onComponentMateriaGrupo = () => {
+        if ( !visibleMateria ) return null;
+        return (
+            <ListadoMateriaForGrupoModal 
+                visible={visibleMateria}
+                onClose={ () => setVisibleMateria(false) }
+                onSelect={ (materiaGrupo) => {
+                    props.setFKIDMateria(inscripcionGrupo, materiaGrupo);
+                    setVisibleMateria(false);
+                } }
+                fkidpensum={inscripcionGrupo.fkidpensum}
+                fkidgrupo={inscripcionGrupo.fkidgrupo}
             />
         );
     };
@@ -88,15 +124,29 @@ function CreateInscripcionGrupo( props ) {
         );
     };
 
-    const onComponentProgramaSearch = () => {
-        if ( !visibleProgramaSearch ) return null;
+    const onComponentGrupoSearch = () => {
+        if ( !visibleGrupoSearch ) return null;
         return (
-            <ListadoProgramaModal
-                visible={visibleProgramaSearch}
-                onClose={ () => setVisibleProgramaSearch(false) }
-                onSelect={ (programa) => {
-                    setPrograma(programa);
-                    setVisibleProgramaSearch(false);
+            <ListadoGrupoModal
+                visible={visibleGrupoSearch}
+                onClose={ () => setVisibleGrupoSearch(false) }
+                onSelect={ (grupoFirst) => {
+                    setGrupo(grupoFirst);
+                    setVisibleGrupoSearch(false);
+                } }
+            />
+        );
+    };
+
+    const onComponentMateriaSearch = () => {
+        if ( !visibleMateriaSearch ) return null;
+        return (
+            <ListadoMateriaModal
+                visible={visibleMateriaSearch}
+                onClose={ () => setVisibleMateriaSearch(false) }
+                onSelect={ (materiaFirst) => {
+                    setMateria(materiaFirst);
+                    setVisibleMateriaSearch(false);
                 } }
             />
         );
@@ -108,26 +158,10 @@ function CreateInscripcionGrupo( props ) {
             <ListadoGestionPeriodoModal
                 visible={visibleGestionPeriodoSearch}
                 onClose={ () => setVisibleGestionPeriodoSearch(false) }
-                onSelect={ (gestionPeriodo) => {
-                    setGestionPeriodo(gestionPeriodo);
+                onSelect={ (gestionPeriodoFisrt) => {
+                    setGestionPeriodo(gestionPeriodoFisrt);
                     setVisibleGestionPeriodoSearch(false);
                 } }
-            />
-        );
-    };
-
-    const onComponentGrupo = () => {
-        if ( !visibleGrupo ) return null;
-        return (
-            <ListadoGrupoPensumModal 
-                visible={visibleGrupo}
-                onClose={ () => setVisibleGrupo(false) }
-                onSelect={ (grupoPensum) => {
-                    console.log(grupoPensum);
-                    // setGestionPeriodo(gestionPeriodo);
-                    // setVisibleGestionPeriodoSearch(false);
-                } }
-                fkidpensum={inscripcionGrupo.fkidpensum}
             />
         );
     };
@@ -137,21 +171,24 @@ function CreateInscripcionGrupo( props ) {
     };
 
     const setPage = (page) => {
-        props.onPage(page + 1, props.paginate, programa?.idprograma, gestionperiodo?.idgestionperiodo);
+        props.onPage(page + 1, props.paginate, '', grupo?.idgrupo, materia?.idmateria, gestionperiodo?.idgestionperiodo);
     };
 
     const setPaginate = (paginate) => {
-        props.onPage(1, paginate, programa?.idprograma, gestionperiodo?.idgestionperiodo);
+        props.onPage(1, paginate, '', grupo?.idgrupo, materia?.idmateria, gestionperiodo?.idgestionperiodo);
     };
 
     return (
         <>
-            { onComponentGrupo() }
             { onComponentMateria() }
             { onComponentPensum() }
+            { onComponentGrupoPensum() }
+            { onComponentMateriaGrupo() }
             { onComponentEstudiante() }
             { onComponentGestionPeriodo() }
-            { onComponentProgramaSearch() }
+
+            { onComponentGrupoSearch() }
+            { onComponentMateriaSearch() }
             { onComponentGestionPeriodoSearch() }
             <PaperComponent>
                 <CardComponent
@@ -171,14 +208,28 @@ function CreateInscripcionGrupo( props ) {
                             <div className='row'>
                                 <div className="form-group col-12">
                                     <InputComponent
-                                        label="Programa"
-                                        value={programa?.descripcion}
+                                        label="Grupo"
+                                        value={grupo?.sigla}
                                         onClick={ () => {
-                                            setVisibleProgramaSearch(true);
+                                            setVisibleGrupoSearch(true);
                                         } }
                                         readOnly
                                         style={{ background: 'white', cursor: 'pointer', }}
-                                        placeholder="SELECCIONAR PROGRAMA"
+                                        placeholder="SELECCIONAR GRUPO"
+                                    />
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className="form-group col-12">
+                                    <InputComponent
+                                        label="Materia"
+                                        value={materia?.nombrelargo}
+                                        onClick={ () => {
+                                            setVisibleMateriaSearch(true);
+                                        } }
+                                        readOnly
+                                        style={{ background: 'white', cursor: 'pointer', }}
+                                        placeholder="SELECCIONAR MATERIA"
                                     />
                                 </div>
                             </div>
@@ -200,9 +251,9 @@ function CreateInscripcionGrupo( props ) {
                                 <div className='col-12 mt-2'>
                                     <ButtonComponent fullWidth
                                         onClick={ () => {
-                                            props.onPage(1, 25, '', programa?.idprograma, gestionperiodo?.idgestionperiodo);
+                                            props.onPage(1, 25, '', grupo?.idgrupo, materia?.idmateria, gestionperiodo?.idgestionperiodo);
                                         } }
-                                        disabled={ (programa === null || gestionperiodo === null) }
+                                        disabled={ (grupo === null || gestionperiodo === null || materia === null) }
                                     >
                                         Aplicar Filtros
                                     </ButtonComponent>
@@ -213,7 +264,7 @@ function CreateInscripcionGrupo( props ) {
                                     <TableComponent 
                                         isSearch={false}
                                         isEdit={false}
-                                        onDelete={ (item) => props.onDelete( item, programa?.idprograma, gestionperiodo?.idgestionperiodo ) }
+                                        onDelete={ (item) => props.onDelete( item, grupo?.idgrupo, materia?.idmateria, gestionperiodo?.idgestionperiodo ) }
                                         columns={props.column}
                                         dataSource={props.list}
                                         isPagination={true}
@@ -276,29 +327,6 @@ function CreateInscripcionGrupo( props ) {
                                 </div>
                             </div>
                             <div className='row'>
-                                <div className="form-group col-7">
-                                    <InputComponent
-                                        label="Estudiante*"
-                                        value={inscripcionGrupo.estudiante}
-                                        onClick={ () => {
-                                            setVisibleEstudiante(true);
-                                        } }
-                                        error={inscripcionGrupo.error?.fkidestudiante}
-                                        message={inscripcionGrupo.message?.fkidestudiante}
-                                        readOnly
-                                        style={{ background: 'white', cursor: 'pointer', }}
-                                        placeholder="SELECCIONAR ESTUDIANTE"
-                                    />
-                                </div>
-                                <div className="form-group col-5">
-                                    <InputComponent
-                                        label="Nro. Registro*"
-                                        value={inscripcionGrupo.numeroregistro}
-                                        readOnly
-                                    />
-                                </div>
-                            </div>
-                            <div className='row'>
                                 <div className="form-group col-5">
                                     { (inscripcionGrupo.fkidpensum !== '' && inscripcionGrupo.fkidpensum !== null) ?
                                         <InputComponent
@@ -316,6 +344,29 @@ function CreateInscripcionGrupo( props ) {
                                         <InputComponent
                                             label="Grupo*"
                                             value={inscripcionGrupo.grupo}
+                                            readOnly
+                                        />
+                                    }
+                                </div>
+                                <div className="form-group col-7">
+                                    { (inscripcionGrupo.fkidpensum !== '' && inscripcionGrupo.fkidpensum !== null && 
+                                            inscripcionGrupo.fkidgrupo !== "" && inscripcionGrupo.fkidgrupo !== null
+                                        ) ?
+                                        <InputComponent
+                                            label="Materia*"
+                                            value={inscripcionGrupo.materia}
+                                            onClick={ () => {
+                                                setVisibleMateria(true);
+                                            } }
+                                            error={inscripcionGrupo.error?.fkidmateria}
+                                            message={inscripcionGrupo.message?.fkidmateria}
+                                            readOnly
+                                            style={{ background: 'white', cursor: 'pointer', }}
+                                            placeholder="SELECCIONAR MATERIA"
+                                        /> : 
+                                        <InputComponent
+                                            label="Materia*"
+                                            value={inscripcionGrupo.materia}
                                             readOnly
                                         />
                                     }
@@ -368,6 +419,29 @@ function CreateInscripcionGrupo( props ) {
                                 </div>
                             </div>
                             <div className='row'>
+                                <div className="form-group col-7">
+                                    <InputComponent
+                                        label="Estudiante*"
+                                        value={inscripcionGrupo.estudiante}
+                                        onClick={ () => {
+                                            setVisibleEstudiante(true);
+                                        } }
+                                        error={inscripcionGrupo.error?.fkidestudiante}
+                                        message={inscripcionGrupo.message?.fkidestudiante}
+                                        readOnly
+                                        style={{ background: 'white', cursor: 'pointer', }}
+                                        placeholder="SELECCIONAR ESTUDIANTE"
+                                    />
+                                </div>
+                                <div className="form-group col-5">
+                                    <InputComponent
+                                        label="Nro. Registro*"
+                                        value={inscripcionGrupo.numeroregistro}
+                                        readOnly
+                                    />
+                                </div>
+                            </div>
+                            <div className='row'>
                                 <div className="form-group col-12">
                                     <TextAreaComponent 
                                         label="Observaciones"
@@ -397,11 +471,11 @@ function CreateInscripcionGrupo( props ) {
 
 const mapStateToProps = ( state ) => ( {
     inscripcionGrupo: state.InscripcionGrupo,
-    column: state.ColumnModule.columnInscripcionPrograma,
-    list: state.PaginationModule.listInscripcionPrograma,
-    page: state.PaginationModule.pageInscripcionPrograma,
-    pagination: state.PaginationModule.paginationInscripcionPrograma,
-    paginate: state.PaginationModule.paginateInscripcionPrograma,
+    column: state.ColumnModule.columnInscripcionGrupo,
+    list: state.PaginationModule.listInscripcionGrupo,
+    page: state.PaginationModule.pageInscripcionGrupo,
+    pagination: state.PaginationModule.paginationInscripcionGrupo,
+    paginate: state.PaginationModule.paginateInscripcionGrupo,
 } );
 
 const mapDispatchToProps = {
@@ -411,6 +485,8 @@ const mapDispatchToProps = {
     onCreate: InscripcionGrupoActions.onCreate,
     onPage: InscripcionGrupoActions.onPageInscripcionGrupo,
     setFKIDPensum: InscripcionGrupoActions.setFKIDPensum,
+    setFKIDGrupo: InscripcionGrupoActions.setFKIDGrupo,
+    setFKIDMateria: InscripcionGrupoActions.setFKIDMateria,
     setFKIDEstudiante: InscripcionGrupoActions.setFKIDEstudiante,
     setFKIDGestionPeriodo: InscripcionGrupoActions.setFKIDGestionPeriodo,
     setFechaInscripcion: InscripcionGrupoActions.setFechaInscripcion,

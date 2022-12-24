@@ -16,7 +16,7 @@ export class Grupo {
 
     @OneToMany(
         () => GrupoPensumMateriaDetalle,
-        ( grupoPensumMateriaDetalle ) => grupoPensumMateriaDetalle.fkidgrupo,
+        ( grupoPensumMateriaDetalle ) => grupoPensumMateriaDetalle.grupo,
         { cascade: true, },
     )
     arraygrupopensummateriadetalle?: GrupoPensumMateriaDetalle[];

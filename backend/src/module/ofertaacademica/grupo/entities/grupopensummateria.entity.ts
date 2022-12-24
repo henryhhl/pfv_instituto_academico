@@ -14,7 +14,7 @@ export class GrupoPensumMateriaDetalle {
         { onDelete: 'CASCADE', }
     )
     @JoinColumn({ name: 'fkidgrupo', })
-    fkidgrupo: Grupo;
+    grupo: Grupo;
 
 
     @Column('text')

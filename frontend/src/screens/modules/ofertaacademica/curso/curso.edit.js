@@ -240,97 +240,6 @@ function EditCurso( props ) {
                             />
                         </div>
                     </div>
-                    <div className='card p-0 m-0'>
-                        <div className='card-header p-0'>
-                            <h4>Docente</h4>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="form-group col-12">
-                            <ButtonComponent
-                                fullWidth
-                                onClick={props.onAddRowDocente}
-                            >
-                                Agregar Docente
-                            </ButtonComponent>
-                        </div>
-                    </div>
-                    { curso.arraydocente.length === 0 &&
-                        <div className='card p-0 m-0'>
-                            <div className='card-header'>
-                                <h4>Sin Información</h4>
-                            </div>
-                        </div>
-                    }
-                    <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 380, overflowY: 'auto', overflowX: 'hidden', }}>
-                        <div className="row">
-                            { curso.arraydocente.map( ( item, key ) => {
-                                return (
-                                    <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
-                                        <div className="card card-sm position-relative card-success">
-                                            <i className="card-icon text-danger ion ion-ios-paper-outline"
-                                                style={ { position: 'absolute', left: -20, top: -28, } }
-                                            ></i>
-                                            <div className="card-options dropdown">
-                                                <CloseOutlined
-                                                    style={ {
-                                                        padding: 4, borderRadius: 50, background: 'white', 
-                                                        fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
-                                                        position: 'relative', top: -8, left: 8, cursor: 'pointer',
-                                                    } }
-                                                    onClick={() => {
-                                                        props.onDeleteRowDocente(key);
-                                                    } }
-                                                />
-                                            </div>
-                                            <div className="card-body">
-                                                <div className="form-group col-12 pl-1">
-                                                    <InputComponent
-                                                        label={`Docente*`}
-                                                        value={item.docente}
-                                                        onClick={ () => {
-                                                            setIndexDetailsDocente(key);
-                                                            setVisibleDocente(true);
-                                                        } }
-                                                        readOnly
-                                                        style={{ background: 'white', cursor: 'pointer', }}
-                                                        placeholder="SELECCIONAR DOCENTE"
-                                                        error={item.error.fkiddocente}
-                                                        message={item.message.fkiddocente}
-                                                    />
-                                                </div>
-                                                <div className="form-group col-12 pl-1">
-                                                    <TextAreaComponent
-                                                        label="Contenido"
-                                                        value={item.contenido}
-                                                        onChange={ (value) => {
-                                                            item.contenido = value;
-                                                            props.onChange(curso);
-                                                        } }
-                                                        rows={2}
-                                                        readOnly={ (item.fkiddocente === null) }
-                                                    />
-                                                </div>
-                                                <div className="form-group col-12 pl-1">
-                                                    <SelectComponent 
-                                                        data={EstadoData}
-                                                        label={"Estado"}
-                                                        value={item.estado}
-                                                        onChange={ (value) => {
-                                                            item.estado = value;
-                                                            props.onChange(curso);
-                                                        } }
-                                                        disabledDefault={true}
-                                                        disabled={ (item.fkiddocente === null) }
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            } ) }
-                        </div>
-                    </div>
                     <div className="row">
                         <div className="form-group col-6">
                             <InputComponent
@@ -430,6 +339,97 @@ function EditCurso( props ) {
                                 error={curso.error.estado}
                                 message={curso.message.estado}
                             />
+                        </div>
+                    </div>
+                    <div className='card p-0 m-0'>
+                        <div className='card-header p-0'>
+                            <h4>Docente</h4>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="form-group col-12">
+                            <ButtonComponent
+                                fullWidth
+                                onClick={props.onAddRowDocente}
+                            >
+                                Agregar Docente
+                            </ButtonComponent>
+                        </div>
+                    </div>
+                    { curso.arraydocente.length === 0 &&
+                        <div className='card p-0 m-0'>
+                            <div className='card-header'>
+                                <h4>Sin Información</h4>
+                            </div>
+                        </div>
+                    }
+                    <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 380, overflowY: 'auto', overflowX: 'hidden', }}>
+                        <div className="row">
+                            { curso.arraydocente.map( ( item, key ) => {
+                                return (
+                                    <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                        <div className="card card-sm position-relative card-success">
+                                            <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                style={ { position: 'absolute', left: -20, top: -28, } }
+                                            ></i>
+                                            <div className="card-options dropdown">
+                                                <CloseOutlined
+                                                    style={ {
+                                                        padding: 4, borderRadius: 50, background: 'white', 
+                                                        fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
+                                                        position: 'relative', top: -8, left: 8, cursor: 'pointer',
+                                                    } }
+                                                    onClick={() => {
+                                                        props.onDeleteRowDocente(key);
+                                                    } }
+                                                />
+                                            </div>
+                                            <div className="card-body">
+                                                <div className="form-group col-12 pl-1">
+                                                    <InputComponent
+                                                        label={`Docente*`}
+                                                        value={item.docente}
+                                                        onClick={ () => {
+                                                            setIndexDetailsDocente(key);
+                                                            setVisibleDocente(true);
+                                                        } }
+                                                        readOnly
+                                                        style={{ background: 'white', cursor: 'pointer', }}
+                                                        placeholder="SELECCIONAR DOCENTE"
+                                                        error={item.error.fkiddocente}
+                                                        message={item.message.fkiddocente}
+                                                    />
+                                                </div>
+                                                <div className="form-group col-12 pl-1">
+                                                    <TextAreaComponent
+                                                        label="Contenido"
+                                                        value={item.contenido}
+                                                        onChange={ (value) => {
+                                                            item.contenido = value;
+                                                            props.onChange(curso);
+                                                        } }
+                                                        rows={2}
+                                                        readOnly={ (item.fkiddocente === null) }
+                                                    />
+                                                </div>
+                                                <div className="form-group col-12 pl-1">
+                                                    <SelectComponent 
+                                                        data={EstadoData}
+                                                        label={"Estado"}
+                                                        value={item.estado}
+                                                        onChange={ (value) => {
+                                                            item.estado = value;
+                                                            props.onChange(curso);
+                                                        } }
+                                                        disabledDefault={true}
+                                                        disabled={ (item.fkiddocente === null) }
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            } ) }
                         </div>
                     </div>
                     <div className="row">

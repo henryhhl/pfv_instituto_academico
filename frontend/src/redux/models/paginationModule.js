@@ -15,6 +15,13 @@ const PaginationModule = {
         total: 0,
     },
 
+    listInscripcionGrupo: [],
+    pageInscripcionGrupo: 1,
+    paginateInscripcionGrupo: 1,
+    paginationInscripcionGrupo: {
+        total: 0,
+    },
+
 
     listTipoResultado: [],
     pageTipoResultado: 1,

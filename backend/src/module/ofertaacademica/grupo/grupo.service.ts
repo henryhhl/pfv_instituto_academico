@@ -7,6 +7,7 @@ import { UpdateGrupoDto } from './dto/update-grupo.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { PaginationGrupoPensumDto } from './dto/grupopensum-pagination.dto';
 import { GrupoPensumMateriaDetalle } from './entities/grupopensummateria.entity';
+import { isUUID } from 'class-validator';
 
 @Injectable()
 export class GrupoService {
@@ -66,27 +67,72 @@ export class GrupoService {
       let listGrupo = [];
       let totalPagination = 0;
 
-      const grupoPensumMateria = await this.grupoPensumMateriaRepository.findOne( {
+      const arrayGrupoPensumMateria = await this.grupoPensumMateriaRepository.find( {
         where: { fkidpensum: fkidpensum ?? '' },
-        relations: { fkidgrupo: true, },
+        relations: { grupo: true, },
       } );
-      if ( grupoPensumMateria !== null ) {
+      if ( arrayGrupoPensumMateria.length > 0 ) {
         if ( esPaginate ) {
           [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
             take: limit, skip: offset,
             where: [
-              { idgrupo: grupoPensumMateria.fkidgrupo.idgrupo, },
+              { arraygrupopensummateriadetalle: arrayGrupoPensumMateria, },
             ],
             order: { created_at: "DESC", },
           } );
         } else {
           [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
             where: [
-              { idgrupo: grupoPensumMateria.fkidgrupo.idgrupo, },
+              { arraygrupopensummateriadetalle: arrayGrupoPensumMateria, },
             ],
             order: { created_at: "DESC", },
           } );
         }
+      }
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayGrupo: listGrupo,
+        pagination: {
+          total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async findAllMateriaForGrupo( paginationDto: PaginationGrupoPensumDto ) {
+    try {
+      const { limit = 1, offset = 0, esPaginate = false, fkidpensum = null, fkidgrupo = null } = paginationDto;
+      let listGrupo = [];
+      let totalPagination = 0;
+      const grupo = await this.findOne( fkidgrupo );
+      if ( esPaginate ) {
+        [listGrupo, totalPagination] = await this.grupoPensumMateriaRepository.findAndCount( {
+          select: {
+            fkidmateria: true, materia: true,
+          },
+          take: limit, skip: offset,
+          where: [
+            { fkidpensum: fkidpensum ?? '', grupo: { idgrupo: grupo?.idgrupo, } },
+          ],
+          order: { created_at: "DESC", },
+        } );
+      } else {
+        [listGrupo, totalPagination] = await this.grupoPensumMateriaRepository.findAndCount( {
+          select: {
+            fkidmateria: true, materia: true,
+          },
+          where: [
+            { fkidpensum: fkidpensum ?? '', grupo: { idgrupo: grupo?.idgrupo, } },
+          ],
+          order: { created_at: "DESC", },
+        } );
       }
       return {
         resp: 1, error: false,
@@ -172,13 +218,17 @@ export class GrupoService {
   }
 
   async findOne(idgrupo: string) {
-    const grupo = await this.grupoRepository.findOne( {
-      where: { idgrupo },
-      relations: {
-        arraygrupopensummateriadetalle: true,
-      }
-    } );
-    return grupo;
+    try {
+      const grupo = await this.grupoRepository.findOne( {
+        where: { idgrupo },
+        relations: {
+          arraygrupopensummateriadetalle: true,
+        }
+      } );
+      return grupo;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idgrupo: string) {

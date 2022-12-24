@@ -44,17 +44,17 @@ const initData = () => {
     };
 };
 
-const onPageInscripcionGrupo = ( page = 1, paginate = 20, search = "", fkidcurso = "", ) => {
+const onPageInscripcionGrupo = ( page = 1, paginate = 20, search = "", fkidgrupo = "", fkidmateria = "", fkidgestionperiodo = "", ) => {
     return ( dispatch ) => {
         dispatch( setShowLoading() );
         InscripcionGrupoService.getAllInscripcionGrupo( {
             page: page, paginate: paginate, 
-            fkidcurso: fkidcurso,
+            fkidgrupo: fkidgrupo, fkidmateria: fkidmateria, fkidgestionperiodo: fkidgestionperiodo,
             search: search, esPaginate: true,
         } ).then( async (result) => {
             console.log(result)
             if ( result.resp === 1 ) {
-                result.arrayInscripcionCurso = result.arrayInscripcionCurso?.map( (item) => {
+                result.arrayInscripcionGrupo = result.arrayInscripcionGrupo?.map( (item) => {
                     return {
                         ...item,
                         nameestudiante: `${item.estudiante.apellidoprimero} ${item.estudiante.apellidosegundo} ${item.estudiante.nombreprincipal} ${item.estudiante.nombreadicional}`,
@@ -63,19 +63,19 @@ const onPageInscripcionGrupo = ( page = 1, paginate = 20, search = "", fkidcurso
                 } );
                 let obj = {
                     data: {
-                        name: 'listInscripcionCurso',
-                        value: result.arrayInscripcionCurso,
+                        name: 'listInscripcionGrupo',
+                        value: result.arrayInscripcionGrupo,
                     },
                     pagination: {
-                        name: 'paginationInscripcionCurso',
+                        name: 'paginationInscripcionGrupo',
                         value: result.pagination,
                     },
                     page: {
-                        name: 'pageInscripcionCurso',
+                        name: 'pageInscripcionGrupo',
                         value: page,
                     },
                     paginate: {
-                        name: 'paginateInscripcionCurso',
+                        name: 'paginateInscripcionGrupo',
                         value: paginate,
                     },
                 };
@@ -97,8 +97,8 @@ const getAllInscripcionGrupo = () => {
         ).then( async (result) => {
             if ( result.resp === 1 ) {
                 let obj = {
-                    name: 'listInscripcionCurso',
-                    value: result.arrayInscripcionCurso,
+                    name: 'listInscripcionGrupo',
+                    value: result.arrayInscripcionGrupo,
                 };
                 dispatch( onListModule(obj) );
             } else if ( result.resp === -2 ) {
@@ -117,39 +117,72 @@ const onLimpiar = () => {
 
 const setFKIDPensum = (inscripcionGrupo, pensum) => {
     return ( dispatch ) => {
-        inscripcionGrupo.fkidpensum = pensum.idpensum;
-        inscripcionGrupo.pensum = `${pensum.descripcion}`;
+        if ( inscripcionGrupo.fkidpensum !== pensum.idpensum ) {
+            inscripcionGrupo.fkidpensum = pensum.idpensum;
+            inscripcionGrupo.pensum = `${pensum.descripcion}`;
 
-        inscripcionGrupo.fkidunidadadministrativa = pensum.fkidunidadadministrativa;
-        inscripcionGrupo.unidadadministrativa = pensum.unidadadministrativa;
+            inscripcionGrupo.fkidunidadadministrativa = pensum.fkidunidadadministrativa;
+            inscripcionGrupo.unidadadministrativa = pensum.unidadadministrativa;
 
-        inscripcionGrupo.fkidunidadacademica = pensum.fkidunidadacademica;
-        inscripcionGrupo.unidadacademica = pensum.unidadacademica;
+            inscripcionGrupo.fkidunidadacademica = pensum.fkidunidadacademica;
+            inscripcionGrupo.unidadacademica = pensum.unidadacademica;
 
-        inscripcionGrupo.fkidunidadnegocio = pensum.fkidunidadnegocio;
-        inscripcionGrupo.unidadnegocio = pensum.unidadnegocio;
+            inscripcionGrupo.fkidunidadnegocio = pensum.fkidunidadnegocio;
+            inscripcionGrupo.unidadnegocio = pensum.unidadnegocio;
 
-        inscripcionGrupo.fkidprograma = pensum.fkidprorama;
-        inscripcionGrupo.programa = pensum.programa;
+            inscripcionGrupo.fkidprograma = pensum.fkidprograma;
+            inscripcionGrupo.programa = pensum.programa;
 
-        inscripcionGrupo.error.fkidpensum = false;
-        inscripcionGrupo.message.fkidpensum = "";
+            inscripcionGrupo.fkidgrupo = '';
+            inscripcionGrupo.grupo = '';
 
-        inscripcionGrupo.error.fkidunidadadministrativa = false;
-        inscripcionGrupo.message.fkidunidadadministrativa = "";
+            inscripcionGrupo.fkidmateria = '';
+            inscripcionGrupo.materia = '';
 
-        inscripcionGrupo.error.fkidunidadacademica = false;
-        inscripcionGrupo.message.fkidunidadacademica = "";
+            inscripcionGrupo.error.fkidpensum = false;
+            inscripcionGrupo.message.fkidpensum = "";
 
-        inscripcionGrupo.error.fkidunidadnegocio = false;
-        inscripcionGrupo.message.fkidunidadnegocio = "";
+            inscripcionGrupo.error.fkidunidadadministrativa = false;
+            inscripcionGrupo.message.fkidunidadadministrativa = "";
 
-        inscripcionGrupo.error.fkidprograma = false;
-        inscripcionGrupo.message.fkidprograma = "";
+            inscripcionGrupo.error.fkidunidadacademica = false;
+            inscripcionGrupo.message.fkidunidadacademica = "";
 
+            inscripcionGrupo.error.fkidunidadnegocio = false;
+            inscripcionGrupo.message.fkidunidadnegocio = "";
+
+            inscripcionGrupo.error.fkidprograma = false;
+            inscripcionGrupo.message.fkidprograma = "";
+
+            dispatch( onChange(inscripcionGrupo) );
+        }
+    };
+};
+
+const setFKIDGrupo = (inscripcionGrupo, grupo) => {
+    return ( dispatch ) => {
+        if ( inscripcionGrupo.fkidgrupo !== grupo.idgrupo ) {
+            inscripcionGrupo.fkidgrupo = grupo.idgrupo;
+            inscripcionGrupo.grupo = grupo.sigla;
+            inscripcionGrupo.fkidmateria = '';
+            inscripcionGrupo.materia = '';
+            inscripcionGrupo.error.fkidgrupo = false;
+            inscripcionGrupo.message.fkidgrupo = "";
+            dispatch( onChange(inscripcionGrupo) );
+        }
+    };
+};
+
+const setFKIDMateria = (inscripcionGrupo, materia) => {
+    return ( dispatch ) => {
+        inscripcionGrupo.fkidmateria = materia.fkidmateria;
+        inscripcionGrupo.materia = materia.materia;
+        inscripcionGrupo.error.fkidmateria = false;
+        inscripcionGrupo.message.fkidmateria = "";
         dispatch( onChange(inscripcionGrupo) );
     };
 };
+
 
 const setFKIDEstudiante = (inscripcionGrupo, estudiante) => {
     return ( dispatch ) => {
@@ -212,10 +245,10 @@ const onCreate = () => {
     };
 };
 
-const onShow = ( idinscripcioncurso ) => {
+const onShow = ( idinscripciongrupo ) => {
     return ( dispatch ) => {
         InscripcionGrupoService.onShow( 
-            idinscripcioncurso 
+            idinscripciongrupo 
         ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.inscripcionGrupo ) );
@@ -227,10 +260,10 @@ const onShow = ( idinscripcioncurso ) => {
     };
 };
 
-const onEdit = ( idinscripcioncurso ) => {
+const onEdit = ( idinscripciongrupo ) => {
     return ( dispatch ) => {
         InscripcionGrupoService.onEdit( 
-            idinscripcioncurso 
+            idinscripciongrupo 
         ).then( async (result) => {
             if ( result.resp === 1 ) {
                 dispatch( setShowData( result.inscripcionGrupo ) );
@@ -266,7 +299,7 @@ const onGrabar = ( inscripcionGrupo, onBack = () => {} ) => {
             } );
         };
         ConfirmationComponent( {
-            title: "Registrar Inscripción Curso", onOk: onStore,
+            title: "Registrar Inscripción Grupo", onOk: onStore,
             okType: "primary", content: "Estás seguro de registrar información?",
         } );
     };
@@ -295,7 +328,7 @@ const onUpdate = ( inscripcionGrupo, onBack ) => {
             } );
         };
         ConfirmationComponent( {
-            title: "Editar Inscripción Curso", onOk: onUpdate,
+            title: "Editar Inscripción Grupo", onOk: onUpdate,
             okType: "primary", content: "Estás seguro de actualizar información?",
         } );
     };
@@ -318,14 +351,24 @@ function onValidate( data ) {
         data.message.fkidunidadnegocio = "Campo requerido.";
         bandera = false;
     }
-    if ( data.fkidcurso.toString().trim().length === 0 ) {
-        data.error.fkidcurso   = true;
-        data.message.fkidcurso = "Campo requerido.";
+    if ( data.fkidpensum.toString().trim().length === 0 ) {
+        data.error.fkidpensum   = true;
+        data.message.fkidpensum = "Campo requerido.";
         bandera = false;
     }
-    if ( data.fkidturno.toString().trim().length === 0 ) {
-        data.error.fkidturno   = true;
-        data.message.fkidturno = "Campo requerido.";
+    if ( data.fkidprograma.toString().trim().length === 0 ) {
+        data.error.fkidprograma   = true;
+        data.message.fkidprograma = "Campo requerido.";
+        bandera = false;
+    }
+    if ( data.fkidgrupo.toString().trim().length === 0 ) {
+        data.error.fkidgrupo   = true;
+        data.message.fkidgrupo = "Campo requerido.";
+        bandera = false;
+    }
+    if ( data.fkidmateria.toString().trim().length === 0 ) {
+        data.error.fkidmateria   = true;
+        data.message.fkidmateria = "Campo requerido.";
         bandera = false;
     }
     if ( data.fkidgestionperiodo.toString().trim().length === 0 ) {
@@ -341,16 +384,6 @@ function onValidate( data ) {
     if ( data.fechainscripcion.toString().trim().length === 0 ) {
         data.error.fechainscripcion   = true;
         data.message.fechainscripcion = "Campo requerido.";
-        bandera = false;
-    }
-    if ( data.esinscripcionformalizada.toString().trim().length === 0 ) {
-        data.error.esinscripcionformalizada   = true;
-        data.message.esinscripcionformalizada = "Campo requerido.";
-        bandera = false;
-    }
-    if ( data.condicion.toString().trim().length === 0 ) {
-        data.error.condicion   = true;
-        data.message.condicion = "Campo requerido.";
         bandera = false;
     }
     if ( data.estado.toString().trim().length === 0 ) {
@@ -371,7 +404,7 @@ function onValidate( data ) {
     return bandera;
 };
 
-const onDelete = ( inscripcionGrupo ) => {
+const onDelete = ( inscripcionGrupo, fkidgrupo = null, fkidmateria = null, fkidgestionperiodo = null ) => {
     return ( dispatch ) => {
         let onDelete = () => {
             dispatch( setShowLoading() );
@@ -379,7 +412,7 @@ const onDelete = ( inscripcionGrupo ) => {
                 inscripcionGrupo
             ).then( async (result) => {
                 if ( result.resp === 1 ) {
-                    dispatch( onPageInscripcionGrupo() );
+                    dispatch( onPageInscripcionGrupo(1, 25, '', fkidgrupo, fkidmateria, fkidgestionperiodo) );
                 } else if ( result.resp === -2 ) {
                     await dispatch( setShowSesion() );
                     await dispatch( setHiddenSesion() );
@@ -389,7 +422,7 @@ const onDelete = ( inscripcionGrupo ) => {
             } );
         };
         ConfirmationComponent( {
-            title: "Eliminar Inscripción Curso", onOk: onDelete,
+            title: "Eliminar Inscripción Grupo", onOk: onDelete,
             content: "Estás seguro de eliminar información?",
         } );
     };
@@ -401,6 +434,8 @@ export const InscripcionGrupoActions = {
     getAllInscripcionGrupo,
     onLimpiar,
     setFKIDPensum,
+    setFKIDGrupo,
+    setFKIDMateria,
     setFKIDEstudiante,
     setFKIDGestionPeriodo,
     setFechaInscripcion,

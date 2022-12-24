@@ -139,11 +139,15 @@ export class ProgramaService {
   }
 
   async findOne(idprograma: string) {
-    const programa = await this.programaRepository.findOne( {
-      where: { idprograma: idprograma },
-      relations: { arraydivisionacademica: true, }
-    } );
-    return programa;
+    try {
+      const programa = await this.programaRepository.findOne( {
+        where: { idprograma: idprograma },
+        relations: { arraydivisionacademica: true, }
+      } );
+      return programa;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idprograma: string) {

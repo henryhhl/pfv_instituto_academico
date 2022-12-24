@@ -94,57 +94,6 @@ function ShowCurso( props ) {
                             />
                         </div>
                     </div>
-                    <div className='card p-0 m-0'>
-                        <div className='card-header p-0'>
-                            <h4>Docente</h4>
-                        </div>
-                    </div>
-                    { curso.arraydocente.length === 0 &&
-                        <div className='card p-0 m-0'>
-                            <div className='card-header'>
-                                <h4>Sin Información</h4>
-                            </div>
-                        </div>
-                    }
-                    <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 380, overflowY: 'auto', overflowX: 'hidden', }}>
-                        <div className="row">
-                            { curso.arraydocente.map( ( item, key ) => {
-                                return (
-                                    <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
-                                        <div className="card card-sm position-relative card-success">
-                                            <i className="card-icon text-danger ion ion-ios-paper-outline"
-                                                style={ { position: 'absolute', left: -20, top: -28, } }
-                                            ></i>
-                                            <div className="card-body">
-                                                <div className="form-group col-12 pl-1">
-                                                    <InputComponent
-                                                        label={`Docente*`}
-                                                        value={item.docente}
-                                                        readOnly
-                                                    />
-                                                </div>
-                                                <div className="form-group col-12 pl-1">
-                                                    <TextAreaComponent
-                                                        label="Contenido"
-                                                        value={item.contenido}
-                                                        readOnly
-                                                        rows={2}
-                                                    />
-                                                </div>
-                                                <div className="form-group col-12 pl-1">
-                                                    <InputComponent
-                                                        label="Estado"
-                                                        value={ Functions.getValueEstado( item.estado ) }
-                                                        readOnly
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            } ) }
-                        </div>
-                    </div>
                     <div className="row">
                         <div className="form-group col-6">
                             <InputComponent
@@ -213,6 +162,57 @@ function ShowCurso( props ) {
                                 value={ Functions.getValueEstado( curso.estado ) }
                                 readOnly
                             />
+                        </div>
+                    </div>
+                    <div className='card p-0 m-0'>
+                        <div className='card-header p-0'>
+                            <h4>Docente</h4>
+                        </div>
+                    </div>
+                    { curso.arraydocente.length === 0 &&
+                        <div className='card p-0 m-0'>
+                            <div className='card-header'>
+                                <h4>Sin Información</h4>
+                            </div>
+                        </div>
+                    }
+                    <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 380, overflowY: 'auto', overflowX: 'hidden', }}>
+                        <div className="row">
+                            { curso.arraydocente.map( ( item, key ) => {
+                                return (
+                                    <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
+                                        <div className="card card-sm position-relative card-success">
+                                            <i className="card-icon text-danger ion ion-ios-paper-outline"
+                                                style={ { position: 'absolute', left: -20, top: -28, } }
+                                            ></i>
+                                            <div className="card-body">
+                                                <div className="form-group col-12 pl-1">
+                                                    <InputComponent
+                                                        label={`Docente*`}
+                                                        value={item.docente}
+                                                        readOnly
+                                                    />
+                                                </div>
+                                                <div className="form-group col-12 pl-1">
+                                                    <TextAreaComponent
+                                                        label="Contenido"
+                                                        value={item.contenido}
+                                                        readOnly
+                                                        rows={2}
+                                                    />
+                                                </div>
+                                                <div className="form-group col-12 pl-1">
+                                                    <InputComponent
+                                                        label="Estado"
+                                                        value={ Functions.getValueEstado( item.estado ) }
+                                                        readOnly
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            } ) }
                         </div>
                     </div>
                     <div className="row">

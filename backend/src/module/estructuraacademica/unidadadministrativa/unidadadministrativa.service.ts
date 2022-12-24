@@ -126,11 +126,15 @@ export class UnidadAdministrativaService {
   }
 
   async findOne(idunidadadministrativa: string) {
-    const unidadAdministrativa = await this.unidadAdministrativaRepository.findOne( {
-      where: { idunidadadministrativa: idunidadadministrativa },
-      relations: { arrayturno: true, arrayaula: true, },
-    } );
-    return unidadAdministrativa;
+    try {
+      const unidadAdministrativa = await this.unidadAdministrativaRepository.findOne( {
+        where: { idunidadadministrativa: idunidadadministrativa },
+        relations: { arrayturno: true, arrayaula: true, },
+      } );
+      return unidadAdministrativa;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idunidadadministrativa: string) {

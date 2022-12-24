@@ -169,13 +169,17 @@ export class EstudianteService {
   }
 
   async findOne(idestudiante: string) {
-    const estudiante = await this.estudianteRepository.findOne( {
-      where: { idestudiante: idestudiante },
-      relations: {
-        arraycategoriadocumento: true, arraynacionalidad: true,
-      }
-    } );
-    return estudiante;
+    try {
+      const estudiante = await this.estudianteRepository.findOne( {
+        where: { idestudiante: idestudiante },
+        relations: {
+          arraycategoriadocumento: true, arraynacionalidad: true,
+        }
+      } );
+      return estudiante;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idestudiante: string) {

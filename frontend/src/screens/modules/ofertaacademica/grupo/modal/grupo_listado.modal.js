@@ -8,7 +8,7 @@ import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
 
-export default function ListadoGrupoPensumModal( props ) {
+export default function ListadoGrupoModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
     const navigate = useNavigate();
 
@@ -18,10 +18,8 @@ export default function ListadoGrupoPensumModal( props ) {
     }, [] );
 
     function get_data() {
-        httpRequest( 'get', apiServices.apiofertaacademicagrupo_findgrupoforpensum, {
-            fkidpensum: props.fkidpensum,
+        httpRequest( 'get', apiServices.apiofertaacademicagrupo_index, {
         } ) . then( (result) => {
-            console.log(result)
             if ( result.resp === 1 ) {
                 setArrayData( result.arrayGrupo );
             } else if ( result.error === true && result.resp === -2 ) {
@@ -45,19 +43,19 @@ export default function ListadoGrupoPensumModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={300} centered
+                footer={null} width={500} centered
                 title={"LISTA GRUPO"}
             >
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
-                            <div className="card-body pb-0">
+                            <div className="card-body">
                                 <TableComponent 
                                     option={false}
                                     columns={ [
                                         {
                                             id: 'sigla',
-                                            label: 'Sigla',
+                                            label: 'Grupo',
                                         },
                                     ] } select
                                     dataSource={array_data}
@@ -72,15 +70,13 @@ export default function ListadoGrupoPensumModal( props ) {
     );
 };
 
-ListadoGrupoPensumModal.propTypes = {
+ListadoGrupoModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
-    fkidpensum: PropTypes.any,
 };
 
-ListadoGrupoPensumModal.defaultProps = {
+ListadoGrupoModal.defaultProps = {
     onSelect: () => {},
     visible: false,
-    fkidpensum: null,
 };

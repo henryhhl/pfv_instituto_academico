@@ -141,13 +141,17 @@ export class CursoService {
   }
 
   async findOne(idcurso: string) {
-    const curso = await this.cursoRepository.findOne( {
-      where: { idcurso: idcurso },
-      relations: {
-        arraydocente: true,
-      }
-    } );
-    return curso;
+    try {
+      const curso = await this.cursoRepository.findOne( {
+        where: { idcurso: idcurso },
+        relations: {
+          arraydocente: true,
+        }
+      } );
+      return curso;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idcurso: string) {

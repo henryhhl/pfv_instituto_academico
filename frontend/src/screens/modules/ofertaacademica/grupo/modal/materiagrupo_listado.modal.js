@@ -8,7 +8,7 @@ import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
 
-export default function ListadoGrupoPensumModal( props ) {
+export default function ListadoMateriaForGrupoModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
     const navigate = useNavigate();
 
@@ -18,8 +18,9 @@ export default function ListadoGrupoPensumModal( props ) {
     }, [] );
 
     function get_data() {
-        httpRequest( 'get', apiServices.apiofertaacademicagrupo_findgrupoforpensum, {
+        httpRequest( 'get', apiServices.apiofertaacademicagrupo_findmateriaforgrupo, {
             fkidpensum: props.fkidpensum,
+            fkidgrupo: props.fkidgrupo,
         } ) . then( (result) => {
             console.log(result)
             if ( result.resp === 1 ) {
@@ -45,8 +46,8 @@ export default function ListadoGrupoPensumModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={300} centered
-                title={"LISTA GRUPO"}
+                footer={null} width={500} centered
+                title={"LISTA MATERIA"}
             >
                 <div className="row">
                     <div className="col-12">
@@ -56,8 +57,8 @@ export default function ListadoGrupoPensumModal( props ) {
                                     option={false}
                                     columns={ [
                                         {
-                                            id: 'sigla',
-                                            label: 'Sigla',
+                                            id: 'materia',
+                                            label: 'Materia',
                                         },
                                     ] } select
                                     dataSource={array_data}
@@ -72,15 +73,17 @@ export default function ListadoGrupoPensumModal( props ) {
     );
 };
 
-ListadoGrupoPensumModal.propTypes = {
+ListadoMateriaForGrupoModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
     fkidpensum: PropTypes.any,
+    fkidgrupo: PropTypes.any,
 };
 
-ListadoGrupoPensumModal.defaultProps = {
+ListadoMateriaForGrupoModal.defaultProps = {
     onSelect: () => {},
     visible: false,
     fkidpensum: null,
+    fkidgrupo: null,
 };

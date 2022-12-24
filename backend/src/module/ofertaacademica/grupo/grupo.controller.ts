@@ -22,6 +22,12 @@ export class GrupoController {
     return this.grupoService.findAllGrupoForPensum(paginationDto);
   }
 
+  @Get('/findmateriaforgrupo')
+  @Auth( /**  N Permissions */ )
+  materiagrupo( @Query() paginationDto: PaginationGrupoPensumDto ) {
+    return this.grupoService.findAllMateriaForGrupo(paginationDto);
+  }
+
   @Post('/store')
   @Auth( /**  N Permissions */ )
   create(@Body() createGrupoDto: CreateGrupoDto) {

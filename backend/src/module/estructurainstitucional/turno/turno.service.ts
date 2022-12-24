@@ -110,10 +110,14 @@ export class TurnoService {
   }
 
   async findOne( idturno: string ) {
-    const turno = await this.turnoRepository.findOneBy( {
-      idturno: idturno,
-    } );
-    return turno;
+    try {
+      const turno = await this.turnoRepository.findOneBy( {
+        idturno: idturno,
+      } );
+      return turno;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idturno: string) {

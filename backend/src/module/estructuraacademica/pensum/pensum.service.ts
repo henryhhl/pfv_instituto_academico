@@ -136,10 +136,14 @@ export class PensumService {
   }
 
   async findOne( idpensum: string ) {
-    const pensum = await this.pensumRepository.findOneBy( {
-      idpensum: idpensum,
-    } );
-    return pensum;
+    try {
+      const pensum = await this.pensumRepository.findOneBy( {
+        idpensum: idpensum,
+      } );
+      return pensum;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit( idpensum: string ) {

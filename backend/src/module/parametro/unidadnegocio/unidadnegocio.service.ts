@@ -99,10 +99,14 @@ export class UnidadNegocioService {
   }
 
   async findOne(idunidadnegocio: string) {
-    const unidadNegocio = await this.unidadNegocioRepository.findOneBy( {
-      idunidadnegocio: idunidadnegocio,
-    } );
-    return unidadNegocio;
+    try {
+      const unidadNegocio = await this.unidadNegocioRepository.findOneBy( {
+        idunidadnegocio: idunidadnegocio,
+      } );
+      return unidadNegocio;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit( idunidadnegocio: string ) {

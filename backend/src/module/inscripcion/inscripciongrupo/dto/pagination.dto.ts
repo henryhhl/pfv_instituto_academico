@@ -18,7 +18,19 @@ export class InscripcionGrupoPaginationDto {
 
     @IsOptional()
     @IsString()
-    fkidcurso?: string;
+    fkidpensum?: string;
+
+    @IsOptional()
+    @IsString()
+    fkidgrupo?: string;
+
+    @IsOptional()
+    @IsString()
+    fkidmateria?: string;
+
+    @IsOptional()
+    @IsString()
+    fkidgestionperiodo?: string;
 
     @IsOptional()
     @IsBoolean()

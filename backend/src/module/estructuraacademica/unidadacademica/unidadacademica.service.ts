@@ -110,10 +110,14 @@ export class UnidadacademicaService {
   }
 
   async findOne(idunidadacademica: string) {
-    const unidadAcademica = await this.unidadAcademicaRepository.findOneBy( {
-      idunidadacademica: idunidadacademica,
-    } );
-    return unidadAcademica;
+    try {
+      const unidadAcademica = await this.unidadAcademicaRepository.findOneBy( {
+        idunidadacademica: idunidadacademica,
+      } );
+      return unidadAcademica;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idunidadacademica: string) {

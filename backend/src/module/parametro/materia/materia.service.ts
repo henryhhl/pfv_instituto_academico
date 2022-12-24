@@ -115,10 +115,14 @@ export class MateriaService {
   }
 
   async findOne(idmateria: string) {
-    const materia = await this.materiaRepository.findOneBy( {
-      idmateria: idmateria,
-    } );
-    return materia;
+    try {
+      const materia = await this.materiaRepository.findOneBy( {
+        idmateria: idmateria,
+      } );
+      return materia;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit( idmateria: string ) {

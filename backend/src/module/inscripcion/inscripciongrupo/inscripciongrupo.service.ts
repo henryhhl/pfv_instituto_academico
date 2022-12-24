@@ -36,11 +36,17 @@ export class InscripcionGrupoService {
 
   async findAll( paginationDto: InscripcionGrupoPaginationDto ) {
     try {
-      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
+      const { 
+        limit = 1, offset = 0, search = "", fkidgrupo = null, 
+        fkidmateria = null, fkidgestionperiodo = null, esPaginate = false, 
+      } = paginationDto;
+      
       let listInscripcionGrupo = [];
       let totalPagination = 0;
       
-      // const curso = await this.cursoService.findOne(paginationDto.fkidcurso);
+      const grupo = await this.grupoService.findOne(fkidgrupo);
+      const materia = await this.materiaService.findOne(fkidmateria);
+      const gestionPeriodo = await this.gestionPeriodoService.findOne(fkidgestionperiodo);
 
       if ( esPaginate ) {
         [listInscripcionGrupo, totalPagination] = await this.inscripcionGrupoRepository.findAndCount( {
@@ -50,7 +56,7 @@ export class InscripcionGrupoService {
           },
           where: [
             // { fechainscripcion: ILike( '%' + search + '%', ), },
-            // { curso: curso, },
+            { grupo: grupo, materia: materia, gestionperiodo: gestionPeriodo },
           ],
           order: { created_at: "DESC", },
         } );
@@ -61,7 +67,7 @@ export class InscripcionGrupoService {
           },
           where: [
             // { fechainscripcion: ILike( '%' + search + '%', ), },
-            // { curso: curso, },
+            { grupo: grupo, materia: materia, gestionperiodo: gestionPeriodo },
           ],
           order: { created_at: "DESC", },
         } );
@@ -167,6 +173,21 @@ export class InscripcionGrupoService {
         return {
           resp: 0, error: false,
           message: 'Programa no existe.',
+        };
+      }
+      const inscripcionGrupoFirst = await this.inscripcionGrupoRepository.findOne( {
+        where: {
+          pensum: pensum,
+          materia: materia,
+          grupo: grupo,
+          estudiante: estudiante,
+          gestionperiodo: gestionPeriodo,
+        },
+      } );
+      if ( inscripcionGrupoFirst ) {
+        return {
+          resp: 0, error: false,
+          message: 'Estudiante ya se encuentra actualmente inscrito en esta materia y grupo.',
         };
       }
       const inscripcionGrupo = this.inscripcionGrupoRepository.create( {

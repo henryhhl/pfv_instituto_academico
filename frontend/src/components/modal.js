@@ -106,7 +106,7 @@ ModalComponent.propTypes = {
     zIndex: PropTypes.number,
 
     width:  PropTypes.any,
-    title:  PropTypes.any,
+    title:  PropTypes.node,
     footer: PropTypes.any,
 
     onClose: PropTypes.func,

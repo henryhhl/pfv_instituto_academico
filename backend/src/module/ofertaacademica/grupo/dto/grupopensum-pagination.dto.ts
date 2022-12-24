@@ -25,4 +25,8 @@ export class PaginationGrupoPensumDto {
     @IsString()
     fkidpensum?: string;
 
+    @IsOptional()
+    @IsString()
+    fkidgrupo?: string;
+
 }

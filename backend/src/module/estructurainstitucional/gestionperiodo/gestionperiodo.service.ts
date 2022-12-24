@@ -103,10 +103,14 @@ export class GestionPeriodoService {
   }
 
   async findOne(idgestionperiodo: string) {
-    const gestionPeriodo = await this.gestionPeriodoRepository.findOneBy( {
-      idgestionperiodo: idgestionperiodo,
-    } );
-    return gestionPeriodo;
+    try {
+      const gestionPeriodo = await this.gestionPeriodoRepository.findOneBy( {
+        idgestionperiodo: idgestionperiodo,
+      } );
+      return gestionPeriodo;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idgestionperiodo: string) {

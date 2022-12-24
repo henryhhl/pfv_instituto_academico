@@ -6,7 +6,7 @@ import toastr from 'toastr';
 
 const getAllInscripcionGrupo = async ( {
     page = 1, paginate = 1, 
-    fkidcurso = "",
+    fkidgrupo = "", fkidmateria = "", fkidgestionperiodo = "",
     search = "", esPaginate = false,
 } ) => {
     return await httpRequest('get', apiServices.apiinscripcioninscripciongrupo_index, {
@@ -14,7 +14,9 @@ const getAllInscripcionGrupo = async ( {
         offset: page - 1,
         limit: paginate,
         esPaginate: esPaginate,
-        fkidcurso: fkidcurso,
+        fkidgrupo: fkidgrupo,
+        fkidmateria: fkidmateria,
+        fkidgestionperiodo: fkidgestionperiodo,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             // toastr.success( respta.message, '', { closeButton: true, progressBar: true, positionClass: "toast-bottom-right", } );
@@ -52,6 +54,15 @@ const onStore = async (body) => {
                 position: 'top-end',
                 icon: 'success',
                 title: respta.message,
+                showConfirmButton: false,
+                timer: 3000,
+            } );
+        } else if ( respta.resp === 0 ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Funcionalidad interrumpida.',
+                text: respta.message,
                 showConfirmButton: false,
                 timer: 3000,
             } );

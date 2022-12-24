@@ -23,6 +23,17 @@ const ColumnModules = {
         },
     ],
 
+    columnInscripcionGrupo: [
+        {
+            id: 'registroestudiante',
+            label: 'Registro',
+        },
+        {
+            id: 'nameestudiante',
+            label: 'Estudiante',
+        },
+    ],
+
 
     columnUnidadNegocio: [
         {

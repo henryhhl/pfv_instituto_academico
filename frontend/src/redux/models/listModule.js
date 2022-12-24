@@ -54,6 +54,7 @@ const ListModules = {
     
     listInscripcionPrograma: [],
     listInscripcionCurso: [],
+    listInscripcionGrupo: [],
 };
 
 export default ListModules;
