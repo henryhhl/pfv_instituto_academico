@@ -24,6 +24,7 @@ function EditCiudad( props ) {
                     props.setFkIDTipoCiudad(ciudad, tipoCiudad);
                     setVisibleTipoCiudad(false);
                 } }
+                valueSelect={ciudad?.fkidtipociudad}
             />
         );
     };
@@ -57,6 +58,7 @@ function EditCiudad( props ) {
                             error={ciudad.error.fkidtipociudad}
                             message={ciudad.message.fkidtipociudad}
                             readOnly
+                            placeholder='SELECCIONAR TIPO LOCALIDAD'
                             style={{ background: 'white', cursor: 'pointer', }}
                         />
                     </div>

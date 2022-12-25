@@ -17,7 +17,7 @@ export default function ListadoOportunidadModal( props ) {
         return () => {};
     }, [] );
 
-    function get_data() {
+    const get_data = () => {
         httpRequest( 'get', apiServices.apioportunidadoportunidad_index, {
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
@@ -43,12 +43,12 @@ export default function ListadoOportunidadModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={'90%'}
+                footer={null} width={'95%'}
                 style={{ top: 50, }}
                 title={"LISTA OPORTUNIDAD"}
             >
                 <div className="row">
-                    <div className="col-12">
+                    <div className="col-12 pt-3">
                         <div className="card">
                             <div className="card-body">
                                 <TableComponent 

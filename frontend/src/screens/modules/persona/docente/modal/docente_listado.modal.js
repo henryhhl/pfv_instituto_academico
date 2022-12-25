@@ -7,6 +7,7 @@ import apiServices from '../../../../../utils/apiservices';
 import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
+import CardComponent from '../../../../../components/card';
 
 export default function ListadoDocenteModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
@@ -17,8 +18,9 @@ export default function ListadoDocenteModal( props ) {
         return () => {};
     }, [] );
 
-    function get_data() {
+    const get_data = (search = "") => {
         httpRequest( 'get', apiServices.apipersonadocente_index, {
+            search: search,
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
                 setArrayData( result.arrayDocente );
@@ -38,47 +40,54 @@ export default function ListadoDocenteModal( props ) {
         } );
     };
 
+    const setSearch = ( value ) => {
+        get_data(value);
+    };
+
     return (
         <>
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={'80%'} centered
+                footer={null} width={'90%'} centered
                 title={"LISTA DOCENTE"}
             >
                 <div className="row">
-                    <div className="col-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <TableComponent 
-                                    option={false}
-                                    columns={ [
-                                        {
-                                            id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
-                                            label: 'Docente',
-                                        },
-                                        {
-                                            id: 'tipoidentificacion',
-                                            label: 'Tipo Identificación',
-                                        },
-                                        {
-                                            id: 'numeroidentificacion',
-                                            label: 'Nro. Identificación',
-                                        },
-                                        {
-                                            id: 'ciudadnacimiento',
-                                            label: 'Lugar Nacimiento',
-                                        },
-                                        {
-                                            id: 'ciudadresidencia',
-                                            label: 'Residencia',
-                                        },
-                                    ] } select
-                                    dataSource={array_data}
-                                    onSelect={ props.onSelect }
-                                />
-                            </div>
-                        </div>
+                    <div className="col-12 pt-3">
+                        <CardComponent
+                            isSearch
+                            onSearch={ setSearch }
+                        >
+                            <TableComponent 
+                                option={false}
+                                columns={ [
+                                    {
+                                        id: ['nombreprincipal', 'nombreadicional', 'apellidoprimero', 'apellidosegundo'],
+                                        label: 'Docente',
+                                    },
+                                    {
+                                        id: 'tipoidentificacion',
+                                        label: 'Tipo Identificación',
+                                    },
+                                    {
+                                        id: 'numeroidentificacion',
+                                        label: 'Nro. Identificación',
+                                    },
+                                    {
+                                        id: 'ciudadnacimiento',
+                                        label: 'Lugar Nacimiento',
+                                    },
+                                    {
+                                        id: 'ciudadresidencia',
+                                        label: 'Residencia',
+                                    },
+                                ] } select
+                                dataSource={array_data}
+                                onSelect={ props.onSelect }
+                                iddata={"iddocente"}
+                                valueSelect={props.valueSelect}
+                            />
+                        </CardComponent>
                     </div>
                 </div>
             </ModalComponent>
@@ -90,9 +99,11 @@ ListadoDocenteModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
+    valueSelect: PropTypes.any,
 };
 
 ListadoDocenteModal.defaultProps = {
     onSelect: () => {},
     visible: false,
+    valueSelect: null,
 };

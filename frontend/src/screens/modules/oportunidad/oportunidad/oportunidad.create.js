@@ -57,6 +57,7 @@ function CreateOportunidad( props ) {
                     props.setFKIDAsesorResponsable(oportunidad, asesorResponsable);
                     setVisibleAsesorResponsable(false);
                 } }
+                valueSelect={oportunidad?.fkidasesorresponsable}
             />
         );
     };
@@ -100,13 +101,14 @@ function CreateOportunidad( props ) {
                         toastr.warning( 'Contacto ya seleccionado.', '', { closeButton: true, progressBar: true, } );
                     }
                 } }
+                valueSelect={oportunidad.arraytipocontacto[indexDetailsTipoContacto]?.fkidtipocontacto}
             />
         );
     };
 
     const existTipoMedioPublicitario = ( idtipomediopublicitario ) => {
-        for (let index = 0; index < oportunidad.arraytipocontacto.length; index++) {
-            const element = oportunidad.arraytipocontacto[index];
+        for (let index = 0; index < oportunidad.arraytipomediopublicitario.length; index++) {
+            const element = oportunidad.arraytipomediopublicitario[index];
             if ( element.fkidtipomediopublicitario === idtipomediopublicitario ) return true;
         }
         return false;
@@ -129,6 +131,7 @@ function CreateOportunidad( props ) {
                         toastr.warning( 'Medio Publicitario ya seleccionado.', '', { closeButton: true, progressBar: true, } );
                     }
                 } }
+                valueSelect={oportunidad.arraytipomediopublicitario[indexDetailsTipoMedioPublicitario]?.fkidtipomediopublicitario}
             />
         );
     };

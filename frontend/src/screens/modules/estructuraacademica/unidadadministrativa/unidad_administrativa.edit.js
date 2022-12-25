@@ -57,6 +57,7 @@ function EditUnidadAdministrativa( props ) {
                     props.setFKIDUnidadNegocio(unidadAdministrativa, unidadNegocio);
                     setVisibleUnidadNegocio(false);
                 } }
+                valueSelect={unidadAdministrativa?.fkidunidadnegocio}
             />
         );
     };

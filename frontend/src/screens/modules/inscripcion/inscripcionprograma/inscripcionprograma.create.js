@@ -52,6 +52,7 @@ function CreateInscripcionPrograma( props ) {
                     props.setFKIDPensum(inscripcionPrograma, pensum);
                     setVisiblePensum(false);
                 } }
+                valueSelect={inscripcionPrograma?.fkidpensum}
             />
         );
     };
@@ -66,6 +67,7 @@ function CreateInscripcionPrograma( props ) {
                     props.setFKIDEstudiante(inscripcionPrograma, estudiante);
                     setVisibleEstudiante(false);
                 } }
+                valueSelect={inscripcionPrograma?.fkidestudiante}
             />
         );
     };
@@ -80,6 +82,7 @@ function CreateInscripcionPrograma( props ) {
                     props.setFKIDGestionPeriodo(inscripcionPrograma, gestionPeriodo);
                     setVisibleGestionPeriodo(false);
                 } }
+                valueSelect={inscripcionPrograma?.fkidgestionperiodo}
             />
         );
     };
@@ -94,6 +97,7 @@ function CreateInscripcionPrograma( props ) {
                     setPrograma(programa);
                     setVisibleProgramaSearch(false);
                 } }
+                valueSelect={programa?.idprograma}
             />
         );
     };
@@ -108,6 +112,7 @@ function CreateInscripcionPrograma( props ) {
                     setGestionPeriodo(gestionPeriodo);
                     setVisibleGestionPeriodoSearch(false);
                 } }
+                valueSelect={gestionperiodo?.idgestionperiodo}
             />
         );
     };

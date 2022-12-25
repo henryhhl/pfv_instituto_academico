@@ -38,6 +38,7 @@ function IndexCierreCurso(props) {
                     props.setData(cursoFirst);
                     setVisibleCurso(false);
                 } }
+                valueSelect={curso?.idcurso}
             />
         );
     };

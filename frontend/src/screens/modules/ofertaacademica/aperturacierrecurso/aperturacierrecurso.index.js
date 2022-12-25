@@ -44,6 +44,7 @@ function IndexAperturaCierreCurso(props) {
                     props.setData(cursoFirst);
                     setVisibleCurso(false);
                 } }
+                valueSelect={curso?.idcurso}
             />
         );
     };
@@ -58,6 +59,7 @@ function IndexAperturaCierreCurso(props) {
                     props.setFKIDMotivoAperturaCierre(curso, motivoAperturaCierre);
                     setVisibleMotivoAperturaCierre(false);
                 } }
+                valueSelect={curso?.fkidmotivoaperturacierrecurso}
             />
         );
     };
@@ -72,6 +74,7 @@ function IndexAperturaCierreCurso(props) {
                     props.setFKIDAdminitrativo(curso, administrativo);
                     setVisibleAdministrativo(false);
                 } }
+                valueSelect={curso?.fkidadministrativo}
             />
         );
     };
@@ -175,7 +178,7 @@ function IndexAperturaCierreCurso(props) {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="form-group col-8">
+                        <div className="form-group col-12">
                             <InputComponent
                                 label="Administrativo Autorizado*"
                                 value={curso.administrativo}

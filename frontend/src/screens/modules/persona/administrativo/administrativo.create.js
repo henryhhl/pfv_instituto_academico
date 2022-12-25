@@ -70,6 +70,7 @@ function CreateAdministrativo( props ) {
                     props.setFKIDTipoIdentificacion(administrativo, tipoIdentificacion);
                     setVisibleTipoIdentificacion(false);
                 } }
+                valueSelect={administrativo?.fkidtipoidentificacion}
             />
         );
     };
@@ -145,6 +146,7 @@ function CreateAdministrativo( props ) {
                     props.onChange(administrativo);
                     setVisibleCategoriaDocumento(false);
                 } }
+                valueSelect={administrativo.arraycategoriadocumento[indexDetailsCategoriaDocumento]?.fkidcategoriadocumento}
             />
         );
     };
@@ -162,6 +164,7 @@ function CreateAdministrativo( props ) {
                     props.onChange(administrativo);
                     setVisibleInstitucion(false);
                 } }
+                valueSelect={administrativo.arrayestudio[indexDetailsInstitucion]?.fkidinstitucion}
             />
         );
     };
@@ -179,6 +182,7 @@ function CreateAdministrativo( props ) {
                     props.onChange(administrativo);
                     setVisibleNivelAcademico(false);
                 } }
+                valueSelect={administrativo.arrayestudio[indexDetailsNivelAcademico]?.fkidnivelacademico}
             />
         );
     };

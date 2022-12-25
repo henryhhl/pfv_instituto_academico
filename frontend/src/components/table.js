@@ -44,7 +44,7 @@ export default function TableComponent( props ) {
                                 return (
                                     <th key={index}
                                         style={{ 
-                                            width: column.width ? 'auto' : column.width,
+                                            width: column.width === null ? 'auto' : column.width,
                                             textAlign: `${column.numeric === true ? 'right' : 'left'}`,
                                             paddingRight: 10,
                                             paddingLeft: 10,
@@ -64,7 +64,12 @@ export default function TableComponent( props ) {
                         {/* e0f3ff */}
                         { props.dataSource.map( ( row, index ) => {
                             let style = {};
-                            if ( props.select === true ) style = { cursor: 'pointer', };
+                            if ( props.select === true ) {
+                                style = { cursor: 'pointer', };
+                                if ( row[props.iddata] === props.valueSelect ) {
+                                    style = Object.assign( style, { backgroundColor: '#E0F3FF', } );
+                                }
+                            }
                             return (
                                 <tr key={index}
                                     onClick={ () => {
@@ -276,6 +281,9 @@ TableComponent.propTypes = {
 
     setPage: PropTypes.func,
     setPaginate: PropTypes.func,
+
+    iddata: PropTypes.any,
+    valueSelect: PropTypes.any,
 }
 
 TableComponent.defaultProps = {
@@ -292,6 +300,9 @@ TableComponent.defaultProps = {
     isSearch: true,
     isEdit: true,
     isDelete: true,
+
+    iddata: 'iddata',
+    valueSelect: null,
 
     paginate: 25,
     page: 0,

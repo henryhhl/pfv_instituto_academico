@@ -75,6 +75,7 @@ function CreateDocente( props ) {
                     props.setFKIDTipoIdentificacion(docente, tipoIdentificacion);
                     setVisibleTipoIdentificacion(false);
                 } }
+                valueSelect={docente?.fkidtipoidentificacion}
             />
         );
     };
@@ -162,6 +163,7 @@ function CreateDocente( props ) {
                         toastr.warning( 'Materia ya seleccionado.', '', { closeButton: true, progressBar: true, } );
                     }
                 } }
+                valueSelect={docente.arraymateria[indexDetailsMateria]?.fkidmateria}
             />
         );
     };
@@ -179,6 +181,7 @@ function CreateDocente( props ) {
                     props.onChange(docente);
                     setVisibleCategoriaDocumento(false);
                 } }
+                valueSelect={docente.arraycategoriadocumento[indexDetailsCategoriaDocumento]?.fkidcategoriadocumento}
             />
         );
     };
@@ -196,6 +199,7 @@ function CreateDocente( props ) {
                     props.onChange(docente);
                     setVisibleInstitucion(false);
                 } }
+                valueSelect={docente.arrayestudio[indexDetailsInstitucion]?.fkidinstitucion}
             />
         );
     };
@@ -213,6 +217,7 @@ function CreateDocente( props ) {
                     props.onChange(docente);
                     setVisibleNivelAcademico(false);
                 } }
+                valueSelect={docente.arrayestudio[indexDetailsNivelAcademico]?.fkidnivelacademico}
             />
         );
     };

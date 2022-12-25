@@ -52,6 +52,7 @@ function EditAsesorResponsable( props ) {
                     props.setFKIDTipoIdentificacion(asesorResponsable, tipoIdentificacion);
                     setVisibleTipoIdentificacion(false);
                 } }
+                valueSelect={asesorResponsable?.fkidtipoidentificacion}
             />
         );
     };

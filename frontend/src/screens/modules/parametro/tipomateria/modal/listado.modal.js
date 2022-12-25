@@ -7,6 +7,7 @@ import apiServices from '../../../../../utils/apiservices';
 import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
+import CardComponent from '../../../../../components/card';
 
 export default function ListadoTipoMateriaModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
@@ -17,8 +18,9 @@ export default function ListadoTipoMateriaModal( props ) {
         return () => {};
     }, [] );
 
-    function get_data() {
+    const get_data = (search = "") => {
         httpRequest( 'get', apiServices.apiadmintipomateria_index, {
+            search: search,
         } ) . then( (result) => {
             if ( result.resp == 1 ) {
                 setArrayData( result.arrayTipoMateria );
@@ -38,6 +40,10 @@ export default function ListadoTipoMateriaModal( props ) {
         } );
     };
 
+    const setSearch = ( value ) => {
+        get_data(value);
+    };
+
     return (
         <>
             <ModalComponent
@@ -47,22 +53,25 @@ export default function ListadoTipoMateriaModal( props ) {
                 title={"LISTA DE TIPO MATERIA"}
             >
                 <div className="row">
-                    <div className="col-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <TableComponent 
-                                    option={false}
-                                    columns={ [
-                                        {
-                                            id: 'descripcion',
-                                            label: 'Descripción',
-                                        },
-                                    ] } select
-                                    dataSource={array_data}
-                                    onSelect={ props.onSelect }
-                                />
-                            </div>
-                        </div>
+                    <div className="col-12 pt-3">
+                        <CardComponent
+                            isSearch
+                            onSearch={ setSearch }
+                        >
+                            <TableComponent 
+                                option={false}
+                                columns={ [
+                                    {
+                                        id: 'descripcion',
+                                        label: 'Tipo',
+                                    },
+                                ] } select
+                                dataSource={array_data}
+                                onSelect={ props.onSelect }
+                                iddata={"idtipomateria"}
+                                valueSelect={props.valueSelect}
+                            />
+                        </CardComponent>
                     </div>
                 </div>
             </ModalComponent>
@@ -74,9 +83,11 @@ ListadoTipoMateriaModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
+    valueSelect: PropTypes.any,
 };
 
 ListadoTipoMateriaModal.defaultProps = {
     onSelect: () => {},
     visible: false,
+    valueSelect: null,
 };

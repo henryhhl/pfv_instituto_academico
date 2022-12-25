@@ -47,6 +47,7 @@ function CreateInscripcionCurso( props ) {
                     props.setFKIDCurso(inscripcionCurso, curso);
                     setVisibleCurso(false);
                 } }
+                valueSelect={inscripcionCurso?.fkidcurso}
             />
         );
     };
@@ -61,6 +62,7 @@ function CreateInscripcionCurso( props ) {
                     props.setFKIDEstudiante(inscripcionCurso, estudiante);
                     setVisibleEstudiante(false);
                 } }
+                valueSelect={inscripcionCurso?.fkidestudiante}
             />
         );
     };
@@ -75,6 +77,7 @@ function CreateInscripcionCurso( props ) {
                     setCurso(curso);
                     setVisibleCursoSearch(false);
                 } }
+                valueSelect={curso?.idcurso}
             />
         );
     };

@@ -89,6 +89,7 @@ function EditGrupo( props ) {
                     props.onChange(grupo);
                     setVisibleDetailsPensum(false);
                 } }
+                valueSelect={grupo.arraypensum[indexDetailsPensum]?.fkidpensum}
             />
         );
     };
@@ -110,6 +111,7 @@ function EditGrupo( props ) {
                     props.onChange(grupo);
                     setVisibleDetailsDocente(false);
                 } }
+                valueSelect={grupo.arraypensum[indexDetailsDocente]?.fkiddocente}
             />
         );
     };
@@ -132,6 +134,7 @@ function EditGrupo( props ) {
                     props.onChange(grupo);
                     setVisibleDetailsTurno(false);
                 } }
+                valueSelect={grupo.arraypensum[indexDetailsTurno]?.fkidturno}
             />
         );
     };
@@ -154,6 +157,7 @@ function EditGrupo( props ) {
                     props.onChange(grupo);
                     setVisibleDetailsGestionPeriodo(false);
                 } }
+                valueSelect={grupo.arraypensum[indexDetailsGestionPeriodo]?.fkidgestionperiodo}
             />
         );
     };

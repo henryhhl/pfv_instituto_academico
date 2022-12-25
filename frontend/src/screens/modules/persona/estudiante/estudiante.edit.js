@@ -78,6 +78,7 @@ function EditEstudiante( props ) {
                     props.setFKIDTipoIdentificacion(estudiante, tipoIdentificacion);
                     setVisibleTipoIdentificacion(false);
                 } }
+                valueSelect={estudiante?.fkidtipoidentificacion}
             />
         );
     };
@@ -153,6 +154,7 @@ function EditEstudiante( props ) {
                     props.onChange(estudiante);
                     setVisibleCategoriaDocumento(false);
                 } }
+                valueSelect={estudiante.arraycategoriadocumento[indexDetailsCategoriaDocumento]?.fkidcategoriadocumento}
             />
         );
     };
@@ -172,6 +174,7 @@ function EditEstudiante( props ) {
                     props.onChange(estudiante);
                     setVisibleTipoIdentificacionDetalle(false);
                 } }
+                valueSelect={estudiante.arrayfamiliar[indexDetailsTipoIdentificacionDetalle]?.fkidtipoidentificacion}
             />
         );
     };
@@ -242,6 +245,7 @@ function EditEstudiante( props ) {
                     props.onChange(estudiante);
                     setVisibleNivelAcademicoDetalle(false);
                 } }
+                valueSelect={estudiante.arrayfamiliar[indexDetailsNivelAcademico]?.fkidnivelacademico}
             />
         );
     };

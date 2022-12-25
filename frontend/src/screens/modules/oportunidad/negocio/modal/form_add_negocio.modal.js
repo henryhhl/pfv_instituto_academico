@@ -39,6 +39,7 @@ const FormAddNegocioModal = ( props ) => {
                     props.setFKIDPrograma(negocio, programa);
                     setVisiblePrograma(false);
                 } }
+                valueSelect={negocio?.fkidprograma}
             />
         );
     };
@@ -53,6 +54,7 @@ const FormAddNegocioModal = ( props ) => {
                     props.setFKIDTurno(negocio, turno);
                     setVisibleTurno(false);
                 } }
+                valueSelect={negocio?.fkidturno}
             />
         );
     };
@@ -67,6 +69,7 @@ const FormAddNegocioModal = ( props ) => {
                     props.setFKIDEstadoNegocio(negocio, estadoNegocio);
                     setVisibleEstadoNegocio(false);
                 } }
+                valueSelect={negocio?.fkidestadonegocio}
             />
         );
     };

@@ -22,6 +22,7 @@ function CreateCiudad( props ) {
                     props.setFkIDTipoCiudad(ciudad, tipoCiudad);
                     setVisibleTipoCiudad(false);
                 } }
+                valueSelect={ciudad?.fkidtipociudad}
             />
         );
     };
@@ -55,6 +56,7 @@ function CreateCiudad( props ) {
                             error={ciudad.error.fkidtipociudad}
                             message={ciudad.message.fkidtipociudad}
                             readOnly
+                            placeholder='SELECCIONAR TIPO LOCALIDAD'
                             style={{ background: 'white', cursor: 'pointer', }}
                         />
                     </div>

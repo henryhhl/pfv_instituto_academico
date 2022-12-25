@@ -61,6 +61,7 @@ function CreateInscripcionGrupo( props ) {
                     props.setFKIDPensum(inscripcionGrupo, pensum);
                     setVisiblePensum(false);
                 } }
+                valueSelect={inscripcionGrupo?.fkidpensum}
             />
         );
     };
@@ -106,6 +107,7 @@ function CreateInscripcionGrupo( props ) {
                     props.setFKIDEstudiante(inscripcionGrupo, estudiante);
                     setVisibleEstudiante(false);
                 } }
+                valueSelect={inscripcionGrupo.fkidestudiante}
             />
         );
     };
@@ -120,6 +122,7 @@ function CreateInscripcionGrupo( props ) {
                     props.setFKIDGestionPeriodo(inscripcionGrupo, gestionPeriodo);
                     setVisibleGestionPeriodo(false);
                 } }
+                valueSelect={inscripcionGrupo?.fkidgestionperiodo}
             />
         );
     };
@@ -134,6 +137,7 @@ function CreateInscripcionGrupo( props ) {
                     setGrupo(grupoFirst);
                     setVisibleGrupoSearch(false);
                 } }
+                valueSelect={grupo?.idgrupo}
             />
         );
     };
@@ -148,6 +152,7 @@ function CreateInscripcionGrupo( props ) {
                     setMateria(materiaFirst);
                     setVisibleMateriaSearch(false);
                 } }
+                valueSelect={materia?.idmateria}
             />
         );
     };
@@ -162,6 +167,7 @@ function CreateInscripcionGrupo( props ) {
                     setGestionPeriodo(gestionPeriodoFisrt);
                     setVisibleGestionPeriodoSearch(false);
                 } }
+                valueSelect={gestionperiodo?.idgestionperiodo}
             />
         );
     };

@@ -55,6 +55,7 @@ function CreatePrograma( props ) {
                     props.setFKIDUnidadAcademica(programa, unidadAcademica);
                     setVisibleUnidadAcademica(false);
                 } }
+                valueSelect={programa?.fkidunidadacademica}
             />
         );
     };
@@ -69,6 +70,7 @@ function CreatePrograma( props ) {
                     props.setFKIDNivelAcademico(programa, nivelAcademico);
                     setVisibleNivelAcademico(false);
                 } }
+                valueSelect={programa?.fkidnivelacademico}
             />
         );
     };
@@ -83,6 +85,7 @@ function CreatePrograma( props ) {
                     props.setFKIDModalidadAcademica(programa, modalidadAcademica);
                     setVisibleModalidadAcademica(false);
                 } }
+                valueSelect={programa?.fkidmodalidadacademica}
             />
         );
     };

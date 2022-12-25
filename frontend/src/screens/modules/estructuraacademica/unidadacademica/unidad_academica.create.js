@@ -43,6 +43,7 @@ function CreateUnidadAcademica( props ) {
                     props.setFKIDUnidadAdministrativa(unidadAcademica, unidadAdminitrativa);
                     setVisibleUnidadAdministrativa(false);
                 } }
+                valueSelect={unidadAcademica?.fkidunidadadministrativa}
             />
         );
     };

@@ -7,6 +7,7 @@ import apiServices from '../../../../../utils/apiservices';
 import { httpRequest } from '../../../../../utils/httpRequest';
 import ModalComponent from '../../../../../components/modal';
 import TableComponent from '../../../../../components/table';
+import CardComponent from '../../../../../components/card';
 
 export default function ListadoProgramaModal( props ) {
     const [ array_data, setArrayData ] = React.useState( [] );
@@ -17,8 +18,9 @@ export default function ListadoProgramaModal( props ) {
         return () => {};
     }, [] );
 
-    function get_data() {
+    const get_data = (search = "") => {
         httpRequest( 'get', apiServices.apiestructuraacademicaprograma_index, {
+            search: search,
         } ) . then( (result) => {
             if ( result.resp === 1 ) {
                 setArrayData( result.arrayPrograma );
@@ -38,59 +40,66 @@ export default function ListadoProgramaModal( props ) {
         } );
     };
 
+    const setSearch = ( value ) => {
+        get_data(value);
+    };
+
     return (
         <>
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={'90%'} centered
+                footer={null} width={'95%'} centered
                 title={"LISTA DE PROGRAMA"}
             >
                 <div className="row">
-                    <div className="col-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <TableComponent 
-                                    option={false}
-                                    columns={ [
-                                        {
-                                            id: 'unidadadministrativa',
-                                            label: 'Unidad Administrativa',
-                                        },
-                                        {
-                                            id: 'unidadnegocio',
-                                            label: 'Unidad Nagocio',
-                                        },
-                                        {
-                                            id: 'unidadacademica',
-                                            label: 'Unidad Academica',
-                                        },
-                                        {
-                                            id: 'descripcion',
-                                            label: 'Descripción',
-                                        },
-                                        {
-                                            id: 'nivelacademico',
-                                            label: 'Nivel',
-                                        },
-                                        {
-                                            id: 'modalidadacademica',
-                                            label: 'Modalidad',
-                                        },
-                                        {
-                                            id: 'codigo',
-                                            label: 'Código',
-                                        },
-                                        {
-                                            id: 'sigla',
-                                            label: 'Sigla',
-                                        },
-                                    ] } select
-                                    dataSource={array_data}
-                                    onSelect={ props.onSelect }
-                                />
-                            </div>
-                        </div>
+                    <div className="col-12 pt-3">
+                        <CardComponent
+                            isSearch
+                            onSearch={ setSearch }
+                        >
+                            <TableComponent 
+                                option={false}
+                                columns={ [
+                                    {
+                                        id: 'unidadadministrativa',
+                                        label: 'Unidad Administrativa',
+                                    },
+                                    {
+                                        id: 'unidadnegocio',
+                                        label: 'Unidad Nagocio',
+                                    },
+                                    {
+                                        id: 'unidadacademica',
+                                        label: 'Unidad Academica',
+                                    },
+                                    {
+                                        id: 'descripcion',
+                                        label: 'Programa',
+                                    },
+                                    {
+                                        id: 'nivelacademico',
+                                        label: 'Nivel',
+                                    },
+                                    {
+                                        id: 'modalidadacademica',
+                                        label: 'Modalidad',
+                                    },
+                                    {
+                                        id: 'codigo',
+                                        label: 'Código',
+                                    },
+                                    {
+                                        id: 'sigla',
+                                        label: 'Sigla',
+                                    },
+                                ] } select
+                                dataSource={array_data}
+                                onSelect={ props.onSelect }
+                                iddata={"idprograma"}
+                                valueSelect={props.valueSelect}
+                            />
+                        </CardComponent>
                     </div>
                 </div>
             </ModalComponent>
@@ -102,9 +111,11 @@ ListadoProgramaModal.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onSelect: PropTypes.func,
+    valueSelect: PropTypes.any,
 };
 
 ListadoProgramaModal.defaultProps = {
     onSelect: () => {},
     visible: false,
+    valueSelect: null,
 };

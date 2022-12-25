@@ -61,6 +61,7 @@ function EditCurso( props ) {
                     props.setFKIDUnidadAcademica(curso, unidadAcademica);
                     setVisibleUnidadAcademica(false);
                 } }
+                valueSelect={curso?.fkidunidadacademica}
             />
         );
     };
@@ -75,6 +76,7 @@ function EditCurso( props ) {
                     props.setFKIDModalidadAcademica(curso, modalidadAcademica);
                     setVisibleModalidadAcademica(false);
                 } }
+                valueSelect={curso?.fkidmodalidadacademica}
             />
         );
     };
@@ -104,6 +106,7 @@ function EditCurso( props ) {
                         toastr.warning( 'Docente ya seleccionado.', '', { closeButton: true, progressBar: true, } );
                     }
                 } }
+                valueSelect={curso.arraydocente[indexDetailsDocente]?.fkiddocente}
             />
         );
     };
@@ -118,6 +121,7 @@ function EditCurso( props ) {
                     props.setFKIDMateria(curso, materia);
                     setVisibleMateria(false);
                 } }
+                valueSelect={curso?.fkidmateria}
             />
         );
     };
@@ -132,6 +136,7 @@ function EditCurso( props ) {
                     props.setFKIDTurno(curso, turno);
                     setVisibleTurno(false);
                 } }
+                valueSelect={curso?.fkidturno}
             />
         );
     };
@@ -146,6 +151,7 @@ function EditCurso( props ) {
                     props.setFKIDGestionPeriodo(curso, gestionPeriodo);
                     setVisibleGestionPeriodo(false);
                 } }
+                valueSelect={curso?.fkidgestionperiodo}
             />
         );
     };

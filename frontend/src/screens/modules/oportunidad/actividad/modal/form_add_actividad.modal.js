@@ -41,6 +41,7 @@ const FormAddActividadModal = ( props ) => {
                     props.setFKIDTipoActividad(actividad, tipoActividad);
                     setVisibleTipoActividad(false);
                 } }
+                valueSelect={actividad?.fkidtipoactividad}
             />
         );
     };
@@ -55,6 +56,7 @@ const FormAddActividadModal = ( props ) => {
                     props.setFKIDTipoResultado(actividad, tipoActividad);
                     setVisibleTipoResultado(false);
                 } }
+                valueSelect={actividad?.fkidtiporesultado}
             />
         );
     };
@@ -69,6 +71,7 @@ const FormAddActividadModal = ( props ) => {
                     props.setFKIDAsesorResponsable(actividad, asesorResponsable);
                     setVisibleAsesorResponsable(false);
                 } }
+                valueSelect={actividad?.fkidasesorresponsable}
             />
         );
     };

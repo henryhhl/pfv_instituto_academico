@@ -55,6 +55,7 @@ function EditPensum( props ) {
                     props.setFKIDPrograma(pensum, programa);
                     setVisiblePrograma(false);
                 } }
+                valueSelect={pensum?.fkidprograma}
             />
         );
     };

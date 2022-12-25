@@ -116,6 +116,7 @@ export default function FormMateriaPensumModal( props ) {
                         toastr.warning( 'Materia ya seleccionado.', '', { closeButton: true, progressBar: true, } );
                     }
                 } }
+                valueSelect={data.materia?.idmateria}
             />
         );
     };
@@ -132,6 +133,7 @@ export default function FormMateriaPensumModal( props ) {
                     setMessage( { ...message, tipomateria: "", } );
                     setVisibleTipoMateria(false);
                 } }
+                valueSelect={data.tipomateria?.idtipomateria}
             />
         );
     };
