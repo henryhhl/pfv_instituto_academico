@@ -6,6 +6,7 @@ import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { Profile } from '../profile/entities/profile.entity';
 
 @Injectable()
 export class UsuarioService {
@@ -100,10 +101,15 @@ export class UsuarioService {
   }
 
   async findOne(idusuario: string) {
-    const usuario = await this.usuarioRepository.findOneBy( {
-      idusuario: idusuario,
-    } );
-    return usuario;
+    try {
+      const usuario = await this.usuarioRepository.findOne( {
+        where: { idusuario: idusuario, },
+        relations: { profile: true, },
+      } );
+      return usuario;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit( idusuario: string ) {
@@ -189,6 +195,25 @@ export class UsuarioService {
         resp: -1, error: true,
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
+    }
+  }
+
+  async updateProfile( profile: Profile ) {
+    try {
+      const usuarioPreLoad = await this.usuarioRepository.preload( {
+        idusuario: profile.usuario.idusuario,
+        nombreprincipal: profile.nombreprincipal ?? '',
+        email: profile.email ?? '',
+        profile: profile,
+        updated_at: this.getDateTime(),
+      } );
+
+      if ( usuarioPreLoad === null ) {
+        return null;
+      }
+      return await this.usuarioRepository.save( usuarioPreLoad );
+    } catch (error) {
+      return null;
     }
   }
 

@@ -1,26 +1,33 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, ManyToOne, JoinColumn } from 'typeorm';
+import { Profile } from '../../profile/entities/profile.entity';
 
-@Entity()
+@Entity('usuario')
 export class Usuario {
 
     @PrimaryGeneratedColumn('uuid')
     idusuario: string;
 
-    @Column( {
-        type: 'text',
-        unique: false,
-    } )
-    email: string;
-
-    @Column( {
-        type: 'text',
-        unique: false,
-    } )
-    login: string;
+    @ManyToOne(
+        ( ) => Profile,
+        ( profile ) => profile.usuario,
+        { nullable: true, onDelete: 'CASCADE', }
+    )
+    @JoinColumn({ name: 'fkidprofile', })
+    profile: Profile;
 
     @Column( 'text', {
-        select: false,
+        nullable: true,
+        default: '',
     } )
+    nombreprincipal: string;
+
+    @Column( 'text' )
+    email: string;
+
+    @Column( 'text' )
+    login: string;
+
+    @Column( 'text' )
     password: string;
 
     @Column( {
@@ -53,21 +60,18 @@ export class Usuario {
     } )
     timeout?: string;
 
-    @Column( {
-        type: 'enum',
+    @Column( 'enum', {
         enum: ['A', 'N'],
         default: 'A',
     } )
     estado: string;
 
-    @Column( {
-        type: 'numeric',
+    @Column( 'numeric', {
         default: 1,
     } )
     concurrencia: number;
 
-    @Column( {
-        type: 'enum',
+    @Column( 'enum', {
         enum: ['A', 'N'],
         default: 'A',
     } )
@@ -76,26 +80,26 @@ export class Usuario {
     @Column('text')
     created_at: string;
 
-    @Column( {
-        type: 'text',
+    @Column( 'text', {
         nullable: true,
     } )
     updated_at?: string;
 
-    @Column( {
-        type: 'text',
+    @Column( 'text', {
         nullable: true,
     } )
     deleted_at?: string;
 
     @BeforeInsert()
     checkFieldsBeforeInsert() {
+        this.nombreprincipal = this.nombreprincipal?.trim();
         this.email = this.email.toLocaleLowerCase().trim();
         this.login = this.login.trim();
     }
 
     @BeforeUpdate()
     checkFieldsBeforeUpdate() {
+        this.nombreprincipal = this.nombreprincipal?.trim();
         this.email = this.email.toLocaleLowerCase().trim();
         this.login = this.login.trim();
     }

@@ -62,7 +62,12 @@ function LoginPage( props ) {
                   onChange={ (evt) => {
                     props.setLogin( login, evt.target.value );
                   } }
-                  className={`${(login.error.usuario === true) && 'border-danger'}`} 
+                  className={`${(login.error.usuario === true) && 'border-danger'}`}
+                  onKeyPress={ (evt) => {
+                    if ( evt.key === "Enter" ) {
+                      props.onLogin( login, onHome );
+                    }
+                  } }
                 />
                 <div className={`invalid-feedback ${(login.error.usuario === true) ? 'd-block' : 'd-none'}`}
                     style={{ fontSize: 10, }}
@@ -80,6 +85,11 @@ function LoginPage( props ) {
                     props.setPassword( login, evt.target.value );
                   } }
                   className={`${(login.error.password === true) && 'border-danger'}`} 
+                  onKeyPress={ (evt) => {
+                    if ( evt.key === "Enter" ) {
+                      props.onLogin( login, onHome );
+                    }
+                  } }
                 />
                 <div className={`invalid-feedback ${(login.error.password === true) ? 'd-block' : 'd-none'}`}
                     style={{ fontSize: 10, }}
@@ -118,6 +128,20 @@ function LoginPage( props ) {
               <h1>Registrar Usuario</h1>
             </div>
             <div className="form-content-login">
+              <div className="form-group-login">
+                <label>Nombre</label>
+                <input type="text" 
+                  value={register.nombreprincipal}
+                  onChange={ (evt) => {
+                    props.setNombrePrincipal( register, evt.target.value );
+                  } }
+                />
+                <div className={`invalid-feedback ${(register.error.nombreprincipal === true) ? 'd-block' : 'd-none'}`}
+                    style={{ fontSize: 12, }}
+                >
+                    { register.message.nombreprincipal }
+                </div>
+              </div>
               <div className="form-group-login">
                 <label>Email</label>
                 <input type="email" 
@@ -188,6 +212,7 @@ const mapDispatchToProps = {
   setPassword: LoginActions.setPassword,
   onLogin: LoginActions.onLogin,
 
+  setNombrePrincipal: RegisterActions.setNombrePrincipal,
   setLoginRegister: RegisterActions.setLogin,
   setEmailRegister: RegisterActions.setEmail,
   setPasswordRegister: RegisterActions.setPassword,

@@ -59,11 +59,13 @@ import { TipoResultadoReducer } from '../reducers/oportunidad/tiporesultado.redu
 import { InscripcionProgramaReducer } from '../reducers/inscripcion/inscripcionprograma.reducer';
 import { InscripcionCursoReducer } from '../reducers/inscripcion/inscripcioncurso.reducer';
 import { InscripcionGrupoReducer } from '../reducers/inscripcion/inscripciongrupo.reducer';
+import { ProfileReducer } from '../reducers/auth/profile.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
     Register: RegisterReducer,
     Sesion: SesionReducer,
+    Profile: ProfileReducer,
     
     Rol: RolReducer,
     Permiso: PermisoReducer,

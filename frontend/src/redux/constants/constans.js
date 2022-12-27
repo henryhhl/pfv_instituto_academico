@@ -7,6 +7,11 @@ const Constants = {
     register_onChange: "[ON CHANGE] REGISTER",
     register_onLimpiar: "[ON LIMPIAR] REGISTER",
 
+    profile_onChange: "[ON CHANGE] Profile",
+    profile_onCreate: "[ON CREATE] Profile",
+    profile_onShow: "[ON SHOW] Profile",
+    profile_onLimpiar: "[ON LIMPIAR] Profile",
+
     setShowSesion: "[SESION] Set Show",
     setHiddenSesion: "[SESION] Set Hidden",
 

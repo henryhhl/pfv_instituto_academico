@@ -2,15 +2,17 @@ import { IsString, MinLength, IsNotEmpty, IsEmail, MaxLength, Matches } from 'cl
 
 export class CreateUsuarioDto {
 
+    @IsNotEmpty( { message: 'Campo nombreprincipal es requerido.', } )
+    @IsString( { message: 'Campo nombreprincipal es requerido tipo String.', } )
+    readonly nombreprincipal: string;
+
     @IsNotEmpty( { message: 'Campo email es requerido.', } )
-    @IsString( { message: 'Campo es requerido de tipo String.', } )
+    @IsString( { message: 'Campo email es requerido tipo String.', } )
     @IsEmail( { message: 'Campo es requerido de tipo email.', } )
-    @MinLength(1, { message: 'Campo email debe ser mayor o igual a 1 carácter.', })
     readonly email: string;
 
     @IsNotEmpty( { message: 'Campo login es requerido.', } )
-    @IsString( { message: 'Campo es requerido de tipo String.', } )
-    @MinLength(1, { message: 'Campo login debe ser mayor o igual a 1 carácter.', })
+    @IsString( { message: 'Campo login es requerido tipo String.', } )
     readonly login: string;
 
     @IsNotEmpty( { message: 'Campo password es requerido.', } )

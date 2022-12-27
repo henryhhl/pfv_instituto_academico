@@ -226,6 +226,7 @@ import CreateInscripcionCurso from '../screens/modules/inscripcion/inscripcioncu
 import CreateInscripcionGrupo from '../screens/modules/inscripcion/inscripciongrupo/inscripciongrupo.create';
 
 import LoginPage from '../screens/auth/login.page';
+import ProfilePage from '../screens/profile/profile.screen';
 
 const HomeRoute = (props) => {
     return (
@@ -235,6 +236,7 @@ const HomeRoute = (props) => {
                 <Route path="/login" element={ <LoginPage { ...props } /> }  />
                 <Route path="/" element={<AppMain />}>
                     <Route index path="/" element={ <InicioPage { ...props } /> }  />
+                    <Route index path="/profile" element={ <ProfilePage { ...props } /> }  />
 
                     <Route index path="/tipo_rol/index" element={ <IndexTipoRol { ...props } /> }  />
                     <Route index path="/tipo_rol/create" element={ <CreateTipoRol { ...props } /> }  />

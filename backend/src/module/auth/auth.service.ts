@@ -165,11 +165,11 @@ export class AuthService {
         web_token: token,
         api_token: token,
       } );
-      const usuarioUpdate = await this.authRepository.save( usuarioPreLoad );
+      await this.authRepository.save( usuarioPreLoad );
       const { 
-        api_token, movil_token, web_token, concurrencia, isdelete,
-        created_at, updated_at, deleted_at, ...usuarioRespta 
-      } = usuarioUpdate;
+        api_token, movil_token, web_token, concurrencia, isdelete, password,
+        intentos, timeout, created_at, updated_at, deleted_at, ...usuarioRespta 
+      } = user;
 
       return {
         resp: 1, error: false,

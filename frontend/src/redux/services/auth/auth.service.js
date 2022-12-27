@@ -26,6 +26,7 @@ const onLogin = async (body) => {
 
 const onRegister = async (body) => {
     return await httpRequest('post', apiServices.apiauth_register, {
+        nombreprincipal: body.nombreprincipal,
         email: body.email,
         login: body.usuario,
         password: body.password,
@@ -62,8 +63,40 @@ const onValidateToken = async (body) => {
     } );
 };
 
+const updateProfile = async ( body ) => {
+    return await httpRequest('post', apiServices.apiauth_updateProfile, {
+        fkidusuario: body.idusuario,
+        idprofile: body.idprofile,
+        nombreprincipal: body.nombreprincipal,
+        nombreadicional: body.nombreadicional,
+        apellidoprimero: body.apellidoprimero,
+        apellidosegundo: body.apellidosegundo,
+        email: body.email,
+        telefonomobile: body.telefonomobile,
+        fechanacimiento: body.fechanacimiento,
+        genero: body.genero,
+        fkidciudadorigen: body.fkidciudadorigen,
+        ciudadorigen: body.ciudadorigen,
+        direccion: body.direccion,
+        imagen: body.imagen,
+    } ).then( (respta) => {
+        if ( respta.resp === 1 && respta.error === false ) {
+            // toastr.success( 'Se registro exitosamente.', '', { closeButton: true, progressBar: true, } );
+        } else if ( respta.error === true && respta.resp === -2 ) {
+            Swal.fire( {
+                position: 'top-end', icon: 'warning',
+                title: 'Usuario no Autorizado',
+                text: respta.message, showConfirmButton: false,
+                timer: 3000,
+            } );
+        }
+        return respta;
+    } );
+};
+
 export const AuthService = {
     onLogin,
     onRegister,
     onValidateToken,
+    updateProfile,
 };

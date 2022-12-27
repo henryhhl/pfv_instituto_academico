@@ -89,21 +89,23 @@ export default function InputFileComponent( props ) {
             <div className={`invalid-feedback ${props.error ? 'd-block' : 'd-none'}`}>
                 { props.message }
             </div>
-            <Image
-                width={200}
-                style={ {
-                    display: 'none',
-                } }
-                src={'/assets/img/default.png'}
-                preview={ {
-                    visible,
-                    scaleStep: 0.5,
-                    src: props.documento,
-                    onVisibleChange: (value) => {
-                        setVisibleImg(value);
-                    },
-                } }
-            />
+            <div style={{ width: '100%', textAlign: 'center', marginTop: 10, }}>
+                <Image
+                    width={200}
+                    style={ {
+                        display: `${props.showImage === true ? 'block' : 'none'}`,
+                    } }
+                    src={ `${(props.documento !== null && props.documento !== "") ? props.documento : '/assets/img/default.png'}` }
+                    preview={ {
+                        visible,
+                        scaleStep: 0.5,
+                        src: props.documento,
+                        onVisibleChange: (value) => {
+                            setVisibleImg(value);
+                        },
+                    } }
+                />
+            </div>
         </>
     );
 };
@@ -115,6 +117,7 @@ InputFileComponent.propTypes = {
     readOnly: PropTypes.bool,
     edit: PropTypes.bool,
     disabled: PropTypes.bool,
+    showImage: PropTypes.bool,
     type: PropTypes.string,
     id: PropTypes.string,
     documento: PropTypes.any,
@@ -130,6 +133,7 @@ InputFileComponent.defaultProps = {
     readOnly: false,
     edit: false,
     disabled: false,
+    showImage: false,
     type: "text",
     id: "component-img",
     value: null,

@@ -1,9 +1,10 @@
 
 import React from 'react';
+import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { removeAllData } from '../../utils/toolsStorage';
 
-export default function HeaderComponent() {
+const HeaderComponent = (props) => {
     const navigate = useNavigate();
 
     return (
@@ -85,10 +86,17 @@ export default function HeaderComponent() {
                 <li className="dropdown">
                     <a href="#" data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg">
                         <i className="ion ion-android-person d-lg-none"></i>
-                        <div className="d-sm-none d-lg-inline-block">Hola, Ericka Lopez</div>
+                        <div className="d-sm-none d-lg-inline-block">
+                            { props.profile.showSaludo }, { props.profile.nombreprincipal ?? 'S/N' }
+                        </div>
                     </a>
                     <div className="dropdown-menu dropdown-menu-right">
-                        <a href="profile.html" className="dropdown-item has-icon">
+                        <a href="#" className="dropdown-item has-icon"
+                            onClick={ (evt) => {
+                                evt.preventDefault();
+                                navigate('/profile');
+                            } }
+                        >
                             <i className="ion ion-android-person"></i> Profile
                         </a>
                         <a href="#" className="dropdown-item has-icon"
@@ -106,3 +114,11 @@ export default function HeaderComponent() {
         </nav>
     );
 }
+
+const mapStateToProps = ( state ) => ( {
+    profile: state.Profile,
+} );
+  
+const mapDispatchToProps = null;
+
+export default connect(mapStateToProps, mapDispatchToProps)( HeaderComponent );

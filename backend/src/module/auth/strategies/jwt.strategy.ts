@@ -25,8 +25,9 @@ export class JwtStrategy extends PassportStrategy( Strategy ) {
 
     async validate( payload: JwtPayload ): Promise<Usuario> {
         const { idusuario } = payload;
-        const usuario = await this.usuarioRepository.findOneBy( {
-            idusuario: idusuario,
+        const usuario = await this.usuarioRepository.findOne( {
+            where: { idusuario, },
+            relations: { profile: true, },
         } );
         if ( !usuario ) {
             throw new UnauthorizedException( "Usuario no existe." );

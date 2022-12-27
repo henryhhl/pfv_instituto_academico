@@ -2,32 +2,10 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-export default function SidebarComponent() {
-    const [ subMenu, setSubMenu ] = React.useState( {
-        oportunidad: {
-            active: false,
-        },
-        ofertaacademica: {
-            active: false,
-        },
-        persona: {
-            active: false,
-        },
-        estructurainstitucional: {
-            active: false,
-        },
-        estructuraacademica: {
-            active: false,
-        },
-        parametros: {
-            active: false,
-        },
-        seguridad: {
-            active: false,
-        },
-    } );
-    
+const SidebarComponent = (props) => {
+    const { profile } = props;
     return (
         <div className="main-sidebar">
             <aside id="sidebar-wrapper">
@@ -38,10 +16,14 @@ export default function SidebarComponent() {
                 </div>
                 <div className="sidebar-user">
                     <div className="sidebar-user-picture">
-                        <img alt="image" src="/assets/img/photo_ericka.jpeg" />
+                        <img alt="image" 
+                            src={ `${ (profile.imagen !== null && profile.imagen !== "") ? profile.imagen : '/assets/img/profile.png'}` } 
+                        />
                     </div>
                     <div className="sidebar-user-details">
-                        <div className="user-name">Ericka Lopez</div>
+                        <div className="user-name">
+                            { props.profile.nombreprincipal ?? 'S/N' }
+                        </div>
                         <div className="user-role">
                             Administrador
                         </div>
@@ -987,3 +969,11 @@ export default function SidebarComponent() {
         </div>
     );
 };
+
+const mapStateToProps = ( state ) => ( {
+    profile: state.Profile,
+} );
+  
+const mapDispatchToProps = null;
+
+export default connect(mapStateToProps, mapDispatchToProps)( SidebarComponent );

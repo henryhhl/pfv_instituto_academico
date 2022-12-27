@@ -22,6 +22,15 @@ const onLimpiar = () => {
     };
 };
 
+const setNombrePrincipal = (register, value) => {
+    return ( dispatch ) => {
+        register.nombreprincipal = value;
+        register.error.nombreprincipal = false;
+        register.message.nombreprincipal = "";
+        dispatch( onChange(register) );
+    };
+};
+
 const setEmail = (register, value) => {
     return ( dispatch ) => {
         register.email = value;
@@ -72,6 +81,12 @@ const onRegister = ( register, onBack ) => {
 };
 
 function onValidate( data ) {
+    if ( data.nombreprincipal.toString().trim().length === 0 ) {
+        data.error.nombreprincipal   = true;
+        data.message.nombreprincipal = "Campo requerido.";
+        toastr.warning( 'Campo Nombre requerido.', 'Advertencia', { closeButton: true, progressBar: true, } );
+        return false;
+    }
     if ( data.email.toString().trim().length === 0 ) {
         data.error.email   = true;
         data.message.email = "Campo requerido.";
@@ -137,6 +152,7 @@ function onValidate( data ) {
 
 export const RegisterActions = {
     onLimpiar,
+    setNombrePrincipal,
     setEmail,
     setLogin,
     setPassword,

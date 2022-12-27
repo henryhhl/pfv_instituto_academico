@@ -57,6 +57,7 @@ import { TipoResultadoModule } from './module/oportunidad/tiporesultado/tiporesu
 import { InscripcionProgramaModule } from './module/inscripcion/inscripcionprograma/inscripcionprograma.module';
 import { InscripcionGrupoModule } from './module/inscripcion/inscripciongrupo/inscripciongrupo.module';
 import { InscripcioncursoModule } from './module/inscripcion/inscripcioncurso/inscripcioncurso.module';
+import { ProfileModule } from './module/seguridad/profile/profile.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -111,7 +112,7 @@ import { InscripcioncursoModule } from './module/inscripcion/inscripcioncurso/in
     AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
     TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, 
     AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule, 
-    TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule,
+    TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, ProfileModule,
   ],
   controllers: [],
   providers: [],
