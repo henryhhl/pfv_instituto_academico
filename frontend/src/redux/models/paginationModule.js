@@ -277,6 +277,13 @@ const PaginationModule = {
     },
 
 
+    listBitacora: [],
+    pageBitacora: 1,
+    paginateBitacora: 1,
+    paginationBitacora: {
+        total: 0,
+    },
+
     listTipoPermiso: [],
     pageTipoPermiso: 1,
     paginateTipoPermiso: 1,

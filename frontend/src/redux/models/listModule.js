@@ -10,6 +10,7 @@ const ListModules = {
     listMateria: [],
     listTipoCiudad: [],
 
+    listBitacora: [],
     listRol: [],
     listPermiso: [],
     listTipoRol: [],

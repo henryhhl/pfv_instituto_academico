@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put, Ip, HostParam, Request } from '@nestjs/common';
 import { TipoIdentificacionService } from './tipoidentificacion.service';
 import { CreateTipoIdentificacionDto } from './dto/create-tipoidentificacion.dto';
 import { UpdateTipoIdentificacionDto } from './dto/update-tipoidentificacion.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
+import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
+import { GetUser } from '../../auth/decorators/get-user.decorator';
 
 @Controller('tipoidentificacion')
 export class TipoIdentificacionController {
@@ -17,8 +19,8 @@ export class TipoIdentificacionController {
 
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store(@Body() createTipoIdentificacionDto: CreateTipoIdentificacionDto) {
-    return this.tipoidentificacionService.store(createTipoIdentificacionDto);
+  store( @Ip() ipHost,  @GetUser() user: Usuario, @Body() createTipoIdentificacionDto: CreateTipoIdentificacionDto ) {
+    return this.tipoidentificacionService.store(createTipoIdentificacionDto, ipHost, user);
   }
 
   @Get('/edit/:idtipoidentificacion')

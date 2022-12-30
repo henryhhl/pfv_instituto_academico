@@ -60,6 +60,7 @@ import { InscripcionProgramaReducer } from '../reducers/inscripcion/inscripcionp
 import { InscripcionCursoReducer } from '../reducers/inscripcion/inscripcioncurso.reducer';
 import { InscripcionGrupoReducer } from '../reducers/inscripcion/inscripciongrupo.reducer';
 import { ProfileReducer } from '../reducers/auth/profile.reducer';
+import { BitacoraReducer } from '../reducers/seguridad/bitacora.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -67,6 +68,7 @@ const RootReducer = combineReducers( {
     Sesion: SesionReducer,
     Profile: ProfileReducer,
     
+    Bitacora: BitacoraReducer,
     Rol: RolReducer,
     Permiso: PermisoReducer,
     TipoPermiso: TipoPermisoReducer,

@@ -3,8 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
+import { BitacoraService } from '../../seguridad/bitacora/bitacora.service';
 import { CreateTipoIdentificacionDto } from './dto/create-tipoidentificacion.dto';
 import { UpdateTipoIdentificacionDto } from './dto/update-tipoidentificacion.dto';
+import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
 
 @Injectable()
 export class TipoIdentificacionService {
@@ -13,6 +15,8 @@ export class TipoIdentificacionService {
   constructor(
     @InjectRepository(TipoIdentificacion)
     private readonly tipoIdentificacionRepository: Repository<TipoIdentificacion>,
+
+    private readonly bitacoraService: BitacoraService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -76,18 +80,28 @@ export class TipoIdentificacionService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createTipoidentificacionDto: CreateTipoIdentificacionDto) {
+  async store(createTipoidentificacionDto: CreateTipoIdentificacionDto, ip: string, usuario: Usuario) {
     try {
-      const tipoIdentificacion = this.tipoIdentificacionRepository.create( {
+      const tipoIdentificacionCreate = this.tipoIdentificacionRepository.create( {
         sigla: createTipoidentificacionDto.sigla,
         descripcion: createTipoidentificacionDto.descripcion,
         created_at: this.getDateTime(),
       } );
-      await this.tipoIdentificacionRepository.save( tipoIdentificacion );
+      const tipoIdentificacionSave = await this.tipoIdentificacionRepository.save( tipoIdentificacionCreate );
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: tipoIdentificacionSave.idtipoidentificacion,
+        tabla: 'tipoidentificacion',
+        accion: 'Registrar Tipo de Identificación',
+        descripcion: `Se realizo con éxito al registrar tipo de Identificación: ${tipoIdentificacionSave.descripcion}`,
+        event: 'store',
+        ip: ip, uri: '/api/v1/tipoidentificacion/store',
+        x_fecha: createTipoidentificacionDto.x_fecha, x_hora: createTipoidentificacionDto.x_hora,
+      } );
       return {
         resp: 1, error: false,
         message: 'Tipo Identificación registrado éxitosamente.',
-        tipoIdentificacion: tipoIdentificacion,
+        tipoIdentificacion: tipoIdentificacionSave,
       };
     } catch (error) {
       this.logger.error(error);
@@ -99,10 +113,14 @@ export class TipoIdentificacionService {
   }
 
   async findOne(idtipoidentificacion: string) {
-    const tipoIdentificacion = await this.tipoIdentificacionRepository.findOneBy( {
-      idtipoidentificacion: idtipoidentificacion,
-    } );
-    return tipoIdentificacion;
+    try {
+      const tipoIdentificacion = await this.tipoIdentificacionRepository.findOneBy( {
+        idtipoidentificacion: idtipoidentificacion,
+      } );
+      return tipoIdentificacion;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idtipoidentificacion: string) {

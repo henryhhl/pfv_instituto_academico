@@ -259,6 +259,37 @@ const ColumnModules = {
         },
     ],
 
+
+
+    columnBitacora: [
+        {
+            id: 'usuario',
+            label: 'Usuario',
+            object: true,
+            value: 'nombreprincipal',
+        },
+        {
+            id: 'ip',
+            label: 'IP',
+        },
+        {
+            id: 'accion',
+            label: 'Acción',
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+        },
+        {
+            id: 'x_fecha',
+            label: 'Fecha',
+        },
+        {
+            id: 'x_hora',
+            label: 'Hora',
+        },
+    ],
+
     columnTipoPermiso: [
         {
             id: 'descripcion',

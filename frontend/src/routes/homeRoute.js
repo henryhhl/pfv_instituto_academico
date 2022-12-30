@@ -6,6 +6,9 @@ import AppMain from '../layouts/app';
 
 import Error404 from '../errors/errors404';
 
+import IndexBitacora from '../screens/modules/seguridad/bitacora/bitacora.index';
+import ShowBitacora from '../screens/modules/seguridad/bitacora/bitacora.show';
+
 import IndexTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.index';
 import CreateTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.create';
 import EditTipoRol from '../screens/modules/seguridad/tiporol/tipo_rol.edit';
@@ -237,6 +240,9 @@ const HomeRoute = (props) => {
                 <Route path="/" element={<AppMain />}>
                     <Route index path="/" element={ <InicioPage { ...props } /> }  />
                     <Route index path="/profile" element={ <ProfilePage { ...props } /> }  />
+
+                    <Route index path="/bitacora/index" element={ <IndexBitacora { ...props } /> }  />
+                    <Route index path="/bitacora/show/:idbitacora" element={ <ShowBitacora { ...props } /> }  />
 
                     <Route index path="/tipo_rol/index" element={ <IndexTipoRol { ...props } /> }  />
                     <Route index path="/tipo_rol/create" element={ <CreateTipoRol { ...props } /> }  />

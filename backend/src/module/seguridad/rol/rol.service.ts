@@ -102,10 +102,14 @@ export class RolService {
   }
 
   async findOne(idrol: string) {
-    const rol = await this.rolRepository.findOneBy( {
-      idrol: idrol,
-    } );
-    return rol;
+    try {
+      const rol = await this.rolRepository.findOneBy( {
+        idrol: idrol,
+      } );
+      return rol;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit( idrol: string ) {

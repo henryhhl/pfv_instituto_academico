@@ -3,26 +3,26 @@ import axios from 'axios';
 import { readData } from './toolsStorage';
 import { KeysStorage } from './keysStorage';
 
-// const dateToString = ( date = new Date() ) => {
-//     let year  = date.getFullYear();
-//     let month = date.getMonth() + 1;
-//     let day   = date.getDate();
+export const dateToString = ( date = new Date() ) => {
+    let year  = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day   = date.getDate();
 
-//     month = month < 10 ? "0" + month : month;
-//     day   = day   < 10 ? "0" + day : day;
+    month = month < 10 ? "0" + month : month;
+    day   = day   < 10 ? "0" + day : day;
 
-//     return year + "-" + month + "-" + day;
-// };
+    return year + "-" + month + "-" + day;
+};
 
-// const hourToString = ( date = new Date() ) => {
-//     let hour     = date.getHours();
-//     let minutes  = date.getMinutes();
-//     let segundos = date.getSeconds();
-//     hour     = hour < 10 ? "0" + hour : hour;
-//     minutes  = minutes < 10 ? "0" + minutes : minutes;
-//     segundos = segundos < 10 ? "0" + segundos : segundos;
-//     return hour + ":" + minutes + ":" + segundos;
-// };
+export const hourToString = ( date = new Date() ) => {
+    let hour     = date.getHours();
+    let minutes  = date.getMinutes();
+    let segundos = date.getSeconds();
+    hour     = hour < 10 ? "0" + hour : hour;
+    minutes  = minutes < 10 ? "0" + minutes : minutes;
+    segundos = segundos < 10 ? "0" + segundos : segundos;
+    return hour + ":" + minutes + ":" + segundos;
+};
 
 export const httpRequest = async ( method = "", uri, data = {} ) => {
     const token = readData(KeysStorage.token);

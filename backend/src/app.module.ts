@@ -58,6 +58,7 @@ import { InscripcionProgramaModule } from './module/inscripcion/inscripcionprogr
 import { InscripcionGrupoModule } from './module/inscripcion/inscripciongrupo/inscripciongrupo.module';
 import { InscripcioncursoModule } from './module/inscripcion/inscripcioncurso/inscripcioncurso.module';
 import { ProfileModule } from './module/seguridad/profile/profile.module';
+import { BitacoraModule } from './module/seguridad/bitacora/bitacora.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -112,7 +113,7 @@ import { ProfileModule } from './module/seguridad/profile/profile.module';
     AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
     TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, 
     AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule, 
-    TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, ProfileModule,
+    TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, ProfileModule, BitacoraModule,
   ],
   controllers: [],
   providers: [],

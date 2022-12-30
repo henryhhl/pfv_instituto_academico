@@ -95,10 +95,14 @@ export class TipoRolService {
     }
 
     async findOne(idtiporol: string) {
-        const tipoRol = await this.tipoRolRepository.findOneBy( {
-            idtiporol: idtiporol,
-        } );
-        return tipoRol;
+        try {
+            const tipoRol = await this.tipoRolRepository.findOneBy( {
+                idtiporol: idtiporol,
+            } );
+            return tipoRol;
+        } catch (error) {
+            return null;
+        }
     }
 
     async edit( idtiporol: string ) {

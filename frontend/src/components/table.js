@@ -46,9 +46,7 @@ export default function TableComponent( props ) {
                                         style={{ 
                                             width: column.width === null ? 'auto' : column.width,
                                             textAlign: `${column.numeric === true ? 'right' : 'left'}`,
-                                            paddingRight: 10,
-                                            paddingLeft: 10,
-                                            fontSize: 12,
+                                            paddingRight: 10, paddingLeft: 10, fontSize: 12,
                                         }}
                                     >
                                         { column.label }
@@ -61,7 +59,6 @@ export default function TableComponent( props ) {
                                 </th>
                             }
                         </tr>
-                        {/* e0f3ff */}
                         { props.dataSource.map( ( row, index ) => {
                             let style = {};
                             if ( props.select === true ) {
@@ -127,7 +124,8 @@ export default function TableComponent( props ) {
                                                         </Tag>
                                                     : column.numeric === true ? 
                                                         parseFloat(row[column.id]).toFixed(2) :
-                                                        column.amountday === true ? amountday : row[column.id] 
+                                                        column.amountday === true ? amountday 
+                                                    : column.object === true ? row[column.id][column.value] : row[column.id] 
                                                     
                                                 }
                                                 { column.suffix && column.suffix }

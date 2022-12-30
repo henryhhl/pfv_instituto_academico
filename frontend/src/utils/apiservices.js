@@ -22,6 +22,9 @@ const apiServices = {
     apiauth_validateToken:  `${module.auth}/auth/validateToken`,
     apiauth_updateProfile:  `${module.auth}/profile/store`,
 
+    apiseguridadbitacora_index:  `${module.seguridad}/bitacora/index`,
+    apiseguridadbitacora_show:  `${module.seguridad}/bitacora/show`,
+
     apiseguridadtiporol_index:  `${module.seguridad}/tiporol/index`,
     apiseguridadtiporol_create: `${module.seguridad}/tiporol/create`,
     apiseguridadtiporol_store:  `${module.seguridad}/tiporol/store`,

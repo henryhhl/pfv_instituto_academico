@@ -95,10 +95,14 @@ export class TipoPermisoService {
     }
 
     async findOne(idtipopermiso: string) {
-        const tipoPermiso = await this.tipoPermisoRepository.findOneBy( {
-            idtipopermiso: idtipopermiso,
-        } );
-        return tipoPermiso;
+        try {
+            const tipoPermiso = await this.tipoPermisoRepository.findOneBy( {
+                idtipopermiso: idtipopermiso,
+            } );
+            return tipoPermiso;
+        } catch (error) {
+            return null;
+        }
     }
 
     async edit( idtipopermiso: string ) {

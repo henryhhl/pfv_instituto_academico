@@ -1,6 +1,6 @@
 
 import apiServices from "../../../utils/apiservices";
-import { httpRequest } from "../../../utils/httpRequest";
+import { dateToString, hourToString, httpRequest } from "../../../utils/httpRequest";
 import Swal from 'sweetalert2';
 import toastr from 'toastr';
 
@@ -34,6 +34,8 @@ const onStore = async (body) => {
     return await httpRequest('post', apiServices.apipersonatipoidentificacion_store, {
         sigla: body.sigla,
         descripcion: body.descripcion,
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {

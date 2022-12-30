@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { TipoIdentificacionService } from './tipoidentificacion.service';
-import { TipoIdentificacionController } from './tipoidentificacion.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
 import { AuthModule } from '../../auth/auth.module';
+import { TipoIdentificacionService } from './tipoidentificacion.service';
+import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
+import { BitacoraModule } from '../../seguridad/bitacora/bitacora.module';
+import { TipoIdentificacionController } from './tipoidentificacion.controller';
 
 @Module({
   controllers: [TipoIdentificacionController],
@@ -13,6 +14,7 @@ import { AuthModule } from '../../auth/auth.module';
       TipoIdentificacion
     ] ),
     AuthModule,
+    BitacoraModule,
   ],
 })
 export class TipoIdentificacionModule {}

@@ -1,11 +1,19 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Profile } from '../../profile/entities/profile.entity';
+import { Bitacora } from '../../bitacora/entities/bitacora.entity';
 
 @Entity('usuario')
 export class Usuario {
 
     @PrimaryGeneratedColumn('uuid')
     idusuario: string;
+
+    @OneToMany(
+        () => Bitacora,
+        ( bitacora ) => bitacora.usuario,
+        { cascade: true, },
+    )
+    arraybitacora?: Bitacora[];
 
     @ManyToOne(
         ( ) => Profile,
