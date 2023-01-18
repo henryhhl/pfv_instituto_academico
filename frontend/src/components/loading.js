@@ -21,7 +21,7 @@ function LoadingComponent( props ) {
         <>
             <Modal
                 title={null}
-                visible={props.visible}
+                open={props.visible}
                 centered={ true }
 
                 width={ props.width }

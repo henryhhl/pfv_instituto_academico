@@ -1,6 +1,35 @@
 
 const ColumnModules = {
 
+    columnParametroCalificacion: [
+        {
+            id: 'sigla',
+            label: 'Sigla',
+            visible: true,
+        },
+        {
+            id: 'descripcion',
+            label: 'Descripción',
+            visible: true,
+        },
+
+        {
+            id: 'valorporcentaje',
+            label: '%Porcentaje',
+            numeric: true,
+            suffix: '%',
+            visible: true,
+        },
+        {
+            id: 'estado',
+            label: 'Estado',
+            visible: true,
+            state: true,
+        },
+    ],
+
+
+
     columnInscripcionPrograma: [
         {
             id: 'registroestudiante',
@@ -275,10 +304,6 @@ const ColumnModules = {
         {
             id: 'accion',
             label: 'Acción',
-        },
-        {
-            id: 'descripcion',
-            label: 'Descripción',
         },
         {
             id: 'x_fecha',

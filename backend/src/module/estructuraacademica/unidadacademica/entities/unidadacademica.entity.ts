@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { InscripcionCurso } from 'src/module/inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
-import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
+import { InscripcionCurso } from 'src/module/inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
+import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
+import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 
 @Entity('unidadacademica')
 export class UnidadAcademica {
@@ -27,6 +28,12 @@ export class UnidadAcademica {
         ( inscripcionGrupo ) => inscripcionGrupo.unidadacademica,
     )
     arrayinscripciongrupo?: InscripcionGrupo[];
+
+    @OneToMany(
+        () => GrupoMateriaDetalle,
+        ( grupoPensumDetalle ) => grupoPensumDetalle.unidadNegocio,
+    )
+    arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
 
 
     @Column('text')

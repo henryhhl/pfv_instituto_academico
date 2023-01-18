@@ -211,6 +211,9 @@ function CreateGrupo( props ) {
                     detalle.arraydia[index].arrayhorario = [ ...detalle.arraydia[index].arrayhorario, data ];
                     props.onChange(grupo);
                 } }
+                onChange={ () => {
+                    props.onChange(grupo);
+                } }
                 arraydia={detalle ? detalle.arraydia: []}
                 materia={ detalle ? detalle.materia : "" }
                 docente={ detalle ? detalle.docente : "" }
@@ -232,7 +235,9 @@ function CreateGrupo( props ) {
                     footer={
                         <>
                             <ButtonComponent
-                                onClick={ () => props.onStore(grupo, onBack) }
+                                onClick={ () => {
+                                    props.onStore(grupo, onBack);
+                                } }
                             >
                                 Guardar
                             </ButtonComponent>
@@ -269,7 +274,7 @@ function CreateGrupo( props ) {
                                     <InputComponent
                                         label="Grupo*"
                                         value={grupo.sigla}
-                                        onChange={ (value) => props.setSigla(grupo, value) }
+                                        onChange={ (value) => props.setSigla(grupo, value.toUpperCase()) }
                                         error={grupo.error.sigla}
                                         message={grupo.message.sigla}
                                     />
@@ -283,7 +288,7 @@ function CreateGrupo( props ) {
                                         fullWidth
                                         onClick={props.onAddRowPensum}
                                     >
-                                        Agregar
+                                        Agregar Materia
                                     </ButtonComponent>
                                 </div>
                             </div>

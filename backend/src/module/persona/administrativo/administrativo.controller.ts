@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put, Request } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { AdministrativoService } from './administrativo.service';
 import { CreateAdministrativoDto } from './dto/create-administrativo.dto';
 import { UpdateAdministrativoDto } from './dto/update-administrativo.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
+import { GetUser } from '../../auth/decorators/get-user.decorator';
+import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
 
 @Controller('administrativo')
 export class AdministrativoController {
@@ -17,7 +19,10 @@ export class AdministrativoController {
 
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store(@Body() createAdministrativoDto: CreateAdministrativoDto) {
+  store(@Request() request,  @GetUser() user: Usuario, @Body() createAdministrativoDto: CreateAdministrativoDto) {
+    createAdministrativoDto.ip = request.ip;
+    createAdministrativoDto.originalUrl = request.originalUrl;
+    createAdministrativoDto.usuario = user;
     return this.administrativoService.store(createAdministrativoDto);
   }
 
@@ -47,7 +52,8 @@ export class AdministrativoController {
 
   @Delete('/delete/:idadministrativo')
   @Auth( /**  N Permissions */ )
-  delete(@Param('idadministrativo') idadministrativo: string) {
-    return this.administrativoService.delete(idadministrativo);
+  delete(@Query() query, @Request() request, @GetUser() user: Usuario, @Param('idadministrativo') idadministrativo: string) {
+    const { ip, originalUrl, method } = request;
+    return this.administrativoService.delete(idadministrativo, { usuario: user, ip, originalUrl, query });
   }
 }

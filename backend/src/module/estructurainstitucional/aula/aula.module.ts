@@ -8,6 +8,7 @@ import { AuthModule } from '../../auth/auth.module';
 @Module({
   controllers: [AulaController],
   providers: [AulaService],
+  exports: [AulaService],
   imports: [
     TypeOrmModule.forFeature( [
       Aula,

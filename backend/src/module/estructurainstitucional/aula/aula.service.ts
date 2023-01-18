@@ -98,10 +98,14 @@ export class AulaService {
   }
 
   async findOne(idaula: string) {
-    const aula = await this.aulaRepository.findOneBy( {
-      idaula: idaula,
-    } );
-    return aula;
+    try {
+      const aula = await this.aulaRepository.findOneBy( {
+        idaula: idaula,
+      } );
+      return aula;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idaula: string) {

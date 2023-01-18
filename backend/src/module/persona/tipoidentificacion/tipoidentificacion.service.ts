@@ -6,7 +6,6 @@ import { TipoIdentificacion } from './entities/tipoidentificacion.entity';
 import { BitacoraService } from '../../seguridad/bitacora/bitacora.service';
 import { CreateTipoIdentificacionDto } from './dto/create-tipoidentificacion.dto';
 import { UpdateTipoIdentificacionDto } from './dto/update-tipoidentificacion.dto';
-import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
 
 @Injectable()
 export class TipoIdentificacionService {
@@ -80,7 +79,7 @@ export class TipoIdentificacionService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createTipoidentificacionDto: CreateTipoIdentificacionDto, ip: string, usuario: Usuario) {
+  async store(createTipoidentificacionDto: CreateTipoIdentificacionDto, {  usuario, ip, originalUrl } ) {
     try {
       const tipoIdentificacionCreate = this.tipoIdentificacionRepository.create( {
         sigla: createTipoidentificacionDto.sigla,
@@ -93,9 +92,9 @@ export class TipoIdentificacionService {
         fkidtabla: tipoIdentificacionSave.idtipoidentificacion,
         tabla: 'tipoidentificacion',
         accion: 'Registrar Tipo de Identificación',
-        descripcion: `Se realizo con éxito al registrar tipo de Identificación: ${tipoIdentificacionSave.descripcion}`,
+        descripcion: `Se realizo con éxito al registrar Tipo de Identificación: ${tipoIdentificacionSave.descripcion}`,
         event: 'store',
-        ip: ip, uri: '/api/v1/tipoidentificacion/store',
+        ip: ip, uri: originalUrl,
         x_fecha: createTipoidentificacionDto.x_fecha, x_hora: createTipoidentificacionDto.x_hora,
       } );
       return {
@@ -208,7 +207,7 @@ export class TipoIdentificacionService {
     }
   }
 
-  async delete(idtipoidentificacion: string) {
+  async delete(idtipoidentificacion: string, { usuario, ip, originalUrl, query }) {
     try {
       let tipoIdentificacion = await this.findOne(idtipoidentificacion);
       if ( tipoIdentificacion === null ) {
@@ -217,11 +216,21 @@ export class TipoIdentificacionService {
           message: 'Tipo Identificacion no existe.',
         };
       }
-      await this.tipoIdentificacionRepository.remove( tipoIdentificacion );
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: tipoIdentificacion.idtipoidentificacion,
+        tabla: 'tipoidentificacion',
+        accion: 'Eliminar Tipo de Identificación',
+        descripcion: `Se realizo con éxito al eliminar Tipo de Identificación: ${tipoIdentificacion.descripcion}`,
+        event: 'delete',
+        ip: ip, uri: originalUrl,
+        x_fecha: query.x_fecha, x_hora: query.x_hora,
+      } );
+      const tipoIdentificacionDelete = await this.tipoIdentificacionRepository.remove( tipoIdentificacion );
       return {
         resp: 1, error: false,
         message: 'Tipo Identificacion eliminado éxitosamente.',
-        tipoIdentificacion: tipoIdentificacion,
+        tipoIdentificacion: tipoIdentificacionDelete,
       };
     } catch (error) {
       this.logger.error(error);

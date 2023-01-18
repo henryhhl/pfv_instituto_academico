@@ -9,6 +9,7 @@ import { AdministrativoEstudioDetalle } from './entities/administrativoestudiode
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
 import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
+import { BitacoraService } from '../../seguridad/bitacora/bitacora.service';
 
 @Injectable()
 export class AdministrativoService {
@@ -31,6 +32,8 @@ export class AdministrativoService {
     private readonly administrativoEstudioDetalleRepository: Repository<AdministrativoEstudioDetalle>,
 
     private readonly dataSource: DataSource,
+
+    private readonly bitacoraService: BitacoraService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -106,10 +109,11 @@ export class AdministrativoService {
 
   async store(createAdministrativoDto: CreateAdministrativoDto) {
     try {
-      const administrativo = this.administrativoRepository.create( {
+      const administrativoCreate = this.administrativoRepository.create( {
         ...createAdministrativoDto,
 
-        arraynacionalidad: createAdministrativoDto.arraynacionalidad?.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
+        arraynacionalidad: createAdministrativoDto.arraynacionalidad?.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) 
+        ).map( ( ciudad ) => {
           return this.administrativoNacionalidadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
@@ -117,7 +121,8 @@ export class AdministrativoService {
           } );
         } ),
 
-        arraycategoriadocumento: createAdministrativoDto.arraycategoriadocumento?.filter( ( item ) => ( item.fkidcategoriadocumento !== null ) ).map( ( item ) => {
+        arraycategoriadocumento: createAdministrativoDto.arraycategoriadocumento?.filter( ( item ) => ( item.fkidcategoriadocumento !== null ) 
+        ).map( ( item ) => {
           return this.administrativoCategoriaDocumentoDetalleRepository.create( {
             fkidcategoriadocumento: item.fkidcategoriadocumento,
             categoriadocumento: item.categoriadocumento,
@@ -141,11 +146,32 @@ export class AdministrativoService {
         arrayreferenciacontactos: [],
         created_at: this.getDateTime(),
       } );
-      await this.administrativoRepository.save( administrativo );
+      const administrativoSave = await this.administrativoRepository.save( administrativoCreate );
+
+      let nameComplete = administrativoSave.apellidoprimero ?? '';
+      if ( administrativoSave.apellidosegundo !== null ) {
+        nameComplete += ` ${administrativoSave.apellidosegundo}`;
+      }
+      nameComplete += ` ${administrativoSave.nombreprincipal}`;
+      if ( administrativoSave.nombreadicional !== null ) {
+        nameComplete += ` ${administrativoSave.nombreadicional}`;
+      }
+
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: createAdministrativoDto.usuario,
+        fkidtabla: administrativoSave.idadministrativo,
+        tabla: 'administrativo',
+        accion: 'Registrar Administrativo',
+        descripcion: `Se realizo con éxito al registrar Administrativo: ${nameComplete}`,
+        event: 'store',
+        ip: createAdministrativoDto.ip, uri: createAdministrativoDto.originalUrl,
+        x_fecha: createAdministrativoDto.x_fecha, x_hora: createAdministrativoDto.x_hora,
+      } );
+
       return {
         resp: 1, error: false,
         message: 'Administrativo registrado éxitosamente.',
-        administrativo: administrativo,
+        administrativo: administrativoSave,
       };
     } catch (error) {
       this.logger.error(error);
@@ -157,14 +183,18 @@ export class AdministrativoService {
   }
 
   async findOne(idadministrativo: string) {
-    const administrativo = await this.administrativoRepository.findOne( {
-      where: { idadministrativo: idadministrativo },
-      relations: { 
-        arraynacionalidad: true, arraycategoriadocumento: true, 
-        arrayestudio: true,
-      },
-    } );
-    return administrativo;
+    try {
+      const administrativo = await this.administrativoRepository.findOne( {
+        where: { idadministrativo: idadministrativo },
+        relations: { 
+          arraynacionalidad: true, arraycategoriadocumento: true, 
+          arrayestudio: true,
+        },
+      } );
+      return administrativo;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idadministrativo: string) {
@@ -304,7 +334,7 @@ export class AdministrativoService {
     }
   }
 
-  async delete(idadministrativo: string) {
+  async delete(idadministrativo: string, { usuario, ip, originalUrl, query }) {
     try {
       let administrativo = await this.findOne(idadministrativo);
       if ( administrativo === null ) {
@@ -313,11 +343,30 @@ export class AdministrativoService {
           message: 'Administrativo no existe.',
         };
       }
-      await this.administrativoRepository.remove( administrativo );
+      let nameComplete = administrativo.apellidoprimero ?? '';
+      if ( administrativo.apellidosegundo !== null ) {
+        nameComplete += ` ${administrativo.apellidosegundo}`;
+      }
+      nameComplete += ` ${administrativo.nombreprincipal}`;
+      if ( administrativo.nombreadicional !== null ) {
+        nameComplete += ` ${administrativo.nombreadicional}`;
+      }
+
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: administrativo.idadministrativo,
+        tabla: 'administrativo',
+        accion: 'Eliminar Administrativo',
+        descripcion: `Se realizo con éxito al eliminar Administrativo: ${nameComplete}`,
+        event: 'delete',
+        ip: ip, uri: originalUrl,
+        x_fecha: query.x_fecha, x_hora: query.x_hora,
+      } );
+      const administrativoDelete = await this.administrativoRepository.remove( administrativo );
       return {
         resp: 1, error: false,
         message: 'Administrativo eliminado éxitosamente.',
-        administrativo: administrativo,
+        administrativo: administrativoDelete,
       };
     } catch (error) {
       this.logger.error(error);

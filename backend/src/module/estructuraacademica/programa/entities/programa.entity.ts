@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ProgramaDivisionAcademicaDetalle } from './programadivisionacademicadetalle.entity';
-import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
+import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
+import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 
 @Entity('programa')
 export class Programa {
@@ -27,6 +28,12 @@ export class Programa {
         { cascade: true, eager: true, },
     )
     arraydivisionacademica?: ProgramaDivisionAcademicaDetalle[];
+
+    @OneToMany(
+        () => GrupoMateriaDetalle,
+        ( grupoPensumDetalle ) => grupoPensumDetalle.programa,
+    )
+    arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
 
     @Column('text')
     fkidunidadadministrativa: string;

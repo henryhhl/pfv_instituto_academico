@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { GrupoPensumMateriaDetalle } from './grupopensummateria.entity';
+import { GrupoMateriaDetalle } from './grupomateriadetalle.entity';
 import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 
 @Entity('grupo')
@@ -10,21 +10,19 @@ export class Grupo {
 
     @OneToMany(
         () => InscripcionGrupo,
-        ( inscripcionGrupo ) => inscripcionGrupo.pensum,
+        ( item ) => item.pensum,
     )
     arrayinscripciongrupo?: InscripcionGrupo[];
 
     @OneToMany(
-        () => GrupoPensumMateriaDetalle,
-        ( grupoPensumMateriaDetalle ) => grupoPensumMateriaDetalle.grupo,
+        () => GrupoMateriaDetalle,
+        ( item ) => item.grupo,
         { cascade: true, },
     )
-    arraygrupopensummateriadetalle?: GrupoPensumMateriaDetalle[];
+    arrayGrupoMateriaDetalle?: GrupoMateriaDetalle[];
 
 
-    @Column( 'text', {
-        unique: false,
-    } )
+    @Column( 'text' )
     sigla: string;
 
     @Column( 'enum', {

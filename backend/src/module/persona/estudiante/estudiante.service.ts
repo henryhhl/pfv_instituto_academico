@@ -8,6 +8,7 @@ import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { EstudianteCiudadDetalle } from './entities/estudianteciudaddetalle.entity';
 import { EstudianteFamiliarDetalle } from './entities/estudiantefamiliardetalle.entity';
 import { EstudianteCategoriaDocumentoDetalle } from './entities/estudiantecategoriadocumentodetalle.entity';
+import { BitacoraService } from '../../seguridad/bitacora/bitacora.service';
 
 @Injectable()
 export class EstudianteService {
@@ -27,6 +28,8 @@ export class EstudianteService {
     private readonly estudianteFamiliarDetalleRepository: Repository<EstudianteFamiliarDetalle>,
 
     private readonly dataSource: DataSource,
+
+    private readonly bitacoraService: BitacoraService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -123,10 +126,10 @@ export class EstudianteService {
     return `${year}${month}${milliSeconds}${minutes}${hour}${segundos}${day}`;
   }
 
-  async store(createEstudianteDto: CreateEstudianteDto) {
+  async store(createEstudianteDto: CreateEstudianteDto, {  usuario, ip, originalUrl }) {
     try {
       const { arraycategoriadocumento, arraynacionalidad, arrayfamiliar, ...toCreate } = createEstudianteDto;
-      const estudiante = this.estudianteRepository.create( {
+      const estudianteCreate = this.estudianteRepository.create( {
         ...toCreate,
         numeroregistro: this.generateRegistro(),
         arraycategoriadocumento: arraycategoriadocumento?.filter( 
@@ -153,11 +156,29 @@ export class EstudianteService {
         } ),
         created_at: this.getDateTime(),
       } );
-      await this.estudianteRepository.save( estudiante );
+      const estudianteSave = await this.estudianteRepository.save( estudianteCreate );
+      let nameComplete = estudianteSave.apellidoprimero ?? '';
+      if ( estudianteSave.apellidosegundo !== null ) {
+        nameComplete += ` ${estudianteSave.apellidosegundo}`;
+      }
+      nameComplete += ` ${estudianteSave.nombreprincipal}`;
+      if ( estudianteSave.nombreadicional !== null ) {
+        nameComplete += ` ${estudianteSave.nombreadicional}`;
+      }
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: estudianteSave.idestudiante,
+        tabla: 'estudiante',
+        accion: 'Registrar Estudiante',
+        descripcion: `Se realizo con éxito al registrar Estudiante: ${nameComplete}`,
+        event: 'store',
+        ip: ip, uri: originalUrl,
+        x_fecha: createEstudianteDto.x_fecha, x_hora: createEstudianteDto.x_hora,
+      } );
       return {
         resp: 1, error: false,
         message: 'Estudiante registrado éxitosamente.',
-        estudiante: estudiante,
+        estudiante: estudianteSave,
       };
     } catch (error) {
       this.logger.error(error);
@@ -308,7 +329,7 @@ export class EstudianteService {
     }
   }
 
-  async delete(idestudiante: string) {
+  async delete(idestudiante: string, { usuario, ip, originalUrl, query }) {
     try {
       let estudiante = await this.findOne(idestudiante);
       if ( estudiante === null ) {
@@ -317,11 +338,29 @@ export class EstudianteService {
           message: 'Estudiante no existe.',
         };
       }
-      await this.estudianteRepository.remove( estudiante );
+      let nameComplete = estudiante.apellidoprimero ?? '';
+      if ( estudiante.apellidosegundo !== null ) {
+        nameComplete += ` ${estudiante.apellidosegundo}`;
+      }
+      nameComplete += ` ${estudiante.nombreprincipal}`;
+      if ( estudiante.nombreadicional !== null ) {
+        nameComplete += ` ${estudiante.nombreadicional}`;
+      }
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: estudiante.idestudiante,
+        tabla: 'estudiante',
+        accion: 'Eliminar Estudiante',
+        descripcion: `Se realizo con éxito al eliminar Estudiante: ${nameComplete}`,
+        event: 'delete',
+        ip: ip, uri: originalUrl,
+        x_fecha: query.x_fecha, x_hora: query.x_hora,
+      } );
+      const estudianteDelete = await this.estudianteRepository.remove( estudiante );
       return {
         resp: 1, error: false,
         message: 'Estudiante eliminado éxitosamente.',
-        estudiante: estudiante,
+        estudiante: estudianteDelete,
       };
     } catch (error) {
       this.logger.error(error);

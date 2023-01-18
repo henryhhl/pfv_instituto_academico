@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import ModalComponent from '../../../../../components/modal';
 import ButtonComponent from '../../../../../components/button';
-import { Functions } from '../../../../../utils/functions';
 import FormAddAulaHorarioModal from './form_add_aulahorario.modal';
 import '../../../../../public/css/horario.css';
+import { CloseOutlined } from '@ant-design/icons';
 
 const getListStyle = isDraggingOver => ( {
     background: isDraggingOver ? "rgba(255, 235, 230)" : "transparent",
@@ -35,9 +35,10 @@ export default function FormHorarioGrupoModal( props ) {
                     const obj = {
                         horainicio: data.horainicio,
                         horafinal: data.horafinal,
-                        aula: data.aula,
+                        fkidaula: data.aula.idaula,
+                        aula: data.aula.sigla,
                         dia: detalle.descripcion,
-                        coddia: detalle.codigo,
+                        fkiddia: detalle.iddia,
                     };
                     props.onAsignar(obj, indexDetailsHorarioAula);
                     setVisibleHorarioAula(false);
@@ -95,7 +96,18 @@ export default function FormHorarioGrupoModal( props ) {
                                             style={ {  backgroundColor: '#ececec', } }
                                         >
                                             <div className='card-body p-1'></div>
-                                            <DragDropContext>
+                                            <DragDropContext 
+                                                onDragEnd={ (result) => {
+                                                    if ( props.disabled === false ) {
+                                                        if ( !result.destination ) return;
+                                                        const items = Array.from(props.arraydia[key].arrayhorario);
+                                                        const [ reorderedItem ] = items.splice( result.source.index, 1 );
+                                                        items.splice( result.destination.index, 0, reorderedItem );
+                                                        props.arraydia[key].arrayhorario = [ ...items ];
+                                                        props.onChange();
+                                                    }
+                                                } }
+                                            >
                                                 <Droppable droppableId={`asignar_aula_grupo-${key}`}>
                                                     {( provided, snapshot ) => (
                                                         <div className="card-body p-2" {...provided.droppableProps} ref={provided.innerRef}
@@ -113,6 +125,28 @@ export default function FormHorarioGrupoModal( props ) {
                                                                                 ) }
                                                                             >
                                                                                 <div className='w-100 h-100 position-relative'>
+                                                                                    { props.disabled === false && 
+                                                                                        <div className='card-header pt-0 position-relative'>
+                                                                                            <i className="card-icon text-success ion ion-ios-paper-outline"
+                                                                                                style={ { position: 'absolute', left: 4, top: 0, fontSize: 20, } }
+                                                                                            ></i>
+                                                                                            <div className="card-options dropdown">
+                                                                                                <CloseOutlined
+                                                                                                    style={ {
+                                                                                                        padding: 4, borderRadius: 50, background: 'white', 
+                                                                                                        fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
+                                                                                                        position: 'absolute', top: 0, right: -15, cursor: 'pointer',
+                                                                                                    } }
+                                                                                                    onClick={() => {
+                                                                                                        props.arraydia[key].arrayhorario = props.arraydia[key].arrayhorario.filter( 
+                                                                                                            (item, pos) => pos !== index 
+                                                                                                        );
+                                                                                                        props.onChange();
+                                                                                                    } }
+                                                                                                />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    }
                                                                                     <div className='card-header p-0'>
                                                                                         <div className="card-header pt-0 pb-0">
                                                                                             <h4 style={{ display: 'flex', fontSize: 9, justifyContent: 'space-between', }}> 
@@ -129,12 +163,12 @@ export default function FormHorarioGrupoModal( props ) {
                                                                                         <div className="card-header pt-0 pb-0">
                                                                                             <h4 style={{ display: 'flex', fontSize: 9, justifyContent: 'space-between', marginTop: -5, }}> 
                                                                                                 <span className='text-danger'>AULA: </span>
-                                                                                                {detalle.aula.descripcion} 
+                                                                                                {detalle.aula} 
                                                                                             </h4>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div className='card-footer p-0 pr-1 position-absolute' 
-                                                                                        style={{ fontSize: 8, bottom: -3, right: 8 }}
+                                                                                        style={{ fontSize: 8, bottom: -6, right: 2, }}
                                                                                     >
                                                                                         Nro. {index + 1}
                                                                                     </div>
@@ -149,23 +183,33 @@ export default function FormHorarioGrupoModal( props ) {
                                                     ) }
                                                 </Droppable>
                                             </DragDropContext>
-                                            <div className='card-footer pl-1 pr-1' style={{ height: 45 }}>
-                                                <ButtonComponent
-                                                    fullWidth
-                                                    onClick={ () => {
-                                                        setIndexDetailsHorarioAula(key);
-                                                        setVisibleHorarioAula(true);
-                                                    } }
-                                                >
-                                                    Agregar Horario y Aula
-                                                </ButtonComponent>
-                                            </div>
+                                            { props.disabled === false &&
+                                                <div className='card-footer pl-1 pr-1' style={{ height: 45 }}>
+                                                    <ButtonComponent
+                                                        fullWidth
+                                                        onClick={ () => {
+                                                            setIndexDetailsHorarioAula(key);
+                                                            setVisibleHorarioAula(true);
+                                                        } }
+                                                    >
+                                                        Agregar Horario y Aula
+                                                    </ButtonComponent>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 );
                             } ) }
                         </div>
                     </div>
+                </div>
+                <div className="form-group col-12 mt-3">
+                    <ButtonComponent
+                        onClick={ props.onClose }
+                        fullWidth
+                    >
+                        Aceptar
+                    </ButtonComponent>
                 </div>
             </div>
         </ModalComponent>
@@ -174,8 +218,10 @@ export default function FormHorarioGrupoModal( props ) {
 
 FormHorarioGrupoModal.propTypes = {
     visible: PropTypes.bool,
+    disabled: PropTypes.bool,
     onClose: PropTypes.func,
     onAsignar: PropTypes.func,
+    onChange: PropTypes.func,
     arraydia: PropTypes.array,
     materia: PropTypes.string,
     docente: PropTypes.string,
@@ -183,7 +229,9 @@ FormHorarioGrupoModal.propTypes = {
 
 FormHorarioGrupoModal.defaultProps = {
     visible: false,
+    disabled: false,
     onAsignar: () => {},
+    onChange: () => {},
     arraydia: [],
     materia: "",
     docente: "",

@@ -26,27 +26,22 @@ export class CreateEstudianteDto {
 
     @IsNotEmpty( { message: 'Campo ID Tipo Identificación es requerido.', } )
     @IsString( { message: 'Campo ID Tipo Identificación solo permitido tipo STRING.', } )
-    @MinLength(1, { message: 'Campo ID Tipo Identificación debe ser mayor o igual a 1 carácter.', } )
     readonly fkidtipoidentificacion: string;
 
     @IsNotEmpty( { message: 'Campo Tipo Identificación es requerido.', } )
     @IsString( { message: 'Campo Tipo Identificación solo permitido tipo STRING.', } )
-    @MinLength(1, { message: 'Campo Tipo Identificación debe ser mayor o igual a 1 carácter.', } )
     readonly tipoidentificacion: string;
 
     @IsNotEmpty( { message: 'Campo ID Ciudad Nacimiento es requerido.', } )
     @IsString( { message: 'Campo ID Ciudad Nacimiento solo permitido tipo STRING.', } )
-    @MinLength(1, { message: 'Campo ID Ciudad Nacimiento debe ser mayor o igual a 1 carácter.', } )
     readonly fkidciudadnacimiento: string;
 
     @IsNotEmpty( { message: 'Campo Ciudad Nacimiento es requerido.', } )
     @IsString( { message: 'Campo Ciudad Nacimiento solo permitido tipo STRING.', } )
-    @MinLength(1, { message: 'Campo Ciudad Nacimiento debe ser mayor o igual a 1 carácter.', } )
     readonly ciudadnacimiento: string;
 
     @IsNotEmpty( { message: 'Campo ID Ciudad Residencia es requerido.', } )
     @IsString( { message: 'Campo ID Ciudad Residencia solo permitido tipo STRING.', } )
-    @MinLength(1, { message: 'Campo ID Ciudad Residencia debe ser mayor o igual a 1 carácter.', } )
     readonly fkidciudadresidencia: string;
 
     @IsNotEmpty( { message: 'Campo Ciudad Residencia es requerido.', } )
@@ -128,4 +123,11 @@ export class CreateEstudianteDto {
     @IsString( { message: 'Campo Imagen solo permitido tipo STRING.', } )
     @IsOptional()
     readonly imagen?: string;
+
+    @IsOptional()
+    readonly x_fecha?: string;
+
+    @IsOptional()
+    readonly x_hora?: string;
+
 }

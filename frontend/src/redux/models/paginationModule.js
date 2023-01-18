@@ -1,6 +1,16 @@
 
 const PaginationModule = {
 
+
+    listParametroCalificacion: [],
+    pageParametroCalificacion: 1,
+    paginateParametroCalificacion: 1,
+    paginationParametroCalificacion: {
+        total: 0,
+    },
+
+
+
     listInscripcionPrograma: [],
     pageInscripcionPrograma: 1,
     paginateInscripcionPrograma: 1,

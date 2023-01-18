@@ -8,6 +8,7 @@ import { AuthModule } from '../../auth/auth.module';
 @Module({
   controllers: [DivisionAcademicaController],
   providers: [DivisionAcademicaService],
+  exports: [DivisionAcademicaService],
   imports: [
     TypeOrmModule.forFeature( [
       DivisionAcademica,

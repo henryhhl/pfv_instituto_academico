@@ -1,10 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { GrupoMateriaDiaHorarioDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadiahorario.entity';
 
 @Entity('aula')
 export class Aula {
 
     @PrimaryGeneratedColumn('uuid')
     idaula: string;
+
+    @OneToMany(
+        () => GrupoMateriaDiaHorarioDetalle,
+        ( grupoMateriaDiaHorarioDetalle ) => grupoMateriaDiaHorarioDetalle.aula,
+    )
+    arrayGrupoMateriaDiaHorarioDetalle?: GrupoMateriaDiaHorarioDetalle[];
 
     @Column( {
         type: 'text',

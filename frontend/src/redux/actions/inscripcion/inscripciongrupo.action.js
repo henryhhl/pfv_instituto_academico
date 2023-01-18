@@ -173,10 +173,10 @@ const setFKIDGrupo = (inscripcionGrupo, grupo) => {
     };
 };
 
-const setFKIDMateria = (inscripcionGrupo, materia) => {
+const setFKIDMateria = (inscripcionGrupo, item) => {
     return ( dispatch ) => {
-        inscripcionGrupo.fkidmateria = materia.fkidmateria;
-        inscripcionGrupo.materia = materia.materia;
+        inscripcionGrupo.fkidmateria = item.materia.idmateria;
+        inscripcionGrupo.materia = item.materia.nombrelargo;
         inscripcionGrupo.error.fkidmateria = false;
         inscripcionGrupo.message.fkidmateria = "";
         dispatch( onChange(inscripcionGrupo) );

@@ -127,6 +127,8 @@ const onUpdate = async (body) => {
 
 const onDelete = async (body) => {
     return await httpRequest('delete', apiServices.apipersonatipoidentificacion_delete + `/${body.idtipoidentificacion}`, {
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {

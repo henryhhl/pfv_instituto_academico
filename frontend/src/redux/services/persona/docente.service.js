@@ -1,6 +1,6 @@
 
 import apiServices from "../../../utils/apiservices";
-import { httpRequest } from "../../../utils/httpRequest";
+import { dateToString, hourToString, httpRequest } from "../../../utils/httpRequest";
 import Swal from 'sweetalert2';
 import toastr from 'toastr';
 
@@ -65,6 +65,9 @@ const onStore = async (body) => {
         barrio: body.barrio,
         estadocivil: body.estadocivil,
         imagen: body.imagen,
+
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
 
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
@@ -189,6 +192,8 @@ const onUpdate = async (body) => {
 
 const onDelete = async (body) => {
     return await httpRequest('delete', apiServices.apipersonadocente_delete + `/${body.iddocente}`, {
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {

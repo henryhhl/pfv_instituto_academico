@@ -5,6 +5,7 @@ import { Docente } from './entities/docente.entity';
 import { CreateDocenteDto } from './dto/create-docente.dto';
 import { UpdateDocenteDto } from './dto/update-docente.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { BitacoraService } from '../../seguridad/bitacora/bitacora.service';
 import { DocenteCiudadDetalle } from './entities/docenteciudaddetalle.entity';
 import { DocenteEstudioDetalle } from './entities/docenteestudiodetalle.entity';
 import { DocenteMateriaDetalle } from './entities/docentemateriadetalle.entity';
@@ -35,6 +36,8 @@ export class DocenteService {
     private readonly docenteReferenciaContactoDetalleRepository: Repository<DocenteReferenciaContactoDetalle>,
 
     private readonly dataSource: DataSource,
+
+    private readonly bitacoraService: BitacoraService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -108,12 +111,13 @@ export class DocenteService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async store(createDocenteDto: CreateDocenteDto) {
+  async store(createDocenteDto: CreateDocenteDto, { usuario, ip, originalUrl }) {
     try {
-      const docente = this.docenteRepository.create( {
+      const docenteCreate = this.docenteRepository.create( {
         ...createDocenteDto,
 
-        arraynacionalidad: createDocenteDto.arraynacionalidad?.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) ).map( ( ciudad ) => {
+        arraynacionalidad: createDocenteDto.arraynacionalidad?.filter( ( ciudad ) => ( ciudad.fkidnacionalidad !== null ) 
+        ).map( ( ciudad ) => {
           return this.docenteCiudadDetalleRepository.create( {
             fkidnacionalidad: ciudad.fkidnacionalidad,
             nacionalidad: ciudad.nacionalidad,
@@ -157,11 +161,33 @@ export class DocenteService {
         arrayreferenciacontactos: [],
         created_at: this.getDateTime(),
       } );
-      await this.docenteRepository.save( docente );
+
+      const docenteSave = await this.docenteRepository.save( docenteCreate );
+
+      let nameComplete = docenteSave.apellidoprimero ?? '';
+      if ( docenteSave.apellidosegundo !== null ) {
+        nameComplete += ` ${docenteSave.apellidosegundo}`;
+      }
+      nameComplete += ` ${docenteSave.nombreprincipal}`;
+      if ( docenteSave.nombreadicional !== null ) {
+        nameComplete += ` ${docenteSave.nombreadicional}`;
+      }
+
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: docenteSave.iddocente,
+        tabla: 'docente',
+        accion: 'Registrar Docente',
+        descripcion: `Se realizo con éxito al registrar Docente: ${nameComplete}`,
+        event: 'store',
+        ip: ip, uri: originalUrl,
+        x_fecha: createDocenteDto.x_fecha, x_hora: createDocenteDto.x_hora,
+      } );
+
       return {
         resp: 1, error: false,
         message: 'Docente registrado éxitosamente.',
-        docente: docente,
+        docente: docenteSave,
       };
     } catch (error) {
       this.logger.error(error);
@@ -173,14 +199,18 @@ export class DocenteService {
   }
 
   async findOne(iddocente: string) {
-    const docente = await this.docenteRepository.findOne( {
-      where: { iddocente: iddocente },
-      relations: { 
-        arraynacionalidad: true, arraymateria: true, 
-        arraycategoriadocumento: true, arrayestudio: true,
-      },
-    } );
-    return docente;
+    try {
+      const docente = await this.docenteRepository.findOne( {
+        where: { iddocente: iddocente },
+        relations: { 
+          arraynacionalidad: true, arraymateria: true, 
+          arraycategoriadocumento: true, arrayestudio: true,
+        },
+      } );
+      return docente;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(iddocente: string) {
@@ -334,7 +364,7 @@ export class DocenteService {
     }
   }
 
-  async delete(iddocente: string) {
+  async delete(iddocente: string, { usuario, ip, originalUrl, query }) {
     try {
       let docente = await this.findOne(iddocente);
       if ( docente === null ) {
@@ -343,11 +373,31 @@ export class DocenteService {
           message: 'Docente no existe.',
         };
       }
-      await this.docenteRepository.remove( docente );
+      let nameComplete = docente.apellidoprimero ?? '';
+      if ( docente.apellidosegundo !== null ) {
+        nameComplete += ` ${docente.apellidosegundo}`;
+      }
+      nameComplete += ` ${docente.nombreprincipal}`;
+      if ( docente.nombreadicional !== null ) {
+        nameComplete += ` ${docente.nombreadicional}`;
+      }
+
+      const bitacoraSave = await this.bitacoraService.store( {
+        usuario: usuario,
+        fkidtabla: docente.iddocente,
+        tabla: 'docente',
+        accion: 'Eliminar Docente',
+        descripcion: `Se realizo con éxito al eliminar Docente: ${nameComplete}`,
+        event: 'delete',
+        ip: ip, uri: originalUrl,
+        x_fecha: query.x_fecha, x_hora: query.x_hora,
+      } );
+
+      const docenteDelete = await this.docenteRepository.remove( docente );
       return {
         resp: 1, error: false,
         message: 'Docente eliminado éxitosamente.',
-        docente: docente,
+        docente: docenteDelete,
       };
     } catch (error) {
       this.logger.error(error);

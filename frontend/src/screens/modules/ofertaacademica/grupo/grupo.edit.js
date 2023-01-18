@@ -213,6 +213,9 @@ function EditGrupo( props ) {
                     detalle.arraydia[index].arrayhorario = [ ...detalle.arraydia[index].arrayhorario, data ];
                     props.onChange(grupo);
                 } }
+                onChange={ () => {
+                    props.onChange(grupo);
+                } }
                 arraydia={detalle ? detalle.arraydia: []}
                 materia={ detalle ? detalle.materia : "" }
                 docente={ detalle ? detalle.docente : "" }
@@ -445,7 +448,7 @@ function EditGrupo( props ) {
                                                         </div>
                                                         <div className='row'>
                                                             <div className="form-group col-6">
-                                                                { (item.fkidpensum === null || item.disabled === true) ? 
+                                                                { (item.fkidpensum === null) ? 
                                                                     <InputComponent
                                                                         label="Materia*"
                                                                         value={item.materia}
@@ -458,9 +461,9 @@ function EditGrupo( props ) {
                                                                             setIndexDestailsMateria(key);
                                                                             setVisibleDetailsMateria(true);
                                                                         } }
+                                                                        readOnly
                                                                         error={item.error?.fkidmateria}
                                                                         message={item.message?.fkidmateria}
-                                                                        readOnly
                                                                         style={{ background: 'white', cursor: 'pointer', }}
                                                                         placeholder="SELECCIONAR MATERIA"
                                                                     />

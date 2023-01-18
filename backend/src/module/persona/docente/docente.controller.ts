@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query, Request } from '@nestjs/common';
 import { DocenteService } from './docente.service';
 import { CreateDocenteDto } from './dto/create-docente.dto';
 import { UpdateDocenteDto } from './dto/update-docente.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
+import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
 
 @Controller('docente')
 export class DocenteController {
@@ -17,8 +19,9 @@ export class DocenteController {
 
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store(@Body() createDocenteDto: CreateDocenteDto) {
-    return this.docenteService.store(createDocenteDto);
+  store(@Request() request,  @GetUser() user: Usuario, @Body() createDocenteDto: CreateDocenteDto) {
+    const { ip, originalUrl, method } = request;
+    return this.docenteService.store(createDocenteDto, { usuario: user, ip, originalUrl });
   }
 
   @Get('/edit/:iddocente')
@@ -47,7 +50,8 @@ export class DocenteController {
 
   @Delete('/delete/:iddocente')
   @Auth( /**  N Permissions */ )
-  delete(@Param('iddocente') iddocente: string) {
-    return this.docenteService.delete(iddocente);
+  delete(@Query() query, @Request() request, @GetUser() user: Usuario, @Param('iddocente') iddocente: string) {
+    const { ip, originalUrl, method } = request;
+    return this.docenteService.delete(iddocente, { usuario: user, ip, originalUrl, query });
   }
 }

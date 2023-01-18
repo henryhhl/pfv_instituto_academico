@@ -8,6 +8,7 @@ import { AdministrativoEstudioDetalle } from './entities/administrativoestudiode
 import { AdministrativoNacionalidadDetalle } from './entities/administrativociudaddetalle.entity';
 import { AdministrativoReferenciaContactoDetalle } from './entities/administrativoreferenciacontacto.entity';
 import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrativocategoriadocumentodetalle.entity';
+import { BitacoraModule } from '../../seguridad/bitacora/bitacora.module';
 
 @Module({
   controllers: [AdministrativoController],
@@ -18,6 +19,7 @@ import { AdministrativoCategoriaDocumentoDetalle } from './entities/administrati
       AdministrativoCategoriaDocumentoDetalle, AdministrativoEstudioDetalle,
     ] ),
     AuthModule,
+    BitacoraModule,
   ],
 })
 export class AdministrativoModule {}

@@ -5,6 +5,7 @@ import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 import { GrupoService } from '../../services/ofertaacademica/grupo.service';
+import { DateService } from '../../services/config/date.service';
 
 const setInit = () => ( {
     type: Constants.grupo_setInit,
@@ -19,8 +20,9 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
-const onAddRowPensum = ( ) => ( {
+const onAddRowGrupo = ( arrayDays ) => ( {
     type: Constants.grupo_onAddRowPensum,
+    payload: arrayDays,
 } );
 
 const onDeleteRowPensum = ( index ) => ( {
@@ -50,6 +52,23 @@ const setShowData = ( data ) => ( {
 const initData = () => {
     return ( dispatch ) => {
         dispatch( setInit() );
+    };
+};
+
+const onAddRowPensum = () => {
+    return ( dispatch ) => {
+        dispatch( setShowLoading() );
+        DateService.getAllFindDays( {
+        } ).then( async (result) => {
+            if ( result.resp === 1 ) {
+                dispatch( onAddRowGrupo(result.arrayDays) );
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
+            }
+        } ).finally( () => {
+            dispatch( setHiddenLoading() );
+        } );
     };
 };
 

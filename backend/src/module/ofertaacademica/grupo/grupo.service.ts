@@ -1,13 +1,26 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
 import { Repository, DataSource, ILike } from 'typeorm';
-import { Grupo } from './entities/grupo.entity';
 import { CreateGrupoDto } from './dto/create-grupo.dto';
 import { UpdateGrupoDto } from './dto/update-grupo.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { PaginationGrupoPensumDto } from './dto/grupopensum-pagination.dto';
-import { GrupoPensumMateriaDetalle } from './entities/grupopensummateria.entity';
-import { isUUID } from 'class-validator';
+import { Grupo } from './entities/grupo.entity';
+import { GrupoMateriaDetalle } from './entities/grupomateriadetalle.entity';
+import { GrupoMateriaDiaDetalle } from './entities/grupomateriadiadetalle.entity';
+import { GrupoMateriaDiaHorarioDetalle } from './entities/grupomateriadiahorario.entity';
+import { DateService } from '../../config/date/date.service';
+import { DocenteService } from '../../persona/docente/docente.service';
+import { MateriaService } from '../../parametro/materia/materia.service';
+import { PensumService } from '../../estructuraacademica/pensum/pensum.service';
+import { TurnoService } from '../../estructurainstitucional/turno/turno.service';
+import { ProgramaService } from '../../estructuraacademica/programa/programa.service';
+import { UnidadNegocioService } from '../../parametro/unidadnegocio/unidadnegocio.service';
+import { UnidadacademicaService } from '../../estructuraacademica/unidadacademica/unidadacademica.service';
+import { GestionPeriodoService } from '../../estructurainstitucional/gestionperiodo/gestionperiodo.service';
+import { DivisionAcademicaService } from '../../estructurainstitucional/divisionacademica/divisionacademica.service';
+import { UnidadAdministrativaService } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.service';
+import { AulaService } from '../../estructurainstitucional/aula/aula.service';
 
 @Injectable()
 export class GrupoService {
@@ -17,10 +30,29 @@ export class GrupoService {
     @InjectRepository(Grupo)
     private readonly grupoRepository: Repository<Grupo>,
 
-    @InjectRepository(GrupoPensumMateriaDetalle)
-    private readonly grupoPensumMateriaRepository: Repository<GrupoPensumMateriaDetalle>,
+    @InjectRepository(GrupoMateriaDetalle)
+    private readonly grupoDetalleRepository: Repository<GrupoMateriaDetalle>,
+
+    @InjectRepository(GrupoMateriaDiaDetalle)
+    private readonly grupoDiaDetalleRepository: Repository<GrupoMateriaDiaDetalle>,
+
+    @InjectRepository(GrupoMateriaDiaHorarioDetalle)
+    private readonly horarioDetalleRepository: Repository<GrupoMateriaDiaHorarioDetalle>,
 
     private readonly dataSource: DataSource,
+
+    private readonly aulaService: AulaService,
+    private readonly dateService: DateService,
+    private readonly turnoService: TurnoService,
+    private readonly pensumService: PensumService,
+    private readonly docenteService: DocenteService,
+    private readonly materiaService: MateriaService,
+    private readonly programaService: ProgramaService,
+    private readonly unidadNegocioService: UnidadNegocioService,
+    private readonly gestionPeriodoService: GestionPeriodoService,
+    private readonly unidadAcademicaService: UnidadacademicaService,
+    private readonly divisionAcademicaService: DivisionAcademicaService,
+    private readonly unidadAdministrativaService: UnidadAdministrativaService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -63,27 +95,30 @@ export class GrupoService {
 
   async findAllGrupoForPensum( paginationDto: PaginationGrupoPensumDto ) {
     try {
-      const { limit = 1, offset = 0, search = "", esPaginate = false, fkidpensum = null, } = paginationDto;
+      const { limit = 1, offset = 0, search = "", esPaginate = false, } = paginationDto;
       let listGrupo = [];
       let totalPagination = 0;
 
-      const arrayGrupoPensumMateria = await this.grupoPensumMateriaRepository.find( {
-        where: { fkidpensum: fkidpensum ?? '' },
+      const pensum = await this.pensumService.findOne(paginationDto.fkidpensum);
+
+      const arrayGrupoPensumMateria = await this.grupoDetalleRepository.find( {
+        where: { pensum: pensum },
         relations: { grupo: true, },
       } );
+      
       if ( arrayGrupoPensumMateria.length > 0 ) {
         if ( esPaginate ) {
           [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
             take: limit, skip: offset,
             where: [
-              { arraygrupopensummateriadetalle: arrayGrupoPensumMateria, },
+              { arrayGrupoMateriaDetalle: arrayGrupoPensumMateria, },
             ],
             order: { created_at: "DESC", },
           } );
         } else {
           [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
             where: [
-              { arraygrupopensummateriadetalle: arrayGrupoPensumMateria, },
+              { arrayGrupoMateriaDetalle: arrayGrupoPensumMateria, },
             ],
             order: { created_at: "DESC", },
           } );
@@ -108,28 +143,33 @@ export class GrupoService {
 
   async findAllMateriaForGrupo( paginationDto: PaginationGrupoPensumDto ) {
     try {
-      const { limit = 1, offset = 0, esPaginate = false, fkidpensum = null, fkidgrupo = null } = paginationDto;
+      const { limit = 1, offset = 0, esPaginate = false, } = paginationDto;
       let listGrupo = [];
       let totalPagination = 0;
-      const grupo = await this.findOne( fkidgrupo );
+      const grupo = await this.findOne( paginationDto.fkidgrupo );
+      
+      const pensum = await this.pensumService.findOne(paginationDto.fkidpensum);
+      
       if ( esPaginate ) {
-        [listGrupo, totalPagination] = await this.grupoPensumMateriaRepository.findAndCount( {
+        [listGrupo, totalPagination] = await this.grupoDetalleRepository.findAndCount( {
           select: {
-            fkidmateria: true, materia: true,
+            materia: { idmateria: true, codigo: true, sigla: true, nombrelargo: true, },
           },
+          relations: { materia: true, },
           take: limit, skip: offset,
           where: [
-            { fkidpensum: fkidpensum ?? '', grupo: { idgrupo: grupo?.idgrupo, } },
+            { pensum: pensum, grupo: grupo },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
-        [listGrupo, totalPagination] = await this.grupoPensumMateriaRepository.findAndCount( {
+        [listGrupo, totalPagination] = await this.grupoDetalleRepository.findAndCount( {
           select: {
-            fkidmateria: true, materia: true,
+            materia: { idmateria: true, codigo: true, sigla: true, nombrelargo: true, },
           },
+          relations: { materia: true, },
           where: [
-            { fkidpensum: fkidpensum ?? '', grupo: { idgrupo: grupo?.idgrupo, } },
+            { pensum: pensum, grupo: grupo },
           ],
           order: { created_at: "DESC", },
         } );
@@ -174,7 +214,7 @@ export class GrupoService {
 
   async store(createGrupoDto: CreateGrupoDto) {
     try {
-      const { arraygrupopensummateria, ...toCreate } = createGrupoDto;
+      const { arraygrupomateriadetalle, ...toCreate } = createGrupoDto;
       const existsGrupo = await this.existsSigla( toCreate.sigla );
       if ( existsGrupo === true ) {
         return {
@@ -182,23 +222,82 @@ export class GrupoService {
           message: 'Sigla ya existente, favor ingresar uno nuevo.',
         };
       } 
-      const grupo = this.grupoRepository.create( {
+      const grupoCreate = this.grupoRepository.create( {
         ...toCreate,
-        arraygrupopensummateriadetalle: arraygrupopensummateria?.filter(
-          ( item ) => ( item.fkidpensum !== null )
-        ).map( (item) => {
-          return this.grupoPensumMateriaRepository.create( {
-            ...item,
-            created_at: this.getDateTime(),
-          } );
-        } ),
+        arrayGrupoMateriaDetalle: [],
         created_at: this.getDateTime(),
       } );
-      await this.grupoRepository.save( grupo );
+
+      for (let index = 0; index < arraygrupomateriadetalle?.length; index++) {
+        const item = arraygrupomateriadetalle[index];
+        if ( item.fkidpensum !== null ) {
+
+          const unidadAdministrativa = await this.unidadAdministrativaService.findOne(item.fkidunidadadministrativa);
+          const unidadNegocio = await this.unidadNegocioService.findOne(item.fkidunidadnegocio);
+          const unidadAcademica = await this.unidadAcademicaService.findOne(item.fkidunidadacademica);
+          const programa = await this.programaService.findOne(item.fkidprograma);
+          const pensum = await this.pensumService.findOne(item.fkidpensum);
+          const docente = await this.docenteService.findOne(item.fkiddocente);
+          const turno = await this.turnoService.findOne(item.fkidturno);
+          const gestionPeriodo = await this.gestionPeriodoService.findOne(item.fkidgestionperiodo);
+          const materia = await this.materiaService.findOne(item.fkidmateria);
+          const divisionAcademica = await this.divisionAcademicaService.findOne(item.fkiddivisionacademica);
+
+          const grupoDetalleCreate = this.grupoDetalleRepository.create( {
+            unidadAdministrativa: unidadAdministrativa,
+            unidadNegocio: unidadNegocio,
+            unidadAcademica: unidadAcademica,
+            programa: programa,
+            pensum: pensum,
+            docente: docente,
+            turno: turno,
+            gestionPeriodo: gestionPeriodo,
+            materia: materia,
+            divisionAcademica: divisionAcademica,
+            cupomaximo: item.cupomaximo,
+            arrayGrupoMateriaDiaDetalle: [],
+            created_at: this.getDateTime(),
+          } );
+
+          for (let pos = 0; pos < item.arraydia.length; pos++) {
+            const element = item.arraydia[pos];
+            const dayFirst = await this.dateService.findOneDay(element.iddia);
+            
+            if ( dayFirst !== null ) {
+              const grupoMateriaDiaCreate = this.grupoDiaDetalleRepository.create( {
+                dia: dayFirst,
+                arrayGrupoMateriaDiaHorario: [],
+                created_at: this.getDateTime(),
+              } );
+
+              for (let cant = 0; cant < element.arrayhorario.length; cant++) {
+                const horario = element.arrayhorario[cant];
+                
+                const aulaFirst = await this.aulaService.findOne(horario.fkidaula);
+                if ( aulaFirst !== null ) {
+
+                  const grupoHorarioCreate = this.horarioDetalleRepository.create( {
+                    aula: aulaFirst,
+                    horainicio: horario.horainicio,
+                    horafinal: horario.horafinal,
+                    created_at: this.getDateTime(),
+                  } );
+                  grupoMateriaDiaCreate.arrayGrupoMateriaDiaHorario = [ ...grupoMateriaDiaCreate.arrayGrupoMateriaDiaHorario, grupoHorarioCreate ];
+                }
+              }
+              grupoDetalleCreate.arrayGrupoMateriaDiaDetalle = [ ...grupoDetalleCreate.arrayGrupoMateriaDiaDetalle, grupoMateriaDiaCreate ];
+            }
+          }
+
+          grupoCreate.arrayGrupoMateriaDetalle = [ ...grupoCreate.arrayGrupoMateriaDetalle, grupoDetalleCreate ];
+
+        }
+      }
+      const grupoSave = await this.grupoRepository.save( grupoCreate );
       return {
         resp: 1, error: false,
         message: 'Grupo registrado éxitosamente.',
-        grupo: grupo,
+        grupo: grupoSave,
       };
     } catch (error) {
       this.logger.error(error);
@@ -222,8 +321,47 @@ export class GrupoService {
       const grupo = await this.grupoRepository.findOne( {
         where: { idgrupo },
         relations: {
-          arraygrupopensummateriadetalle: true,
-        }
+          arrayGrupoMateriaDetalle: {
+            divisionAcademica: true,
+            docente: {
+              arraycategoriadocumento: false,
+              arrayestudio: false, arraymateria: false,
+              arraynacionalidad: false, arrayreferenciacontactos: false,
+            },
+            gestionPeriodo: true,
+            materia: true,
+            pensum: {
+              arraydivisionacademica: {
+                arraymateria: {
+                  materia: true,
+                },
+                divisionacademica: true,
+              }
+            },
+            programa: {
+              arraydivisionacademica: false,
+            },
+            turno: true,
+            unidadAcademica: true,
+            unidadAdministrativa: {
+              arrayaula: false, arrayturno: false,
+            },
+            unidadNegocio: true,
+            arrayGrupoMateriaDiaDetalle: {
+              dia: true,
+              arrayGrupoMateriaDiaHorario: {
+                aula: true,
+              },
+            },
+          },
+        },
+        order: {
+          arrayGrupoMateriaDetalle: {
+            arrayGrupoMateriaDiaDetalle: {
+              created_at: 'ASC',
+            },
+          },
+        },
       } );
       return grupo;
     } catch (error) {
@@ -304,7 +442,7 @@ export class GrupoService {
         } 
       }
 
-      const { arraygrupopensummateria, ...toUpdate } = updateGrupoDto;
+      const { arraygrupomateriadetalle, ...toUpdate } = updateGrupoDto;
       const grupoPreLoad = await this.grupoRepository.preload( {
         idgrupo: idgrupo,
         ...toUpdate,
@@ -320,17 +458,76 @@ export class GrupoService {
           message: 'Grupo no existe.',
         };
       }
-      if ( arraygrupopensummateria ) {
-        await queryRunner.manager.delete( GrupoPensumMateriaDetalle, { fkidgrupo: { idgrupo: idgrupo } } );
-        grupoPreLoad.arraygrupopensummateriadetalle = arraygrupopensummateria.filter( 
-          ( item ) => ( item.fkidpensum !== null ) 
-        ).map( ( item ) => {
-          return this.grupoPensumMateriaRepository.create( {
-            ...item,
-            created_at: this.getDateTime(),
-          } );
-        } );
+      if ( arraygrupomateriadetalle ) {
+        await queryRunner.manager.delete( GrupoMateriaDetalle, { grupo: { idgrupo: idgrupo } } );
+
+        grupoPreLoad.arrayGrupoMateriaDetalle = [];
+        for (let index = 0; index < arraygrupomateriadetalle?.length; index++) {
+          const item = arraygrupomateriadetalle[index];
+          if ( item.fkidpensum !== null ) {
+
+            const unidadAdministrativa = await this.unidadAdministrativaService.findOne(item.fkidunidadadministrativa);
+            const unidadNegocio = await this.unidadNegocioService.findOne(item.fkidunidadnegocio);
+            const unidadAcademica = await this.unidadAcademicaService.findOne(item.fkidunidadacademica);
+            const programa = await this.programaService.findOne(item.fkidprograma);
+            const pensum = await this.pensumService.findOne(item.fkidpensum);
+            const docente = await this.docenteService.findOne(item.fkiddocente);
+            const turno = await this.turnoService.findOne(item.fkidturno);
+            const gestionPeriodo = await this.gestionPeriodoService.findOne(item.fkidgestionperiodo);
+            const materia = await this.materiaService.findOne(item.fkidmateria);
+            const divisionAcademica = await this.divisionAcademicaService.findOne(item.fkiddivisionacademica);
+
+            const grupoDetalleCreate = this.grupoDetalleRepository.create( {
+              unidadAdministrativa: unidadAdministrativa,
+              unidadNegocio: unidadNegocio,
+              unidadAcademica: unidadAcademica,
+              programa: programa,
+              pensum: pensum,
+              docente: docente,
+              turno: turno,
+              gestionPeriodo: gestionPeriodo,
+              materia: materia,
+              divisionAcademica: divisionAcademica,
+              cupomaximo: item.cupomaximo,
+              arrayGrupoMateriaDiaDetalle: [],
+              created_at: this.getDateTime(),
+            } );
+
+            for (let pos = 0; pos < item.arraydia.length; pos++) {
+              const element = item.arraydia[pos];
+              const dayFirst = await this.dateService.findOneDay(element.iddia);
+              
+              if ( dayFirst !== null ) {
+                const grupoMateriaDiaCreate = this.grupoDiaDetalleRepository.create( {
+                  dia: dayFirst,
+                  arrayGrupoMateriaDiaHorario: [],
+                  created_at: this.getDateTime(),
+                } );
+  
+                for (let cant = 0; cant < element.arrayhorario.length; cant++) {
+                  const horario = element.arrayhorario[cant];
+                  
+                  const aulaFirst = await this.aulaService.findOne(horario.fkidaula);
+                  if ( aulaFirst !== null ) {
+  
+                    const grupoHorarioCreate = this.horarioDetalleRepository.create( {
+                      aula: aulaFirst,
+                      horainicio: horario.horainicio,
+                      horafinal: horario.horafinal,
+                      created_at: this.getDateTime(),
+                    } );
+                    grupoMateriaDiaCreate.arrayGrupoMateriaDiaHorario = [ ...grupoMateriaDiaCreate.arrayGrupoMateriaDiaHorario, grupoHorarioCreate ];
+                  }
+                }
+                grupoDetalleCreate.arrayGrupoMateriaDiaDetalle = [ ...grupoDetalleCreate.arrayGrupoMateriaDiaDetalle, grupoMateriaDiaCreate ];
+              }
+            }
+  
+            grupoPreLoad.arrayGrupoMateriaDetalle = [ ...grupoPreLoad.arrayGrupoMateriaDetalle, grupoDetalleCreate ];
+          }
+        }
       }
+
       const grupoUpdate = await queryRunner.manager.save( grupoPreLoad );
       await queryRunner.commitTransaction();
       await queryRunner.release();

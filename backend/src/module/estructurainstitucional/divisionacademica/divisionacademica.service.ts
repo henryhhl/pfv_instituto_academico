@@ -100,10 +100,14 @@ export class DivisionAcademicaService {
   }
 
   async findOne(iddivisionacademica: string) {
-    const divisionAcademica = await this.divionAcademicaRepository.findOneBy( {
-      iddivisionacademica: iddivisionacademica,
-    } );
-    return divisionAcademica;
+    try {
+      const divisionAcademica = await this.divionAcademicaRepository.findOneBy( {
+        iddivisionacademica: iddivisionacademica,
+      } );
+      return divisionAcademica;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(iddivisionacademica: string) {

@@ -1,9 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query, Request } from '@nestjs/common';
 import { EstudianteService } from './estudiante.service';
+import { Auth } from '../../auth/decorators/auth.decorator';
 import { CreateEstudianteDto } from './dto/create-estudiante.dto';
 import { UpdateEstudianteDto } from './dto/update-estudiante.dto';
+import { GetUser } from '../../auth/decorators/get-user.decorator';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
-import { Auth } from '../../auth/decorators/auth.decorator';
+import { Usuario } from '../../seguridad/usuario/entities/usuario.entity';
 
 @Controller('estudiante')
 export class EstudianteController {
@@ -17,8 +19,9 @@ export class EstudianteController {
 
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store(@Body() createEstudianteDto: CreateEstudianteDto) {
-    return this.estudianteService.store(createEstudianteDto);
+  store(@Request() request,  @GetUser() user: Usuario, @Body() createEstudianteDto: CreateEstudianteDto) {
+    const { ip, originalUrl, method } = request;
+    return this.estudianteService.store(createEstudianteDto, { usuario: user, ip, originalUrl });
   }
 
   @Get('/edit/:idestudiante')
@@ -47,7 +50,8 @@ export class EstudianteController {
 
   @Delete('/delete/:idestudiante')
   @Auth( /**  N Permissions */ )
-  delete(@Param('idestudiante') idestudiante: string) {
-    return this.estudianteService.delete(idestudiante);
+  delete(@Query() query, @Request() request, @GetUser() user: Usuario, @Param('idestudiante') idestudiante: string) {
+    const { ip, originalUrl, method } = request;
+    return this.estudianteService.delete(idestudiante, { usuario: user, ip, originalUrl, query });
   }
 }

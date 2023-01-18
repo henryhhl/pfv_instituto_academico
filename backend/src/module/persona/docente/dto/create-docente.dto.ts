@@ -136,4 +136,10 @@ export class CreateDocenteDto {
     @IsOptional()
     readonly imagen?: string;
 
+    @IsOptional()
+    readonly x_fecha?: string;
+
+    @IsOptional()
+    readonly x_hora?: string;
+
 }

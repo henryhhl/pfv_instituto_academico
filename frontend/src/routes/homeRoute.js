@@ -228,6 +228,13 @@ import CreateInscripcionPrograma from '../screens/modules/inscripcion/inscripcio
 import CreateInscripcionCurso from '../screens/modules/inscripcion/inscripcioncurso/inscripcioncurso.create';
 import CreateInscripcionGrupo from '../screens/modules/inscripcion/inscripciongrupo/inscripciongrupo.create';
 
+
+import IndexParametroCalificacion from '../screens/modules/nota/parametrocalificacion/parametrocalificacion.index';
+import CreateParametroCalificacion from '../screens/modules/nota/parametrocalificacion/parametrocalificacion.create';
+import EditParametroCalificacion from '../screens/modules/nota/parametrocalificacion/parametrocalificacion.edit';
+import ShowParametroCalificacion from '../screens/modules/nota/parametrocalificacion/parametrocalificacion.show';
+
+
 import LoginPage from '../screens/auth/login.page';
 import ProfilePage from '../screens/profile/profile.screen';
 
@@ -463,6 +470,12 @@ const HomeRoute = (props) => {
                     <Route index path="/inscripcionprograma/index" element={ <CreateInscripcionPrograma { ...props } /> }  />
                     <Route index path="/inscripcioncurso/index" element={ <CreateInscripcionCurso { ...props } /> }  />
                     <Route index path="/inscripciongrupo/index" element={ <CreateInscripcionGrupo { ...props } /> }  />
+
+
+                    <Route index path="/parametrocalificacion/index" element={ <IndexParametroCalificacion { ...props } /> }  />
+                    <Route index path="/parametrocalificacion/create" element={ <CreateParametroCalificacion { ...props } /> }  />
+                    <Route index path="/parametrocalificacion/edit/:idparametrocalificacion" element={ <EditParametroCalificacion { ...props } /> }  />
+                    <Route index path="/parametrocalificacion/show/:idparametrocalificacion" element={ <ShowParametroCalificacion { ...props } /> }  />
 
                     <Route
                         path='*'

@@ -1,6 +1,7 @@
 
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
+import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 import { PensumDivisionAcademicaMateriaDetalle } from '../../../estructuraacademica/pensum/entities/pensumdivisionacademicamateriadetalle.entity';
 
 @Entity()
@@ -20,6 +21,12 @@ export class Materia {
         ( pensumDivisionAcademicaMateriaDetalle ) => pensumDivisionAcademicaMateriaDetalle.materia,
     )
     pensumDivisionAcademicaMateriaDetalle?: PensumDivisionAcademicaMateriaDetalle[];
+
+    @OneToMany(
+        () => GrupoMateriaDetalle,
+        ( grupoPensumDetalle ) => grupoPensumDetalle.materia,
+    )
+    arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
 
     @Column( {
         type: 'text',

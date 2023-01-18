@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put, Ip, HostParam, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put, Request } from '@nestjs/common';
 import { TipoIdentificacionService } from './tipoidentificacion.service';
 import { CreateTipoIdentificacionDto } from './dto/create-tipoidentificacion.dto';
 import { UpdateTipoIdentificacionDto } from './dto/update-tipoidentificacion.dto';
@@ -19,8 +19,9 @@ export class TipoIdentificacionController {
 
   @Post('/store')
   @Auth( /**  N Permissions */ )
-  store( @Ip() ipHost,  @GetUser() user: Usuario, @Body() createTipoIdentificacionDto: CreateTipoIdentificacionDto ) {
-    return this.tipoidentificacionService.store(createTipoIdentificacionDto, ipHost, user);
+  store( @Request() request,  @GetUser() user: Usuario, @Body() createTipoIdentificacionDto: CreateTipoIdentificacionDto ) {
+    const { ip, originalUrl, method } = request;
+    return this.tipoidentificacionService.store(createTipoIdentificacionDto, { usuario: user, ip, originalUrl } );
   }
 
   @Get('/edit/:idtipoidentificacion')
@@ -49,7 +50,8 @@ export class TipoIdentificacionController {
 
   @Delete('/delete/:idtipoidentificacion')
   @Auth( /**  N Permissions */ )
-  delete(@Param('idtipoidentificacion') idtipoidentificacion: string) {
-    return this.tipoidentificacionService.delete(idtipoidentificacion);
+  delete( @Query() query, @Request() request,  @GetUser() user: Usuario, @Param('idtipoidentificacion') idtipoidentificacion: string) {
+    const { ip, originalUrl, method } = request;
+    return this.tipoidentificacionService.delete(idtipoidentificacion, { usuario: user, ip, originalUrl, query } );
   }
 }

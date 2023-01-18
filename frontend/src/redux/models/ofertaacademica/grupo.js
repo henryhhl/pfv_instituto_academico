@@ -3,7 +3,6 @@ const Grupo = {
     idgrupo: "",
 
     arraypensum: [],
-    arrayhorario: [],
 
     sigla: "",
 

@@ -33,8 +33,13 @@ const getAllGrupo = async ( {
 const onStore = async (body) => {
     return await httpRequest('post', apiServices.apiofertaacademicagrupo_store, {
         sigla: body.sigla,
-        arraygrupopensummateria: body.arraypensum?.filter( ( item ) => ( item.fkidpensum !== null ) ).map( 
-            ( { arraydia, arraydivisionacademica, error, message, disabled, ...item } ) => {
+        arraygrupomateriadetalle: body.arraypensum?.filter( ( item ) => ( item.fkidpensum !== null ) ).map( 
+            ( data ) => {
+                const { 
+                    unidadadministrativa, unidadacademica, unidadnegocio, docente, turno,
+                    programa, pensum, materia, divisionacademica, gestionperiodo, arraydivisionacademica, 
+                    error, message, disabled, ...item 
+                } = data;
                 return item;
             }
         ),
@@ -102,8 +107,13 @@ const onEdit = async (idgrupo) => {
 const onUpdate = async (body) => {
     return await httpRequest('put', apiServices.apiofertaacademicagrupo_update + `/${body.idgrupo}`, {
         sigla: body.sigla,
-        arraygrupopensummateria: body.arraypensum?.filter( ( item ) => ( item.fkidpensum !== null ) ).map( 
-            ( { arraydia, arraydivisionacademica, error, message, disabled, ...item } ) => {
+        arraygrupomateriadetalle: body.arraypensum?.filter( ( item ) => ( item.fkidpensum !== null ) ).map( 
+            ( data ) => {
+                const { 
+                    unidadadministrativa, unidadacademica, unidadnegocio, docente, turno,
+                    programa, pensum, materia, divisionacademica, gestionperiodo, arraydivisionacademica, 
+                    error, message, disabled, ...item 
+                } = data;
                 return item;
             }
         ),

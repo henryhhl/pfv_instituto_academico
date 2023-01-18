@@ -1,10 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { GrupoMateriaDetalle } from '../../grupo/entities/grupomateriadetalle.entity';
 
 @Entity('motivoaperturacierrecurso')
 export class MotivoAperturaCierreCurso {
 
     @PrimaryGeneratedColumn( 'uuid' )
     idmotivoaperturacierrecurso: string;
+
+    @OneToMany(
+        () => GrupoMateriaDetalle,
+        ( grupoPensumDetalle ) => grupoPensumDetalle.motivoAperturaCierreCurso,
+    )
+    arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
 
     @Column( 'text', {
         unique: false,

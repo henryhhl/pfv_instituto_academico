@@ -1,15 +1,22 @@
 import { Entity, OneToMany, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { DocenteReferenciaContactoDetalle } from './docentereferenciacontacto.entity';
 import { DocenteCiudadDetalle } from './docenteciudaddetalle.entity';
 import { DocenteMateriaDetalle } from './docentemateriadetalle.entity';
-import { DocenteCategoriaDocumentoDetalle } from './docentecategoriadocumentodetalle.entity';
 import { DocenteEstudioDetalle } from './docenteestudiodetalle.entity';
+import { DocenteReferenciaContactoDetalle } from './docentereferenciacontacto.entity';
+import { DocenteCategoriaDocumentoDetalle } from './docentecategoriadocumentodetalle.entity';
+import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 
 @Entity('docente')
 export class Docente {
 
     @PrimaryGeneratedColumn('uuid')
     iddocente: string;
+
+    @OneToMany(
+        () => GrupoMateriaDetalle,
+        ( grupoPensumDetalle ) => grupoPensumDetalle.docente,
+    )
+    arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
 
     @Column( 'text' )
     fkidtipoidentificacion: string;

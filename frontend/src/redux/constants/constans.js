@@ -350,6 +350,14 @@ const Constants = {
     inscripciongrupo_onShow: "[ON SHOW] Inscripción Grupo",
     inscripciongrupo_onLimpiar: "[ON LIMPIAR] Inscripción Grupo",
 
+
+
+    parametrocalificacion_setInit: "[SET INIT] Parametro Calificacion",
+    parametrocalificacion_onChange: "[ON CHANGE] Parametro Calificacion",
+    parametrocalificacion_onCreate: "[ON CREATE] Parametro Calificacion",
+    parametrocalificacion_onShow: "[ON SHOW] Parametro Calificacion",
+    parametrocalificacion_onLimpiar: "[ON LIMPIAR] Parametro Calificacion",
+
 };
 
 export default Constants;

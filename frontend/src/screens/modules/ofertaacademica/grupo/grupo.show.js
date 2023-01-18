@@ -8,11 +8,15 @@ import { ButtonComponent ,InputComponent } from '../../../../components/componen
 import { Functions } from '../../../../utils/functions';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { GrupoActions } from '../../../../redux/actions/ofertaacademica/grupo.action';
+import FormHorarioGrupoModal from './modal/form_horario.modal';
 
 function ShowGrupo( props ) {
     const { grupo } = props;
     const navigate = useNavigate();
     const params = useParams();
+
+    const [ indexDetailsHorario, setIndexDestailsHorario ] = React.useState(-1);
+    const [ visibleDetailsHorario, setVisibleDetailsHorario ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -33,8 +37,23 @@ function ShowGrupo( props ) {
         navigate(-1);
     }
 
+    const onComponentDetailsHorario = () => {
+        if ( !visibleDetailsHorario ) return null;
+        let detalle = grupo.arraypensum[indexDetailsHorario];
+        return (
+            <FormHorarioGrupoModal
+                visible={visibleDetailsHorario}
+                onClose={ () => setVisibleDetailsHorario(false) }
+                arraydia={detalle ? detalle.arraydia: []}
+                materia={ detalle ? detalle.materia : "" }
+                disabled={true}
+            />
+        );
+    };
+
     return (
         <>
+            { onComponentDetailsHorario() }
             <PaperComponent>
                 <CardComponent
                     header={"Detalle Grupo"}
@@ -186,6 +205,19 @@ function ShowGrupo( props ) {
                                                                     value={item.cupomaximo}
                                                                     readOnly
                                                                 />
+                                                            </div>
+                                                        </div>
+                                                        <div className='row'>
+                                                            <div className="form-group col-12">
+                                                                <ButtonComponent
+                                                                    fullWidth
+                                                                    onClick={ () => {
+                                                                        setVisibleDetailsHorario(true);
+                                                                        setIndexDestailsHorario(key);
+                                                                    } }
+                                                                >
+                                                                    Ver Horarios
+                                                                </ButtonComponent>
                                                             </div>
                                                         </div>
                                                     </div>

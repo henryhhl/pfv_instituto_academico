@@ -46,7 +46,7 @@ export default function ListadoMateriaForGrupoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={500} centered
+                footer={null} width={650} centered
                 title={"LISTA MATERIA"}
             >
                 <div className="row">
@@ -58,7 +58,21 @@ export default function ListadoMateriaForGrupoModal( props ) {
                                     columns={ [
                                         {
                                             id: 'materia',
+                                            label: 'Código',
+                                            object: true,
+                                            value: 'codigo',
+                                        },
+                                        {
+                                            id: 'materia',
+                                            label: 'Sigla',
+                                            object: true,
+                                            value: 'sigla',
+                                        },
+                                        {
+                                            id: 'materia',
                                             label: 'Materia',
+                                            object: true,
+                                            value: 'nombrelargo',
                                         },
                                     ] } select
                                     dataSource={array_data}

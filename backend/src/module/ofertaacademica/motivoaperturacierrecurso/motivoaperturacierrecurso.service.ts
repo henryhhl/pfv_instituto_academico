@@ -98,10 +98,14 @@ export class MotivoAperturaCierreCursoService {
   }
 
   async findOne(idmotivoaperturacierrecurso: string) {
-    const motivoAperturaCierreCurso = await this.motivoAperturaCierreCursoRepository.findOneBy( {
-      idmotivoaperturacierrecurso,
-    } );
-    return motivoAperturaCierreCurso;
+    try {
+      const motivoAperturaCierreCurso = await this.motivoAperturaCierreCursoRepository.findOneBy( {
+        idmotivoaperturacierrecurso,
+      } );
+      return motivoAperturaCierreCurso;
+    } catch (error) {
+      return null;
+    }
   }
 
   async edit(idmotivoaperturacierrecurso: string) {

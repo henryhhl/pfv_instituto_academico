@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { CreateAdministrativoNacionalidadDto } from './create-nacionalidad.dto';
 import { CreateAdministrativoCategoriaDocumentoDetalleDto } from './create-categoriadocumento.dto';
 import { CreateAdministrativoEstudioDetalleDto } from './create-estudio.dto';
+import { Usuario } from '../../../seguridad/usuario/entities/usuario.entity';
 
 export class CreateAdministrativoDto {
 
@@ -128,5 +129,20 @@ export class CreateAdministrativoDto {
     @IsString( { message: 'Campo Imagen solo permitido tipo STRING.', } )
     @IsOptional()
     readonly imagen?: string;
+
+    @IsOptional()
+    readonly x_fecha?: string;
+
+    @IsOptional()
+    readonly x_hora?: string;
+
+    @IsOptional()
+    ip?: string;
+
+    @IsOptional()
+    originalUrl?: string;
+
+    @IsOptional()
+    usuario?: Usuario;
 
 }

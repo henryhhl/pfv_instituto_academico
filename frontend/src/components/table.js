@@ -54,7 +54,7 @@ export default function TableComponent( props ) {
                                 );
                             } ) }
                             { props.option === true &&
-                                <th align='left' style={{ fontSize: 12, }}>
+                                <th align='left' style={{ fontSize: 12, width: 120, }}>
                                     Opción
                                 </th>
                             }
