@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import { IsNotEmpty, IsString, IsInt, Min, ValidateNested, IsArray, IsOptional } from 'class-validator';
 import { CreateDiaDto } from './create-grupomateriadia.dto';
+import { CreateGrupoMateriaCalificacionDto } from './create-grupomateriacalificacion.dto';
 
 export class CreateGrupoMateriaDetalleDto {
 
@@ -9,6 +10,12 @@ export class CreateGrupoMateriaDetalleDto {
     @Type(() => CreateDiaDto )
     @IsOptional()
     readonly arraydia?: CreateDiaDto[];
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateGrupoMateriaCalificacionDto )
+    @IsOptional()
+    readonly arrayparametrocalificacion?: CreateGrupoMateriaCalificacionDto[];
 
     @IsNotEmpty( { message: 'Campo ID UNIDAD ADMINISTRATIVA es requerido.', } )
     @IsString( { message: 'Campo ID UNIDAD ADMINISTRATIVA solo permitido tipo STRING.', } )

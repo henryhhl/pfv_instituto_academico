@@ -12,6 +12,7 @@ import { GestionPeriodo } from '../../../estructurainstitucional/gestionperiodo/
 import { MotivoAperturaCierreCurso } from '../../motivoaperturacierrecurso/entities/motivoaperturacierrecurso.entity';
 import { DivisionAcademica } from '../../../estructurainstitucional/divisionacademica/entities/divisionacademica.entity';
 import { UnidadAdministrativa } from '../../../estructuraacademica/unidadadministrativa/entities/unidadadministrativa.entity';
+import { GrupoMateriaCalificacionDetalle } from './grupomateriacalificacion.entity';
 
 @Entity('grupomateriadetalle')
 export class GrupoMateriaDetalle {
@@ -21,10 +22,17 @@ export class GrupoMateriaDetalle {
 
     @OneToMany(
         () => GrupoMateriaDiaDetalle,
-        ( grupoMateriaDiaDetalle ) => grupoMateriaDiaDetalle.grupoMateriaDetalle,
+        ( item ) => item.grupoMateriaDetalle,
         { cascade: true, },
     )
     arrayGrupoMateriaDiaDetalle?: GrupoMateriaDiaDetalle[];
+
+    @OneToMany(
+        () => GrupoMateriaCalificacionDetalle,
+        ( item ) => item.grupoMateriaDetalle,
+        { cascade: true, },
+    )
+    arrayGrupoMateriaCalificacionDetalle?: GrupoMateriaCalificacionDetalle[];
 
     @ManyToOne(
         () => Grupo,

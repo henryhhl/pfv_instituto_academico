@@ -90,6 +90,13 @@ const onSetData = ( state = inititalState, grupo ) => {
                 };
             } ),
             arraydivisionacademica: item.pensum.arraydivisionacademica,
+            arrayparametrocalificacion: item?.arrayGrupoMateriaCalificacionDetalle.map( (item) => {
+                return {
+                    fkidparametrocalificacion: item.parametroCalificacion.idparametrocalificacion,
+                    parametrocalificacion: item.parametroCalificacion.descripcion,
+                    valorporcentaje: item.valorporcentaje,
+                };
+            } ),
             error: {
                 fkidpensum: false, fkiddocente: false, fkidturno: false, fkidgestionperiodo: false,
                 fkidmateria: false, fkiddivisionacademica: false, cupomaximo: false,
@@ -131,6 +138,7 @@ const onDefaultPensum = (arrayDays = []) => {
             };
         } ),
         arraydivisionacademica: [],
+        arrayparametrocalificacion: [],
         error: {
             fkidpensum: false, fkiddocente: false, fkidturno: false, fkidgestionperiodo: false,
             fkidmateria: false, fkiddivisionacademica: false, cupomaximo: false,

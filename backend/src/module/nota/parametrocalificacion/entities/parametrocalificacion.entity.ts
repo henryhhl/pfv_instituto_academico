@@ -1,10 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { GrupoMateriaCalificacionDetalle } from 'src/module/ofertaacademica/grupo/entities/grupomateriacalificacion.entity';
 
 @Entity('parametrocalificacion')
 export class ParametroCalificacion {
 
     @PrimaryGeneratedColumn( 'uuid' )
     idparametrocalificacion: string;
+
+    @OneToMany(
+        () => GrupoMateriaCalificacionDetalle,
+        ( item ) => item.parametroCalificacion,
+    )
+    arrayGrupoMateriaCalificacionDetalle?: GrupoMateriaCalificacionDetalle[];
 
     @Column( 'text' )
     sigla: string;

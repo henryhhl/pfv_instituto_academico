@@ -7,7 +7,7 @@ import { GrupoMateriaDiaHorarioDetalle } from './grupomateriadiahorario.entity';
 export class GrupoMateriaDiaDetalle {
 
     @PrimaryGeneratedColumn('uuid')
-    idgrupomateriadiadetalle: number;
+    idgrupomateriadiadetalle: string;
 
     @OneToMany(
         () => GrupoMateriaDiaHorarioDetalle,

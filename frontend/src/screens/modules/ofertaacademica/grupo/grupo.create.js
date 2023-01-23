@@ -9,12 +9,13 @@ import PaperComponent from '../../../../components/paper';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { GrupoActions } from '../../../../redux/actions/ofertaacademica/grupo.action';
+import FormHorarioGrupoModal from './modal/form_horario.modal';
 import FormDivisionAcademicaModal from './modal/form_divisionacademica.modal';
 import ListadoDocenteModal from '../../persona/docente/modal/docente_listado.modal';
 import ListadoPensumModal from '../../estructuraacademica/pensum/modal/pensum_listado.modal';
 import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_listado.modal';
+import FormAddGrupoParametroCalificacionModal from './modal/form_add_parametrocalificacion.modal';
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
-import FormHorarioGrupoModal from './modal/form_horario.modal';
 
 function CreateGrupo( props ) {
     const { grupo } = props;
@@ -37,6 +38,9 @@ function CreateGrupo( props ) {
 
     const [ indexDetailsHorario, setIndexDestailsHorario ] = React.useState(-1);
     const [ visibleDetailsHorario, setVisibleDetailsHorario ] = React.useState(false);
+
+    const [ indexDetailsCalificacion, setIndexDetailsCalificacion ] = React.useState(-1);
+    const [ visibleDetailsCalificacion, setVisibleDetailsCalificacion ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -221,6 +225,40 @@ function CreateGrupo( props ) {
         );
     };
 
+    const onComponentDetailsParametroCalificacion = () => {
+        if ( !visibleDetailsCalificacion ) return null;
+        return (
+            <FormAddGrupoParametroCalificacionModal 
+                visible={visibleDetailsCalificacion}
+                onClose={ () => setVisibleDetailsCalificacion(false) }
+                arrayparametrocalificacion={grupo.arraypensum[indexDetailsCalificacion]?.arrayparametrocalificacion}
+                onChange={ () => props.onChange(grupo) }
+                onAddRow={ () => {
+                    if ( Array.isArray(grupo.arraypensum[indexDetailsCalificacion]?.arrayparametrocalificacion) ) {
+                        grupo.arraypensum[indexDetailsCalificacion].arrayparametrocalificacion = [
+                            ...grupo.arraypensum[indexDetailsCalificacion].arrayparametrocalificacion,
+                            {
+                                fkidparametrocalificacion: null,
+                                parametrocalificacion: null,
+                                valorporcentaje: null,
+                            }
+                        ];
+                        props.onChange(grupo);
+                    }
+                } }
+                onDeleteRow={ (index) => {
+                    if ( Array.isArray(grupo.arraypensum[indexDetailsCalificacion]?.arrayparametrocalificacion) ) {
+                        grupo.arraypensum[indexDetailsCalificacion].arrayparametrocalificacion = grupo.arraypensum[indexDetailsCalificacion].arrayparametrocalificacion
+                        .filter( 
+                            (item, pos) => pos !== index 
+                        );
+                        props.onChange(grupo)
+                    }
+                } }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentDetailsPensum() }
@@ -229,6 +267,7 @@ function CreateGrupo( props ) {
             { onComponentDetailsGestionPeriodo() }
             { onComponentDetailsMateria() }
             { onComponentDetailsHorario() }
+            { onComponentDetailsParametroCalificacion() }
             <PaperComponent>
                 <CardComponent
                     header={"Nuevo Grupo"}
@@ -236,6 +275,7 @@ function CreateGrupo( props ) {
                         <>
                             <ButtonComponent
                                 onClick={ () => {
+                                    console.log(grupo)
                                     props.onStore(grupo, onBack);
                                 } }
                             >
@@ -489,7 +529,6 @@ function CreateGrupo( props ) {
                                                         <div className='row'>
                                                             <div className="form-group col-12">
                                                                 <ButtonComponent
-                                                                    fullWidth
                                                                     onClick={ () => {
                                                                         if ( item.fkidpensum !== null ) {
                                                                             setVisibleDetailsHorario(true);
@@ -501,6 +540,19 @@ function CreateGrupo( props ) {
                                                                     disabled={ (item.fkidpensum === null) }
                                                                 >
                                                                     Asignar Horarios
+                                                                </ButtonComponent>
+                                                                <ButtonComponent
+                                                                    onClick={ () => {
+                                                                        if ( item.fkidpensum !== null ) {
+                                                                            setVisibleDetailsCalificacion(true);
+                                                                            setIndexDetailsCalificacion(key);
+                                                                        } else {
+                                                                            toastr.warning( 'Pensum No Seleccionado.', '' );
+                                                                        }
+                                                                    } }
+                                                                    disabled={ (item.fkidpensum === null) }
+                                                                >
+                                                                    Asignar Calificaciones
                                                                 </ButtonComponent>
                                                             </div>
                                                         </div>

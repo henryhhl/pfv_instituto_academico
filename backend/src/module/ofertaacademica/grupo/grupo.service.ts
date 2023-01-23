@@ -9,9 +9,11 @@ import { Grupo } from './entities/grupo.entity';
 import { GrupoMateriaDetalle } from './entities/grupomateriadetalle.entity';
 import { GrupoMateriaDiaDetalle } from './entities/grupomateriadiadetalle.entity';
 import { GrupoMateriaDiaHorarioDetalle } from './entities/grupomateriadiahorario.entity';
+import { GrupoMateriaCalificacionDetalle } from './entities/grupomateriacalificacion.entity';
 import { DateService } from '../../config/date/date.service';
 import { DocenteService } from '../../persona/docente/docente.service';
 import { MateriaService } from '../../parametro/materia/materia.service';
+import { AulaService } from '../../estructurainstitucional/aula/aula.service';
 import { PensumService } from '../../estructuraacademica/pensum/pensum.service';
 import { TurnoService } from '../../estructurainstitucional/turno/turno.service';
 import { ProgramaService } from '../../estructuraacademica/programa/programa.service';
@@ -20,7 +22,7 @@ import { UnidadacademicaService } from '../../estructuraacademica/unidadacademic
 import { GestionPeriodoService } from '../../estructurainstitucional/gestionperiodo/gestionperiodo.service';
 import { DivisionAcademicaService } from '../../estructurainstitucional/divisionacademica/divisionacademica.service';
 import { UnidadAdministrativaService } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.service';
-import { AulaService } from '../../estructurainstitucional/aula/aula.service';
+import { ParametroCalificacionService } from '../../nota/parametrocalificacion/parametrocalificacion.service';
 
 @Injectable()
 export class GrupoService {
@@ -39,6 +41,9 @@ export class GrupoService {
     @InjectRepository(GrupoMateriaDiaHorarioDetalle)
     private readonly horarioDetalleRepository: Repository<GrupoMateriaDiaHorarioDetalle>,
 
+    @InjectRepository(GrupoMateriaCalificacionDetalle)
+    private readonly calificacionDetalleRepository: Repository<GrupoMateriaCalificacionDetalle>,
+
     private readonly dataSource: DataSource,
 
     private readonly aulaService: AulaService,
@@ -53,6 +58,7 @@ export class GrupoService {
     private readonly unidadAcademicaService: UnidadacademicaService,
     private readonly divisionAcademicaService: DivisionAcademicaService,
     private readonly unidadAdministrativaService: UnidadAdministrativaService,
+    private readonly parametroCalificacionService: ParametroCalificacionService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -256,6 +262,7 @@ export class GrupoService {
             divisionAcademica: divisionAcademica,
             cupomaximo: item.cupomaximo,
             arrayGrupoMateriaDiaDetalle: [],
+            arrayGrupoMateriaCalificacionDetalle: [],
             created_at: this.getDateTime(),
           } );
 
@@ -286,6 +293,26 @@ export class GrupoService {
                 }
               }
               grupoDetalleCreate.arrayGrupoMateriaDiaDetalle = [ ...grupoDetalleCreate.arrayGrupoMateriaDiaDetalle, grupoMateriaDiaCreate ];
+            }
+          }
+
+          if ( Array.isArray(item.arrayparametrocalificacion) ) {
+            for (let pos = 0; pos < item.arrayparametrocalificacion.length; pos++) {
+              const calificacion = item.arrayparametrocalificacion[pos];
+              const parametroCalificacionFirst = await this.parametroCalificacionService.findOne(calificacion.fkidparametrocalificacion);
+
+              if ( parametroCalificacionFirst !== null ) {
+                const grupoMateriaCalificacionCreate = this.calificacionDetalleRepository.create( {
+                  parametroCalificacion: parametroCalificacionFirst,
+                  valorporcentaje: calificacion.valorporcentaje,
+                  created_at: this.getDateTime(),
+                } );
+
+                grupoDetalleCreate.arrayGrupoMateriaCalificacionDetalle = [ 
+                  ...grupoDetalleCreate.arrayGrupoMateriaCalificacionDetalle, 
+                  grupoMateriaCalificacionCreate 
+                ];
+              }
             }
           }
 
@@ -353,6 +380,9 @@ export class GrupoService {
                 aula: true,
               },
             },
+            arrayGrupoMateriaCalificacionDetalle: {
+              parametroCalificacion: true,
+            },
           },
         },
         order: {
@@ -360,6 +390,9 @@ export class GrupoService {
             arrayGrupoMateriaDiaDetalle: {
               created_at: 'ASC',
             },
+            arrayGrupoMateriaCalificacionDetalle: {
+              created_at: 'ASC',
+            }
           },
         },
       } );
@@ -490,6 +523,7 @@ export class GrupoService {
               divisionAcademica: divisionAcademica,
               cupomaximo: item.cupomaximo,
               arrayGrupoMateriaDiaDetalle: [],
+              arrayGrupoMateriaCalificacionDetalle: [],
               created_at: this.getDateTime(),
             } );
 
@@ -520,6 +554,26 @@ export class GrupoService {
                   }
                 }
                 grupoDetalleCreate.arrayGrupoMateriaDiaDetalle = [ ...grupoDetalleCreate.arrayGrupoMateriaDiaDetalle, grupoMateriaDiaCreate ];
+              }
+            }
+
+            if ( Array.isArray(item.arrayparametrocalificacion) ) {
+              for (let pos = 0; pos < item.arrayparametrocalificacion.length; pos++) {
+                const calificacion = item.arrayparametrocalificacion[pos];
+                const parametroCalificacionFirst = await this.parametroCalificacionService.findOne(calificacion.fkidparametrocalificacion);
+  
+                if ( parametroCalificacionFirst !== null ) {
+                  const grupoMateriaCalificacionCreate = this.calificacionDetalleRepository.create( {
+                    parametroCalificacion: parametroCalificacionFirst,
+                    valorporcentaje: calificacion.valorporcentaje,
+                    created_at: this.getDateTime(),
+                  } );
+  
+                  grupoDetalleCreate.arrayGrupoMateriaCalificacionDetalle = [ 
+                    ...grupoDetalleCreate.arrayGrupoMateriaCalificacionDetalle, 
+                    grupoMateriaCalificacionCreate 
+                  ];
+                }
               }
             }
   
