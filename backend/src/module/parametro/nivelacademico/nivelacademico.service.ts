@@ -22,7 +22,7 @@ export class NivelAcademicoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listNivelAcademico, totalPagination] = await this.nivelAcademicoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

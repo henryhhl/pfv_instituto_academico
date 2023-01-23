@@ -39,7 +39,7 @@ export class EstudianteService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listEstudiante, totalPagination] = await this.estudianteRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { nombreprincipal: ILike( '%' + search + '%', ), },
             { nombreadicional: ILike( '%' + search + '%', ), },

@@ -2,12 +2,14 @@
 import toastr from 'toastr';
 import Swal from 'sweetalert2';
 import apiServices from "../../../utils/apiservices";
-import { httpRequest } from "../../../utils/httpRequest";
+import { dateToString, hourToString, httpRequest } from "../../../utils/httpRequest";
 
 const onLogin = async (body) => {
     return await httpRequest('post', apiServices.apiauth_login, {
         login: body.usuario,
         password: body.password,
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
     } ).then( (respta) => {
         if ( respta.resp === 0 ) {
             Swal.fire( {
@@ -24,12 +26,33 @@ const onLogin = async (body) => {
     } );
 };
 
+const onLogout = async (idusuario) => {
+    return await httpRequest('post', apiServices.apiauth_logout, {
+        idusuario,
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
+    } ).then( (respta) => {
+        if ( respta.resp !== 1 ) {
+            Swal.fire( {
+                position: 'top-end',
+                icon: 'error',
+                title: 'Hubo Conflictos al cerrar sesion.',
+                showConfirmButton: true,
+                timer: 3000,
+            } );
+        }
+        return respta;
+    } );
+};
+
 const onRegister = async (body) => {
     return await httpRequest('post', apiServices.apiauth_register, {
         nombreprincipal: body.nombreprincipal,
         email: body.email,
         login: body.usuario,
         password: body.password,
+        x_fecha: dateToString(),
+        x_hora:  hourToString(),
     } ).then( (respta) => {
         if ( respta.resp === 0 ) {
             Swal.fire( {
@@ -96,6 +119,7 @@ const updateProfile = async ( body ) => {
 
 export const AuthService = {
     onLogin,
+    onLogout,
     onRegister,
     onValidateToken,
     updateProfile,

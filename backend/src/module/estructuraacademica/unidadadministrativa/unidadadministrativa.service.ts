@@ -33,7 +33,7 @@ export class UnidadAdministrativaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listUnidadAdministrativa, totalPagination] = await this.unidadAdministrativaRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

@@ -22,7 +22,7 @@ export class CargoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listCargo, totalPagination] = await this.cargoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { descripcion: ILike( '%' + search + '%', ), },
           ],

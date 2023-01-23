@@ -1,6 +1,10 @@
 import toastr from 'toastr';
 import { EstadoCivilData } from '../data/estado_civil.data';
 
+const existsData = (data) => {
+    return ( data !== null && typeof data !== 'undefined' && data !== "" && data?.toString().trim().length > 0 );
+};
+
 const cleanObejct = ( object = {} ) => {
     for (let index in object) {
         if ( typeof object[index] === 'boolean' ) {
@@ -166,6 +170,7 @@ const dateCurrentToString = ( date = new Date() ) => {
 };
 
 export const Functions = {
+    existsData,
     onDefaultDays,
     dateToString,
     dateCurrentToString,

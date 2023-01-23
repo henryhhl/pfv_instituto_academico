@@ -62,6 +62,7 @@ import { InscripcionGrupoReducer } from '../reducers/inscripcion/inscripciongrup
 import { ProfileReducer } from '../reducers/auth/profile.reducer';
 import { BitacoraReducer } from '../reducers/seguridad/bitacora.reducer';
 import { ParametroCalificacionReducer } from '../reducers/nota/parametrocalificacion.reducer';
+import { CalendarioAcademicoReducer } from '../reducers/nota/calendarioacademico.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -133,6 +134,7 @@ const RootReducer = combineReducers( {
 
 
     ParametroCalificacion: ParametroCalificacionReducer,
+    CalendarioAcademico: CalendarioAcademicoReducer,
 } );
 
 export default RootReducer;

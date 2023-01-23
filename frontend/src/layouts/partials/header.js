@@ -3,9 +3,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { removeAllData } from '../../utils/toolsStorage';
+import { AuthActions } from '../../redux/actions/auth/auth.action';
 
 const HeaderComponent = (props) => {
     const navigate = useNavigate();
+
+    const onLogin = () => {
+        navigate('/login')
+    };
 
     return (
         <nav className="navbar navbar-expand-lg main-navbar">
@@ -102,8 +107,12 @@ const HeaderComponent = (props) => {
                         <a href="#" className="dropdown-item has-icon"
                             onClick={ (evt) => {
                                 evt.preventDefault();
-                                removeAllData();
-                                navigate('/login');
+                                props.onLogout().then( (respta) => {
+                                    if ( respta.resp === 1 ) {
+                                        removeAllData();
+                                        onLogin();
+                                    }
+                                } );
                             } }
                         >
                             <i className="ion ion-log-out"></i> Logout
@@ -119,6 +128,8 @@ const mapStateToProps = ( state ) => ( {
     profile: state.Profile,
 } );
   
-const mapDispatchToProps = null;
+const mapDispatchToProps = {
+    onLogout: AuthActions.logout,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)( HeaderComponent );

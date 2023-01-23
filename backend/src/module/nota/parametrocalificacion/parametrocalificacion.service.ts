@@ -22,7 +22,7 @@ export class ParametroCalificacionService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listParametroCalificacion, totalPagination] = await this.parametroCalificacionRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

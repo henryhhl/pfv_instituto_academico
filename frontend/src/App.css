@@ -1,5 +1,23 @@
 /* Estilos para motores Webkit y blink (Chrome, Safari, Opera... )*/
 
+.calendar-dateCellRender {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 100%;
+  height: 70%;
+  overflow: auto;
+}
+.calendar-dateCellRender .ant-badge-not-a-wrapper {
+  width: 100%;
+  overflow: hidden;
+  font-size: 10px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: left;
+  z-index: 15;
+}
+
 ::-webkit-scrollbar {
   -webkit-appearance: none;
 }

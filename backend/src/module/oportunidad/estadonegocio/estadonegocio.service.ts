@@ -22,7 +22,7 @@ export class EstadoNegocioService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listEstadoNegocio, totalPagination] = await this.estadoNegocioRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

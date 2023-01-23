@@ -43,7 +43,7 @@ export class AdministrativoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listAdministrativo, totalPagination] = await this.administrativoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { nombreadicional: ILike( '%' + search + '%', ), },
             { nombreadicional: ILike( '%' + search + '%', ), },

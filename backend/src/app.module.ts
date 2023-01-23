@@ -61,6 +61,7 @@ import { ProfileModule } from './module/seguridad/profile/profile.module';
 import { BitacoraModule } from './module/seguridad/bitacora/bitacora.module';
 import { DateModule } from './module/config/date/date.module';
 import { ParametroCalificacionModule } from './module/nota/parametrocalificacion/parametrocalificacion.module';
+import { CalendarioacademicoModule } from './module/nota/calendarioacademico/calendarioacademico.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -103,7 +104,6 @@ import { ParametroCalificacionModule } from './module/nota/parametrocalificacion
       rootPath: join(__dirname, '..', 'public'),
     } ),
 
-
     TipoRolModule, TipoPermisoModule, TipoMateriaModule, SeedModule, RolModule, 
     UsuarioModule, UnidadNegocioModule, OfertaAcademicaModule, NivelAcademicoModule, 
     ModalidadAcademicaModule, PeriodoModule, MateriaModule, CiudadModule, PermisoModule, 
@@ -112,11 +112,12 @@ import { ParametroCalificacionModule } from './module/nota/parametrocalificacion
     ReferenciaContactoModule, TipoCiudadModule, CommonModule, TurnoModule, AulaModule, 
     DivisionAcademicaModule, InstitucionModule, GestionPeriodoModule, DocenteModule, 
     TipoIdentificacionModule, CargoModule, AdministrativoModule, CategoriaDocumentoModule, 
-    AuthModule, EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
+    EstudianteModule, CursoModule, MotivoAperturaCierreCursoModule, GrupoModule, 
     TipoActividadModule, TipomediopublicitarioModule, EstadoNegocioModule, 
     AsesorResponsableModule, NegocioModule, ActividadModule, OportunidadModule, 
     TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, 
-    ProfileModule, BitacoraModule, DateModule, ParametroCalificacionModule,
+    ProfileModule, BitacoraModule, DateModule, ParametroCalificacionModule, CalendarioacademicoModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

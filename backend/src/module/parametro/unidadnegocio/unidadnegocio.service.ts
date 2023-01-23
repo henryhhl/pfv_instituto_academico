@@ -22,7 +22,7 @@ export class UnidadNegocioService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listUnidadNegocio, totalPagination] = await this.unidadNegocioRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

@@ -22,7 +22,7 @@ export class AulaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listAula, totalPagination] = await this.aulaRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

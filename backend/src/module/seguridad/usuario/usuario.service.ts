@@ -24,19 +24,14 @@ export class UsuarioService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listUsuario, totalPagination] = await this.usuarioRepository.findAndCount( {
-          take: limit,
-          skip: offset,
+          take: limit, skip: offset * limit,
           where: { },
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       } else {
         [listUsuario, totalPagination] = await this.usuarioRepository.findAndCount( {
           where: { },
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       }
       return {

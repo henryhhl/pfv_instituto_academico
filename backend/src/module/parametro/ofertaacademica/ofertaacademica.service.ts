@@ -22,7 +22,7 @@ export class OfertaAcademicaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listOfertaAcademica, totalPagination] = await this.ofertaAcademicaRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

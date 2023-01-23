@@ -22,7 +22,7 @@ export class TipoMedioPublicitarioService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoMedioPublicitario, totalPagination] = await this.tipoMedioPublicitarioRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

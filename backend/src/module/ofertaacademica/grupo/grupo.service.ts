@@ -62,7 +62,7 @@ export class GrupoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
           ],
@@ -109,7 +109,7 @@ export class GrupoService {
       if ( arrayGrupoPensumMateria.length > 0 ) {
         if ( esPaginate ) {
           [listGrupo, totalPagination] = await this.grupoRepository.findAndCount( {
-            take: limit, skip: offset,
+            take: limit, skip: offset * limit,
             where: [
               { arrayGrupoMateriaDetalle: arrayGrupoPensumMateria, },
             ],
@@ -156,7 +156,7 @@ export class GrupoService {
             materia: { idmateria: true, codigo: true, sigla: true, nombrelargo: true, },
           },
           relations: { materia: true, },
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { pensum: pensum, grupo: grupo },
           ],

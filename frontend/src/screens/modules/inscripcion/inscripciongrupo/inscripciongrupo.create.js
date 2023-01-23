@@ -10,7 +10,6 @@ import ListadoPensumModal from '../../estructuraacademica/pensum/modal/pensum_li
 import ListadoEstudianteModal from '../../persona/estudiante/modal/estudiante_listado.modal';
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
 import DatePickerComponent from '../../../../components/date';
-import ListadoProgramaModal from '../../estructuraacademica/programa/modal/programa_listado.modal';
 import { InscripcionGrupoActions } from '../../../../redux/actions/inscripcion/inscripciongrupo.action';
 import ListadoGrupoPensumModal from '../../ofertaacademica/grupo/modal/grupopensum_listado.modal';
 import ListadoMateriaForGrupoModal from '../../ofertaacademica/grupo/modal/materiagrupo_listado.modal';
@@ -404,7 +403,7 @@ function CreateInscripcionGrupo( props ) {
                                     />
                                 </div>
                                 <div className="form-group col-4">
-                                <SelectComponent
+                                    <SelectComponent
                                         data={ [
                                             {
                                                 value: 'A',

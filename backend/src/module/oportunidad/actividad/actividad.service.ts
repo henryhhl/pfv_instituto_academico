@@ -28,7 +28,7 @@ export class ActividadService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listActividad, totalPagination] = await this.actividadRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { negocio: Like( '%' + search + '%', ), },
           ],

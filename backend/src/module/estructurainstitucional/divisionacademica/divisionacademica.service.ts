@@ -22,7 +22,7 @@ export class DivisionAcademicaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listDivionAcademica, totalPagination] = await this.divionAcademicaRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

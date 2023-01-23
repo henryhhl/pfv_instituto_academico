@@ -25,7 +25,7 @@ export class TipoIdentificacionService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoIdentificacion, totalPagination] = await this.tipoIdentificacionRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

@@ -22,15 +22,12 @@ export class ModalidadAcademicaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listModalidadAcademica, totalPagination] = await this.modalidadAcademicaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       } else {
         [listModalidadAcademica, totalPagination] = await this.modalidadAcademicaRepository.findAndCount( {
@@ -38,9 +35,7 @@ export class ModalidadAcademicaService {
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       }
       return {

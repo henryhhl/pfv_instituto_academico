@@ -23,15 +23,12 @@ export class ReferenciaContactoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoContacto, totalPagination] = await this.tipoContactoRepository.findAndCount( {
-          take: limit,
-          skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), }
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       } else {
         [listTipoContacto, totalPagination] = await this.tipoContactoRepository.findAndCount( {
@@ -39,9 +36,7 @@ export class ReferenciaContactoService {
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), }
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       }
       

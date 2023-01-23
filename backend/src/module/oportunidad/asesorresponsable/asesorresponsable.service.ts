@@ -22,7 +22,7 @@ export class AsesorResponsableService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listAsesorResponsable, totalPagination] = await this.asesorResponsableRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { nombreprincipal: ILike( '%' + search + '%', ), },
             { nombreadicional: ILike( '%' + search + '%', ), },

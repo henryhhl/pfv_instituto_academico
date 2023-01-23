@@ -28,7 +28,7 @@ export class BitacoraService {
             usuario: { idusuario: true, nombreprincipal: true, email: true, },
           },
           relations: { usuario: true, },
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { accion: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

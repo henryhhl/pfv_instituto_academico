@@ -6,6 +6,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { Usuario } from '../seguridad/usuario/entities/usuario.entity';
+import { BitacoraService } from '../seguridad/bitacora/bitacora.service';
 import { CreateUsuarioDto } from '../seguridad/usuario/dto/create-usuario.dto';
 
 @Injectable()
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly authRepository: Repository<Usuario>,
 
     private readonly jwtService: JwtService,
+    private readonly bitacoraService: BitacoraService,
 
     private readonly dataSource: DataSource,
   ) {}
@@ -42,7 +44,7 @@ export class AuthService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async register(createUsuarioDto: CreateUsuarioDto) {
+  async register(createUsuarioDto: CreateUsuarioDto, request) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -76,6 +78,18 @@ export class AuthService {
         idusuario: usuario.idusuario,
         web_token: token,
         api_token: token,
+        online: 'A',
+      } );
+
+      await this.bitacoraService.store( {
+        usuario: usuarioPreLoad,
+        fkidtabla: usuarioPreLoad.idusuario,
+        tabla: 'usuario',
+        accion: 'Registro de Usuario',
+        descripcion: `Se realizo con éxito al iniciar sesion y registro de usuario`,
+        event: 'register',
+        ip: request.ip, uri: request.originalUrl,
+        x_fecha: request.body.x_fecha, x_hora: request.body.x_hora,
       } );
 
       const usuarioUpdate = await queryRunner.manager.save( usuarioPreLoad );
@@ -104,7 +118,7 @@ export class AuthService {
     }
   }
 
-  async login(loginAuthDto: LoginAuthDto) {
+  async login(loginAuthDto: LoginAuthDto, request) {
     try {
       const { password, login } = loginAuthDto;
       const user = await this.authRepository.findOne( {
@@ -132,6 +146,18 @@ export class AuthService {
         web_token: token,
         api_token: token,
         intentos: 0,
+        online: 'A',
+      } );
+
+      await this.bitacoraService.store( {
+        usuario: usuarioPreLoad,
+        fkidtabla: usuarioPreLoad.idusuario,
+        tabla: 'usuario',
+        accion: 'Inicio de sesion',
+        descripcion: `Se realizo con éxito al iniciar sesion`,
+        event: 'login',
+        ip: request.ip, uri: request.originalUrl,
+        x_fecha: loginAuthDto.x_fecha, x_hora: loginAuthDto.x_hora,
       } );
 
       const usuarioUpdate = await this.authRepository.save( usuarioPreLoad );
@@ -146,6 +172,62 @@ export class AuthService {
         message: 'Servicio realizado exitosamente.',
         usuario: usuarioRespta,
         token: token,
+      };
+
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al insertar información con el servidor.',
+      };
+    }
+  }
+
+  async findOne(idusuario: string) {
+    try {
+      const usuarioFirst = await this.authRepository.findOneBy( {
+        idusuario,
+      } );
+      return usuarioFirst;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  async logout(request) {
+    try {
+      const userFirst = await this.findOne(request.body.idusuario);
+
+      if ( userFirst === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Usuario no existente.',
+        };
+      }
+
+      const usuarioPreLoad = await this.authRepository.preload( {
+        idusuario: userFirst.idusuario,
+        web_token: null,
+        api_token: null,
+        online: 'N',
+      } );
+
+      await this.bitacoraService.store( {
+        usuario: usuarioPreLoad,
+        fkidtabla: usuarioPreLoad.idusuario,
+        tabla: 'usuario',
+        accion: 'Cerró sesion',
+        descripcion: `Se realizo con éxito al cerrar sesion`,
+        event: 'logout',
+        ip: request.ip, uri: request.originalUrl,
+        x_fecha: request.body.x_fecha, x_hora: request.body.x_hora,
+      } );
+
+      await this.authRepository.save( usuarioPreLoad );
+
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
       };
 
     } catch (error) {

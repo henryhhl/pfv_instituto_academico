@@ -20,6 +20,7 @@ const module = {
 
 const apiServices = {
     apiauth_login:  `${module.auth}/auth/login`,
+    apiauth_logout:  `${module.auth}/auth/logout`,
     apiauth_register:  `${module.auth}/auth/register`,
     apiauth_validateToken:  `${module.auth}/auth/validateToken`,
     apiauth_updateProfile:  `${module.auth}/profile/store`,
@@ -413,6 +414,14 @@ const apiServices = {
     apinotaparametrocalificacion_show:   `${module.nota}/parametrocalificacion/show`,
     apinotaparametrocalificacion_update: `${module.nota}/parametrocalificacion/update`,
     apinotaparametrocalificacion_delete: `${module.nota}/parametrocalificacion/delete`,
+
+    apinotacalendarioacademico_index:  `${module.nota}/calendarioacademico/index`,
+    apinotacalendarioacademico_create: `${module.nota}/calendarioacademico/create`,
+    apinotacalendarioacademico_store:  `${module.nota}/calendarioacademico/store`,
+    apinotacalendarioacademico_edit:   `${module.nota}/calendarioacademico/edit`,
+    apinotacalendarioacademico_show:   `${module.nota}/calendarioacademico/show`,
+    apinotacalendarioacademico_update: `${module.nota}/calendarioacademico/update`,
+    apinotacalendarioacademico_delete: `${module.nota}/calendarioacademico/delete`,
 };
 
 export default apiServices;

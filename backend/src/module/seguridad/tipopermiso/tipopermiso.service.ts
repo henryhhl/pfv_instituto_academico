@@ -21,7 +21,7 @@ export class TipoPermisoService {
             let totalPagination = 0;
             if ( esPaginate ) {
                 [listTipoPermiso, totalPagination] = await this.tipoPermisoRepository.findAndCount( {
-                    take: limit, skip: offset,
+                    take: limit, skip: offset * limit,
                     where: [
                         { descripcion: ILike( '%' + search + '%', ), },
                     ],

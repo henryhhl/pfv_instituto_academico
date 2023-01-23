@@ -70,6 +70,12 @@ export class Usuario {
 
     @Column( 'enum', {
         enum: ['A', 'N'],
+        default: 'N',
+    } )
+    online: string;
+
+    @Column( 'enum', {
+        enum: ['A', 'N'],
         default: 'A',
     } )
     estado: string;

@@ -26,7 +26,7 @@ export class TurnoService {
           //   'idturno', 'fkidunidadadministrativa', 'unidadadministrativa', 
           //   'sigla', 'descripcion', 'estado',
           // ],
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

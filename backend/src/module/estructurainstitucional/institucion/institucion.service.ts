@@ -22,7 +22,7 @@ export class InstitucionService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listInstitucion, totalPagination] = await this.institucionRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

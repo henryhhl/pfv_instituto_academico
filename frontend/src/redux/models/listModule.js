@@ -58,6 +58,7 @@ const ListModules = {
     listInscripcionGrupo: [],
 
     listParametroCalificacion: [],
+    listCalendarioAcademico: [],
 };
 
 export default ListModules;

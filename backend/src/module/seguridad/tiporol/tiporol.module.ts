@@ -10,10 +10,10 @@ import { AuthModule } from '../../auth/auth.module';
   providers: [TipoRolService],
   exports: [TipoRolService],
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature( [
       TipoRol,
     ] ),
-    AuthModule,
   ],
 })
 export class TipoRolModule {}

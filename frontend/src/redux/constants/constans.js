@@ -358,6 +358,12 @@ const Constants = {
     parametrocalificacion_onShow: "[ON SHOW] Parametro Calificacion",
     parametrocalificacion_onLimpiar: "[ON LIMPIAR] Parametro Calificacion",
 
+    calendarioacademico_setInit: "[SET INIT] Calendario Academico",
+    calendarioacademico_onChange: "[ON CHANGE] Calendario Academico",
+    calendarioacademico_onCreate: "[ON CREATE] Calendario Academico",
+    calendarioacademico_onShow: "[ON SHOW] Calendario Academico",
+    calendarioacademico_onLimpiar: "[ON LIMPIAR] Calendario Academico",
+
 };
 
 export default Constants;

@@ -23,7 +23,7 @@ export class RolService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listRol, totalPagination] = await this.rolRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { descripcion: ILike( '%' + search + '%', ), },
             { tiporol: ILike( '%' + search + '%', ), },

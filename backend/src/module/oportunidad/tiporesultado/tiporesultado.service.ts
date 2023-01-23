@@ -22,7 +22,7 @@ export class TipoResultadoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoResultado, totalPagination] = await this.tipoResultadoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

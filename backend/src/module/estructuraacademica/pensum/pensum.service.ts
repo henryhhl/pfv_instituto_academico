@@ -34,7 +34,7 @@ export class PensumService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { descripcion: ILike( '%' + search + '%', ), },
             { fechaaprobacion: ILike( '%' + search + '%', ), },

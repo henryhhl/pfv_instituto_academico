@@ -22,7 +22,7 @@ export class GestionPeriodoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listGestionPeriodo, totalPagination] = await this.gestionPeriodoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { descripcion: ILike( '%' + search + '%', ), },
             { fechainicio: ILike( '%' + search + '%', ), },

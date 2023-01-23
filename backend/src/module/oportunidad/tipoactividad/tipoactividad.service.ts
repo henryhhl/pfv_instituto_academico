@@ -22,7 +22,7 @@ export class TipoActividadService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoActividad, totalPagination] = await this.tipoActividadRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

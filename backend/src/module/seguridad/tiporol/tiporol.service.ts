@@ -21,7 +21,7 @@ export class TipoRolService {
             let totalPagination = 0;
             if ( esPaginate ) {
                 [listTipoRol, totalPagination] = await this.tipoRolRepository.findAndCount( {
-                    take: limit, skip: offset,
+                    take: limit, skip: offset * limit,
                     where: [
                         { descripcion: ILike( '%' + search + '%', ), },
                     ],

@@ -32,7 +32,7 @@ export class OportunidadService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listOportunidad, totalPagination] = await this.oportunidadRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { identificacion: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

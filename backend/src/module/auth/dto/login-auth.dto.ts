@@ -1,4 +1,4 @@
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class LoginAuthDto {
 
@@ -7,5 +7,11 @@ export class LoginAuthDto {
 
     @IsNotEmpty( { message: 'Campo password es requerido.', } )
     readonly password: string;
+
+    @IsOptional()
+    readonly x_fecha?: string;
+
+    @IsOptional()
+    readonly x_hora?: string;
 
 }

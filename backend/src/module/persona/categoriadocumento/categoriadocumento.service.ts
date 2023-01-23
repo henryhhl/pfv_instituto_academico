@@ -22,7 +22,7 @@ export class CategoriaDocumentoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listCategoriaDocumento, totalPagination] = await this.categoriaDocumentoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { descripcion: ILike( '%' + search + '%', ), },
           ],

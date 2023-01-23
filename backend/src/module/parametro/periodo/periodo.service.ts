@@ -22,7 +22,7 @@ export class PeriodoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listPeriodo, totalPagination] = await this.periodoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

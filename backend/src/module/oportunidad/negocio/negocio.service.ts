@@ -26,7 +26,7 @@ export class NegocioService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listNegocio, totalPagination] = await this.negocioRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { descripcion: Like( '%' + search + '%', ), },
           ],

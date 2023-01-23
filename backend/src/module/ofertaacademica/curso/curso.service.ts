@@ -31,7 +31,7 @@ export class CursoService {
       if ( esPaginate ) {
         [listCurso, totalPagination] = await this.cursoRepository.findAndCount( {
           relations: { arraydocente: true, },
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },

@@ -23,8 +23,7 @@ export class MateriaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listMateria, totalPagination] = await this.materiaRepository.findAndCount( {
-          take: limit,
-          skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { codigo: ILike( '%' + search + '%', ), },
@@ -32,9 +31,7 @@ export class MateriaService {
             { nombrelargo: ILike( '%' + search + '%', ), },
             { nombrealternativo: ILike( '%' + search + '%', ), },
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       } else {
         [listMateria, totalPagination] = await this.materiaRepository.findAndCount( {
@@ -45,9 +42,7 @@ export class MateriaService {
             { nombrelargo: ILike( '%' + search + '%', ), },
             { nombrealternativo: ILike( '%' + search + '%', ), },
           ],
-          order: {
-            created_at: "DESC",
-          },
+          order: { created_at: "DESC", },
         } );
       }
       return {

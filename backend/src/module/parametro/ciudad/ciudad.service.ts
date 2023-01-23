@@ -18,8 +18,7 @@ export class CiudadService {
   async findAll() {
     try {
       const [listCiudad, totalCount] = await this.ciudadRepository.findAndCount( {
-        where: {
-        },
+        where: { },
         order: { created_at: "ASC", },
       } );
       return {

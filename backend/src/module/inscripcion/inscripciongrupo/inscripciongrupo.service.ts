@@ -50,7 +50,7 @@ export class InscripcionGrupoService {
 
       if ( esPaginate ) {
         [listInscripcionGrupo, totalPagination] = await this.inscripcionGrupoRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           relations: {
             estudiante: true, gestionperiodo: true,
           },

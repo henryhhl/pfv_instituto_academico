@@ -23,7 +23,7 @@ export class TipoMateriaService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listTipoMateria, totalPagination] = await this.tipoMateriaRepository.findAndCount( {
-          take: limit, skip: offset,
+          take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },
