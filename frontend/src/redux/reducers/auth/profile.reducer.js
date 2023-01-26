@@ -55,6 +55,8 @@ const onSetData = ( state = inititalState, auth ) => {
     state.login = auth.login;
     state.estado = auth.estado;
 
+    state.arrayrol = auth.arrayrol ? auth.arrayrol : state.arrayrol;
+
     state.idprofile = auth.profile !== null ? auth.profile.idprofile : null;
     state.fkidciudadorigen = auth.profile !== null ? auth.profile.fkidciudadorigen : null;
     state.ciudadorigen = auth.profile !== null ? auth.profile.ciudadorigen : null;

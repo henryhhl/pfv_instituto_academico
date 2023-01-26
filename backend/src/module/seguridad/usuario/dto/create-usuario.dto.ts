@@ -1,4 +1,4 @@
-import { IsString, MinLength, IsNotEmpty, IsEmail, MaxLength, Matches } from 'class-validator';
+import { IsString, MinLength, IsNotEmpty, IsEmail, MaxLength, Matches, IsOptional } from 'class-validator';
 
 export class CreateUsuarioDto {
 
@@ -24,5 +24,11 @@ export class CreateUsuarioDto {
         message: 'La contraseña debe tener una letra mayúscula, minúscula y un número'
     })
     readonly password: string;
+
+    @IsOptional()
+    readonly x_fecha?: string;
+
+    @IsOptional()
+    readonly x_hora?: string;
 
 }

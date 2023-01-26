@@ -53,6 +53,7 @@ const onValidateToken = ( onBack ) => {
             if ( respta.resp === 1 ) {
                 saveData( KeysStorage.usuario, respta.usuario );
                 saveData( KeysStorage.token, respta.token );
+                respta.usuario.arrayrol = respta.arrayRol;
                 dispatch( setShowData( respta.usuario ) );
                 return respta;
             } else if ( respta.resp === -2 ) {

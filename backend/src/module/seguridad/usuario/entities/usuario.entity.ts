@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert, BeforeUpdate, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Profile } from '../../profile/entities/profile.entity';
 import { Bitacora } from '../../bitacora/entities/bitacora.entity';
+import { AsignarRol } from '../../asignarrol/entities/asignarrol.entity';
 
 @Entity('usuario')
 export class Usuario {
@@ -11,9 +12,14 @@ export class Usuario {
     @OneToMany(
         () => Bitacora,
         ( bitacora ) => bitacora.usuario,
-        { cascade: true, },
     )
     arraybitacora?: Bitacora[];
+
+    @OneToMany(
+        () => AsignarRol,
+        ( item ) => item.usuario,
+    )
+    arrayrol?: AsignarRol[];
 
     @ManyToOne(
         ( ) => Profile,

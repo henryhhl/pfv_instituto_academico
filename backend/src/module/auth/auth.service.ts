@@ -122,8 +122,23 @@ export class AuthService {
     try {
       const { password, login } = loginAuthDto;
       const user = await this.authRepository.findOne( {
+        relations: {
+          arrayrol: true,
+        },
         where: { login },
-        select: { idusuario: true, login: true, email: true, estado: true, password: true, },
+        select: { 
+          idusuario: true, login: true, email: true, estado: true, password: true, 
+          arrayrol: {
+            idasignarrol: true,
+            estado: true,
+            rol: {
+              idrol: true,
+              descripcion: true,
+              nota: true,
+              estado: true,
+            }
+          },
+        },
       } );
 
       if ( user === null ) {
@@ -172,6 +187,7 @@ export class AuthService {
         message: 'Servicio realizado exitosamente.',
         usuario: usuarioRespta,
         token: token,
+        arrayRol: user.arrayrol,
       };
 
     } catch (error) {
@@ -253,11 +269,34 @@ export class AuthService {
         intentos, timeout, created_at, updated_at, deleted_at, ...usuarioRespta 
       } = user;
 
+      const userFirst = await this.authRepository.findOne( {
+        relations: {
+          arrayrol: {
+            rol: true,
+          },
+        },
+        where: { idusuario: user.idusuario },
+        select: { 
+          idusuario: true, login: true, email: true, estado: true, password: true, 
+          arrayrol: {
+            idasignarrol: true,
+            estado: true,
+            rol: {
+              idrol: true,
+              descripcion: true,
+              nota: true,
+              estado: true,
+            }
+          },
+        },
+      } );
+
       return {
         resp: 1, error: false,
         message: 'Servicio realizado exitosamente.',
         usuario: usuarioRespta,
         token: token,
+        arrayRol: userFirst.arrayrol,
       };
     } catch (error) {
       this.logger.error(error);

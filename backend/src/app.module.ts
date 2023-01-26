@@ -62,6 +62,7 @@ import { BitacoraModule } from './module/seguridad/bitacora/bitacora.module';
 import { DateModule } from './module/config/date/date.module';
 import { ParametroCalificacionModule } from './module/nota/parametrocalificacion/parametrocalificacion.module';
 import { CalendarioacademicoModule } from './module/nota/calendarioacademico/calendarioacademico.module';
+import { AsignarrolModule } from './module/seguridad/asignarrol/asignarrol.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -118,6 +119,7 @@ import { CalendarioacademicoModule } from './module/nota/calendarioacademico/cal
     TipoResultadoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, 
     ProfileModule, BitacoraModule, DateModule, ParametroCalificacionModule, CalendarioacademicoModule,
     AuthModule,
+    AsignarrolModule,
   ],
   controllers: [],
   providers: [],

@@ -1,10 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { AsignarRol } from '../../asignarrol/entities/asignarrol.entity';
 
 @Entity()
 export class Rol {
 
     @PrimaryGeneratedColumn('uuid')
     idrol: string;
+
+    @OneToMany(
+        () => AsignarRol,
+        ( item ) => item.usuario,
+    )
+    arrayusuario?: AsignarRol[];
 
     @Column('text')
     fkidtiporol: string;

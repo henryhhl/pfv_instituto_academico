@@ -25,7 +25,7 @@ import EditRol from '../screens/modules/seguridad/rol/rol.edit';
 import ShowRol from '../screens/modules/seguridad/rol/rol.show';
 
 import IndexPermiso from '../screens/modules/seguridad/permiso/permiso.index';
-import AsignarRol from '../screens/modules/seguridad/asignar_rol';
+import IndexAsignarRol from '../screens/modules/seguridad/asignarrol.index';
 import AsignarPermiso from '../screens/modules/seguridad/asignar_permiso';
 
 import IndexUsuario from '../screens/modules/seguridad/usuario/usuario.index';
@@ -269,7 +269,7 @@ const HomeRoute = (props) => {
                     <Route index path="/rol/show/:idrol" element={ <ShowRol { ...props } /> }  />
 
                     <Route index path="/permiso/index" element={ <IndexPermiso { ...props } /> }  />
-                    <Route index path="/asignar_rol" element={ <AsignarRol { ...props } /> }  />
+                    <Route index path="/asignarrol/index" element={ <IndexAsignarRol { ...props } /> }  />
                     <Route index path="/asignar_permiso" element={ <AsignarPermiso { ...props } /> }  />
 
                     <Route index path="/usuario/index" element={ <IndexUsuario { ...props } /> }  />

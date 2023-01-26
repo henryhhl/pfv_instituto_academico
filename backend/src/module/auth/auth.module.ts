@@ -24,7 +24,7 @@ import { Bitacora } from '../seguridad/bitacora/entities/bitacora.entity';
     ConfigModule,
 
     TypeOrmModule.forFeature( [
-      Usuario, Bitacora
+      Usuario, Bitacora,
     ] ),
     
     PassportModule.register( {

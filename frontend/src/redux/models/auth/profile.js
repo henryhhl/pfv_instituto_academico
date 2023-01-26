@@ -3,6 +3,8 @@ const Profile = {
     idprofile: "",
     idusuario: "",
 
+    arrayrol: [],
+
     fkidciudadorigen: "",
     ciudadorigen: "",
     direccion: "",

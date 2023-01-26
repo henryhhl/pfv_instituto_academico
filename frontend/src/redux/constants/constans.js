@@ -54,6 +54,13 @@ const Constants = {
     usuario_onShow: "[ON SHOW] Usuario",
     usuario_onLimpiar: "[ON LIMPIAR] Usuario",
 
+    asignarrol_setInit: "[SET INIT] Asignar Rol",
+    asignarrol_onChange: "[ON CHANGE] Asignar Rol",
+    asignarrol_onCreate: "[ON CREATE] Asignar Rol",
+    asignarrol_onShow: "[ON SHOW] Asignar Rol",
+    asignarrol_onLimpiar: "[ON LIMPIAR] Asignar Rol",
+
+
     nivelAcademico_setInit: "[SET INIT] Nivel Academico",
     nivelAcademico_onChange: "[ON CHANGE] Nivel Academico",
     nivelAcademico_onCreate: "[ON CREATE] Nivel Academico",
