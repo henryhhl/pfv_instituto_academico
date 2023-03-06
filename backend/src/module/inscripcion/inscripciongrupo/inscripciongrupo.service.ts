@@ -14,6 +14,8 @@ import { PensumService } from '../../estructuraacademica/pensum/pensum.service';
 import { MateriaService } from '../../parametro/materia/materia.service';
 import { GrupoService } from '../../ofertaacademica/grupo/grupo.service';
 import { InscripcionGrupoPaginationDto } from './dto/pagination.dto';
+import { FindEstudianteForMateriaDto } from './dto/findestudianteformateria.dto';
+import { DocenteService } from '../../persona/docente/docente.service';
 
 @Injectable()
 export class InscripcionGrupoService {
@@ -32,6 +34,7 @@ export class InscripcionGrupoService {
     private readonly gestionPeriodoService: GestionPeriodoService,
     private readonly unidadAcademicaService: UnidadacademicaService,
     private readonly unidadAdministrativaService: UnidadAdministrativaService,
+    private readonly docenteService: DocenteService,
   ) {}
 
   async findAll( paginationDto: InscripcionGrupoPaginationDto ) {
@@ -78,6 +81,54 @@ export class InscripcionGrupoService {
         arrayInscripcionGrupo: listInscripcionGrupo,
         pagination: {
           total: totalPagination,
+        },
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async FindEstudianteForMateriaDto(request: FindEstudianteForMateriaDto) {
+    try {
+      let list = [];
+      let total = 0;
+      try {
+        [list, total] = await this.inscripcionGrupoRepository.findAndCount( {
+          relations: {
+            estudiante: true,
+          },
+          where: { 
+            unidadnegocio: { idunidadnegocio: request.fkidunidadnegocio, },
+            unidadadministrativa: { idunidadadministrativa: request.fkidunidadadministrativa, },
+            unidadacademica: { idunidadacademica: request.fkidunidadacademica, },
+            pensum: { idpensum: request.fkidpensum, },
+            grupo: { idgrupo: request.fkidgrupo, },
+            materia: { idmateria: request.fkidmateria, },
+            programa: { idprograma: request.fkidprograma, },
+            gestionperiodo: { idgestionperiodo: request.fkidgestionperiodo, },
+            docente: { iddocente: request.fkiddocente, },
+          },
+          order: {  
+            estudiante: {
+              apellidoprimero: 'ASC',
+            },
+          },
+        } );
+      } catch (error) {
+        list = [];
+        total = 0;
+      }
+      
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayEstudianteInscrito: list,
+        pagination: {
+          total: total,
         },
       };
     } catch (error) {
@@ -175,6 +226,20 @@ export class InscripcionGrupoService {
           message: 'Programa no existe.',
         };
       }
+      const docente = await this.docenteService.findOne(createInscripciongrupoDto.fkiddocente);
+      if ( docente === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Programa no existe.',
+        };
+      }
+      const grupoDetalle = await this.grupoService.findOneDetail(createInscripciongrupoDto.fkidgrupopensumdetalle);
+      if ( grupoDetalle === null ) {
+        return {
+          resp: 0, error: false,
+          message: 'Programa no existe.',
+        };
+      }
       const inscripcionGrupoFirst = await this.inscripcionGrupoRepository.findOne( {
         where: {
           pensum: pensum,
@@ -201,6 +266,8 @@ export class InscripcionGrupoService {
         grupo: grupo,
         materia: materia,
         programa: programa,
+        docente: docente,
+        grupoMateriaDetalle: grupoDetalle,
         created_at: this.getDateTime(),
       } );
       const inscripcionGrupoStore = await this.inscripcionGrupoRepository.save( inscripcionGrupo );

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tag, Tooltip } from 'antd';
+import { Button, Checkbox, Tag, Tooltip } from 'antd';
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { IconButton, TablePagination, useTheme } from '@mui/material';
 
@@ -37,6 +37,9 @@ export default function TableComponent( props ) {
                 <table className="table table-striped table-bordered table-hover table-sm">
                     <tbody>
                         <tr>
+                            { props.isCheckbox === true &&
+                                <th align='left' style={{ width: 20, }}></th>
+                            }
                             <th align='left' style={{ width: 35, fontSize: 12, }}>
                                 #
                             </th>
@@ -76,6 +79,13 @@ export default function TableComponent( props ) {
                                     } }
                                     style={style}
                                 >
+                                    { props.isCheckbox === true &&
+                                        <td>
+                                            <Checkbox 
+                                                checked={row[props.iddata] === props.valueSelect ? true : false}
+                                            />
+                                        </td>
+                                    }
                                     <td style={{ fontSize: 12, }}>
                                         { ( ( (props.page < 1 ? 0 : props.page) ) * props.paginate ) + ( index + 1 ) }
                                     </td>
@@ -125,7 +135,10 @@ export default function TableComponent( props ) {
                                                     : column.numeric === true ? 
                                                         parseFloat(row[column.id]).toFixed(2) :
                                                         column.amountday === true ? amountday 
-                                                    : column.object === true ? row[column.id][column.value] : row[column.id] 
+                                                    : column.object === true ? Array.isArray( column.value ) ?
+                                                        showDataArray(column.value, row[column.id]) : 
+                                                        row[column.id][column.value] :
+                                                    row[column.id] 
                                                     
                                                 }
                                                 { column.suffix && column.suffix }
@@ -272,6 +285,7 @@ TableComponent.propTypes = {
     isSearch: PropTypes.bool,
     isEdit: PropTypes.bool,
     isDelete: PropTypes.bool,
+    isCheckbox: PropTypes.bool,
 
     paginate: PropTypes.number,
     page: PropTypes.number,
@@ -298,6 +312,7 @@ TableComponent.defaultProps = {
     isSearch: true,
     isEdit: true,
     isDelete: true,
+    isCheckbox: false,
 
     iddata: 'iddata',
     valueSelect: null,

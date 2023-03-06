@@ -1,7 +1,7 @@
 import toastr from 'toastr';
 import { EstadoCivilData } from '../data/estado_civil.data';
 
-const existsData = (data) => {
+export const existsData = (data) => {
     return ( data !== null && typeof data !== 'undefined' && data !== "" && data?.toString().trim().length > 0 );
 };
 

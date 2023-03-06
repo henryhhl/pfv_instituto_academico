@@ -46,7 +46,7 @@ export default function ListadoMateriaForGrupoModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={650} centered
+                footer={null} width={'90%'}
                 title={"LISTA MATERIA"}
             >
                 <div className="row">
@@ -74,9 +74,23 @@ export default function ListadoMateriaForGrupoModal( props ) {
                                             object: true,
                                             value: 'nombrelargo',
                                         },
+                                        {
+                                            id: 'gestionPeriodo',
+                                            label: 'Perido',
+                                            object: true,
+                                            value: 'descripcion',
+                                        },
+                                        {
+                                            id: 'docente',
+                                            label: 'Docente',
+                                            object: true,
+                                            value: ['apellidoprimero', 'apellidosegundo','nombreprincipal', 'nombreadicional'],
+                                        },
                                     ] } select
                                     dataSource={array_data}
                                     onSelect={ props.onSelect }
+                                    iddata={'idgrupopensumdetalle'}
+                                    valueSelect={props.valueSelect}
                                 />
                             </div>
                         </div>
@@ -93,6 +107,7 @@ ListadoMateriaForGrupoModal.propTypes = {
     onSelect: PropTypes.func,
     fkidpensum: PropTypes.any,
     fkidgrupo: PropTypes.any,
+    valueSelect: PropTypes.any,
 };
 
 ListadoMateriaForGrupoModal.defaultProps = {

@@ -13,12 +13,19 @@ import { MotivoAperturaCierreCurso } from '../../motivoaperturacierrecurso/entit
 import { DivisionAcademica } from '../../../estructurainstitucional/divisionacademica/entities/divisionacademica.entity';
 import { UnidadAdministrativa } from '../../../estructuraacademica/unidadadministrativa/entities/unidadadministrativa.entity';
 import { GrupoMateriaCalificacionDetalle } from './grupomateriacalificacion.entity';
+import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 
 @Entity('grupomateriadetalle')
 export class GrupoMateriaDetalle {
 
     @PrimaryGeneratedColumn()
     idgrupopensumdetalle: number;
+
+    @OneToMany(
+        () => InscripcionGrupo,
+        ( item ) => item.grupoMateriaDetalle,
+    )
+    arrayInscripcionGrupo?: InscripcionGrupo[];
 
     @OneToMany(
         () => GrupoMateriaDiaDetalle,

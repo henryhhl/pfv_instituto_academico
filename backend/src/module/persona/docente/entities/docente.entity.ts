@@ -5,12 +5,19 @@ import { DocenteEstudioDetalle } from './docenteestudiodetalle.entity';
 import { DocenteReferenciaContactoDetalle } from './docentereferenciacontacto.entity';
 import { DocenteCategoriaDocumentoDetalle } from './docentecategoriadocumentodetalle.entity';
 import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
+import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 
 @Entity('docente')
 export class Docente {
 
     @PrimaryGeneratedColumn('uuid')
     iddocente: string;
+
+    @OneToMany(
+        () => InscripcionGrupo,
+        ( item ) => item.docente,
+    )
+    arrayInscripcionGrupo?: InscripcionGrupo[];
 
     @OneToMany(
         () => GrupoMateriaDetalle,

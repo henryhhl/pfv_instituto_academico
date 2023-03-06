@@ -371,6 +371,9 @@ const Constants = {
     calendarioacademico_onShow: "[ON SHOW] Calendario Academico",
     calendarioacademico_onLimpiar: "[ON LIMPIAR] Calendario Academico",
 
+    asistenciagrupo_onChange: "[ON CHANGE] Asistencia Grupo",
+    asistenciagrupo_onLimpiar: "[ON LIMPIAR] Asistencia Grupo",
+
 };
 
 export default Constants;

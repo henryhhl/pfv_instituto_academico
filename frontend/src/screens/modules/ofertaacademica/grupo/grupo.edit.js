@@ -17,6 +17,7 @@ import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_l
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
 import FormHorarioGrupoModal from './modal/form_horario.modal';
 import FormAddGrupoParametroCalificacionModal from './modal/form_add_parametrocalificacion.modal';
+import EmptyComponent from '../../../../components/empty';
 
 function EditGrupo( props ) {
     const { grupo } = props;
@@ -155,6 +156,12 @@ function EditGrupo( props ) {
                     detalle.fkidgestionperiodo = gestionPeriodo.idgestionperiodo;
                     detalle.gestionperiodo = `${gestionPeriodo.descripcion}`;
 
+                    detalle.fkidmateria = null;
+                    detalle.materia = null;
+
+                    detalle.fkiddivisionacademica = null;
+                    detalle.divisionacademica = null;
+
                     detalle.error.fkidgestionperiodo = false;
                     detalle.message.fkidgestionperiodo = "";
 
@@ -167,9 +174,14 @@ function EditGrupo( props ) {
     };
 
     const existsMateria = ( idmateria ) => {
+        let detalle = grupo.arraypensum[indexDetailsMateria];
         for (let index = 0; index < grupo.arraypensum?.length; index++) {
             const element = grupo.arraypensum[index];
-            if ( element.fkidmateria === idmateria ) return true;
+            if ( element.fkidmateria === idmateria && index !== indexDetailsMateria ) {
+                if ( element.fkidpensum === detalle.fkidpensum && element.fkidgestionperiodo === detalle.fkidgestionperiodo ) {
+                    return true;
+                }
+            }
         }
         return false;
     };
@@ -287,7 +299,7 @@ function EditGrupo( props ) {
                             <a className="nav-link" id="materiapensum-tab" data-toggle="tab" href="#materiapensum" 
                                 role="tab" aria-controls="materiapensum" aria-selected="false"
                             >
-                                Asignar Materias de Pensum
+                                Agregar o Editar Materias
                             </a>
                         </li>
                     </ul>
@@ -341,13 +353,7 @@ function EditGrupo( props ) {
                                     </ButtonComponent>
                                 </div>
                             </div>
-                            { grupo.arraypensum?.length === 0 &&
-                                <div className='card p-0 m-0'>
-                                    <div className='card-header'>
-                                        <h4>Sin Información</h4>
-                                    </div>
-                                </div>
-                            }
+                            <EmptyComponent data={grupo.arraypensum} />
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 650, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { grupo.arraypensum?.map( ( item, key ) => {
@@ -423,6 +429,8 @@ function EditGrupo( props ) {
                                                                     <InputComponent
                                                                         label="Docente*"
                                                                         value={item.docente}
+                                                                        error={item.error?.fkiddocente}
+                                                                        message={item.message?.fkiddocente}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -445,6 +453,8 @@ function EditGrupo( props ) {
                                                                     <InputComponent
                                                                         label="Turno*"
                                                                         value={item.turno}
+                                                                        error={item.error?.fkidturno}
+                                                                        message={item.message?.fkidturno}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -467,6 +477,8 @@ function EditGrupo( props ) {
                                                                     <InputComponent
                                                                         label="Periodo*"
                                                                         value={item.gestionperiodo}
+                                                                        error={item.error?.fkidgestionperiodo}
+                                                                        message={item.message?.fkidgestionperiodo}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -487,10 +499,12 @@ function EditGrupo( props ) {
                                                         </div>
                                                         <div className='row'>
                                                             <div className="form-group col-6">
-                                                                { (item.fkidpensum === null) ? 
+                                                                { (item.fkidpensum === null || item.fkidgestionperiodo === null) ? 
                                                                     <InputComponent
                                                                         label="Materia*"
                                                                         value={item.materia}
+                                                                        error={item.error?.fkidmateria}
+                                                                        message={item.message?.fkidmateria}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -512,6 +526,8 @@ function EditGrupo( props ) {
                                                                 <InputComponent
                                                                     label="Nivel*"
                                                                     value={item.divisionacademica}
+                                                                    error={item.error?.fkiddivisionacademica}
+                                                                    message={item.message?.fkiddivisionacademica}
                                                                     readOnly
                                                                 /> 
                                                             </div>
@@ -531,7 +547,7 @@ function EditGrupo( props ) {
                                                                     } }
                                                                     error={item.error?.cupomaximo}
                                                                     message={item.message?.cupomaximo}
-                                                                    readOnly={ (item.fkidpensum === null) }
+                                                                    readOnly={ (item.fkidpensum === null || item.fkidgestionperiodo === null) }
                                                                 />
                                                             </div>
                                                         </div>

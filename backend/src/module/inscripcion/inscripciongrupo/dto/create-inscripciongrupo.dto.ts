@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsString, IsOptional, IsIn } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsIn, IsInt } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class CreateInscripcionGrupoDto {
 
@@ -37,6 +38,15 @@ export class CreateInscripcionGrupoDto {
     @IsNotEmpty( { message: 'Campo fkidgrupo es requerido.', } )
     @IsString( { message: 'Campo fkidgrupo permitido tipo String.', } )
     readonly fkidgrupo: string;
+
+    @IsNotEmpty( { message: 'Campo fkiddocente es requerido.', } )
+    @IsString( { message: 'Campo fkiddocente permitido tipo String.', } )
+    readonly fkiddocente: string;
+
+    @IsNotEmpty( { message: 'Campo fkidgrupopensumdetalle es requerido.', } )
+    @IsInt( { message: 'Campo fkidgrupopensumdetalle solo permitido tipo entero positivo.', } )
+    @Type( () => Number )
+    readonly fkidgrupopensumdetalle: number;
 
     @IsNotEmpty( { message: 'Campo fechainscripcion es requerido.', } )
     @IsString( { message: 'Campo fechainscripcion permitido tipo String.', } )

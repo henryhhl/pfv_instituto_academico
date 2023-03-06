@@ -43,7 +43,12 @@ export class PensumService {
             { unidadnegocio: ILike( '%' + search + '%', ), },
             { unidadadministrativa: ILike( '%' + search + '%', ), },
           ],
-          order: { created_at: "DESC", },
+          order: { 
+            created_at: "DESC", 
+            arraydivisionacademica: {
+              created_at: 'ASC',
+            },
+          },
         } );
       } else {
         [listPensum, totalPagination] = await this.pensumRepository.findAndCount( {

@@ -2,6 +2,8 @@
 const InscripcionGrupo = {
     idinscripciongrupo: "",
 
+    fkidgrupopensumdetalle: "",
+
     fkidunidadadministrativa: "",
     unidadadministrativa: "",
 
@@ -26,6 +28,9 @@ const InscripcionGrupo = {
 
     fkidmateria: "",
     materia: "",
+
+    fkiddocente: "",
+    docente: "",
 
     fkidgrupo: "",
     grupo: "",

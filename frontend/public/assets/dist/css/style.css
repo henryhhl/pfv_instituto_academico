@@ -1866,7 +1866,8 @@ table tr:hover .table-links {
 	-webkit-box-flex: 1;
 	    -ms-flex: 1;
 	        flex: 1;
-	padding: 20px;
+	padding: 8px;
+	padding-left: 4px;
 	text-align: center;
 }
 .statistic-details .statistic-details-item .detail-chart {
@@ -1875,13 +1876,13 @@ table tr:hover .table-links {
 }
 .statistic-details .statistic-details-item .detail-name {
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 10px;
 	margin-top: 5px;
 	color: #868e96;
 	letter-spacing: .3px;
 }
 .statistic-details .statistic-details-item .detail-value {
-	font-size: 18px;
+	font-size: 12px;
 	font-weight: 700;
 }
 /* end statistic */

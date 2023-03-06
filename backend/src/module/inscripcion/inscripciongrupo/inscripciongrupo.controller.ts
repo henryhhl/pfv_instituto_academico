@@ -4,6 +4,7 @@ import { InscripcionGrupoService } from './inscripciongrupo.service';
 import { InscripcionGrupoPaginationDto } from './dto/pagination.dto';
 import { UpdateInscripcionGrupoDto } from './dto/update-inscripciongrupo.dto';
 import { CreateInscripcionGrupoDto } from './dto/create-inscripciongrupo.dto';
+import { FindEstudianteForMateriaDto } from './dto/findestudianteformateria.dto';
 
 @Controller('inscripciongrupo')
 export class InscripcionGrupoController {
@@ -13,6 +14,12 @@ export class InscripcionGrupoController {
   @Auth( /**  N Permissions */ )
   findAll( @Query() paginationDto: InscripcionGrupoPaginationDto ) {
     return this.inscripciongrupoService.findAll(paginationDto);
+  }
+
+  @Get('/findestudianteformateria')
+  // @Auth( /**  N Permissions */ )
+  grupopensum( @Query() paginationDto: FindEstudianteForMateriaDto ) {
+    return this.inscripciongrupoService.FindEstudianteForMateriaDto(paginationDto);
   }
 
   @Post('/store')

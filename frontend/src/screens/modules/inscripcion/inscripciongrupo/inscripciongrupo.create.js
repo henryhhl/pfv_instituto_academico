@@ -65,7 +65,7 @@ function CreateInscripcionGrupo( props ) {
         );
     };
 
-    const onComponentGrupoPensum = () => {
+    const onComponentGrupo = () => {
         if ( !visibleGrupo ) return null;
         return (
             <ListadoGrupoPensumModal 
@@ -92,6 +92,7 @@ function CreateInscripcionGrupo( props ) {
                 } }
                 fkidpensum={inscripcionGrupo.fkidpensum}
                 fkidgrupo={inscripcionGrupo.fkidgrupo}
+                valueSelect={inscripcionGrupo.fkidgrupopensumdetalle}
             />
         );
     };
@@ -187,7 +188,7 @@ function CreateInscripcionGrupo( props ) {
         <>
             { onComponentMateria() }
             { onComponentPensum() }
-            { onComponentGrupoPensum() }
+            { onComponentGrupo() }
             { onComponentMateriaGrupo() }
             { onComponentEstudiante() }
             { onComponentGestionPeriodo() }
@@ -349,6 +350,8 @@ function CreateInscripcionGrupo( props ) {
                                         <InputComponent
                                             label="Grupo*"
                                             value={inscripcionGrupo.grupo}
+                                            error={inscripcionGrupo.error?.fkidgrupo}
+                                            message={inscripcionGrupo.message?.fkidgrupo}
                                             readOnly
                                         />
                                     }
@@ -372,9 +375,20 @@ function CreateInscripcionGrupo( props ) {
                                         <InputComponent
                                             label="Materia*"
                                             value={inscripcionGrupo.materia}
+                                            error={inscripcionGrupo.error?.fkidmateria}
+                                            message={inscripcionGrupo.message?.fkidmateria}
                                             readOnly
                                         />
                                     }
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='form-group col-12'>
+                                    <InputComponent
+                                        label="Docente*"
+                                        value={inscripcionGrupo.docente}
+                                        readOnly
+                                    />
                                 </div>
                             </div>
                             <div className='row'>
@@ -382,14 +396,9 @@ function CreateInscripcionGrupo( props ) {
                                     <InputComponent
                                         label="Periodo*"
                                         value={inscripcionGrupo.gestionperiodo}
-                                        onClick={ () => {
-                                            setVisibleGestionPeriodo(true);
-                                        } }
                                         error={inscripcionGrupo.error?.fkidgestionperiodo}
                                         message={inscripcionGrupo.message?.fkidgestionperiodo}
                                         readOnly
-                                        style={{ background: 'white', cursor: 'pointer', }}
-                                        placeholder="SELECCIONAR PERIODO"
                                     />
                                 </div>
                                 <div className="form-group col-4">

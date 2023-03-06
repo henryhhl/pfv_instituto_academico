@@ -1,10 +1,12 @@
 
 import React from 'react';
+import { Row } from 'antd';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CloseOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
+import EmptyComponent from '../../../../components/empty';
 import PaperComponent from '../../../../components/paper';
 import { ButtonComponent ,InputComponent } from '../../../../components/components';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
@@ -84,6 +86,12 @@ function CreateGrupo( props ) {
                     detalle.fkidprograma = pensum.fkidprograma;
                     detalle.programa = pensum.programa;
 
+                    detalle.fkidmateria = null;
+                    detalle.materia = null;
+
+                    detalle.fkiddivisionacademica = null;
+                    detalle.divisionacademica = null;
+
                     detalle.error.fkidpensum = false;
                     detalle.message.fkidpensum = "";
 
@@ -153,6 +161,12 @@ function CreateGrupo( props ) {
                     detalle.fkidgestionperiodo = gestionPeriodo.idgestionperiodo;
                     detalle.gestionperiodo = `${gestionPeriodo.descripcion}`;
 
+                    detalle.fkidmateria = null;
+                    detalle.materia = null;
+
+                    detalle.fkiddivisionacademica = null;
+                    detalle.divisionacademica = null;
+
                     detalle.error.fkidgestionperiodo = false;
                     detalle.message.fkidgestionperiodo = "";
 
@@ -165,9 +179,14 @@ function CreateGrupo( props ) {
     };
 
     const existsMateria = ( idmateria ) => {
+        let detalle = grupo.arraypensum[indexDetailsMateria];
         for (let index = 0; index < grupo.arraypensum?.length; index++) {
             const element = grupo.arraypensum[index];
-            if ( element.fkidmateria === idmateria ) return true;
+            if ( element.fkidmateria === idmateria && index !== indexDetailsMateria ) {
+                if ( element.fkidpensum === detalle.fkidpensum && element.fkidgestionperiodo === detalle.fkidgestionperiodo ) {
+                    return true;
+                }
+            }
         }
         return false;
     };
@@ -302,7 +321,7 @@ function CreateGrupo( props ) {
                             <a className="nav-link" id="materiapensum-tab" data-toggle="tab" href="#materiapensum" 
                                 role="tab" aria-controls="materiapensum" aria-selected="false"
                             >
-                                Asignar Materias de Pensum
+                                Agregar Materias
                             </a>
                         </li>
                     </ul>
@@ -321,24 +340,15 @@ function CreateGrupo( props ) {
                                 </div>
                             </div>
                         </div>
-                        <div className="tab-pane fade pt-4 active" id="materiapensum" role="tabpanel" aria-labelledby="materiapensum-tab">
-                            <div className="row">
-                                <div className="form-group col-12">
-                                    <ButtonComponent
-                                        fullWidth
-                                        onClick={props.onAddRowPensum}
-                                    >
-                                        Agregar Materia
-                                    </ButtonComponent>
-                                </div>
-                            </div>
-                            { grupo.arraypensum?.length === 0 &&
-                                <div className='card p-0 m-0'>
-                                    <div className='card-header'>
-                                        <h4>Sin Información</h4>
-                                    </div>
-                                </div>
-                            }
+                        <div className="tab-pane fade pt-4" id="materiapensum" role="tabpanel" aria-labelledby="materiapensum-tab">
+                            <Row justify='end' style={{ marginBottom: 8, }}>
+                                <ButtonComponent
+                                    onClick={props.onAddRowPensum}
+                                >
+                                    Agregar Materia
+                                </ButtonComponent>
+                            </Row>
+                            <EmptyComponent data={grupo.arraypensum} />
                             <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 650, overflowY: 'auto', overflowX: 'hidden', }}>
                                 <div className="row">
                                     { grupo.arraypensum?.map( ( item, key ) => {
@@ -414,6 +424,8 @@ function CreateGrupo( props ) {
                                                                     <InputComponent
                                                                         label="Docente*"
                                                                         value={item.docente}
+                                                                        error={item.error?.fkiddocente}
+                                                                        message={item.message?.fkiddocente}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -436,6 +448,8 @@ function CreateGrupo( props ) {
                                                                     <InputComponent
                                                                         label="Turno*"
                                                                         value={item.turno}
+                                                                        error={item.error?.fkidturno}
+                                                                        message={item.message?.fkidturno}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -458,6 +472,8 @@ function CreateGrupo( props ) {
                                                                     <InputComponent
                                                                         label="Periodo*"
                                                                         value={item.gestionperiodo}
+                                                                        error={item.error?.fkidgestionperiodo}
+                                                                        message={item.message?.fkidgestionperiodo}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -478,10 +494,12 @@ function CreateGrupo( props ) {
                                                         </div>
                                                         <div className='row'>
                                                             <div className="form-group col-6">
-                                                                { item.fkidpensum === null ? 
+                                                                { (item.fkidpensum === null || item.fkidgestionperiodo === null) ? 
                                                                     <InputComponent
                                                                         label="Materia*"
                                                                         value={item.materia}
+                                                                        error={item.error?.fkidmateria}
+                                                                        message={item.message?.fkidmateria}
                                                                         readOnly
                                                                     /> : 
                                                                     <InputComponent
@@ -503,6 +521,8 @@ function CreateGrupo( props ) {
                                                                 <InputComponent
                                                                     label="Nivel*"
                                                                     value={item.divisionacademica}
+                                                                    error={item.error?.fkiddivisionacademica}
+                                                                    message={item.message?.fkiddivisionacademica}
                                                                     readOnly
                                                                 /> 
                                                             </div>
@@ -522,7 +542,7 @@ function CreateGrupo( props ) {
                                                                     } }
                                                                     error={item.error?.cupomaximo}
                                                                     message={item.message?.cupomaximo}
-                                                                    readOnly={ (item.fkidpensum === null) }
+                                                                    readOnly={ (item.fkidpensum === null || item.fkidgestionperiodo === null) }
                                                                 />
                                                             </div>
                                                         </div>

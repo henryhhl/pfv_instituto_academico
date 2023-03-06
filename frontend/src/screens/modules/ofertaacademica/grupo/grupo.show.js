@@ -88,7 +88,7 @@ function ShowGrupo( props ) {
                             <a className="nav-link" id="materiapensum-tab" data-toggle="tab" href="#materiapensum" 
                                 role="tab" aria-controls="materiapensum" aria-selected="false"
                             >
-                                Detalle Materias de Pensum
+                                Detalle Materias
                             </a>
                         </li>
                     </ul>

@@ -52,7 +52,6 @@ const onPageInscripcionGrupo = ( page = 1, paginate = 20, search = "", fkidgrupo
             fkidgrupo: fkidgrupo, fkidmateria: fkidmateria, fkidgestionperiodo: fkidgestionperiodo,
             search: search, esPaginate: true,
         } ).then( async (result) => {
-            console.log(result)
             if ( result.resp === 1 ) {
                 result.arrayInscripcionGrupo = result.arrayInscripcionGrupo?.map( (item) => {
                     return {
@@ -133,11 +132,19 @@ const setFKIDPensum = (inscripcionGrupo, pensum) => {
             inscripcionGrupo.fkidprograma = pensum.fkidprograma;
             inscripcionGrupo.programa = pensum.programa;
 
+            inscripcionGrupo.fkidgrupopensumdetalle = '';
+
             inscripcionGrupo.fkidgrupo = '';
             inscripcionGrupo.grupo = '';
 
             inscripcionGrupo.fkidmateria = '';
             inscripcionGrupo.materia = '';
+
+            inscripcionGrupo.fkiddocente = '';
+            inscripcionGrupo.docente = '';
+
+            inscripcionGrupo.fkidgestionperiodo = '';
+            inscripcionGrupo.gestionperiodo = '';
 
             inscripcionGrupo.error.fkidpensum = false;
             inscripcionGrupo.message.fkidpensum = "";
@@ -175,8 +182,16 @@ const setFKIDGrupo = (inscripcionGrupo, grupo) => {
 
 const setFKIDMateria = (inscripcionGrupo, item) => {
     return ( dispatch ) => {
+        inscripcionGrupo.fkidgrupopensumdetalle = item.idgrupopensumdetalle;
         inscripcionGrupo.fkidmateria = item.materia.idmateria;
         inscripcionGrupo.materia = item.materia.nombrelargo;
+
+        inscripcionGrupo.fkidgestionperiodo = item.gestionPeriodo.idgestionperiodo;
+        inscripcionGrupo.gestionperiodo = item.gestionPeriodo.descripcion;
+
+        inscripcionGrupo.fkiddocente = item.docente.iddocente;
+        inscripcionGrupo.docente = `${item.docente.apellidoprimero} ${item.docente.apellidosegundo} ${item.docente.nombreprincipal} ${item.docente.nombreadicional}`;
+        
         inscripcionGrupo.error.fkidmateria = false;
         inscripcionGrupo.message.fkidmateria = "";
         dispatch( onChange(inscripcionGrupo) );

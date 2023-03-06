@@ -8,6 +8,8 @@ import { UnidadNegocio } from '../../../parametro/unidadnegocio/entities/unidadn
 import { UnidadAcademica } from '../../../estructuraacademica/unidadacademica/entities/unidadacademica.entity';
 import { GestionPeriodo } from '../../../estructurainstitucional/gestionperiodo/entities/gestionperiodo.entity';
 import { UnidadAdministrativa } from '../../../estructuraacademica/unidadadministrativa/entities/unidadadministrativa.entity';
+import { Docente } from '../../../persona/docente/entities/docente.entity';
+import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 
 @Entity('inscripciongrupo')
 export class InscripcionGrupo {
@@ -72,11 +74,25 @@ export class InscripcionGrupo {
     materia: Materia;
 
     @ManyToOne(
+        ( ) => Docente,
+        ( item ) => item.arrayInscripcionGrupo,
+    )
+    @JoinColumn({ name: 'fkiddocente', })
+    docente: Docente;
+
+    @ManyToOne(
         ( ) => Grupo,
         ( grupo ) => grupo.arrayinscripciongrupo,
     )
     @JoinColumn({ name: 'fkidgrupo', })
     grupo: Grupo;
+
+    @ManyToOne(
+        ( ) => GrupoMateriaDetalle,
+        ( item ) => item.arrayInscripcionGrupo,
+    )
+    @JoinColumn({ name: 'fkidgrupomateriadetalle', })
+    grupoMateriaDetalle: GrupoMateriaDetalle;
 
     @Column('text')
     fechainscripcion: string;

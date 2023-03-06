@@ -13,6 +13,7 @@ import { UnidadNegocioModule } from '../../parametro/unidadnegocio/unidadnegocio
 import { UnidadacademicaModule } from '../../estructuraacademica/unidadacademica/unidadacademica.module';
 import { GestionPeriodoModule } from '../../estructurainstitucional/gestionperiodo/gestionperiodo.module';
 import { UnidadAdministrativaModule } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.module';
+import { DocenteModule } from '../../persona/docente/docente.module';
 
 @Module({
   controllers: [InscripcionGrupoController],
@@ -31,6 +32,7 @@ import { UnidadAdministrativaModule } from '../../estructuraacademica/unidadadmi
     PensumModule,
     MateriaModule,
     GrupoModule,
+    DocenteModule,
   ],
 })
 export class InscripcionGrupoModule {}

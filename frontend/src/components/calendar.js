@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Badge, Button, Calendar, Col, ConfigProvider, Radio, Row, Select, Tooltip, Typography } from 'antd';
+import { Badge, Button, Calendar, Col, ConfigProvider, Radio, Row, Select, Tag, Tooltip, Typography } from 'antd';
 import 'moment/locale/es';
 import locale from 'antd/es/locale/es_ES';
 
@@ -35,6 +35,40 @@ export default function CalendarComponent( props ) {
         day   = day   < 10 ? "0" + day : day;
     
         return `${day}/${month}/${year}`;
+    };
+
+    const backMonth = (date) => {
+        let year  = date.year();
+        let month = date.month() + 1;
+        let day   = date.date();
+
+        if ( month > 1 ) {
+            month--;
+        } else {
+            month = 12;
+            year--;
+        }
+    
+        month = month < 10 ? "0" + month : month;
+        day   = day   < 10 ? "0" + day : day;
+        return `01/${month}/${year}`;
+    };
+
+    const nextMonth = (date) => {
+        let year  = date.year();
+        let month = date.month() + 1;
+        let day   = date.date();
+
+        if ( month < 12 ) {
+            month++;
+        } else {
+            month = 1;
+            year++;
+        }
+    
+        month = month < 10 ? "0" + month : month;
+        day   = day   < 10 ? "0" + day : day;
+        return `01/${month}/${year}`;
     };
 
     const onSelect = (newValue) => {
@@ -97,6 +131,7 @@ export default function CalendarComponent( props ) {
                                         }
                                     }
                                 }
+                                // if ( current.toDate().getDay() % 2 === 0 ) return null;
                                 return (
                                     <div style={style}
                                         onClick={ () => props.onClickDay(dateCurrentToString(current)) }
@@ -107,9 +142,9 @@ export default function CalendarComponent( props ) {
                                             { props.arrayCalendarioAcademico.map( (item, key) => {
                                                 if ( item.fechanota  === dateCurrentToString(current) ) {
                                                     return (
-                                                        <div key={key} style={{ marginTop: -5, }}>
+                                                        <div key={key} style={{ marginTop: -1, marginBottom: 3, }}>
                                                             <Tooltip title={item.nota}>
-                                                                <Badge color="lime" text={item.nota} />
+                                                                <Tag color="processing">{item.nota}</Tag>
                                                             </Tooltip>
                                                         </div>
                                                     );
@@ -154,56 +189,86 @@ export default function CalendarComponent( props ) {
                                         </Select.Option>,
                                     );
                                 }
-
                                 return (
-                                <div style={{ padding: 8, }}>
-                                    <Row gutter={8} justify='end'>
-                                        { Functions.existsData(props.startDate) && Functions.existsData(props.endDate) && props.disabled === false && 
-                                            <Col>
-                                                <Button onClick={() => props.onChange(moment(props.startDate, "DD/MM/YYYY"))}>
-                                                    Periodo Inicio
-                                                </Button>
-                                                <Button onClick={() => props.onChange(moment(props.endDate, "DD/MM/YYYY"))}>
-                                                    Periodo Final
-                                                </Button>
-                                            </Col>
-                                        }
-                                        <Col>
-                                            <Select
-                                                dropdownMatchSelectWidth={false}
-                                                className="my-year-select"
-                                                value={year}
-                                                onChange={(newYear) => {
-                                                    const now = value.clone().year(newYear);
-                                                    onChange(now);
-                                                }}
-                                            >
-                                                {options}
-                                            </Select>
-                                        </Col>
-                                        <Col>
-                                            <Select
-                                                dropdownMatchSelectWidth={false}
-                                                value={month}
-                                                onChange={(newMonth) => {
-                                                    const now = value.clone().month(newMonth);
-                                                    onChange(now);
-                                                }}
-                                            >
-                                                {monthOptions}
-                                            </Select>
-                                        </Col>
-                                        <Col>
-                                            <Radio.Group
-                                                onChange={(e) => onTypeChange(e.target.value)}
-                                                value={type}
-                                            >
-                                            <Radio.Button value="month">Mes</Radio.Button>
-                                            <Radio.Button value="year">Año</Radio.Button>
-                                            </Radio.Group>
-                                        </Col>
-                                    </Row>
-                                </div>
+                                    <div style={{ padding: 8, }}>
+                                        <Row gutter={8} justify='space-between'>
+                                            <Row gutter={8}>
+                                                <Col>
+                                                    <Button onClick={() => props.onChange(moment(new Date()))}>
+                                                        Hoy
+                                                    </Button>
+                                                    { type === 'month' &&
+                                                        <>
+                                                            <Button 
+                                                                onClick={() => {
+                                                                    if ( props.value ) {
+                                                                        props.onChange(moment(backMonth(props.value), "DD/MM/YYYY"));
+                                                                    }
+                                                                }}
+                                                            >
+                                                                Back
+                                                            </Button>
+                                                            <Button 
+                                                                onClick={() => {
+                                                                    if ( props.value ) {
+                                                                        props.onChange(moment(nextMonth(props.value), "DD/MM/YYYY"));
+                                                                    }
+                                                                }}
+                                                            >
+                                                                Next
+                                                            </Button>
+                                                        </>
+                                                    }
+                                                </Col>
+                                            </Row>
+                                            <Row gutter={8}>
+                                                { Functions.existsData(props.startDate) && Functions.existsData(props.endDate) && props.disabled === false && 
+                                                    <Col>
+                                                        <Button onClick={() => props.onChange(moment(props.startDate, "DD/MM/YYYY"))}>
+                                                            Periodo Inicio
+                                                        </Button>
+                                                        <Button onClick={() => props.onChange(moment(props.endDate, "DD/MM/YYYY"))}>
+                                                            Periodo Final
+                                                        </Button>
+                                                    </Col>
+                                                }
+                                                <Col>
+                                                    <Select
+                                                        dropdownMatchSelectWidth={false}
+                                                        className="my-year-select"
+                                                        value={year}
+                                                        onChange={(newYear) => {
+                                                            const now = value.clone().year(newYear);
+                                                            onChange(now);
+                                                        }}
+                                                    >
+                                                        {options}
+                                                    </Select>
+                                                </Col>
+                                                <Col>
+                                                    <Select
+                                                        dropdownMatchSelectWidth={false}
+                                                        value={month}
+                                                        onChange={(newMonth) => {
+                                                            const now = value.clone().month(newMonth);
+                                                            onChange(now);
+                                                        }}
+                                                    >
+                                                        {monthOptions}
+                                                    </Select>
+                                                </Col>
+                                                <Col>
+                                                    <Radio.Group
+                                                        onChange={(e) => onTypeChange(e.target.value)}
+                                                        value={type}
+                                                    >
+                                                        <Radio.Button value="month">Mes</Radio.Button>
+                                                        <Radio.Button value="year">Año</Radio.Button>
+                                                    </Radio.Group>
+                                                </Col>
+                                            </Row>
+                                        </Row>
+                                    </div>
                                 );
                             }}
                         />

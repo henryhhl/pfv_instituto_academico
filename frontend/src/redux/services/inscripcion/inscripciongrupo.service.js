@@ -45,6 +45,8 @@ const onStore = async (body) => {
         fkidpensum: body.fkidpensum,
         fkidmateria: body.fkidmateria,
         fkidgrupo: body.fkidgrupo,
+        fkiddocente: body.fkiddocente,
+        fkidgrupopensumdetalle: body.fkidgrupopensumdetalle,
         fechainscripcion: body.fechainscripcion,
         nota: body.nota,
         estado: body.estado,

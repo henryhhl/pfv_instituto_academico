@@ -304,6 +304,7 @@ const apiServices = {
     apiofertaacademicagrupo_index:  `${module.ofertaacademica}/grupo/index`,
     apiofertaacademicagrupo_findgrupoforpensum:  `${module.ofertaacademica}/grupo/findgrupoforpensum`,
     apiofertaacademicagrupo_findmateriaforgrupo:  `${module.ofertaacademica}/grupo/findmateriaforgrupo`,
+    apiofertaacademicagrupo_findmateriafordocente:  `${module.ofertaacademica}/grupo/findmateriafordocente`,
     apiofertaacademicagrupo_create: `${module.ofertaacademica}/grupo/create`,
     apiofertaacademicagrupo_store:  `${module.ofertaacademica}/grupo/store`,
     apiofertaacademicagrupo_edit:   `${module.ofertaacademica}/grupo/edit`,
@@ -402,6 +403,7 @@ const apiServices = {
     apiinscripcioninscripcioncurso_update: `${module.parametros}/inscripcioncurso/update`,
     apiinscripcioninscripcioncurso_delete: `${module.parametros}/inscripcioncurso/delete`,
 
+    apiinscripciongrupo_findestudianteformateria:  `${module.parametros}/inscripciongrupo/findestudianteformateria`,
     apiinscripcioninscripciongrupo_index:  `${module.parametros}/inscripciongrupo/index`,
     apiinscripcioninscripciongrupo_create: `${module.parametros}/inscripciongrupo/create`,
     apiinscripcioninscripciongrupo_store:  `${module.parametros}/inscripciongrupo/store`,

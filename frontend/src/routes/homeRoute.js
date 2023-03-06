@@ -235,6 +235,7 @@ import EditParametroCalificacion from '../screens/modules/nota/parametrocalifica
 import ShowParametroCalificacion from '../screens/modules/nota/parametrocalificacion/parametrocalificacion.show';
 
 import IndexCalendarioAcademico from '../screens/modules/nota/calendarioacademico/calendarioacademico.index';
+import IndexAsistenciaGrupo from '../screens/modules/nota/asistenciagrupo/asistenciagrupo.index';
 
 
 import LoginPage from '../screens/auth/login.page';
@@ -480,6 +481,7 @@ const HomeRoute = (props) => {
                     <Route index path="/parametrocalificacion/show/:idparametrocalificacion" element={ <ShowParametroCalificacion { ...props } /> }  />
 
                     <Route index path="/calendarioacademico/index" element={ <IndexCalendarioAcademico { ...props } /> }  />
+                    <Route index path="/asistenciagrupo/index" element={ <IndexAsistenciaGrupo { ...props } /> }  />
 
                     <Route
                         path='*'
