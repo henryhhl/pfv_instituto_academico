@@ -37,7 +37,7 @@ import { Bitacora } from '../seguridad/bitacora/entities/bitacora.entity';
         return {
           secret: configService.get('JWT_SECRET') || 'E5T0EsUnCodigoS3CR3T0',
           signOptions: {
-            expiresIn: '8h',
+            expiresIn: '24h',
           },
         };
       },

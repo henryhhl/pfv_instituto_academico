@@ -2,6 +2,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import React from 'react'
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import ButtonComponent from '../../../../components/button';
 import CardComponent from '../../../../components/card';
 import InputComponent from '../../../../components/input';
 import PaperComponent from '../../../../components/paper';
@@ -105,86 +106,29 @@ const IndexAsistenciaGrupo = (props) => {
         return array;
     };
 
-    const onComponentsCheckList = (item) => {
-        if ( !Array.isArray(item.arrayDiaAsistencia) ) {
-            item.arrayDiaAsistencia = [];
-        }
+    const onComponentButtonAsistencia = () => {
         let array = [];
-        let pos = 0;
-        console.log(item.arrayDiaAsistencia)
+        if ( asistenciaGrupo.arrayEstudianteInscrito.length === 0 ) return null;
         for (let index = asistenciaGrupo.dayinit; index <= asistenciaGrupo.lastday; index++) {
             if ( onValidateWeekDay(index) ) {
-                console.log('item.arrayDiaAsistencia[pos]: ')
-                console.log(item.arrayDiaAsistencia[pos])
-                console.log('pos: ', pos)
-                console.log('dia: ', index)
-                if ( typeof item.arrayDiaAsistencia[pos] !== 'object' ) {
-                    item.arrayDiaAsistencia[pos] = {
-                        asistido: false,
-                        falta: false,
-                        licencia: false,
-                        retirado: false,
-                        day: index,
-                        nameDay: getTextDayforIndex(getWeekDay(asistenciaGrupo.yearselected, asistenciaGrupo.monthselected, index)),
-                        month: asistenciaGrupo.monthselected,
-                        year: asistenciaGrupo.yearselected,
-                    };
-                }
-                pos++;
                 array.push(
-                    <div style={{ width: 132, display: 'inline-block', }}>
-                        <div className='d-flex'>
-                            <div style={{ width: 33, height: 20, }}
-                            >
-                                <RadioComponent 
-                                    color="success"
-                                    // checked={item.arrayDiaAsistencia[pos].asistido}
-                                    // onChange={ (checked) => {
-                                    //     item.arrayDiaAsistencia[pos].asistido = checked;
-                                    //     props.onChange(asistenciaGrupo);
-                                    // } }
-                                />
-                            </div>
-                            <div style={{ width: 33, height: 20, }}
-                            >
-                                    <RadioComponent 
-                                        color="warning"
-                                        // checked={item.arrayDiaAsistencia[pos].licencia}
-                                        // onChange={ (checked) => {
-                                        //     item.arrayDiaAsistencia[pos].licencia = checked;
-                                        //     props.onChange(asistenciaGrupo);
-                                        // } }
-                                    />
+                    <div style={{ width: 132, display: 'inline-block', }} key={index}>
+                        <div className='row p-2'>
+                                <div className='col-12'>
+                                    <ButtonComponent
+                                        fullWidth
+                                        // onClick={ () => props.onStore(inscripcionGrupo) }
+                                    >
+                                        Guardar
+                                    </ButtonComponent>
                                 </div>
-                            <div style={{ width: 33, height: 20, }}
-                            >
-                                <RadioComponent 
-                                    color="error"
-                                    // checked={item.arrayDiaAsistencia[pos].falta}
-                                    // onChange={ (checked) => {
-                                    //     item.arrayDiaAsistencia[pos].falta = checked;
-                                    //     props.onChange(asistenciaGrupo);
-                                    // } }
-                                />
                             </div>
-                            <div style={{ width: 33, height: 20, }}
-                            >
-                                <RadioComponent 
-                                    color="default"
-                                    // checked={item.arrayDiaAsistencia[pos].retirado}
-                                    // onChange={ (checked) => {
-                                    //     item.arrayDiaAsistencia[pos].retirado = checked;
-                                    //     props.onChange(asistenciaGrupo);
-                                    // } }
-                                />
-                            </div>
-                        </div>
                     </div>
                 );
             }
         }
         return array;
-    };
+    }
 
     return (
         <>
@@ -216,6 +160,12 @@ const IndexAsistenciaGrupo = (props) => {
                                 <TableComponent 
                                     option={false}
                                     columns={ [
+                                        {
+                                            id: 'pensum',
+                                            value: 'descripcion',
+                                            label: 'Pensum',
+                                            object: true,
+                                        },
                                         {
                                             id: 'programa',
                                             value: 'descripcion',
@@ -358,10 +308,66 @@ const IndexAsistenciaGrupo = (props) => {
                                             <div style={{ width: 200, display: 'inline-block', fontSize: 9, }} className='p-2'>
                                                 { `${item.estudiante.apellidoprimero} ${item.estudiante.apellidosegundo} ${item.estudiante.nombreprincipal} ${item.estudiante.nombreadicional}` }
                                             </div>
-                                            { onComponentsCheckList(item) }
+                                            { item.arrayAsistenciaGrupo.map( (data, index) => {
+                                                return (
+                                                    <div style={{ width: 132, display: 'inline-block', }} key={index}>
+                                                        <div className='d-flex'>
+                                                            <div style={{ width: 33, height: 20, }}
+                                                            >
+                                                                <RadioComponent 
+                                                                    color="success"
+                                                                    checked={data.asistencia === 'A'}
+                                                                    onChange={ () => {
+                                                                        data.asistencia = 'A';
+                                                                        props.onChange(asistenciaGrupo);
+                                                                    } }
+                                                                />
+                                                            </div>
+                                                            <div style={{ width: 33, height: 20, }}
+                                                            >
+                                                                    <RadioComponent 
+                                                                        color="warning"
+                                                                        checked={data.asistencia === 'L'}
+                                                                        onChange={ () => {
+                                                                            data.asistencia = 'L';
+                                                                            props.onChange(asistenciaGrupo);
+                                                                        } }
+                                                                    />
+                                                                </div>
+                                                            <div style={{ width: 33, height: 20, }}
+                                                            >
+                                                                <RadioComponent 
+                                                                    color="error"
+                                                                    checked={data.asistencia === 'F'}
+                                                                    onChange={ () => {
+                                                                        data.asistencia = 'F';
+                                                                        props.onChange(asistenciaGrupo);
+                                                                    } }
+                                                                />
+                                                            </div>
+                                                            <div style={{ width: 33, height: 20, }}
+                                                            >
+                                                                <RadioComponent 
+                                                                    color="default"
+                                                                    checked={data.asistencia === 'R'}
+                                                                    onChange={ () => {
+                                                                        data.asistencia = 'R';
+                                                                        props.onChange(asistenciaGrupo);
+                                                                    } }
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            } ) }
                                         </div>
                                     );
                                 } ) }
+                                <div>
+                                    <div style={{ width: 120, display: 'inline-block', }}></div>
+                                    <div style={{ width: 200, display: 'inline-block', }}></div>
+                                    { onComponentButtonAsistencia() }
+                                </div>
                             </div>
                         </div>
                     </div>

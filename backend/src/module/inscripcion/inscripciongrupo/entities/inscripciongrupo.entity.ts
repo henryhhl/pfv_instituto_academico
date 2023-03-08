@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column, OneToMany } from 'typeorm';
 import { Grupo } from '../../../ofertaacademica/grupo/entities/grupo.entity';
 import { Materia } from '../../../parametro/materia/entities/materia.entity';
 import { Estudiante } from '../../../persona/estudiante/entities/estudiante.entity';
@@ -10,6 +10,7 @@ import { GestionPeriodo } from '../../../estructurainstitucional/gestionperiodo/
 import { UnidadAdministrativa } from '../../../estructuraacademica/unidadadministrativa/entities/unidadadministrativa.entity';
 import { Docente } from '../../../persona/docente/entities/docente.entity';
 import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
+import { AsistenciaGrupo } from '../../../nota/asistenciagrupo/entities/asistenciagrupo.entity';
 
 @Entity('inscripciongrupo')
 export class InscripcionGrupo {
@@ -93,6 +94,12 @@ export class InscripcionGrupo {
     )
     @JoinColumn({ name: 'fkidgrupomateriadetalle', })
     grupoMateriaDetalle: GrupoMateriaDetalle;
+
+    @OneToMany(
+        () => AsistenciaGrupo,
+        ( item ) => item.inscripcionGrupo,
+    )
+    arrayAsistenciaGrupo?: AsistenciaGrupo[];
 
     @Column('text')
     fechainscripcion: string;

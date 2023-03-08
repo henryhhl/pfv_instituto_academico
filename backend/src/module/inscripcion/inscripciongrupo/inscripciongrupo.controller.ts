@@ -17,7 +17,7 @@ export class InscripcionGrupoController {
   }
 
   @Get('/findestudianteformateria')
-  // @Auth( /**  N Permissions */ )
+  @Auth( /**  N Permissions */ )
   grupopensum( @Query() paginationDto: FindEstudianteForMateriaDto ) {
     return this.inscripciongrupoService.FindEstudianteForMateriaDto(paginationDto);
   }

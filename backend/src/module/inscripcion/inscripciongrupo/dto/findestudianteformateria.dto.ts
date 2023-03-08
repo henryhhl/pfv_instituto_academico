@@ -1,5 +1,6 @@
 
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString, IsPositive } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class FindEstudianteForMateriaDto {
 
@@ -38,5 +39,15 @@ export class FindEstudianteForMateriaDto {
     @IsOptional()
     @IsString()
     fkiddocente?: string;
+
+    @IsOptional()
+    @IsPositive()
+    @Type( () => Number )
+    monthselected?: number;
+
+    @IsOptional()
+    @IsPositive()
+    @Type( () => Number )
+    yearselected?: number;
 
 }

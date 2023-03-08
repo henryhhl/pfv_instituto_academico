@@ -15,6 +15,8 @@ const getAllStudentSignedUp = async ( asistenciaGrupo ) => {
         fkidgestionperiodo: asistenciaGrupo.fkidgestionperiodo,
         fkidprograma: asistenciaGrupo.fkidprograma,
         fkiddocente: asistenciaGrupo.fkiddocente,
+        monthselected: asistenciaGrupo.monthselected,
+        yearselected: asistenciaGrupo.yearselected,
     } ).then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
         } else if ( respta.error === true && respta.resp === -2 ) {

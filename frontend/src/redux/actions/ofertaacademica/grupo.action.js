@@ -327,6 +327,24 @@ function onValidate( data ) {
                 element.message.cupomaximo = "Campo requerido.";
                 bandera = false;
             }
+            let cont = 0;
+            for (let pos = 0; pos < element.arraydia.length; pos++) {
+                const dia = element.arraydia[pos];
+                if ( dia.arrayhorario.length > 0 ) {
+                    cont++;
+                }
+            }
+            if ( cont === 0 ) {
+                Swal.fire( {
+                    position: 'top-end',
+                    icon: 'error',
+                    title: "No se pudo realizar la Funcionalidad",
+                    text: `Favor de revisar y agregar los horarios de la fila ${index + 1}.`,
+                    showConfirmButton: false,
+                    timer: 3000,
+                } );
+                return false;
+            }
         }
     }
     if ( !bandera ) {

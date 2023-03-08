@@ -35,7 +35,6 @@ export class UnidadAcademica {
     )
     arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
 
-
     @Column('text')
     fkidunidadnegocio: string;
 

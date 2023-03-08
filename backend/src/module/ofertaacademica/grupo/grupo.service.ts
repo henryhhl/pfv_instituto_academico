@@ -214,21 +214,9 @@ export class GrupoService {
       if ( docente != null ) {
         [listGrupo, total] = await this.grupoDetalleRepository.findAndCount( {
           where: {
-            docente: {
-              iddocente: docente.iddocente,
-            },
+            docente: { iddocente: paginationDto.fkiddocente, },
           },
           relations: {
-            // grupo: {
-            //   arrayGrupoMateriaDetalle: {
-            //     arrayGrupoMateriaDiaDetalle: {
-            //       dia: true,
-            //       arrayGrupoMateriaDiaHorario: {
-            //         aula: true,
-            //       },
-            //     },
-            //   },
-            // },
             grupo: true,
             arrayGrupoMateriaDiaDetalle: {
               dia: true,
@@ -247,7 +235,8 @@ export class GrupoService {
             pensum: true,
           },
           order: { 
-            created_at: 'ASC',
+            gestionPeriodo: { created_at: 'DESC', },
+            created_at: 'DESC',
             arrayGrupoMateriaDiaDetalle: {
               created_at: 'ASC',
               arrayGrupoMateriaDiaHorario: {
@@ -484,8 +473,12 @@ export class GrupoService {
 
   async findOneDetail(idgrupomateriadetalle: number) {
     try {
-      return await this.grupoDetalleRepository.findOneBy( {
-        idgrupopensumdetalle: idgrupomateriadetalle,
+      return await this.grupoDetalleRepository.findOne( {
+        where: { idgrupopensumdetalle: idgrupomateriadetalle, },
+        relations: { arrayGrupoMateriaDiaDetalle: {
+          dia: true,
+          arrayGrupoMateriaDiaHorario: true,
+        } }
       } );
     } catch (error) {
       return null;

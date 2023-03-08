@@ -35,6 +35,7 @@ export class Pensum {
     )
     arraydivisionacademica?: PensumDivisionAcademicaDetalle[];
 
+
     @Column('text')
     fkidunidadadministrativa: string;
 

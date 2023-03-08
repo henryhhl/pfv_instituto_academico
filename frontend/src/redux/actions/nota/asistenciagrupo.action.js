@@ -45,12 +45,8 @@ const getAllStudentSignedUp = (asistenciaGrupo) => {
         return await AsistenciaGrupoService.getAllStudentSignedUp( 
             asistenciaGrupo
         ).then( async (result) => {
-            console.log(result)
             if ( result.resp === 1 ) {
                 asistenciaGrupo.arrayEstudianteInscrito = [ ...result.arrayEstudianteInscrito ];
-                // asistenciaGrupo.arrayEstudianteInscrito = asistenciaGrupo.arrayEstudianteInscrito.map( (item, index) => {
-                //     item.arrayDiaAsistencia
-                // } );
                 dispatch( onChange(asistenciaGrupo) );
             } else if ( result.resp === -2 ) {
                 await dispatch( setShowSesion() );
@@ -126,7 +122,6 @@ const setFkIDDocente = (asistenciaGrupo, docente) => {
 
 const setFkIDGrupoMateria = (asistenciaGrupo, grupoMateria) => {
     return ( dispatch ) => {
-        console.log(grupoMateria)
         asistenciaGrupo.fkidgrupopensumdetalle = grupoMateria.idgrupopensumdetalle;
 
         asistenciaGrupo.fkidunidadacademica = grupoMateria.unidadAcademica.idunidadacademica;
@@ -193,14 +188,14 @@ const setNextMounth = (asistenciaGrupo) => {
             asistenciaGrupo.monthselected = dateNext.getMonth() + 1;
 
             const dateCurrent = `${dateNext.getFullYear()}-${dateNext.getMonth() + 1}`;
-            console.log(dateFinish)
-            console.log(dateCurrent)
+
             if ( dateFinish === dateCurrent ) {
                 asistenciaGrupo.lastday = asistenciaGrupo.dayfinish;
             } else {
                 asistenciaGrupo.lastday = getLastDay(dateNext);
             }
             dispatch( onChange(asistenciaGrupo) );
+            dispatch( getAllStudentSignedUp(asistenciaGrupo) );
         }
     }
 };
@@ -215,6 +210,7 @@ const setBackMounth = (asistenciaGrupo) => {
             asistenciaGrupo.monthselected = dateNext.getMonth() + 1;
             asistenciaGrupo.lastday = getLastDay(dateNext);
             dispatch( onChange(asistenciaGrupo) );
+            dispatch( getAllStudentSignedUp(asistenciaGrupo) );
         }
     }
 };
