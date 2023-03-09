@@ -117,7 +117,12 @@ const IndexAsistenciaGrupo = (props) => {
                                 <div className='col-12'>
                                     <ButtonComponent
                                         fullWidth
-                                        // onClick={ () => props.onStore(inscripcionGrupo) }
+                                        onClick={ () => {
+                                            console.log('index: ', index);
+                                            console.log(getWeekDay(asistenciaGrupo.yearselected, asistenciaGrupo.monthselected, index))
+                                            asistenciaGrupo.dayselected = index;
+                                            props.onUpdateAsistencia(asistenciaGrupo);
+                                        } }
                                     >
                                         Guardar
                                     </ButtonComponent>
@@ -389,6 +394,7 @@ const mapDispatchToProps = {
     setFkIDGrupoMateria: AsistenciaGrupoActions.setFkIDGrupoMateria,
     setNextMounth: AsistenciaGrupoActions.setNextMounth,
     setBackMounth: AsistenciaGrupoActions.setBackMounth,
+    onUpdateAsistencia: AsistenciaGrupoActions.onUpdateAsistencia,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(IndexAsistenciaGrupo);

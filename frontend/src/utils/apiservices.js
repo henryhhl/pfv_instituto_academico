@@ -428,6 +428,8 @@ const apiServices = {
     apinotacalendarioacademico_show:   `${module.nota}/calendarioacademico/show`,
     apinotacalendarioacademico_update: `${module.nota}/calendarioacademico/update`,
     apinotacalendarioacademico_delete: `${module.nota}/calendarioacademico/delete`,
+
+    apinotaasistenciagrupo_update: `${module.nota}/asistenciagrupo/update`,
 };
 
 export default apiServices;

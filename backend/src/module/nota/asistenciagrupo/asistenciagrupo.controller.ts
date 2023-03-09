@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Auth } from 'src/module/auth/decorators/auth.decorator';
 import { AsistenciagrupoService } from './asistenciagrupo.service';
-import { CreateAsistenciagrupoDto } from './dto/create-asistenciagrupo.dto';
+import { CreateAsistenciaGrupoDto } from './dto/create-asistenciagrupo.dto';
 import { UpdateAsistenciagrupoDto } from './dto/update-asistenciagrupo.dto';
 
 @Controller('asistenciagrupo')
@@ -8,7 +9,7 @@ export class AsistenciagrupoController {
   constructor(private readonly asistenciagrupoService: AsistenciagrupoService) {}
 
   @Post()
-  create(@Body() createAsistenciagrupoDto: CreateAsistenciagrupoDto) {
+  create(@Body() createAsistenciagrupoDto: CreateAsistenciaGrupoDto) {
     return this.asistenciagrupoService.create(createAsistenciagrupoDto);
   }
 
@@ -23,8 +24,14 @@ export class AsistenciagrupoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAsistenciagrupoDto: UpdateAsistenciagrupoDto) {
-    return this.asistenciagrupoService.update(+id, updateAsistenciagrupoDto);
+  updatePatch(@Param('id') id: string, @Body() updateAsistenciagrupoDto: UpdateAsistenciagrupoDto) {
+    return this.asistenciagrupoService.update(updateAsistenciagrupoDto);
+  }
+
+  @Put('/update')
+  @Auth( /**  N Permissions */ )
+  updatePut(@Body() updateAsistenciagrupoDto: CreateAsistenciaGrupoDto) {
+    return this.asistenciagrupoService.update(updateAsistenciagrupoDto);
   }
 
   @Delete(':id')

@@ -54,10 +54,11 @@ const getAllMateriaForGrupo = async ( {
     } );
 };
 
-const onAsignar = async (body) => {
-    return await httpRequest( 'post', apiServices.apiseguridadasignarrol_asignar, {
-        fkidusuario: body.fkidusuario,
-        fkidrol: body.fkidrol,
+const onUpdate = async (asistenciaGrupo) => {
+    return await httpRequest( 'put', apiServices.apinotaasistenciagrupo_update, {
+        arrayAsistencia: asistenciaGrupo.arrayAsistenciaEstudianteSelected.map( (item) => {
+            return { idasistenciagrupo: item.idasistenciagrupo, asistencia: item.asistencia, };
+        } ),
     } ) .then( (respta) => {
         if ( respta.resp === 1 && respta.error === false ) {
             Swal.fire( {
@@ -109,6 +110,6 @@ const onDelete = async (body) => {
 export const AsistenciaGrupoService = {
     getAllMateriaForGrupo,
     getAllStudentSignedUp,
-    onAsignar,
+    onUpdate,
     onDelete,
 };

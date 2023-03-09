@@ -46,6 +46,7 @@ const getAllStudentSignedUp = (asistenciaGrupo) => {
             asistenciaGrupo
         ).then( async (result) => {
             if ( result.resp === 1 ) {
+                console.log(result)
                 asistenciaGrupo.arrayEstudianteInscrito = [ ...result.arrayEstudianteInscrito ];
                 dispatch( onChange(asistenciaGrupo) );
             } else if ( result.resp === -2 ) {
@@ -215,6 +216,30 @@ const setBackMounth = (asistenciaGrupo) => {
     }
 };
 
+const onUpdateAsistencia = (asistenciaGrupo) => {
+    return ( dispatch ) => {
+        asistenciaGrupo.arrayAsistenciaEstudianteSelected = asistenciaGrupo.arrayEstudianteInscrito.map( (item) => {
+            return item.arrayAsistenciaGrupo.find( (data) => {
+                return (data.day === asistenciaGrupo.dayselected);
+            } );
+        } );
+
+        dispatch( setShowLoading() );
+        AsistenciaGrupoService.onUpdate( 
+            asistenciaGrupo
+        ).then( async (result) => {
+            if ( result.resp === 1 ) {
+                console.log(result)
+            } else if ( result.resp === -2 ) {
+                await dispatch( setShowSesion() );
+                await dispatch( setHiddenSesion() );
+            }
+        } ).finally( () => {
+            dispatch( setHiddenLoading() );
+        } );
+    };
+};
+
 export const AsistenciaGrupoActions = {
     onLimpiar,
     onChange,
@@ -223,4 +248,5 @@ export const AsistenciaGrupoActions = {
     setFkIDGrupoMateria,
     setNextMounth,
     setBackMounth,
+    onUpdateAsistencia,
 };

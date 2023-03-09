@@ -10,6 +10,7 @@ const AsistenciaGrupo = {
     arrayGrupoMateria: [],
     arrayDia: [],
     arrayEstudianteInscrito: [],
+    arrayAsistenciaEstudianteSelected: [],
 
     fkidunidadacademica: "",
     unidadacademica: "",
@@ -52,13 +53,10 @@ const AsistenciaGrupo = {
     monthinit: "",
     monthfinish: "",
     
+    dayselected: "",
     dayinit: "",
     dayfinish: "",
     lastday: "",
-
-    mes: "",
-    dia: "",
-    asistencia: "",
 
     estado: "",
     concurrencia: "",

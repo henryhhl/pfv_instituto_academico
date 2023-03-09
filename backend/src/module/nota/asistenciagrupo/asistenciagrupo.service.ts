@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateAsistenciagrupoDto } from './dto/create-asistenciagrupo.dto';
+import { CreateAsistenciaGrupoDto } from './dto/create-asistenciagrupo.dto';
 import { UpdateAsistenciagrupoDto } from './dto/update-asistenciagrupo.dto';
 import { AsistenciaGrupo } from './entities/asistenciagrupo.entity';
 
@@ -14,7 +14,7 @@ export class AsistenciagrupoService {
     private readonly asistenciaGrupoRepository: Repository<AsistenciaGrupo>,
   ) {}
 
-  create(createAsistenciagrupoDto: CreateAsistenciagrupoDto) {
+  create(createAsistenciagrupoDto: CreateAsistenciaGrupoDto) {
     return 'This action adds a new asistenciagrupo';
   }
 
@@ -79,8 +79,42 @@ export class AsistenciagrupoService {
     return `This action returns a #${id} asistenciagrupo`;
   }
 
-  update(id: number, updateAsistenciagrupoDto: UpdateAsistenciagrupoDto) {
-    return `This action updates a #${id} asistenciagrupo`;
+  async update(updateAsistenciagrupoDto: CreateAsistenciaGrupoDto) {
+    try {
+      if ( Array.isArray( updateAsistenciagrupoDto.arrayAsistencia ) ) {
+        let pos = 0;
+        for (let index = 0; index < updateAsistenciagrupoDto.arrayAsistencia.length; index++) {
+          const element = updateAsistenciagrupoDto.arrayAsistencia[index];
+
+          const asistenciaGrupoPreLoad = await this.asistenciaGrupoRepository.preload( {
+            idasistenciagrupo: element.idasistenciagrupo,
+            asistencia: element.asistencia,
+            updated_at: this.getDateTime(),
+          } );
+
+          if ( asistenciaGrupoPreLoad !== null ) {
+            await this.asistenciaGrupoRepository.save( asistenciaGrupoPreLoad );
+            pos++;
+          }
+        }
+        if ( pos > 0 ) {
+          return {
+            resp: 1, error: false,
+            message: 'Asistencia actualizado éxitosamente.',
+          };
+        }
+        return {
+          resp: 1, error: false,
+          message: 'Asistencia actualizado éxitosamente.',
+        };
+      }
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   remove(id: number) {
