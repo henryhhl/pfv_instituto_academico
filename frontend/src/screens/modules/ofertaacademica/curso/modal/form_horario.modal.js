@@ -1,68 +1,78 @@
 
 import React from 'react';
-import toastr from 'toastr';
-import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ModalComponent from '../../../../../components/modal';
 import ButtonComponent from '../../../../../components/button';
-import TimePickerComponent from '../../../../../components/time';
+import FormAddHorarioCursoModal from './form_add_horario.modal';
+import { convertDateToDMYString, convertDateToString, convertDMYForYMD, convertStringforDate, getTextDayforIndex, getWeekDay } from '../../../../../utils/date';
+import { existsData } from '../../../../../utils/functions';
+import { CursoActions } from '../../../../../redux/actions/ofertaacademica/curso.action';
 
-export default function FormCursoHorarioModal( props ) {
-    const [ data, setData ] = React.useState( {
-        horainicio: "", horafinal: "",
-        error: { horainicio: false, horafinal: false, },
-        message: { horainicio: "", horafinal: "", },
-    } );
+const FormHorarioCursoModal = ( props ) => {
+    const { curso } = props;
+    const [ visibleHorarioAula, setVisibleHorarioAula ] = React.useState(false);
 
-    const existsHorario = () => {
-        for (let index = 0; index < props.arrayhorario.length; index++) {
-            const element = props.arrayhorario[index];
-            if ( data.horainicio < element.horafinal && data.horainicio >= element.horainicio ) return true;
-            if ( data.horafinal > element.horainicio && data.horafinal <= element.horafinal ) return true;
+    const onComponentDate = () => {
+        if ( !existsData( curso.fkidaula ) ) return null; 
+        const dateStringFinish = convertDMYForYMD(curso.fechafinal);
+        let dateInit = convertStringforDate(curso.fechainicio);
+        let array = [];
+        while ( convertDateToString(dateInit) <= dateStringFinish ) {
+            array.push(
+                <div className='d-inline-block mr-2' style={{ width: 200, }} key={convertDateToDMYString(dateInit)}>
+                    <div className='card card-success mr-1 mb-1'>
+                        <div className="card-header pt-0 pb-0">
+                            <h4> {getTextDayforIndex(getWeekDay(dateInit.getFullYear(), dateInit.getMonth(), dateInit.getDate()))} - { convertDateToDMYString(dateInit) } </h4>
+                        </div>
+                        <div className="card-body p-2">
+                            <div className='w-100 h-100 position-relative'>
+                                <div className='card-header p-0'>
+                                    <div className="card-header pt-0 pb-0">
+                                        <h4 style={{ display: 'flex', fontSize: 9, justifyContent: 'space-between', }}> 
+                                            <span className='text-danger'>HORA INICIO: </span>
+                                            {curso.horainicio} 
+                                        </h4>
+                                    </div>
+                                    <div className="card-header pt-0 pb-0">
+                                        <h4 style={{ display: 'flex', fontSize: 9, justifyContent: 'space-between', marginTop: -5, }}> 
+                                            <span className='text-danger'>HORA FINAL: </span>
+                                            {curso.horafinal} 
+                                        </h4>
+                                    </div>
+                                    <div className="card-header pt-0 pb-0">
+                                        <h4 style={{ display: 'flex', fontSize: 9, justifyContent: 'space-between', marginTop: -5, }}> 
+                                            <span className='text-danger'>AULA: </span>
+                                            {curso.aula} 
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+            dateInit.setDate( dateInit.getDate() + 1 );
         }
-        return false;
+        return array;
     };
 
-    const onValidate = () => {
-        let bandera = false;
-        if ( data.horainicio.toString().trim().length === 0 ) {
-            data.error.horainicio = true;
-            data.message.horainicio = "Campo requerido.";
-            bandera = true;
-        }
-        if ( data.horafinal.toString().trim().length === 0 ) {
-            data.error.horafinal = true;
-            data.message.horafinal = "Campo requerido.";
-            bandera = true;
-        }
-        if ( bandera === true ) {
-            setData( {
-                ...data,
-                error: data.error,
-                message: data.message,
-            } );
-            Swal.fire( {
-                position: 'top-end', icon: 'error',
-                title: "No se pudo realizar la Funcionalidad",
-                text: "Favor llenar los campos requeridos.",
-                showConfirmButton: false, timer: 3000,
-            } );
-        } else {
-            if ( data.horafinal === data.horainicio ) {
-                Swal.fire( {
-                    position: 'top-end', icon: 'warning',
-                    title: "No se pudo realizar la Funcionalidad",
-                    text: "No se permite Hora Inicio y Final identicos.",
-                    showConfirmButton: false, timer: 3000,
-                } );
-                return;
-            }
-            if ( existsHorario() ) {
-                toastr.warning( 'Horario ya establecido, favor intentar con uno nuevo.', '', { closeButton: true, progressBar: true, } );
-                return;
-            }
-            props.onOk( data );
-        }
+    const onComponentFormAddHorario = () => {
+        if ( !visibleHorarioAula ) return null;
+        return (
+            <FormAddHorarioCursoModal
+                visible={visibleHorarioAula}
+                onClose={ () => setVisibleHorarioAula(false) }
+                onAsignar={ (data) => {
+                    curso.horainicio = data.horainicio;
+                    curso.horafinal = data.horafinal;
+                    curso.fkidaula = data.aula.idaula;
+                    curso.aula = data.aula.descripcion;
+                    props.onChange(curso);
+                    setVisibleHorarioAula(false);
+                } }
+            />
+        );
     };
 
     return (
@@ -70,74 +80,52 @@ export default function FormCursoHorarioModal( props ) {
             <ModalComponent
                 visible={props.visible}
                 onClose={props.onClose}
-                footer={null} width={320} centered
-                title={"ADICIÓN HORARIO"}
+                footer={null} width={'90%'} 
+                title={"ASIGNAR HORARIO"}
                 style={{ marginBottom: 30, marginTop: 30, }}
             >
-                <div className="row">
-                    <div className="col-12">
-                        <div className="card">
-                            <div className="card-body pb-0">
-                                <div className="row">
-                                    <div className="form-group col-12">
-                                        <TimePickerComponent
-                                            label="Hora Inicio*"
-                                            value={data.horainicio}
-                                            onChange={ (value) => {
-                                                if ( value <= data.horafinal || value === "" || data.horafinal === "" ) {
-                                                    if ( value === "" ) data.horafinal = "";
-                                                    data.error.horainicio = false;
-                                                    data.message.horainicio = "";
-                                                    setData( {
-                                                        ...data,
-                                                        horainicio: value,
-                                                        error: data.error,
-                                                        message: data.message,
-                                                    } );
-                                                } else {
-                                                    toastr.warning( 'no permitido Hora Inicio mayor a Hora Final.', '', { closeButton: true, progressBar: true, } );
-                                                }
-                                            } }
-                                            placeholder="SELECCIONAR HORA INICIO"
-                                            error={data.error.horainicio}
-                                            message={data.message.horainicio}
-                                            format={"HH:mm"}
-                                        />
-                                    </div>
-                                    <div className="form-group col-12">
-                                        <TimePickerComponent
-                                            label="Hora Final*"
-                                            value={data.horafinal}
-                                            onChange={ (value) => {
-                                                if ( value >= data.horainicio || value === "" ) {
-                                                    data.error.horafinal = false;
-                                                    data.message.horafinal = "";
-                                                    setData( {
-                                                        ...data,
-                                                        horafinal: value,
-                                                        error: data.error,
-                                                        message: data.message,
-                                                    } );
-                                                } else {
-                                                    toastr.warning( 'no permitido Hora Final menor a Hora Inicio.', '', { closeButton: true, progressBar: true, } );
-                                                }
-                                            } }
-                                            placeholder="SELECCIONAR HORA FINAL"
-                                            error={data.error.horafinal}
-                                            message={data.message.horafinal}
-                                            disabled={ data.horainicio === "" }
-                                            format={"HH:mm"}
-                                        />
-                                    </div>
-                                    <div className="form-group col-12">
-                                        <ButtonComponent
-                                            fullWidth
-                                            onClick={ onValidate }
-                                        >
-                                            Adicionar
-                                        </ButtonComponent>
+                { onComponentFormAddHorario() }
+                <div className="card card-primary mt-3 mb-3">
+                    <div className="card-body pb-0">
+                        <div className="row">
+                            <div className='col-12'>
+                                <div className='card p-0 m-0'>
+                                    <div className='card-header'>
+                                        <h4> 
+                                            <span className='text-danger'>RANGO DE FECHAS: </span>
+                                            { curso.fechainicio } - { curso.fechafinal }
+                                        </h4>
                                     </div>
                                 </div>
+                            </div>
+                            { props.disabled === false && 
+                                <div className='col-12 mb-2'>
+                                    <ButtonComponent
+                                        onClick={ () => {
+                                            setVisibleHorarioAula(true);
+                                        } }
+                                    >
+                                        Adicionar o actualizar horario y aula
+                                    </ButtonComponent>
+                                </div>
+                            }
+                            <div className="col-12">
+                                <div className='w-100 p-1 pt-3 pb-3' 
+                                    style={{ 
+                                        borderRadius: 4, overflowY: 'hidden', overflowX: 'auto', 
+                                        whiteSpace: 'nowrap', backgroundColor: 'rgb(235, 236, 240)', 
+                                    }}
+                                >
+                                    { onComponentDate() }
+                                </div>
+                            </div>
+                            <div className="form-group col-12 mt-3">
+                                <ButtonComponent
+                                    onClick={ props.onClose }
+                                    fullWidth
+                                >
+                                    Aceptar
+                                </ButtonComponent>
                             </div>
                         </div>
                     </div>
@@ -147,15 +135,27 @@ export default function FormCursoHorarioModal( props ) {
     );
 };
 
-FormCursoHorarioModal.propTypes = {
+FormHorarioCursoModal.propTypes = {
     visible: PropTypes.bool,
+    disabled: PropTypes.bool,
     onClose: PropTypes.func,
     onOk: PropTypes.func,
     arrayhorario: PropTypes.array,
 };
 
-FormCursoHorarioModal.defaultProps = {
+FormHorarioCursoModal.defaultProps = {
+    disabled: false,
     visible: false,
     onOk: () => {},
     arrayhorario: [],
 };
+
+const mapStateToProps = ( state ) => ( {
+    curso: state.Curso,
+} );
+
+const mapDispatchToProps = {
+    onChange: CursoActions.onChange,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)( FormHorarioCursoModal );

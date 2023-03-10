@@ -81,32 +81,37 @@ const onCreate = ( state = inititalState ) => {
 };
 
 const onSetData = ( state = inititalState, curso ) => {
+    console.log(curso)
     state.idcurso = curso.idcurso;
 
-    state.fkidunidadnegocio = curso.fkidunidadnegocio;
-    state.unidadnegocio = curso.unidadnegocio;
+    state.fkidunidadnegocio = curso.unidadNegocio.idunidadnegocio;
+    state.unidadnegocio = curso.unidadNegocio.descripcion;
 
-    state.fkidunidadadministrativa = curso.fkidunidadadministrativa;
-    state.unidadadministrativa = curso.unidadadministrativa;
+    state.fkidunidadadministrativa = curso.unidadAdministrativa.idunidadadministrativa;
+    state.unidadadministrativa = curso.unidadAdministrativa.descripcion;
 
-    state.fkidunidadacademica = curso.fkidunidadacademica;
-    state.unidadacademica = curso.unidadacademica;
+    state.fkidunidadacademica = curso.unidadAcademica.idunidadacademica;
+    state.unidadacademica = curso.unidadAcademica.descripcion;
 
-    state.fkidmodalidadacademica = curso.fkidmodalidadacademica;
-    state.modalidadacademica = curso.modalidadacademica;
+    state.fkidmodalidadacademica = curso.modalidadAcademica.idmodalidadacademica;
+    state.modalidadacademica = curso.modalidadAcademica.descripcion;
 
-    state.fkidturno = curso.fkidturno;
-    state.turno = curso.turno;
+    state.fkidturno = curso.turno.idturno;
+    state.turno = curso.turno.descripcion;
 
-    state.fkidmateria = curso.fkidmateria;
-    state.materia = curso.materia;
+    state.fkidmateria = curso.materia.idmateria;
+    state.materia = curso.materia.nombrelargo;
 
-    state.fkidgestionperiodo = curso.fkidgestionperiodo;
-    state.gestionperiodo = curso.gestionperiodo;
+    state.fkidaula = curso.aula.idaula;
+    state.aula = curso.aula.descripcion;
+
+    state.fkidgestionperiodo = curso.gestionPeriodo.idgestionperiodo;
+    state.gestionperiodo = curso.gestionPeriodo.descripcion;
 
     state.arraydocente = curso.arraydocente.map( ( item ) => { 
         return {
-            fkiddocente: item.fkiddocente, docente: item.docente,
+            fkiddocente: item.docente.iddocente, 
+            docente: `${item.docente.nombreprincipal} ${item.docente.nombreadicional} ${item.docente.apellidoprimero} ${item.docente.apellidosegundo}`,
             contenido: item.contenido, estado: item.estado,
             error: { 
                 fkiddocente: false, estado: false,
@@ -117,6 +122,14 @@ const onSetData = ( state = inititalState, curso ) => {
         };
     } );
 
+    state.arrayparametrocalificacion = curso.arrayCursoParametroCalificacion.map( (item) => {
+        return {
+            fkidparametrocalificacion: item.parametroCalificacion.idparametrocalificacion,
+            parametrocalificacion: item.parametroCalificacion.descripcion,
+            valorporcentaje: item.valorporcentaje,
+        };
+    } );
+
     state.sigla = curso.sigla;
     state.descripcion = curso.descripcion;
     state.cupo = curso.cupo;
@@ -124,17 +137,20 @@ const onSetData = ( state = inititalState, curso ) => {
     state.fechainicio = curso.fechainicio;
     state.fechafinal = curso.fechafinal;
 
+    state.horainicio = curso.horainicio;
+    state.horafinal = curso.horafinal;
+
     state.version = curso.version;
     state.prerequisito = curso.prerequisito;
     state.objetivo = curso.objetivo;
     state.cantidadhora = curso.cantidadhora;
     state.inversionbase = curso.inversionbase;
 
-    state.fkidmotivoaperturacierrecurso = curso.fkidmotivoaperturacierrecurso;
-    state.motivoaperturacierrecurso = curso.motivoaperturacierrecurso;
+    state.fkidmotivoaperturacierrecurso = curso.motivoAperturaCierreCurso === null ? '' : curso.motivoAperturaCierreCurso.idmotivoaperturacierrecurso;
+    state.motivoaperturacierrecurso = curso.motivoAperturaCierreCurso === null ? '' : curso.motivoAperturaCierreCurso.descripcion;
 
-    state.fkidadministrativo = curso.fkidadministrativo;
-    state.administrativo = curso.administrativo;
+    state.fkidadministrativo = curso.administrativo === null ? '' : curso.administrativo.idadministrativo;
+    state.administrativo = curso.administrativo === null ? '' : `${curso.administrativo.nombreprincipal} ${curso.administrativo.nombreadicional} ${curso.administrativo.apellidoprimero} ${curso.administrativo.apellidosegundo}`;
 
     state.observaciones = curso.observaciones;
     state.fechaoperacion = curso.fechaoperacion;

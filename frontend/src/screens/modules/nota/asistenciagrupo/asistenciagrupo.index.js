@@ -118,8 +118,6 @@ const IndexAsistenciaGrupo = (props) => {
                                     <ButtonComponent
                                         fullWidth
                                         onClick={ () => {
-                                            console.log('index: ', index);
-                                            console.log(getWeekDay(asistenciaGrupo.yearselected, asistenciaGrupo.monthselected, index))
                                             asistenciaGrupo.dayselected = index;
                                             props.onUpdateAsistencia(asistenciaGrupo);
                                         } }

@@ -8,6 +8,7 @@ import { UpdateCierreCursoDto } from './dto/update-cierre.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { CursoDocenteDetalle } from './entities/cursodocentedetalle.entity';
 import { UpdateAperturaCierreCursoDto } from './dto/update-aperturacierre.dto';
+import { CursoParametroCalificacion } from './entities/cursoparametrocalificacion.entity';
 
 @Injectable()
 export class CursoService {
@@ -20,6 +21,9 @@ export class CursoService {
     @InjectRepository(CursoDocenteDetalle)
     private readonly cursoDocenteDetalleRepository: Repository<CursoDocenteDetalle>,
 
+    @InjectRepository(CursoParametroCalificacion)
+    private readonly cursoParametroCalificacionRepository: Repository<CursoParametroCalificacion>,
+
     private readonly dataSource: DataSource,
   ) {}
 
@@ -30,28 +34,38 @@ export class CursoService {
       let totalPagination = 0;
       if ( esPaginate ) {
         [listCurso, totalPagination] = await this.cursoRepository.findAndCount( {
-          relations: { arraydocente: true, },
+          relations: { 
+            unidadNegocio: true, unidadAdministrativa: true, unidadAcademica: true,
+            materia: true, gestionPeriodo: true, turno: true,
+            administrativo: true, motivoAperturaCierreCurso: true,
+            arraydocente: { docente: true, }, modalidadAcademica: true, 
+          },
           take: limit, skip: offset * limit,
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },
-            { materia: ILike( '%' + search + '%', ), },
-            { turno: ILike( '%' + search + '%', ), },
-            { modalidadacademica: ILike( '%' + search + '%', ), },
-            { gestionperiodo: ILike( '%' + search + '%', ), },
+            { materia: { nombrelargo: ILike( '%' + search + '%', ), }, },
+            { turno: { descripcion: ILike( '%' + search + '%', ), }, },
+            { modalidadAcademica: { descripcion: ILike( '%' + search + '%', ), }  },
+            { gestionPeriodo: { descripcion: ILike( '%' + search + '%', ) }, },
           ],
           order: { created_at: "DESC", },
         } );
       } else {
         [listCurso, totalPagination] = await this.cursoRepository.findAndCount( {
-          relations: { arraydocente: true, },
+          relations: { 
+            unidadNegocio: true, unidadAdministrativa: true, unidadAcademica: true,
+            materia: true, gestionPeriodo: true, turno: true,
+            administrativo: true, motivoAperturaCierreCurso: true,
+            arraydocente: { docente: true, }, modalidadAcademica: true, 
+          },
           where: [
             { sigla: ILike( '%' + search + '%', ), },
             { descripcion: ILike( '%' + search + '%', ), },
-            { materia: ILike( '%' + search + '%', ), },
-            { turno: ILike( '%' + search + '%', ), },
-            { modalidadacademica: ILike( '%' + search + '%', ), },
-            { gestionperiodo: ILike( '%' + search + '%', ), },
+            { materia: { nombrelargo: ILike( '%' + search + '%', ), }, },
+            { turno: { descripcion: ILike( '%' + search + '%', ), }, },
+            { modalidadAcademica: { descripcion: ILike( '%' + search + '%', ), }  },
+            { gestionPeriodo: { descripcion: ILike( '%' + search + '%', ) }, },
           ],
           order: { created_at: "DESC", },
         } );
@@ -105,23 +119,78 @@ export class CursoService {
           message: 'Sigla ya existente, favor ingresar uno nuevo.',
         };
       } 
-      const curso = this.cursoRepository.create( {
-        ...toCreate,
+      const cursoCreate = this.cursoRepository.create( {
+        unidadNegocio: {
+          idunidadnegocio: toCreate.fkidunidadnegocio,
+        },
+        unidadAdministrativa: {
+          idunidadadministrativa: toCreate.fkidunidadadministrativa,
+        },
+        unidadAcademica: {
+          idunidadacademica: toCreate.fkidunidadacademica,
+        },
+        sigla: toCreate.sigla,
+        descripcion: toCreate.descripcion,
+        modalidadAcademica: {
+          idmodalidadacademica: toCreate.fkidmodalidadacademica,
+        },
+        materia: {
+          idmateria: toCreate.fkidmateria,
+        },
+        turno: {
+          idturno: toCreate.fkidturno,
+        },
+        cupo: toCreate.cupo,
+        gestionPeriodo: {
+          idgestionperiodo: toCreate.fkidgestionperiodo,
+        },
+        aula: {
+          idaula: toCreate.fkidaula,
+        },
+        fechainicio: toCreate.fechainicio,
+        fechafinal: toCreate.fechafinal,
+        horainicio: toCreate.horainicio,
+        horafinal: toCreate.horafinal,
+        cantidadhora: toCreate.cantidadhora,
+        inversionbase: toCreate.inversionbase,
+        prerequisito: toCreate.prerequisito,
+        objetivo: toCreate.objetivo,
         arraydocente: arraydocente?.filter( 
           ( item ) => ( item.fkiddocente !== null ) 
         ).map( ( item ) => {
           return this.cursoDocenteDetalleRepository.create( {
-            ...item,
+            docente: {
+              iddocente: item.fkiddocente,
+            },
+            contenido: item.contenido,
+            estado: item.estado,
             created_at: this.getDateTime(),
           } );
         } ),
         created_at: this.getDateTime(),
+        arrayCursoParametroCalificacion: [],
       } );
-      await this.cursoRepository.save( curso );
+      
+      if ( Array.isArray(toCreate.arrayparametrocalificacion) ) {
+        for (let pos = 0; pos < toCreate.arrayparametrocalificacion.length; pos++) {
+          const calificacion = toCreate.arrayparametrocalificacion[pos];
+          const cursoCalificacionCreate = this.cursoParametroCalificacionRepository.create( {
+            parametroCalificacion: {
+              idparametrocalificacion: calificacion.fkidparametrocalificacion,
+            },
+            valorporcentaje: calificacion.valorporcentaje,
+            created_at: this.getDateTime(),
+          } );
+          cursoCreate.arrayCursoParametroCalificacion = [ ...cursoCreate.arrayCursoParametroCalificacion, cursoCalificacionCreate ];
+        }
+      }
+
+
+      await this.cursoRepository.save( cursoCreate );
       return {
         resp: 1, error: false,
         message: 'Curso registrado éxitosamente.',
-        curso: curso,
+        curso: cursoCreate,
       };
     } catch (error) {
       this.logger.error(error);
@@ -145,7 +214,15 @@ export class CursoService {
       const curso = await this.cursoRepository.findOne( {
         where: { idcurso: idcurso },
         relations: {
-          arraydocente: true,
+          unidadAcademica: true, unidadAdministrativa: true, unidadNegocio: true,
+          modalidadAcademica: true, materia: true, turno: true, aula: true,
+          gestionPeriodo: true, motivoAperturaCierreCurso: true, administrativo: true,
+          arraydocente: {
+            docente: true,
+          },
+          arrayCursoParametroCalificacion: {
+            parametroCalificacion: true,
+          },
         }
       } );
       return curso;
@@ -228,10 +305,60 @@ export class CursoService {
       const { arraydocente, ...toUpdate } = updateCursoDto;
       const cursoPreLoad = await this.cursoRepository.preload( {
         idcurso: idcurso,
-        ...toUpdate,
+        unidadNegocio: {
+          idunidadnegocio: toUpdate.fkidunidadnegocio,
+        },
+        unidadAdministrativa: {
+          idunidadadministrativa: toUpdate.fkidunidadadministrativa,
+        },
+        unidadAcademica: {
+          idunidadacademica: toUpdate.fkidunidadacademica,
+        },
+        sigla: toUpdate.sigla,
+        descripcion: toUpdate.descripcion,
+        modalidadAcademica: {
+          idmodalidadacademica: toUpdate.fkidmodalidadacademica,
+        },
+        materia: {
+          idmateria: toUpdate.fkidmateria,
+        },
+        turno: {
+          idturno: toUpdate.fkidturno,
+        },
+        cupo: toUpdate.cupo,
+        gestionPeriodo: {
+          idgestionperiodo: toUpdate.fkidgestionperiodo,
+        },
+        aula: {
+          idaula: toUpdate.fkidaula,
+        },
+        horainicio: toUpdate.horainicio,
+        horafinal: toUpdate.horafinal,
+        fechainicio: toUpdate.fechainicio,
+        fechafinal: toUpdate.fechafinal,
+        cantidadhora: toUpdate.cantidadhora,
+        inversionbase: toUpdate.inversionbase,
+        prerequisito: toUpdate.prerequisito,
+        objetivo: toUpdate.objetivo,
+        arrayCursoParametroCalificacion: [],
         concurrencia: curso.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );
+
+      if ( Array.isArray(toUpdate.arrayparametrocalificacion) ) {
+        await queryRunner.manager.delete( CursoParametroCalificacion, { curso: { idcurso: idcurso } } );
+        for (let pos = 0; pos < toUpdate.arrayparametrocalificacion.length; pos++) {
+          const calificacion = toUpdate.arrayparametrocalificacion[pos];
+          const cursoCalificacionCreate = this.cursoParametroCalificacionRepository.create( {
+            parametroCalificacion: {
+              idparametrocalificacion: calificacion.fkidparametrocalificacion,
+            },
+            valorporcentaje: calificacion.valorporcentaje,
+            created_at: this.getDateTime(),
+          } );
+          cursoPreLoad.arrayCursoParametroCalificacion = [ ...cursoPreLoad.arrayCursoParametroCalificacion, cursoCalificacionCreate ];
+        }
+      }
 
       if ( cursoPreLoad === null ) {
         await queryRunner.rollbackTransaction();
@@ -242,12 +369,16 @@ export class CursoService {
         };
       }
       if ( arraydocente ) {
-        await queryRunner.manager.delete( CursoDocenteDetalle, { fkidcurso: { idcurso: idcurso } } );
+        await queryRunner.manager.delete( CursoDocenteDetalle, { curso: { idcurso: idcurso } } );
         cursoPreLoad.arraydocente = arraydocente.filter( 
           ( item ) => ( item.fkiddocente !== null ) 
         ).map( ( item ) => {
           return this.cursoDocenteDetalleRepository.create( {
-            ...item,
+            docente: {
+              iddocente: item.fkiddocente,
+            },
+            contenido: item.contenido,
+            estado: item.estado,
             created_at: this.getDateTime(),
           } );
         } );
@@ -306,7 +437,15 @@ export class CursoService {
       }
       const cursoPreLoad = await this.cursoRepository.preload( {
         idcurso: idcurso,
-        ...updateAperturaCierreDto,
+        motivoAperturaCierreCurso: {
+          idmotivoaperturacierrecurso: updateAperturaCierreDto.fkidmotivoaperturacierrecurso,
+        },
+        administrativo: {
+          idadministrativo: updateAperturaCierreDto.fkidadministrativo,
+        },
+        observaciones: updateAperturaCierreDto.observaciones,
+        fechaoperacion: updateAperturaCierreDto.fechaoperacion,
+        estadoproceso: updateAperturaCierreDto.estadoproceso,
         concurrencia: curso.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { GrupoMateriaDetalle } from '../../grupo/entities/grupomateriadetalle.entity';
+import { Curso } from '../../curso/entities/curso.entity';
 
 @Entity('motivoaperturacierrecurso')
 export class MotivoAperturaCierreCurso {
@@ -12,6 +13,12 @@ export class MotivoAperturaCierreCurso {
         ( grupoPensumDetalle ) => grupoPensumDetalle.motivoAperturaCierreCurso,
     )
     arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
+
+    @OneToMany(
+        () => Curso,
+        ( item ) => item.motivoAperturaCierreCurso,
+    )
+    arrayCurso?: Curso[];
 
     @Column( 'text', {
         unique: false,

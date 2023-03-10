@@ -3,6 +3,7 @@ import { AdministrativoNacionalidadDetalle } from './administrativociudaddetalle
 import { AdministrativoReferenciaContactoDetalle } from './administrativoreferenciacontacto.entity';
 import { AdministrativoCategoriaDocumentoDetalle } from './administrativocategoriadocumentodetalle.entity';
 import { AdministrativoEstudioDetalle } from './administrativoestudiodetalle.entity';
+import { Curso } from '../../../ofertaacademica/curso/entities/curso.entity';
 
 @Entity('administrativo')
 export class Administrativo {
@@ -55,6 +56,12 @@ export class Administrativo {
         { cascade: true, eager: true, },
     )
     arrayestudio?: AdministrativoEstudioDetalle[];
+
+    @OneToMany(
+        () => Curso,
+        ( item ) => item.administrativo,
+    )
+    arrayCurso?: Curso[];
 
     @Column( 'text' )
     nombreprincipal: string;

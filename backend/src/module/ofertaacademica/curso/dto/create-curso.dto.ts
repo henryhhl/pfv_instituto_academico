@@ -1,8 +1,15 @@
 import { IsNotEmpty, IsString, IsInt, Min, IsOptional, ValidateNested, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateCursoDocenteDetalleDto } from './create-docente.dto';
+import { CreateCursoParametroCalificacionDto } from './create-parametrocalificacion.dto';
 
 export class CreateCursoDto {
+
+    @ValidateNested( { each: true, } )
+    @IsArray()
+    @Type(() => CreateCursoParametroCalificacionDto )
+    @IsOptional()
+    readonly arrayparametrocalificacion?: CreateCursoParametroCalificacionDto[];
 
     @ValidateNested( { each: true, } )
     @IsArray()
@@ -91,6 +98,18 @@ export class CreateCursoDto {
     @IsString( { message: 'Campo PRE REQUISITO solo permitido tipo STRING.', } )
     @IsOptional()
     readonly prerequisito: string;
+
+    @IsNotEmpty( { message: 'Campo horainicio es requerido.', } )
+    @IsString( { message: 'Campo horainicio solo permitido tipo STRING.', } )
+    readonly horainicio: string;
+
+    @IsNotEmpty( { message: 'Campo horafinal es requerido.', } )
+    @IsString( { message: 'Campo horafinal solo permitido tipo STRING.', } )
+    readonly horafinal: string;
+
+    @IsNotEmpty( { message: 'Campo fkidaula es requerido.', } )
+    @IsString( { message: 'Campo fkidaula solo permitido tipo STRING.', } )
+    readonly fkidaula: string;
 
     @IsString( { message: 'Campo OBJETIVO solo permitido tipo STRING.', } )
     @IsOptional()

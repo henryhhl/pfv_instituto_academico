@@ -17,6 +17,9 @@ import ListadoUnidadAcademicaModal from '../../estructuraacademica/unidadacademi
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { CursoActions } from '../../../../redux/actions/ofertaacademica/curso.action';
+import FormHorarioCursoModal from './modal/form_horario.modal';
+import { existsData } from '../../../../utils/functions';
+import FormAddCursoCalificacion from './modal/form_add_cursocalificacion.modal';
 
 function CreateCurso( props ) {
     const { curso } = props;
@@ -30,6 +33,8 @@ function CreateCurso( props ) {
 
     const [ visibleDocente, setVisibleDocente ] = React.useState(false);
     const [ indexDetailsDocente, setIndexDetailsDocente ] = React.useState(false);
+    const [ visibleHorario, setVisibleHorario ] = React.useState(false);
+    const [ visibleParametroCalificacion, setVisibleParametroCalificacion ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -155,6 +160,26 @@ function CreateCurso( props ) {
         );
     };
 
+    const onComponentHorario = () => {
+        if ( !visibleHorario ) return null;
+        return (
+            <FormHorarioCursoModal
+                visible={visibleHorario}
+                onClose={ () => setVisibleHorario(false) }
+            />
+        );
+    };
+
+    const onComponentFormAddParametroCalificacion = () => {
+        if ( !visibleParametroCalificacion ) return null;
+        return (
+            <FormAddCursoCalificacion
+                visible={visibleParametroCalificacion}
+                onClose={ () => setVisibleParametroCalificacion(false) }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentUnidadAcademica() }
@@ -163,6 +188,8 @@ function CreateCurso( props ) {
             { onComponentMateria() }
             { onComponentTurno() }
             { onComponentGestionPeriodo() }
+            { onComponentHorario() }
+            { onComponentFormAddParametroCalificacion() }
             <PaperComponent>
                 <CardComponent
                     header={"Nuevo Curso"}
@@ -344,10 +371,27 @@ function CreateCurso( props ) {
                     <div className="row">
                         <div className="form-group col-12">
                             <ButtonComponent
-                                fullWidth
                                 onClick={props.onAddRowDocente}
                             >
                                 Agregar Docente
+                            </ButtonComponent>
+                            <ButtonComponent
+                                onClick={ () => {
+                                    if ( existsData( curso.fkidgestionperiodo ) && existsData( curso.fechainicio ) && existsData( curso.fechafinal ) ) {
+                                        setVisibleHorario( true );
+                                    } else {
+                                        toastr.warning( 'Campo periodo, fecha inicio y fecha final requerido.', '', { closeButton: true, progressBar: true, } );
+                                    }
+                                } }
+                            >
+                                Asignar Horarios
+                            </ButtonComponent>
+                            <ButtonComponent
+                                onClick={ () => {
+                                    setVisibleParametroCalificacion(true);
+                                } }
+                            >
+                                Asignar Calificaciones
                             </ButtonComponent>
                         </div>
                     </div>

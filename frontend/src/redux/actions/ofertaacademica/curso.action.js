@@ -1,7 +1,7 @@
 
 import Swal from 'sweetalert2';
 import Constants from "../../constants/constans";
-import { Functions } from "../../../utils/functions";
+import { existsData, Functions } from "../../../utils/functions";
 import ConfirmationComponent from "../../../components/confirmation";
 import { setHiddenLoading, setShowLoading } from "../common/loading.action";
 import { setHiddenSesion, setShowSesion } from '../common/sesion.action';
@@ -560,6 +560,28 @@ function onValidate( data ) {
             data.arraydocente[0].message.fkiddocente = "Campo requerido.";
             bandera = false;
         }
+    }
+    if ( !existsData( data.fkidaula ) ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos y asignar el horario.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+        return false;
+    }
+    if ( data.arrayparametrocalificacion.length === 0 ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos y asignar calificaciones.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+        return false;
     }
     if ( !bandera ) {
         Swal.fire( {

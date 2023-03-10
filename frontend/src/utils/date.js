@@ -24,6 +24,12 @@ const months = [
     'Diciembre'
 ];
 
+export const convertDMYForYMD = (dateToString = "") => {
+    if ( dateToString.split('/').length < 3 ) return null;
+    const [day, month, year] = dateToString.split('/');
+    return `${year}-${month}-${day}`;
+}
+
 export const convertDateYearByMonthToString = ( date = new Date(), separator = '-' ) => {
     let year  = date.getFullYear();
     let month = date.getMonth() + 1;
@@ -40,6 +46,17 @@ export const convertDateToString = ( date = new Date(), separator = '-' ) => {
     day   = day   < 10 ? "0" + day : day;
 
     return year + separator + month + separator+ day;
+};
+
+export const convertDateToDMYString = ( date = new Date(), separator = '-' ) => {
+    let year  = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day   = date.getDate();
+
+    month = month < 10 ? "0" + month : month;
+    day   = day   < 10 ? "0" + day : day;
+
+    return `${day}/${month}/${year}`
 };
 
 export const convertStringforDate = (dateToString = "") => {

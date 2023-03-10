@@ -1,6 +1,18 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, JoinColumn } from 'typeorm';
 import { CursoDocenteDetalle } from './cursodocentedetalle.entity';
 import { InscripcionCurso } from '../../../inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
+import { UnidadNegocio } from '../../../parametro/unidadnegocio/entities/unidadnegocio.entity';
+import { UnidadAdministrativa } from '../../../estructuraacademica/unidadadministrativa/entities/unidadadministrativa.entity';
+import { UnidadAcademica } from '../../../estructuraacademica/unidadacademica/entities/unidadacademica.entity';
+import { ModalidadAcademica } from '../../../parametro/modalidadacademica/entities/modalidadacademica.entity';
+import { Turno } from '../../../estructurainstitucional/turno/entities/turno.entity';
+import { Materia } from '../../../parametro/materia/entities/materia.entity';
+import { GestionPeriodo } from '../../../estructurainstitucional/gestionperiodo/entities/gestionperiodo.entity';
+import { MotivoAperturaCierreCurso } from '../../motivoaperturacierrecurso/entities/motivoaperturacierrecurso.entity';
+import { Administrativo } from '../../../persona/administrativo/entities/administrativo.entity';
+import { CursoHorarioDetalle } from './cursohorariodetalle.entity';
+import { Aula } from '../../../estructurainstitucional/aula/entities/aula.entity';
+import { CursoParametroCalificacion } from './cursoparametrocalificacion.entity';
 
 @Entity('curso')
 export class Curso {
@@ -9,11 +21,25 @@ export class Curso {
     idcurso: string;
 
     @OneToMany(
+        () => CursoHorarioDetalle,
+        ( item ) => item.curso,
+        { cascade: true, },
+    )
+    arrayCursoHorarioDetalle?: CursoHorarioDetalle[];
+
+    @OneToMany(
         () => CursoDocenteDetalle,
-        ( cursoDocenteDetalle ) => cursoDocenteDetalle.fkidcurso,
+        ( cursoDocenteDetalle ) => cursoDocenteDetalle.curso,
         { cascade: true, },
     )
     arraydocente?: CursoDocenteDetalle[];
+
+    @OneToMany(
+        () => CursoParametroCalificacion,
+        ( item ) => item.curso,
+        { cascade: true, },
+    )
+    arrayCursoParametroCalificacion?: CursoParametroCalificacion[];
 
     @OneToMany(
         () => InscripcionCurso,
@@ -21,55 +47,68 @@ export class Curso {
     )
     arrayinscripcioncurso?: InscripcionCurso[];
 
-    @Column('text')
-    fkidunidadnegocio: string;
-
-    @Column('text')
-    unidadnegocio: string;
-
-    @Column('text')
-    fkidunidadadministrativa: string;
-
-    @Column('text')
-    unidadadministrativa: string;
-
-    @Column('text')
-    fkidunidadacademica: string;
-
-    @Column('text')
-    unidadacademica: string;
+    @ManyToOne(
+        ( ) => UnidadNegocio,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidunidadnegocio', })
+    unidadNegocio: UnidadNegocio;
 
 
-    @Column('text')
-    fkidmodalidadacademica: string;
-
-    @Column('text')
-    modalidadacademica: string;
-
-
-    @Column('text')
-    fkidturno: string;
-
-    @Column('text')
-    turno: string;
+    @ManyToOne(
+        ( ) => UnidadAdministrativa,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidunidadadministrativa', })
+    unidadAdministrativa: UnidadAdministrativa;
 
 
-    @Column('text')
-    fkidmateria: string;
+    @ManyToOne(
+        ( ) => UnidadAcademica,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidunidadacademica', })
+    unidadAcademica: UnidadAcademica;
 
-    @Column('text')
-    materia: string;
+
+    @ManyToOne(
+        ( ) => ModalidadAcademica,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidmodalidadacademica', })
+    modalidadAcademica: ModalidadAcademica;
 
 
-    @Column('text' , {
-        nullable: true,
-    } )
-    fkidgestionperiodo: string;
+    @ManyToOne(
+        ( ) => Turno,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidturno', })
+    turno: Turno;
+    
 
-    @Column('text', {
-        nullable: true,
-    } )
-    gestionperiodo: string;
+    @ManyToOne(
+        ( ) => Materia,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidmateria', })
+    materia: Materia;
+
+
+    @ManyToOne(
+        ( ) => GestionPeriodo,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidgestionperiodo', })
+    gestionPeriodo: GestionPeriodo;
+    
+
+    @ManyToOne(
+        ( ) => Aula,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidaula', })
+    aula: Aula;
 
 
     @Column( 'text', {
@@ -90,6 +129,12 @@ export class Curso {
 
     @Column( 'text' )
     fechafinal: string;
+
+    @Column( 'text' )
+    horainicio: string;
+
+    @Column( 'text' )
+    horafinal: string;
 
     @Column( {
         type: 'int',
@@ -121,18 +166,20 @@ export class Curso {
     })
     inversionbase: number;
 
+    @ManyToOne(
+        ( ) => MotivoAperturaCierreCurso,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidmotivoaperturacierrecurso', })
+    motivoAperturaCierreCurso: MotivoAperturaCierreCurso;
 
-    @Column( 'text', { nullable: true, } )
-    fkidmotivoaperturacierrecurso: string;
+    @ManyToOne(
+        ( ) => Administrativo,
+        ( item ) => item.arrayCurso,
+    )
+    @JoinColumn({ name: 'fkidadministrativo', })
+    administrativo: Administrativo;
 
-    @Column( 'text', { nullable: true, } )
-    motivoaperturacierrecurso: string;
-
-    @Column( 'text', { nullable: true, } )
-    fkidadministrativo: string;
-
-    @Column( 'text', { nullable: true, } )
-    administrativo: string;
 
     @Column( 'text', { nullable: true, } )
     observaciones: string;

@@ -3,6 +3,7 @@ import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities
 import { InscripcionCurso } from 'src/module/inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
 import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
+import { Curso } from '../../../ofertaacademica/curso/entities/curso.entity';
 
 @Entity('unidadacademica')
 export class UnidadAcademica {
@@ -31,9 +32,15 @@ export class UnidadAcademica {
 
     @OneToMany(
         () => GrupoMateriaDetalle,
-        ( grupoPensumDetalle ) => grupoPensumDetalle.unidadNegocio,
+        ( grupoPensumDetalle ) => grupoPensumDetalle.unidadAcademica,
     )
     arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
+
+    @OneToMany(
+        () => Curso,
+        ( item ) => item.unidadAcademica,
+    )
+    arrayCurso?: Curso[];
 
     @Column('text')
     fkidunidadnegocio: string;

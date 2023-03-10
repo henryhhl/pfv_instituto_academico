@@ -3,6 +3,13 @@ const Curso = {
     idcurso: "",
 
     arraydocente: [],
+    arrayparametrocalificacion: [],
+
+    horainicio: "",
+    horafinal: "",
+
+    fkidaula: "",
+    aula: "",
 
     fkidunidadnegocio: "",
     unidadnegocio: "",

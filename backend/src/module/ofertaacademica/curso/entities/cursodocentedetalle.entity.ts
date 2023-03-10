@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Curso } from './curso.entity';
+import { Docente } from '../../../persona/docente/entities/docente.entity';
 
 @Entity('cursodocentedetalle')
 export class CursoDocenteDetalle {
@@ -13,13 +14,14 @@ export class CursoDocenteDetalle {
         { onDelete: 'CASCADE', }
     )
     @JoinColumn({ name: 'fkidcurso', })
-    fkidcurso: Curso;
+    curso: Curso;
 
-    @Column('text')
-    fkiddocente: string;
-
-    @Column('text')
-    docente: string;
+    @ManyToOne(
+        ( ) => Docente,
+        ( item ) => item.arrayCursoDocenteDetalle,
+    )
+    @JoinColumn({ name: 'fkiddocente', })
+    docente: Docente;
 
     @Column('text', {
         nullable: true,

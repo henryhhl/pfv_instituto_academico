@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { GrupoMateriaDiaHorarioDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadiahorario.entity';
+import { CursoHorarioDetalle } from '../../../ofertaacademica/curso/entities/cursohorariodetalle.entity';
+import { Curso } from '../../../ofertaacademica/curso/entities/curso.entity';
 
 @Entity('aula')
 export class Aula {
@@ -9,9 +11,21 @@ export class Aula {
 
     @OneToMany(
         () => GrupoMateriaDiaHorarioDetalle,
-        ( grupoMateriaDiaHorarioDetalle ) => grupoMateriaDiaHorarioDetalle.aula,
+        ( item ) => item.aula,
     )
     arrayGrupoMateriaDiaHorarioDetalle?: GrupoMateriaDiaHorarioDetalle[];
+
+    @OneToMany(
+        () => CursoHorarioDetalle,
+        ( item ) => item.aula,
+    )
+    arrayCursoHorarioDetalle?: CursoHorarioDetalle[];
+
+    @OneToMany(
+        () => Curso,
+        ( item ) => item.aula,
+    )
+    arrayCurso?: Curso[];
 
     @Column( {
         type: 'text',

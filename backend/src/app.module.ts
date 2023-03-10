@@ -64,6 +64,7 @@ import { ParametroCalificacionModule } from './module/nota/parametrocalificacion
 import { CalendarioacademicoModule } from './module/nota/calendarioacademico/calendarioacademico.module';
 import { AsignarrolModule } from './module/seguridad/asignarrol/asignarrol.module';
 import { AsistenciagrupoModule } from './module/nota/asistenciagrupo/asistenciagrupo.module';
+import { AsistenciacursoModule } from './module/nota/asistenciacurso/asistenciacurso.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -120,7 +121,7 @@ import { AsistenciagrupoModule } from './module/nota/asistenciagrupo/asistenciag
     TipoResultadoModule, AsistenciagrupoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, 
     ProfileModule, BitacoraModule, DateModule, ParametroCalificacionModule, CalendarioacademicoModule,
     AsignarrolModule, 
-    AuthModule,
+    AuthModule, AsistenciacursoModule,
   ],
   controllers: [],
   providers: [],

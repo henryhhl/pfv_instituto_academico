@@ -4,6 +4,7 @@ import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities
 import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
 import { CalendarioAcademico } from 'src/module/nota/calendarioacademico/entities/calendarioacademico.entity';
+import { Curso } from '../../../ofertaacademica/curso/entities/curso.entity';
 
 @Entity('gestionperiodo')
 export class GestionPeriodo {
@@ -34,6 +35,12 @@ export class GestionPeriodo {
         ( grupoPensumDetalle ) => grupoPensumDetalle.gestionPeriodo,
     )
     arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
+
+    @OneToMany(
+        () => Curso,
+        ( item ) => item.gestionPeriodo,
+    )
+    arrayCurso?: Curso[];
 
     @OneToMany(
         () => CalendarioAcademico,

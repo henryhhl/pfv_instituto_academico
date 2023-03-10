@@ -3,6 +3,7 @@ import { InscripcionCurso } from '../../../inscripcion/inscripcioncurso/entities
 import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 import { InscripcionPrograma } from '../../../inscripcion/inscripcionprograma/entities/inscripcionprograma.entity';
+import { Curso } from '../../../ofertaacademica/curso/entities/curso.entity';
 
 @Entity('unidadnegocio')
 export class UnidadNegocio {
@@ -33,6 +34,12 @@ export class UnidadNegocio {
         ( grupoPensumDetalle ) => grupoPensumDetalle.unidadNegocio,
     )
     arrayGrupoPensumDetalle?: GrupoMateriaDetalle[];
+
+    @OneToMany(
+        () => Curso,
+        ( item ) => item.unidadNegocio,
+    )
+    arrayCurso?: Curso[];
 
     @Column( {
         type: 'text',

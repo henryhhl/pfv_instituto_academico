@@ -8,11 +8,15 @@ import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../
 import { Functions } from '../../../../utils/functions';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { CursoActions } from '../../../../redux/actions/ofertaacademica/curso.action';
+import FormHorarioCursoModal from './modal/form_horario.modal';
+import FormAddCursoCalificacion from './modal/form_add_cursocalificacion.modal';
 
 function ShowCurso( props ) {
     const { curso } = props;
     const navigate = useNavigate();
     const params = useParams();
+    const [ visibleHorario, setVisibleHorario ] = React.useState(false);
+    const [ visibleParametroCalificacion, setVisibleParametroCalificacion ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -33,8 +37,32 @@ function ShowCurso( props ) {
         navigate(-1);
     };
 
+    const onComponentHorario = () => {
+        if ( !visibleHorario ) return null;
+        return (
+            <FormHorarioCursoModal
+                visible={visibleHorario}
+                onClose={ () => setVisibleHorario(false) }
+                disabled={true}
+            />
+        );
+    };
+
+    const onComponentParametroCalificacion = () => {
+        if ( !visibleParametroCalificacion ) return null;
+        return (
+            <FormAddCursoCalificacion
+                visible={visibleParametroCalificacion}
+                onClose={ () => setVisibleParametroCalificacion(false) }
+                disabled={true}
+            />
+        );
+    };
+
     return (
         <>
+            { onComponentHorario() }
+            { onComponentParametroCalificacion() }
             <PaperComponent>
                 <CardComponent
                     header={"Detalle Curso"}
@@ -162,6 +190,24 @@ function ShowCurso( props ) {
                                 value={ Functions.getValueEstado( curso.estado ) }
                                 readOnly
                             />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="form-group col-12">
+                            <ButtonComponent
+                                onClick={ () => {
+                                    setVisibleHorario( true );
+                                } }
+                            >
+                                Visualizar Horarios
+                            </ButtonComponent>
+                            <ButtonComponent
+                                onClick={ () => {
+                                    setVisibleParametroCalificacion(true);
+                                } }
+                            >
+                                Visualizar Calificaciones
+                            </ButtonComponent>
                         </div>
                     </div>
                     <div className='card p-0 m-0'>

@@ -72,18 +72,20 @@ export default function ListadoCursoModal( props ) {
                                     {
                                         id: 'materia',
                                         label: 'Materia',
+                                        object:  true,
+                                        value: 'nombrelargo',
                                     },
                                     {
-                                        id: 'turno',
-                                        label: 'Turno',
-                                    },
-                                    {
-                                        id: 'modalidadacademica',
+                                        id: 'modalidadAcademica',
                                         label: 'Modalidad',
+                                        object: true,
+                                        value: 'descripcion',
                                     },
                                     {
-                                        id: 'gestionperiodo',
+                                        id: 'gestionPeriodo',
                                         label: 'Periodo',
+                                        object: true,
+                                        value: 'descripcion',
                                     },
                                     {
                                         id: 'fechainicio',

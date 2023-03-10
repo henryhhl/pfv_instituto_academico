@@ -119,23 +119,23 @@ const setFKIDCurso = (inscripcionCurso, curso) => {
         inscripcionCurso.fkidcurso = curso.idcurso;
         inscripcionCurso.curso = `${curso.sigla} - ${curso.descripcion}`;
 
-        inscripcionCurso.fkidunidadadministrativa = curso.fkidunidadadministrativa;
-        inscripcionCurso.unidadadministrativa = curso.unidadadministrativa;
+        inscripcionCurso.fkidunidadadministrativa = curso.unidadAdministrativa.idunidadadministrativa;
+        inscripcionCurso.unidadadministrativa = curso.unidadAdministrativa.descripcion;
 
-        inscripcionCurso.fkidunidadacademica = curso.fkidunidadacademica;
-        inscripcionCurso.unidadacademica = curso.unidadacademica;
+        inscripcionCurso.fkidunidadacademica = curso.unidadAcademica.idunidadacademica;
+        inscripcionCurso.unidadacademica = curso.unidadAcademica.descripcion;
 
-        inscripcionCurso.fkidunidadnegocio = curso.fkidunidadnegocio;
-        inscripcionCurso.unidadnegocio = curso.unidadnegocio;
+        inscripcionCurso.fkidunidadnegocio = curso.unidadNegocio.idunidadnegocio;
+        inscripcionCurso.unidadnegocio = curso.unidadNegocio.descripcion;
 
-        inscripcionCurso.fkidgestionperiodo = curso.fkidgestionperiodo;
-        inscripcionCurso.gestionperiodo = curso.gestionperiodo;
+        inscripcionCurso.fkidgestionperiodo = curso.gestionPeriodo.idgestionperiodo;
+        inscripcionCurso.gestionperiodo = curso.gestionPeriodo.descripcion;
 
-        inscripcionCurso.fkidturno = curso.fkidturno;
-        inscripcionCurso.turno = curso.turno;
+        inscripcionCurso.fkidturno = curso.turno.idturno;
+        inscripcionCurso.turno = curso.turno.descripcion;
 
-        inscripcionCurso.fkidmodalidadacademica = curso.fkidmodalidadacademica;
-        inscripcionCurso.modalidadacademica = curso.modalidadacademica;
+        inscripcionCurso.fkidmodalidadacademica = curso.modalidadAcademica.idmodalidadacademica;
+        inscripcionCurso.modalidadacademica = curso.modalidadAcademica.descripcion;
 
         inscripcionCurso.error.fkidcurso = false;
         inscripcionCurso.message.fkidcurso = "";
