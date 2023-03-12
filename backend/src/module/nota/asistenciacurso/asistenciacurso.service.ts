@@ -1,10 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAsistenciacursoDto } from './dto/create-asistenciacurso.dto';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, Logger } from '@nestjs/common';
+import { AsistenciaCurso } from './entities/asistenciacurso.entity';
+import { CreateAsistenciaCursoDto } from './dto/create-asistenciacurso.dto';
 import { UpdateAsistenciacursoDto } from './dto/update-asistenciacurso.dto';
 
 @Injectable()
 export class AsistenciacursoService {
-  create(createAsistenciacursoDto: CreateAsistenciacursoDto) {
+  private readonly logger = new Logger('AsistenciaCursoService');
+
+  constructor(
+    @InjectRepository(AsistenciaCurso)
+    private readonly asistenciaCursoRepository: Repository<AsistenciaCurso>,
+  ) {}
+
+  create(createAsistenciacursoDto: CreateAsistenciaCursoDto) {
     return 'This action adds a new asistenciacurso';
   }
 
@@ -12,12 +22,88 @@ export class AsistenciacursoService {
     return `This action returns all asistenciacurso`;
   }
 
+  private getDateTime() {
+    let date = new Date();
+    let month = (date.getMonth() + 1).toString();
+    let day = date.getDate().toString();
+    let year = date.getFullYear().toString();
+    
+    month = (+month < 10) ? "0" + month : month;
+    day = (+day < 10) ? "0" + day : day;
+
+    let hour = date.getHours().toString();
+    let minutes  = date.getMinutes().toString();
+    let segundos = date.getSeconds().toString();
+    let milliSeconds = date.getMilliseconds().toString();
+
+    hour = (+hour < 10) ? "0" + hour : hour;
+    minutes = (+minutes < 10) ? "0" + minutes : minutes;
+    segundos = (+segundos < 10) ? "0" + segundos : segundos;
+
+    return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
+  }
+
+  async storeAsistenciaDefaultForInscripcionCurso( 
+    fkidasistencia: string, fechaasistencia: string, dayweekname: string, dayweek: number,
+  ) {
+    try {
+      const asistenciaCursoCreate = this.asistenciaCursoRepository.create( {
+        inscripcionCurso: {
+          idinscripcioncurso: fkidasistencia,
+        },
+        fechaasistencia: fechaasistencia,
+        dayweekname: dayweekname,
+        dayweek: dayweek,
+        created_at: this.getDateTime(),
+      } );
+      return await this.asistenciaCursoRepository.save( asistenciaCursoCreate );
+      
+    } catch (error) {
+      this.logger.error(error);
+      return null;
+    }
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} asistenciacurso`;
   }
 
-  update(id: number, updateAsistenciacursoDto: UpdateAsistenciacursoDto) {
-    return `This action updates a #${id} asistenciacurso`;
+  async update(request: CreateAsistenciaCursoDto) {
+    try {
+      if ( Array.isArray( request.arrayAsistencia ) ) {
+        let pos = 0;
+        for (let index = 0; index < request.arrayAsistencia.length; index++) {
+          const element = request.arrayAsistencia[index];
+
+          const asistenciaGrupoPreLoad = await this.asistenciaCursoRepository.preload( {
+            idasistenciacurso: element.idasistenciacurso,
+            asistencia: element.asistencia,
+            updated_at: this.getDateTime(),
+          } );
+
+          if ( asistenciaGrupoPreLoad !== null ) {
+            await this.asistenciaCursoRepository.save( asistenciaGrupoPreLoad );
+            pos++;
+          }
+        }
+        if ( pos > 0 ) {
+          return {
+            resp: 1, error: false,
+            message: 'Asistencia actualizado éxitosamente.',
+          };
+        }
+        return {
+          resp: 1, error: false,
+          message: 'Asistencia actualizado éxitosamente.',
+        };
+      }
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
   }
 
   remove(id: number) {

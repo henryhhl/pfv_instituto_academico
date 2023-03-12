@@ -12,6 +12,7 @@ import { ModalidadAcademicaModule } from '../../parametro/modalidadacademica/mod
 import { UnidadacademicaModule } from '../../estructuraacademica/unidadacademica/unidadacademica.module';
 import { GestionPeriodoModule } from '../../estructurainstitucional/gestionperiodo/gestionperiodo.module';
 import { UnidadAdministrativaModule } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.module';
+import { AsistenciacursoModule } from '../../nota/asistenciacurso/asistenciacurso.module';
 
 @Module({
   controllers: [InscripcionCursoController],
@@ -29,6 +30,7 @@ import { UnidadAdministrativaModule } from '../../estructuraacademica/unidadadmi
     UnidadacademicaModule,
     ModalidadAcademicaModule,
     UnidadAdministrativaModule,
+    AsistenciacursoModule,
   ],
 })
 export class InscripcioncursoModule {}

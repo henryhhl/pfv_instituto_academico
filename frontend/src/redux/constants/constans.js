@@ -374,6 +374,9 @@ const Constants = {
     asistenciagrupo_onChange: "[ON CHANGE] Asistencia Grupo",
     asistenciagrupo_onLimpiar: "[ON LIMPIAR] Asistencia Grupo",
 
+    asistenciacurso_onChange: "[ON CHANGE] Asistencia Curso",
+    asistenciacurso_onLimpiar: "[ON LIMPIAR] Asistencia Curso",
+
 };
 
 export default Constants;

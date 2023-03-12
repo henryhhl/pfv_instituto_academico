@@ -8,6 +8,7 @@ import { CursoHorario } from './entities/cursohorario.entity';
 import { CursoDocenteDetalle } from './entities/cursodocentedetalle.entity';
 import { CursoHorarioDetalle } from './entities/cursohorariodetalle.entity';
 import { CursoParametroCalificacion } from './entities/cursoparametrocalificacion.entity';
+import { DocenteModule } from '../../persona/docente/docente.module';
 
 @Module({
   controllers: [CursoController],
@@ -19,6 +20,7 @@ import { CursoParametroCalificacion } from './entities/cursoparametrocalificacio
       CursoHorario, CursoHorarioDetalle, CursoParametroCalificacion,
     ] ),
     AuthModule,
+    DocenteModule,
   ],
 })
 export class CursoModule {}

@@ -9,6 +9,8 @@ import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { CursoDocenteDetalle } from './entities/cursodocentedetalle.entity';
 import { UpdateAperturaCierreCursoDto } from './dto/update-aperturacierre.dto';
 import { CursoParametroCalificacion } from './entities/cursoparametrocalificacion.entity';
+import { MateriaForDocenteCursoDto } from './dto/materia-docente.dto';
+import { DocenteService } from '../../persona/docente/docente.service';
 
 @Injectable()
 export class CursoService {
@@ -25,6 +27,8 @@ export class CursoService {
     private readonly cursoParametroCalificacionRepository: Repository<CursoParametroCalificacion>,
 
     private readonly dataSource: DataSource,
+
+    private readonly docenteService: DocenteService,
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -78,6 +82,49 @@ export class CursoService {
           total: totalPagination,
         },
       };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async findAllMateriaForDocente(paginationDto: MateriaForDocenteCursoDto) {
+    try {
+      let list = [];
+      let total = 0;
+      const docente = await this.docenteService.findOne(paginationDto.fkiddocente);
+      if ( docente != null ) {
+
+        [list, total] = await this.cursoRepository.findAndCount( {
+          where: {
+            arraydocente: {
+              docente: { iddocente: paginationDto.fkiddocente, }
+            },
+          },
+          relations: {
+            materia: true, gestionPeriodo: true, turno: true,
+            modalidadAcademica: true, unidadAcademica: true, unidadAdministrativa: true,
+          },
+          order: { 
+            gestionPeriodo: { created_at: 'DESC', },
+            created_at: 'DESC',
+          },
+        } );
+
+      }
+
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayMateria: list,
+        pagination: {
+          total: total,
+        },
+      };
+
     } catch (error) {
       this.logger.error(error);
       return {

@@ -345,6 +345,24 @@ function onValidate( data ) {
                 } );
                 return false;
             }
+            let totalCalificacion = 0;
+            for (let pos = 0; pos < element.arrayparametrocalificacion.length; pos++) {
+                const calificacion = element.arrayparametrocalificacion[pos];
+                if ( typeof calificacion.valorporcentaje === 'number' ) {
+                    totalCalificacion += parseInt(calificacion.valorporcentaje);
+                }
+            }
+            if ( totalCalificacion < 100 ) {
+                Swal.fire( {
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: "No se pudo realizar la Funcionalidad",
+                    text: `Favor llenar los campos requeridos y Asignar calificaciones con una suma de 100 de la fila ${index + 1}.`,
+                    showConfirmButton: false,
+                    timer: 3000,
+                } );
+                return false;
+            }
         }
     }
     if ( !bandera ) {

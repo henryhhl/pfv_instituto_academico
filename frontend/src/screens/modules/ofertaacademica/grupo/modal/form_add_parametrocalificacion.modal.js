@@ -55,8 +55,17 @@ export default function FormAddGrupoParametroCalificacionModal( props ) {
         <>
             <ModalComponent
                 visible={props.visible}
-                onClose={props.onClose}
-                closable={ props.disabled === true ? true : false}
+                onClose={ () => {
+                    if ( props.disabled === true ) {
+                        props.onClose();
+                        return;
+                    }
+                    if ( promedioTotal > 100 ) {
+                        toastr.error( 'El total de calificación debe ser 100.', '', { closeButton: true, progressBar: true, } );
+                    } else {
+                        props.onClose();
+                    }
+                } }
                 footer={null} width={600} centered
                 title={props.disabled === true ? "DETALLE PARAMETRO CALIFICACIÓN" : "ASIGNAR PARAMETRO CALIFICACIÓN"}
                 style={{ marginBottom: 30, marginTop: 30, }}
@@ -147,11 +156,10 @@ export default function FormAddGrupoParametroCalificacionModal( props ) {
                                         props.onClose();
                                         return;
                                     }
-                                    if ( promedioTotal === 0 || promedioTotal === 100 ) {
-                                        toastr.success( 'Parametros registrados.', '', { closeButton: true, progressBar: true, } );
-                                        props.onClose();
-                                    } else {
+                                    if ( promedioTotal > 100 ) {
                                         toastr.error( 'El total de calificación debe ser 100.', '', { closeButton: true, progressBar: true, } );
+                                    } else {
+                                        props.onClose();
                                     }
                                 } }
                                 fullWidth

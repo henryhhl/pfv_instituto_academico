@@ -583,6 +583,24 @@ function onValidate( data ) {
         } );
         return false;
     }
+    let totalCalificacion = 0;
+    for (let index = 0; index < data.arrayparametrocalificacion.length; index++) {
+        const element = data.arrayparametrocalificacion[index];
+        if ( typeof element.valorporcentaje === 'number' ) {
+            totalCalificacion += parseInt(element.valorporcentaje);
+        }
+    }
+    if ( totalCalificacion < 100 ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos y Asignar calificaciones con una suma de 100.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+        return false;
+    }
     if ( !bandera ) {
         Swal.fire( {
             position: 'top-end',

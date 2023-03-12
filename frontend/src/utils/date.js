@@ -30,6 +30,12 @@ export const convertDMYForYMD = (dateToString = "") => {
     return `${year}-${month}-${day}`;
 }
 
+export const convertYMDForDMY = (dateToString = "") => {
+    if ( dateToString.split('-').length < 3 ) return null;
+    const [year, month, day] = dateToString.split('-');
+    return `${day}/${month}/${year}`;
+}
+
 export const convertDateYearByMonthToString = ( date = new Date(), separator = '-' ) => {
     let year  = date.getFullYear();
     let month = date.getMonth() + 1;

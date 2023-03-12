@@ -11,7 +11,7 @@ export class AsistenciaGrupo {
         ( ) => InscripcionGrupo,
         ( item ) => item.arrayAsistenciaGrupo,
     )
-    @JoinColumn({ name: 'fkidunidadnegocio', })
+    @JoinColumn({ name: 'fkidinscripciongrupo', })
     inscripcionGrupo: InscripcionGrupo;
 
     @Column( 'enum', {

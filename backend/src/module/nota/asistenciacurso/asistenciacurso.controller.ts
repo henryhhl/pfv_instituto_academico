@@ -1,14 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { AsistenciacursoService } from './asistenciacurso.service';
-import { CreateAsistenciacursoDto } from './dto/create-asistenciacurso.dto';
+import { CreateAsistenciaCursoDto } from './dto/create-asistenciacurso.dto';
 import { UpdateAsistenciacursoDto } from './dto/update-asistenciacurso.dto';
+import { Auth } from '../../auth/decorators/auth.decorator';
 
 @Controller('asistenciacurso')
 export class AsistenciacursoController {
   constructor(private readonly asistenciacursoService: AsistenciacursoService) {}
 
   @Post()
-  create(@Body() createAsistenciacursoDto: CreateAsistenciacursoDto) {
+  create(@Body() createAsistenciacursoDto: CreateAsistenciaCursoDto) {
     return this.asistenciacursoService.create(createAsistenciacursoDto);
   }
 
@@ -22,9 +23,15 @@ export class AsistenciacursoController {
     return this.asistenciacursoService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAsistenciacursoDto: UpdateAsistenciacursoDto) {
-    return this.asistenciacursoService.update(+id, updateAsistenciacursoDto);
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateAsistenciacursoDto: UpdateAsistenciacursoDto) {
+  //   return this.asistenciacursoService.update(updateAsistenciacursoDto);
+  // }
+
+  @Put('/update')
+  @Auth( /**  N Permissions */ )
+  updatePut(@Body() updateAsistenciagrupoDto: CreateAsistenciaCursoDto) {
+    return this.asistenciacursoService.update(updateAsistenciagrupoDto);
   }
 
   @Delete(':id')

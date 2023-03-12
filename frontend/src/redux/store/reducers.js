@@ -65,6 +65,7 @@ import { ParametroCalificacionReducer } from '../reducers/nota/parametrocalifica
 import { CalendarioAcademicoReducer } from '../reducers/nota/calendarioacademico.reducer';
 import { AsignarRolReducer } from '../reducers/seguridad/asignarrol.reducer';
 import { AsistenciaGrupoReducer } from '../reducers/nota/asistenciagrupo.reducer';
+import { AsistenciaCursoReducer } from '../reducers/nota/asistenciacurso.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -139,6 +140,7 @@ const RootReducer = combineReducers( {
     ParametroCalificacion: ParametroCalificacionReducer,
     CalendarioAcademico: CalendarioAcademicoReducer,
     AsistenciaGrupo: AsistenciaGrupoReducer,
+    AsistenciaCurso: AsistenciaCursoReducer,
 } );
 
 export default RootReducer;

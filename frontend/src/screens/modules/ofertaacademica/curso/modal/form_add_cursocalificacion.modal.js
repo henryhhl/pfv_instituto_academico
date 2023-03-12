@@ -3,13 +3,13 @@ import React from 'react';
 import toastr from 'toastr';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { CloseOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../../components/card';
 import ModalComponent from '../../../../../components/modal';
 import InputComponent from '../../../../../components/input';
 import ButtonComponent from '../../../../../components/button';
 import { CursoActions } from '../../../../../redux/actions/ofertaacademica/curso.action';
 import ListadoParametroCalificacionModal from '../../../nota/parametrocalificacion/modal/parametrocalificacion_listado.modal';
-import { CloseOutlined } from '@ant-design/icons';
 
 const FormAddCursoCalificacion = ( props ) => {
     const { curso } = props;
@@ -56,11 +56,10 @@ const FormAddCursoCalificacion = ( props ) => {
                     props.onClose();
                     return;
                 }
-                if ( promedioTotal === 100 ) {
-                    toastr.success( 'Parametros registrados.' );
-                    props.onClose();
+                if ( promedioTotal > 100 ) {
+                    toastr.error( 'El total de calificación debe ser igual a 100.' );
                 } else {
-                    toastr.error( 'El total de calificación debe ser igual a100.' );
+                    props.onClose();
                 }
             } }
             footer={null} width={600} centered
@@ -164,11 +163,10 @@ const FormAddCursoCalificacion = ( props ) => {
                                     props.onClose();
                                     return;
                                 }
-                                if ( promedioTotal === 100 ) {
-                                    toastr.success( 'Parametros registrados.' );
-                                    props.onClose();
+                                if ( promedioTotal > 100 ) {
+                                    toastr.error( 'El total de calificación debe ser igual a100.' ); 
                                 } else {
-                                    toastr.error( 'El total de calificación debe ser igual a100.' );
+                                    props.onClose(); 
                                 }
                             } }
                             fullWidth

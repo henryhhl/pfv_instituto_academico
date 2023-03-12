@@ -6,6 +6,7 @@ import { Auth } from '../../auth/decorators/auth.decorator';
 import { UpdateCierreCursoDto } from './dto/update-cierre.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
 import { UpdateAperturaCierreCursoDto } from './dto/update-aperturacierre.dto';
+import { MateriaForDocenteCursoDto } from './dto/materia-docente.dto';
 
 @Controller('curso')
 export class CursoController {
@@ -21,6 +22,12 @@ export class CursoController {
   @Auth( /**  N Permissions */ )
   create(@Body() createCursoDto: CreateCursoDto) {
     return this.cursoService.store(createCursoDto);
+  }
+
+  @Get('/findmateriafordocente')
+  @Auth( /**  N Permissions */ )
+  docentegrupo( @Query() paginationDto: MateriaForDocenteCursoDto ) {
+    return this.cursoService.findAllMateriaForDocente(paginationDto);
   }
 
   @Get('/edit/:idcurso')

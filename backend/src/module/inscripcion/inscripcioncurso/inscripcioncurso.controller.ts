@@ -4,6 +4,7 @@ import { CreateInscripcionCursoDto } from './dto/create-inscripcioncurso.dto';
 import { UpdateInscripcionCursoDto } from './dto/update-inscripcioncurso.dto';
 import { Auth } from '../../auth/decorators/auth.decorator';
 import { InscripcionCursoPaginationDto } from './dto/pagination.dto';
+import { EstudianteForCursoInscripcionCursoDto } from './dto/estudiante-curso.dto';
 
 @Controller('inscripcioncurso')
 export class InscripcionCursoController {
@@ -13,6 +14,12 @@ export class InscripcionCursoController {
   @Auth( /**  N Permissions */ )
   findAll( @Query() paginationDto: InscripcionCursoPaginationDto ) {
     return this.inscripcioncursoService.findAll(paginationDto);
+  }
+
+  @Get('/findestudianteforcurso')
+  @Auth( /**  N Permissions */ )
+  grupopensum( @Query() paginationDto: EstudianteForCursoInscripcionCursoDto ) {
+    return this.inscripcioncursoService.findEstudianteForCurso(paginationDto);
   }
 
   @Post('/store')

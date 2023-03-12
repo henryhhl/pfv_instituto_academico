@@ -408,7 +408,7 @@ const SidebarComponent = (props) => {
                             </Link>
                         </Menu.Item>
                         <Menu.Item className='p-1 pl-2' style={{ lineHeight: 0, height: 35, }}>
-                            <Link to={"/asistenciadecurso/index"} className="d-flex align-items-center" 
+                            <Link to={"/asistenciacurso/index"} className="d-flex align-items-center" 
                                 style={{ color: '#505c66', fontSize: 12, fontWeight: '400', }}
                             >
                                 <i className="ion ion-ios-circle-outline" style={{ color: '#505c66', fontSize: 16, }}></i> Asistencias de Cursos

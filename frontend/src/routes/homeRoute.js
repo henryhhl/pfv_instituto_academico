@@ -240,6 +240,7 @@ import IndexAsistenciaGrupo from '../screens/modules/nota/asistenciagrupo/asiste
 
 import LoginPage from '../screens/auth/login.page';
 import ProfilePage from '../screens/profile/profile.screen';
+import IndexAsistenciaCurso from '../screens/modules/nota/asistencuacurso/asistenciacurso.index';
 
 const HomeRoute = (props) => {
     return (
@@ -482,6 +483,7 @@ const HomeRoute = (props) => {
 
                     <Route index path="/calendarioacademico/index" element={ <IndexCalendarioAcademico { ...props } /> }  />
                     <Route index path="/asistenciagrupo/index" element={ <IndexAsistenciaGrupo { ...props } /> }  />
+                    <Route index path="/asistenciacurso/index" element={ <IndexAsistenciaCurso { ...props } /> }  />
 
                     <Route
                         path='*'
