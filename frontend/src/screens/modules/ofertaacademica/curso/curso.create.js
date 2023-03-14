@@ -3,13 +3,14 @@ import React from 'react';
 import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CloseOutlined } from '@ant-design/icons';
 import CardComponent from '../../../../components/card';
 import PaperComponent from '../../../../components/paper';
 import DatePickerComponent from '../../../../components/date';
-import { ButtonComponent ,InputComponent, TextAreaComponent, SelectComponent } from '../../../../components/components';
-import { EstadoData } from '../../../../data/estado.data';
-import ListadoDocenteModal from '../../persona/docente/modal/docente_listado.modal';
+import { ButtonComponent ,InputComponent, TextAreaComponent } from '../../../../components/components';
+import { existsData } from '../../../../utils/functions';
+import FormHorarioCursoModal from './modal/form_horario.modal';
+import FormAddCursoCalificacion from './modal/form_add_cursocalificacion.modal';
+import FormAddDocenteCursoModal from './modal/form_add_docente.modal';
 import ListadoMateriaModal from '../../parametro/materia/modal/materia_listado.modal';
 import ListadoTurnoModal from '../../estructurainstitucional/turno/modal/turno_listado.modal';
 import ListadoModalidadAcademicaModal from '../../parametro/modalidad/modal/modalidad_academica_listado.modal';
@@ -17,9 +18,6 @@ import ListadoUnidadAcademicaModal from '../../estructuraacademica/unidadacademi
 import ListadoGestionPeriodoModal from '../../estructurainstitucional/gestionperiodo/modal/gestionperiodo_listado.modal';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { CursoActions } from '../../../../redux/actions/ofertaacademica/curso.action';
-import FormHorarioCursoModal from './modal/form_horario.modal';
-import { existsData } from '../../../../utils/functions';
-import FormAddCursoCalificacion from './modal/form_add_cursocalificacion.modal';
 
 function CreateCurso( props ) {
     const { curso } = props;
@@ -31,9 +29,8 @@ function CreateCurso( props ) {
     const [ visibleTurno, setVisibleTurno ] = React.useState(false);
     const [ visibleGestionPeriodo, setVisibleGestionPeriodo ] = React.useState(false);
 
-    const [ visibleDocente, setVisibleDocente ] = React.useState(false);
-    const [ indexDetailsDocente, setIndexDetailsDocente ] = React.useState(false);
     const [ visibleHorario, setVisibleHorario ] = React.useState(false);
+    const [ visibleFormAddDocente, setVisibleFormAddDocente ] = React.useState(false);
     const [ visibleParametroCalificacion, setVisibleParametroCalificacion ] = React.useState(false);
 
     React.useEffect( () => {
@@ -81,36 +78,6 @@ function CreateCurso( props ) {
                     setVisibleModalidadAcademica(false);
                 } }
                 valueSelect={curso?.fkidmodalidadacademica}
-            />
-        );
-    };
-
-    const existDocente = ( iddocente ) => {
-        for (let index = 0; index < curso.arraydocente.length; index++) {
-            const element = curso.arraydocente[index];
-            if ( element.fkiddocente === iddocente ) return true;
-        }
-        return false;
-    };
-
-    const onComponentDocenteDetails = () => {
-        if ( !visibleDocente ) return null;
-        return (
-            <ListadoDocenteModal
-                visible={visibleDocente}
-                onClose={ () => setVisibleDocente(false) }
-                onSelect={ (docente) => {
-                    if ( !existDocente( docente.iddocente ) ) {
-                        let detalle = curso.arraydocente[indexDetailsDocente];
-                        detalle.fkiddocente = docente.iddocente;
-                        detalle.docente = `${docente.nombreprincipal} ${docente.nombreadicional} ${docente.apellidoprimero} ${docente.apellidosegundo}`;
-                        props.onChange(curso);
-                        setVisibleDocente(false);
-                    } else {
-                        toastr.warning( 'Docente ya seleccionado.', '', { closeButton: true, progressBar: true, } );
-                    }
-                } }
-                valueSelect={curso.arraydocente[indexDetailsDocente]?.fkiddocente}
             />
         );
     };
@@ -180,16 +147,26 @@ function CreateCurso( props ) {
         );
     };
 
+    const onComponentFormAddDocente = () => {
+        if ( !visibleFormAddDocente ) return null;
+        return (
+            <FormAddDocenteCursoModal
+                visible={visibleFormAddDocente}
+                onClose={ () => setVisibleFormAddDocente(false) }
+            />
+        );
+    };
+
     return (
         <>
             { onComponentUnidadAcademica() }
             { onComponentModalidadAcademica() }
-            { onComponentDocenteDetails() }
             { onComponentMateria() }
             { onComponentTurno() }
             { onComponentGestionPeriodo() }
             { onComponentHorario() }
             { onComponentFormAddParametroCalificacion() }
+            { onComponentFormAddDocente() }
             <PaperComponent>
                 <CardComponent
                     header={"Nuevo Curso"}
@@ -363,17 +340,14 @@ function CreateCurso( props ) {
                             />
                         </div>
                     </div>
-                    <div className='card p-0 m-0'>
-                        <div className='card-header p-0'>
-                            <h4>Docente</h4>
-                        </div>
-                    </div>
                     <div className="row">
                         <div className="form-group col-12">
                             <ButtonComponent
-                                onClick={props.onAddRowDocente}
+                                onClick={ () => {
+                                    setVisibleFormAddDocente(true);
+                                } }
                             >
-                                Agregar Docente
+                                Asignar Docente
                             </ButtonComponent>
                             <ButtonComponent
                                 onClick={ () => {
@@ -393,82 +367,6 @@ function CreateCurso( props ) {
                             >
                                 Asignar Calificaciones
                             </ButtonComponent>
-                        </div>
-                    </div>
-                    { curso.arraydocente.length === 0 &&
-                        <div className='card p-0 m-0'>
-                            <div className='card-header'>
-                                <h4>Sin Información</h4>
-                            </div>
-                        </div>
-                    }
-                    <div style={{ minWidth: '100%', width: '100%', maxWidth: '100%', maxHeight: 380, overflowY: 'auto', overflowX: 'hidden', }}>
-                        <div className="row">
-                            { curso.arraydocente.map( ( item, key ) => {
-                                return (
-                                    <div className="col-12 col-sm-6 col-md-4 col-lg-4" key={key}>
-                                        <div className="card card-sm position-relative card-success">
-                                            <i className="card-icon text-danger ion ion-ios-paper-outline"
-                                                style={ { position: 'absolute', left: -20, top: -28, } }
-                                            ></i>
-                                            <div className="card-options dropdown">
-                                                <CloseOutlined
-                                                    style={ {
-                                                        padding: 4, borderRadius: 50, background: 'white', 
-                                                        fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
-                                                        position: 'relative', top: -8, left: 8, cursor: 'pointer',
-                                                    } }
-                                                    onClick={() => {
-                                                        props.onDeleteRowDocente(key);
-                                                    } }
-                                                />
-                                            </div>
-                                            <div className="card-body">
-                                                <div className="form-group col-12 pl-1">
-                                                    <InputComponent
-                                                        label={`Docente*`}
-                                                        value={item.docente}
-                                                        onClick={ () => {
-                                                            setIndexDetailsDocente(key);
-                                                            setVisibleDocente(true);
-                                                        } }
-                                                        readOnly
-                                                        style={{ background: 'white', cursor: 'pointer', }}
-                                                        placeholder="SELECCIONAR DOCENTE"
-                                                        error={item.error.fkiddocente}
-                                                        message={item.message.fkiddocente}
-                                                    />
-                                                </div>
-                                                <div className="form-group col-12 pl-1">
-                                                    <TextAreaComponent
-                                                        label="Contenido"
-                                                        value={item.contenido}
-                                                        onChange={ (value) => {
-                                                            item.contenido = value;
-                                                            props.onChange(curso);
-                                                        } }
-                                                        rows={2}
-                                                        readOnly={ (item.fkiddocente === null) }
-                                                    />
-                                                </div>
-                                                <div className="form-group col-12 pl-1">
-                                                    <SelectComponent 
-                                                        data={EstadoData}
-                                                        label={"Estado"}
-                                                        value={item.estado}
-                                                        onChange={ (value) => {
-                                                            item.estado = value;
-                                                            props.onChange(curso);
-                                                        } }
-                                                        disabledDefault={true}
-                                                        disabled={ (item.fkiddocente === null) }
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            } ) }
                         </div>
                     </div>
                     <div className="row">

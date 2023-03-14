@@ -9,6 +9,7 @@ import { Functions } from '../../../../utils/functions';
 import { AuthActions } from '../../../../redux/actions/auth/auth.action';
 import { CursoActions } from '../../../../redux/actions/ofertaacademica/curso.action';
 import FormHorarioCursoModal from './modal/form_horario.modal';
+import FormAddDocenteCursoModal from './modal/form_add_docente.modal';
 import FormAddCursoCalificacion from './modal/form_add_cursocalificacion.modal';
 
 function ShowCurso( props ) {
@@ -17,6 +18,7 @@ function ShowCurso( props ) {
     const params = useParams();
     const [ visibleHorario, setVisibleHorario ] = React.useState(false);
     const [ visibleParametroCalificacion, setVisibleParametroCalificacion ] = React.useState(false);
+    const [ visibleDocente, setVisibleDocente ] = React.useState(false);
 
     React.useEffect( () => {
         props.onLimpiar();
@@ -59,10 +61,22 @@ function ShowCurso( props ) {
         );
     };
 
+    const onComponentDocente = () => {
+        if ( !visibleDocente ) return null;
+        return (
+            <FormAddDocenteCursoModal
+                visible={visibleDocente}
+                onClose={ () => setVisibleDocente(false) }
+                disabled={true}
+            />
+        );
+    };
+
     return (
         <>
             { onComponentHorario() }
             { onComponentParametroCalificacion() }
+            { onComponentDocente() }
             <PaperComponent>
                 <CardComponent
                     header={"Detalle Curso"}
@@ -194,6 +208,13 @@ function ShowCurso( props ) {
                     </div>
                     <div className="row">
                         <div className="form-group col-12">
+                            <ButtonComponent
+                                onClick={ () => {
+                                    setVisibleDocente(true);
+                                } }
+                            >
+                                Visualizar Docente
+                            </ButtonComponent>
                             <ButtonComponent
                                 onClick={ () => {
                                     setVisibleHorario( true );

@@ -154,6 +154,8 @@ const setFKIDTurno = (curso, turno) => {
         curso.descripcion = `${curso.materia} - Turno ${turno.descripcion}`;
         curso.error.fkidturno = false;
         curso.message.fkidturno = "";
+        curso.message.descripcion = "";
+        curso.error.descripcion = false;
         dispatch( onChange(curso) );
     };
 };
@@ -165,6 +167,8 @@ const setFKIDMateria = (curso, materia) => {
         curso.descripcion = `${materia.nombrelargo} - ${curso.turno}`;
         curso.error.fkidmateria = false;
         curso.message.fkidmateria = "";
+        curso.message.descripcion = "";
+        curso.error.descripcion = false;
         dispatch( onChange(curso) );
     };
 };
@@ -554,19 +558,43 @@ function onValidate( data ) {
         data.message.estado = "Campo requerido.";
         bandera = false;
     }
-    if ( data.arraydocente.length > 0 ) {
-        if ( data.arraydocente[0].fkiddocente === null ) {
-            data.arraydocente[0].error.fkiddocente   = true;
-            data.arraydocente[0].message.fkiddocente = "Campo requerido.";
-            bandera = false;
+    if ( data.arraydocente.length === 0 ) {
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos y asignar un docente requerido.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+        return false;
+    }
+    let totaldocente = 0;
+    for (let index = 0; index < data.arraydocente.length; index++) {
+        const element = data.arraydocente[index];
+        if ( element.fkiddocente !== null ) {
+            totaldocente += 1;
         }
+    }
+    if ( totaldocente === 0 ) {
+        data.arraydocente[0].error.fkiddocente   = true;
+        data.arraydocente[0].message.fkiddocente = "Campo requerido.";
+        Swal.fire( {
+            position: 'top-end',
+            icon: 'warning',
+            title: "No se pudo realizar la Funcionalidad",
+            text: "Favor llenar los campos requeridos y asignar un docente requerido.",
+            showConfirmButton: false,
+            timer: 3000,
+        } );
+        return false;
     }
     if ( !existsData( data.fkidaula ) ) {
         Swal.fire( {
             position: 'top-end',
             icon: 'warning',
             title: "No se pudo realizar la Funcionalidad",
-            text: "Favor llenar los campos requeridos y asignar el horario.",
+            text: "Favor llenar los campos requeridos y asignar horario.",
             showConfirmButton: false,
             timer: 3000,
         } );
@@ -611,17 +639,6 @@ function onValidate( data ) {
             timer: 3000,
         } );
         return bandera;
-    }
-    if ( data.arraydocente.length === 0 ) {
-        Swal.fire( {
-            position: 'top-end',
-            icon: 'warning',
-            title: "No se pudo realizar la Funcionalidad",
-            text: "Al menos debe tener un docente rellenado.",
-            showConfirmButton: false,
-            timer: 3000,
-        } );
-        bandera = false;
     }
     return bandera;
 };
