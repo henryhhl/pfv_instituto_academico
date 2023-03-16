@@ -20,7 +20,7 @@ export class AsistenciagrupoController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.asistenciagrupoService.findOne(+id);
+    return this.asistenciagrupoService.findOne(id);
   }
 
   @Patch(':id')

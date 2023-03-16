@@ -320,6 +320,7 @@ export class InscripcionGrupoService {
 
       while (fechaInicio <= fechaFinal) {
         let dayinit = this.convertStringforDate(fechaInicio).getDate();
+
         let lastday = this.getLastDay(this.convertStringforDate(fechaInicio));
 
         const [year, month] = fechaInicio.split('-');
@@ -330,9 +331,11 @@ export class InscripcionGrupoService {
         }
 
         for (let index = dayinit; index <= lastday; index++) {
-          const weekDay = this.getWeekDay(parseInt(year), parseInt(month), index);
+          const weekDay = this.getWeekDay(parseInt(year), parseInt(month) - 1, index);
+
           for (let key = 0; key < grupoDetalle.arrayGrupoMateriaDiaDetalle.length; key++) {
             const element = grupoDetalle.arrayGrupoMateriaDiaDetalle[key];
+
             if ( element.arrayGrupoMateriaDiaHorario.length > 0 ) {
               const weekDayCurrent = this.getWeekDayByCode(element.dia.sigla);
               if ( weekDay === weekDayCurrent ) {
@@ -466,6 +469,14 @@ export class InscripcionGrupoService {
           message: 'Inscripción Grupo no existe.',
         };
       }
+
+      const listEstudianteInscrito = await this.asistenciaGrupoService.getEstudianteInscrito( idinscripciongrupo );
+
+      for (let index = 0; index < listEstudianteInscrito.length; index++) {
+        const element = listEstudianteInscrito[index];
+        await this.asistenciaGrupoService.delete( element.idasistenciagrupo );
+      }
+      
       const inscripcionGrupoDelete = await this.inscripcionGrupoRepository.remove( inscripcionGrupo );
       return {
         resp: 1, error: false,

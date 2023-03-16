@@ -382,11 +382,18 @@ export class InscripcionCursoService {
           message: 'Inscripción Curso no existe.',
         };
       }
-      await this.inscripcionCursoRepository.remove( inscripcionCurso );
+
+      const listEstudianteInscrito = await this.asistenciaCursoService.getEstudianteInscrito( idinscripcioncurso );
+      for (let index = 0; index < listEstudianteInscrito.length; index++) {
+        const element = listEstudianteInscrito[index];
+        await this.asistenciaCursoService.delete( element.idasistenciacurso );
+      }
+
+      const inscripcionCursoDelete = await this.inscripcionCursoRepository.remove( inscripcionCurso );
       return {
         resp: 1, error: false,
         message: 'Inscripción Curso eliminado éxitosamente.',
-        inscripcionCurso: inscripcionCurso,
+        inscripcionCurso: inscripcionCursoDelete,
       };
     } catch (error) {
       this.logger.error(error);

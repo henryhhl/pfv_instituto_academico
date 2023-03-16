@@ -1,5 +1,6 @@
 
 import React from 'react';
+import toastr from 'toastr';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CardComponent from '../../../../components/card';
@@ -154,6 +155,16 @@ function CreateInscripcionGrupo( props ) {
                 } }
                 valueSelect={materia?.idmateria}
             />
+            // <ListadoMateriaForGrupoModal 
+            //     visible={visibleMateriaSearch}
+            //     onClose={ () => setVisibleMateriaSearch(false) }
+            //     onSelect={ (materiaGrupo) => {
+            //         setMateria(materiaGrupo.materia);
+            //         setVisibleMateriaSearch(false);
+            //     } }
+            //     fkidgrupo={grupo?.idgrupo}
+            //     valueSelect={materia?.idmateria}
+            // />
         );
     };
 
@@ -231,7 +242,11 @@ function CreateInscripcionGrupo( props ) {
                                         label="Materia"
                                         value={materia?.nombrelargo}
                                         onClick={ () => {
-                                            setVisibleMateriaSearch(true);
+                                            if ( grupo ) {
+                                                setVisibleMateriaSearch(true);
+                                            } else {
+                                                toastr.warning('Campo grupo debe ser seleccionado.')
+                                            }
                                         } }
                                         readOnly
                                         style={{ background: 'white', cursor: 'pointer', }}

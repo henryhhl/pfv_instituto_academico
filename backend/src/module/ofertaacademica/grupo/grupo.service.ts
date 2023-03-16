@@ -154,13 +154,15 @@ export class GrupoService {
 
   async findAllMateriaForGrupo( paginationDto: PaginationGrupoPensumDto ) {
     try {
+      const { fkidpensum = null, fkidgrupo = null, } = paginationDto;
       let listGrupo = [];
       let totalPagination = 0;
 
-      const grupo = await this.findOne( paginationDto.fkidgrupo );
-      const pensum = await this.pensumService.findOne(paginationDto.fkidpensum);
+      const grupo = await this.findOne( fkidgrupo );
+      const pensum = await this.pensumService.findOne(fkidpensum);
       
       if ( pensum !== null && grupo !== null ) {
+        console.log('pensum !== null && grupo !== null');
         [listGrupo, totalPagination] = await this.grupoDetalleRepository.findAndCount( {
           select: {
             materia: { idmateria: true, codigo: true, sigla: true, nombrelargo: true, },
@@ -188,6 +190,25 @@ export class GrupoService {
           ],
           order: { created_at: "ASC", },
         } );
+      } else {
+        if ( pensum === null && grupo !== null ) {
+          console.log('pensum === null && grupo !== null');
+          [listGrupo, totalPagination] = await this.grupoDetalleRepository.findAndCount( {
+            select: {
+              materia: { idmateria: true, codigo: true, sigla: true, nombrelargo: true, },
+              created_at: false, updated_at: false, deleted_at: false, isdelete: false, concurrencia: false,
+            },
+            relations: { materia: true, },
+            where: [
+              { 
+                grupo: {
+                  idgrupo: paginationDto.fkidgrupo,
+                }, 
+              },
+            ],
+            order: { created_at: "ASC", },
+          } );
+        }
       }
       return {
         resp: 1, error: false,

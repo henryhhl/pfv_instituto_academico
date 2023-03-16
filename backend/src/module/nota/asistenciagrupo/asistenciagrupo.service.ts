@@ -18,7 +18,7 @@ export class AsistenciagrupoService {
     return 'This action adds a new asistenciagrupo';
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all asistenciagrupo`;
   }
 
@@ -75,8 +75,15 @@ export class AsistenciagrupoService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} asistenciagrupo`;
+  async findOne(idasistenciagrupo: string) {
+    try {
+      const asistenciaGrupo = await this.asistenciaGrupoRepository.findOne( {
+        where: { idasistenciagrupo: idasistenciagrupo, },
+      } );
+      return asistenciaGrupo;
+    } catch (error) {
+      return null;
+    }
   }
 
   async update(updateAsistenciagrupoDto: CreateAsistenciaGrupoDto) {
@@ -114,6 +121,39 @@ export class AsistenciagrupoService {
         resp: -1, error: true,
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
+    }
+  }
+
+  async delete(idasistenciagrupo: string) {
+    try {
+      let asistenciaGrupo = await this.findOne(idasistenciagrupo);
+      if ( asistenciaGrupo === null ) {
+        return false;
+      }
+      const asistenciaGrupoDelete = await this.asistenciaGrupoRepository.remove( asistenciaGrupo );
+      if ( asistenciaGrupoDelete ) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      this.logger.error(error);
+      return false;
+    }
+  }
+
+  async getEstudianteInscrito( fkidinscripciongrupo: string ) {
+    try {
+      if ( fkidinscripciongrupo === null ) return [];
+      return await this.asistenciaGrupoRepository.find( {
+        where: {
+          inscripcionGrupo: {
+            idinscripciongrupo: fkidinscripciongrupo,
+          },
+        },
+        order: { created_at: "DESC", },
+      } )
+    } catch (error) {
+      return [];
     }
   }
 

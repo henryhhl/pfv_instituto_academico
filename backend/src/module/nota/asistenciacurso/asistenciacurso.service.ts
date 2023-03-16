@@ -64,8 +64,16 @@ export class AsistenciacursoService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} asistenciacurso`;
+  async findOne(idasistenciacurso: string) {
+    try {
+      if ( idasistenciacurso === null ) return null;
+      const asistenciaCurso = await this.asistenciaCursoRepository.findOne( {
+        where: { idasistenciacurso: idasistenciacurso, },
+      } );
+      return asistenciaCurso;
+    } catch (error) {
+      return null;
+    }
   }
 
   async update(request: CreateAsistenciaCursoDto) {
@@ -103,6 +111,39 @@ export class AsistenciacursoService {
         resp: -1, error: true,
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
+    }
+  }
+
+  async delete(idasistenciacurso: string) {
+    try {
+      let asistenciaCurso = await this.findOne(idasistenciacurso);
+      if ( asistenciaCurso === null ) {
+        return false;
+      }
+      const asistenciaCursoDelete = await this.asistenciaCursoRepository.remove( asistenciaCurso );
+      if ( asistenciaCursoDelete ) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      this.logger.error(error);
+      return false;
+    }
+  }
+
+  async getEstudianteInscrito( fkidinscripcioncurso: string ) {
+    try {
+      if ( fkidinscripcioncurso === null ) return [];
+      return await this.asistenciaCursoRepository.find( {
+        where: {
+          inscripcionCurso: {
+            idinscripcioncurso: fkidinscripcioncurso,
+          },
+        },
+        order: { created_at: "DESC", },
+      } )
+    } catch (error) {
+      return [];
     }
   }
 

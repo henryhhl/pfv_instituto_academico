@@ -181,20 +181,24 @@ const setFkIDGrupoMateria = (asistenciaGrupo, grupoMateria) => {
 
 const setNextMounth = (asistenciaGrupo) => {
     return ( dispatch ) => {
-        const dateInit = `${asistenciaGrupo.yearselected}-${asistenciaGrupo.monthselected}`;
-        const dateFinish = `${asistenciaGrupo.yearfinish}-${asistenciaGrupo.monthfinish}`;
+        const dateInit = `${asistenciaGrupo.yearselected}-${parseInt(asistenciaGrupo.monthselected)<10?`0${asistenciaGrupo.monthselected}`:asistenciaGrupo.monthselected}`;
+        const dateFinish = `${asistenciaGrupo.yearfinish}-${parseInt(asistenciaGrupo.monthfinish)<10?`0${asistenciaGrupo.monthfinish}`:asistenciaGrupo.monthfinish}`;
+        
         if ( dateInit < dateFinish ) {
             const dateNext = new Date(parseInt(asistenciaGrupo.yearselected), parseInt(asistenciaGrupo.monthselected), 1);
+
+            asistenciaGrupo.dayinit = 1;
             asistenciaGrupo.yearselected = dateNext.getFullYear();
             asistenciaGrupo.monthselected = dateNext.getMonth() + 1;
 
-            const dateCurrent = `${dateNext.getFullYear()}-${dateNext.getMonth() + 1}`;
+            const dateCurrent = `${asistenciaGrupo.yearselected}-${asistenciaGrupo.monthselected}`;
 
             if ( dateFinish === dateCurrent ) {
                 asistenciaGrupo.lastday = asistenciaGrupo.dayfinish;
             } else {
                 asistenciaGrupo.lastday = getLastDay(dateNext);
             }
+            
             dispatch( onChange(asistenciaGrupo) );
             dispatch( getAllStudentSignedUp(asistenciaGrupo) );
         }
@@ -206,10 +210,17 @@ const setBackMounth = (asistenciaGrupo) => {
         const dateFinish = `${asistenciaGrupo.yearselected}-${asistenciaGrupo.monthselected}`;
         const dateInit = `${asistenciaGrupo.yearinit}-${asistenciaGrupo.monthinit}`;
         if ( dateFinish > dateInit ) {
+
             const dateNext = new Date(parseInt(asistenciaGrupo.yearselected), parseInt(asistenciaGrupo.monthselected) - 2, 1);
+            
             asistenciaGrupo.yearselected = dateNext.getFullYear();
             asistenciaGrupo.monthselected = dateNext.getMonth() + 1;
             asistenciaGrupo.lastday = getLastDay(dateNext);
+
+            const dateCurrent = `${asistenciaGrupo.yearselected}-${asistenciaGrupo.monthselected}`;
+            if ( dateInit === dateCurrent ) {
+                asistenciaGrupo.dayinit = convertStringforDate(asistenciaGrupo.fechainicio).getDate();
+            }
             dispatch( onChange(asistenciaGrupo) );
             dispatch( getAllStudentSignedUp(asistenciaGrupo) );
         }

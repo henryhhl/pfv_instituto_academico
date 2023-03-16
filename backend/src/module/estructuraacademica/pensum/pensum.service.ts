@@ -142,6 +142,9 @@ export class PensumService {
 
   async findOne( idpensum: string ) {
     try {
+      if ( idpensum === null ) {
+        return null;
+      }
       const pensum = await this.pensumRepository.findOneBy( {
         idpensum: idpensum,
       } );

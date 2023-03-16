@@ -75,7 +75,7 @@ export const getLastDay = (date = new Date()) => {
 };
 
 export const getWeekDay = (year, mounth, day) => {
-    return new Date(year, mounth, day).getDay();
+    return new Date(year, mounth - 1, day).getDay();
 };
 
 export const getTextMonthForIndex = (index) => {

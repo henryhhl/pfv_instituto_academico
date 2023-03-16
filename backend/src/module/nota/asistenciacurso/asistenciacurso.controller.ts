@@ -20,7 +20,7 @@ export class AsistenciacursoController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.asistenciacursoService.findOne(+id);
+    return this.asistenciacursoService.findOne(id);
   }
 
   // @Patch(':id')

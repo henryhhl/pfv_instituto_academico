@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import CardComponent from '../../../../components/card';
 import InputComponent from '../../../../components/input';
 import PaperComponent from '../../../../components/paper';
@@ -101,10 +102,16 @@ const IndexAsistenciaCurso = ( props ) => {
 
   const onComponentButtonAsistencia = () => {
     if ( asistenciaCurso.arrayEstudianteInscrito.length === 0 ) return null;
-    const dateStringFinish = convertDMYForYMD(asistenciaCurso.fechafinal);
-    let dateInit = convertStringforDate(asistenciaCurso.fechainicio);
     let array = [];
-    for (let index = convertDateToString(dateInit); index <= dateStringFinish; index = dateInit.setDate( dateInit.getDate() + 1 )) {
+    const dateStringFinish = convertDMYForYMD(asistenciaCurso.fechafinal);
+
+    let momentInit = moment(convertDMYForYMD(asistenciaCurso.fechainicio));
+    let momentFinish = moment(convertDMYForYMD(asistenciaCurso.fechafinal));
+    
+    let diffDays = momentFinish.diff(momentInit, 'days');
+
+    // for (let index = convertDateToString(dateInit); index <= dateStringFinish; index = dateInit.setDate( dateInit.getDate() + 1 )) {
+    for (let index = 0; index <= diffDays; index++) {
       array.push(
         <div style={{ width: 160, display: 'inline-block', }} key={index}>
           <div className='row p-2'>
@@ -112,7 +119,10 @@ const IndexAsistenciaCurso = ( props ) => {
               <ButtonComponent
                 fullWidth
                 onClick={ () => {
-                  asistenciaCurso.feachaasistenciaseleted = convertYMDForDMY(index);
+                  let dateInit = convertStringforDate(asistenciaCurso.fechainicio);
+                  dateInit.setDate( dateInit.getDate() + index );
+                  console.log(convertYMDForDMY(convertDateToString(dateInit)))
+                  asistenciaCurso.feachaasistenciaseleted = convertYMDForDMY(convertDateToString(dateInit));
                   props.onUpdateAsistencia(asistenciaCurso);
                 } }
               >
