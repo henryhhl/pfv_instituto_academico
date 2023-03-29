@@ -13,7 +13,7 @@ export default function EmptyComponent( props ) {
         <div className='card p-0 m-0'>
             <div className='card-header'>
                 <h4 className='text-info' style={props.style}>
-                    Sin información incorporados <FrownOutlined style={{ fontSize: 24, position: 'relative', top: 4, }} />
+                    {props.text} <FrownOutlined style={{ fontSize: 24, position: 'relative', top: 4, }} />
                 </h4>
             </div>
         </div>
@@ -23,9 +23,11 @@ export default function EmptyComponent( props ) {
 EmptyComponent.propTypes = {
     style: PropTypes.object,
     data: PropTypes.array,
+    text: PropTypes.string,
 };
 
 EmptyComponent.defaultProps = {
     style: {},
     data: [],
+    text: 'Sin información incorporados',
 };

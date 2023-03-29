@@ -236,11 +236,11 @@ import ShowParametroCalificacion from '../screens/modules/nota/parametrocalifica
 
 import IndexCalendarioAcademico from '../screens/modules/nota/calendarioacademico/calendarioacademico.index';
 import IndexAsistenciaGrupo from '../screens/modules/nota/asistenciagrupo/asistenciagrupo.index';
-
+import IndexAsistenciaCurso from '../screens/modules/nota/asistencuacurso/asistenciacurso.index';
 
 import LoginPage from '../screens/auth/login.page';
 import ProfilePage from '../screens/profile/profile.screen';
-import IndexAsistenciaCurso from '../screens/modules/nota/asistencuacurso/asistenciacurso.index';
+import IndexNotaCurso from '../screens/modules/nota/notacurso/notacurso.index';
 
 const HomeRoute = (props) => {
     return (
@@ -484,6 +484,7 @@ const HomeRoute = (props) => {
                     <Route index path="/calendarioacademico/index" element={ <IndexCalendarioAcademico { ...props } /> }  />
                     <Route index path="/asistenciagrupo/index" element={ <IndexAsistenciaGrupo { ...props } /> }  />
                     <Route index path="/asistenciacurso/index" element={ <IndexAsistenciaCurso { ...props } /> }  />
+                    <Route index path="/notacurso/index" element={ <IndexNotaCurso { ...props } /> }  />
 
                     <Route
                         path='*'

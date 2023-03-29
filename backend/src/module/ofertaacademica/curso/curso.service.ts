@@ -270,7 +270,12 @@ export class CursoService {
           arrayCursoParametroCalificacion: {
             parametroCalificacion: true,
           },
-        }
+        },
+        order: {
+          arrayCursoParametroCalificacion: {
+            created_at: 'ASC',
+          },
+        },
       } );
       return curso;
     } catch (error) {

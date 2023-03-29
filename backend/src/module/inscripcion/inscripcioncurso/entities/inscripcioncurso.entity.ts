@@ -8,6 +8,7 @@ import { GestionPeriodo } from '../../../estructurainstitucional/gestionperiodo/
 import { Turno } from '../../../estructurainstitucional/turno/entities/turno.entity';
 import { ModalidadAcademica } from '../../../parametro/modalidadacademica/entities/modalidadacademica.entity';
 import { AsistenciaCurso } from '../../../nota/asistenciacurso/entities/asistenciacurso.entity';
+import { NotaCurso } from '../../../nota/notacurso/entities/notacurso.entity';
 
 @Entity('inscripcioncurso')
 export class InscripcionCurso {
@@ -15,6 +16,11 @@ export class InscripcionCurso {
     @PrimaryGeneratedColumn('uuid')
     idinscripcioncurso: string;
 
+    @OneToMany(
+        () => NotaCurso,
+        ( item ) => item.inscripcionCurso,
+    )
+    arrayNotaCurso?: NotaCurso[];
 
     @OneToMany(
         () => AsistenciaCurso,

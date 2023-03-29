@@ -1,12 +1,21 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { GrupoMateriaCalificacionDetalle } from 'src/module/ofertaacademica/grupo/entities/grupomateriacalificacion.entity';
 import { CursoParametroCalificacion } from '../../../ofertaacademica/curso/entities/cursoparametrocalificacion.entity';
+import { NotaCurso } from '../../notacurso/entities/notacurso.entity';
 
 @Entity('parametrocalificacion')
 export class ParametroCalificacion {
 
     @PrimaryGeneratedColumn( 'uuid' )
     idparametrocalificacion: string;
+
+
+    @OneToMany(
+        () => NotaCurso,
+        ( item ) => item.parametroCalificacion,
+    )
+    arrayNotaCurso?: NotaCurso[];
+
 
     @OneToMany(
         () => GrupoMateriaCalificacionDetalle,

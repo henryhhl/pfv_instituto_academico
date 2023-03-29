@@ -120,7 +120,33 @@ const setFkIDCurso = (asistenciaCurso, curso) => {
 const setFkIDDocente = (asistenciaCurso, docente) => {
     return ( dispatch ) => {
         asistenciaCurso.fkiddocente = docente.iddocente;
-        asistenciaCurso.docente = `${docente.apellidoprimero} ${docente.apellidosegundo} ${docente.nombreprincipal} ${docente.nombreadicional} `;
+        asistenciaCurso.docente = `${docente.apellidoprimero} ${docente.apellidosegundo} ${docente.nombreprincipal} ${docente.nombreadicional}`;
+        asistenciaCurso.arrayEstudianteInscrito = [];
+
+        asistenciaCurso.fkidcurso = '';
+        asistenciaCurso.siglacurso = '';
+        asistenciaCurso.curso = '';
+
+        asistenciaCurso.fechainicio = '';
+        asistenciaCurso.fechafinal = '';
+
+        asistenciaCurso.fkidgestionperiodo = '';
+        asistenciaCurso.gestionperiodo = '';
+
+        asistenciaCurso.fkidmodalidadacademica = '';
+        asistenciaCurso.modalidadacademica = '';
+
+        asistenciaCurso.fkidmateria = '';
+        asistenciaCurso.materia = '';
+
+        asistenciaCurso.fkidturno = '';
+        asistenciaCurso.turno = '';
+
+        asistenciaCurso.fkidunidadacademica = '';
+        asistenciaCurso.unidadacademica = '';
+
+        asistenciaCurso.fkidunidadadministrativa = '';
+        asistenciaCurso.unidadadministrativa = '';
 
         dispatch( onChange(asistenciaCurso) );
         dispatch( getAllMateriaForDocente(asistenciaCurso) );

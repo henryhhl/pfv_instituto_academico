@@ -433,6 +433,8 @@ const apiServices = {
 
     apinotaasistenciagrupo_update: `${module.nota}/asistenciagrupo/update`,
     apinotaasistenciacurso_update: `${module.nota}/asistenciacurso/update`,
+
+    apinotanotacurso_update: `${module.nota}/notacurso/update`,
 };
 
 export default apiServices;

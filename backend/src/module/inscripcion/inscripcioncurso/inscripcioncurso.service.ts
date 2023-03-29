@@ -5,7 +5,9 @@ import { InscripcionCurso } from './entities/inscripcioncurso.entity';
 import { InscripcionCursoPaginationDto } from './dto/pagination.dto';
 import { CreateInscripcionCursoDto } from './dto/create-inscripcioncurso.dto';
 import { UpdateInscripcionCursoDto } from './dto/update-inscripcioncurso.dto';
+import { EstudianteForCursoInscripcionCursoDto } from './dto/estudiante-curso.dto';
 import { CursoService } from '../../ofertaacademica/curso/curso.service';
+import { NotacursoService } from '../../nota/notacurso/notacurso.service';
 import { EstudianteService } from '../../persona/estudiante/estudiante.service';
 import { TurnoService } from '../../estructurainstitucional/turno/turno.service';
 import { UnidadNegocioService } from '../../parametro/unidadnegocio/unidadnegocio.service';
@@ -14,7 +16,6 @@ import { ModalidadAcademicaService } from '../../parametro/modalidadacademica/mo
 import { UnidadacademicaService } from '../../estructuraacademica/unidadacademica/unidadacademica.service';
 import { GestionPeriodoService } from '../../estructurainstitucional/gestionperiodo/gestionperiodo.service';
 import { UnidadAdministrativaService } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.service';
-import { EstudianteForCursoInscripcionCursoDto } from './dto/estudiante-curso.dto';
 
 @Injectable()
 export class InscripcionCursoService {
@@ -33,6 +34,7 @@ export class InscripcionCursoService {
     private readonly turnoService: TurnoService,
     private readonly cursoService: CursoService,
     private readonly asistenciaCursoService: AsistenciacursoService,
+    private readonly notaCursoService: NotacursoService,
   ) {}
 
   async findAll( paginationDto: InscripcionCursoPaginationDto ) {
@@ -97,12 +99,18 @@ export class InscripcionCursoService {
           relations: {
             estudiante: true, 
             arrayAsistenciaCurso: true,
+            arrayNotaCurso: {
+              parametroCalificacion: true,
+            },
           },
           order: {  
             estudiante: {
               apellidoprimero: 'ASC',
             },
             arrayAsistenciaCurso: {
+              created_at: 'ASC',
+            },
+            arrayNotaCurso: {
               created_at: 'ASC',
             },
           },
@@ -252,6 +260,15 @@ export class InscripcionCursoService {
         dateInit.setDate( dateInit.getDate() + 1 );
       }
 
+      for (let index = 0; index < curso.arrayCursoParametroCalificacion.length; index++) {
+        const detalle = curso.arrayCursoParametroCalificacion[index];
+        await this.notaCursoService.storeNotaDefaultForInscripcionCurso(
+          inscripcionCursoCreate.idinscripcioncurso,
+          detalle.parametroCalificacion.idparametrocalificacion,
+          detalle.valorporcentaje,
+        );
+      }
+
       return {
         resp: 1, error: false,
         message: 'Inscripción Curso registrado éxitosamente.',
@@ -383,10 +400,16 @@ export class InscripcionCursoService {
         };
       }
 
-      const listEstudianteInscrito = await this.asistenciaCursoService.getEstudianteInscrito( idinscripcioncurso );
-      for (let index = 0; index < listEstudianteInscrito.length; index++) {
-        const element = listEstudianteInscrito[index];
+      const listAsistenciaEstudianteInscrito = await this.asistenciaCursoService.getEstudianteInscrito( idinscripcioncurso );
+      for (let index = 0; index < listAsistenciaEstudianteInscrito.length; index++) {
+        const element = listAsistenciaEstudianteInscrito[index];
         await this.asistenciaCursoService.delete( element.idasistenciacurso );
+      }
+
+      const listNotasEstudianteInscrito = await this.notaCursoService.getEstudianteInscrito( idinscripcioncurso );
+      for (let index = 0; index < listNotasEstudianteInscrito.length; index++) {
+        const element = listNotasEstudianteInscrito[index];
+        await this.notaCursoService.delete( element.idnotacurso );
       }
 
       const inscripcionCursoDelete = await this.inscripcionCursoRepository.remove( inscripcionCurso );

@@ -14,6 +14,7 @@ import { existsData } from '../../../../utils/functions';
 import { convertDateToDMYString, convertDateToString, convertDMYForYMD, convertStringforDate, convertYMDForDMY, getTextDayforIndex, getWeekDay } from '../../../../utils/date';
 import RadioComponent from '../../../../components/radio';
 import ButtonComponent from '../../../../components/button';
+import EmptyComponent from '../../../../components/empty';
 
 const IndexAsistenciaCurso = ( props ) => {
   const navigate = useNavigate();
@@ -205,106 +206,118 @@ const IndexAsistenciaCurso = ( props ) => {
                   valueSelect={asistenciaCurso.fkidcurso}
                   isCheckbox={true}
                 />
+                { existsData(asistenciaCurso.fkiddocente) &&
+                  <EmptyComponent 
+                    data={asistenciaCurso.arrayMateria} 
+                    text='Sin cursos registrados'
+                  />
+                }
               </div>
             </div>
             <div className="row card card-info pt-1 pb-4">
               <div className="card-header pt-0 pb-0">
                 <h4> Lista de Asistencia de estudiantes </h4>
               </div>
-              <div className='w-100 d-block p-2' 
-                style={ { 
-                  overflowY: 'hidden', overflowX: 'auto', whiteSpace: 'nowrap',
-                } }
-              >
-                <div>
-                  <div style={{ width: 120, display: 'inline-block', }}>
-                    <div className='card card-primary mr-2 mb-1'>
-                      <div className="card-header pt-0 pb-0">
-                        <h4> &nbsp; </h4>
-                      </div>
-                      <div className="card-header pt-0 pb-0">
-                        <h4> Registro </h4>
-                      </div>
-                    </div>
-                  </div>
-                  <div style={{ width: 200, display: 'inline-block', }}>
-                    <div className='card card-primary mr-2 mb-1'>
-                      <div className="card-header pt-0 pb-0">
-                        <h4> &nbsp; </h4>
-                      </div>
-                      <div className="card-header pt-0 pb-0">
-                        <h4> Estudiante </h4>
+              { existsData(asistenciaCurso.fkidcurso) &&
+                <div className='w-100 d-block p-2' 
+                  style={ { 
+                    overflowY: 'hidden', overflowX: 'auto', whiteSpace: 'nowrap',
+                  } }
+                >
+                  <div>
+                    <div style={{ width: 120, display: 'inline-block', }}>
+                      <div className='card card-primary mr-2 mb-1'>
+                        <div className="card-header pt-0 pb-0">
+                          <h4> &nbsp; </h4>
+                        </div>
+                        <div className="card-header pt-0 pb-0">
+                          <h4> Registro </h4>
+                        </div>
                       </div>
                     </div>
+                    <div style={{ width: 200, display: 'inline-block', }}>
+                      <div className='card card-primary mr-2 mb-1'>
+                        <div className="card-header pt-0 pb-0">
+                          <h4> &nbsp; </h4>
+                        </div>
+                        <div className="card-header pt-0 pb-0">
+                          <h4> Estudiante </h4>
+                        </div>
+                      </div>
+                    </div>
+                    { existsData( asistenciaCurso.fkidcurso ) && onComponentDate() }
                   </div>
-                  { existsData( asistenciaCurso.fkidcurso ) && onComponentDate() }
-                </div>
-                { asistenciaCurso.arrayEstudianteInscrito.map( (item, key) => {
-                  return (
-                    <div key={key}>
-                      <div style={{ width: 120, display: 'inline-block', fontSize: 9, }} className='p-2'>
-                        { item.estudiante.numeroregistro }
-                      </div>
-                      <div style={{ width: 200, display: 'inline-block', fontSize: 9, }} className='p-2'>
-                        { `${item.estudiante.apellidoprimero} ${item.estudiante.apellidosegundo} ${item.estudiante.nombreprincipal} ${item.estudiante.nombreadicional}` }
-                      </div>
-                      { item.arrayAsistenciaCurso.map( (data, index) => {
-                        return (
-                          <div style={{ width: 160, display: 'inline-block', }} key={index}>
-                            <div className='d-flex'>
-                              <div style={{ width: 40, height: 20, }}>
-                                <RadioComponent 
-                                  color="success"
-                                  checked={data.asistencia === 'A'}
-                                  onChange={ () => {
-                                    data.asistencia = 'A';
-                                    props.onChange(asistenciaCurso);
-                                  } }
-                                />
-                              </div>
-                              <div style={{ width: 40, height: 20, }}>
-                                <RadioComponent 
-                                  color="warning"
-                                  checked={data.asistencia === 'L'}
-                                  onChange={ () => {
-                                    data.asistencia = 'L';
-                                    props.onChange(asistenciaCurso);
-                                  } }
-                                />
-                              </div>
-                              <div style={{ width: 40, height: 20, }}>
-                                <RadioComponent 
-                                  color="error"
-                                  checked={data.asistencia === 'F'}
-                                  onChange={ () => {
-                                    data.asistencia = 'F';
-                                    props.onChange(asistenciaCurso);
-                                  } }
-                                />
-                              </div>
-                              <div style={{ width: 33, height: 20, }}>
-                                <RadioComponent 
-                                  color="default"
-                                  checked={data.asistencia === 'R'}
-                                  onChange={ () => {
-                                    data.asistencia = 'R';
-                                    props.onChange(asistenciaCurso);
-                                  } }
-                                />
+                  { asistenciaCurso.arrayEstudianteInscrito.map( (item, key) => {
+                    return (
+                      <div key={key}>
+                        <div style={{ width: 120, display: 'inline-block', fontSize: 9, }} className='p-2'>
+                          { item.estudiante.numeroregistro }
+                        </div>
+                        <div style={{ width: 200, display: 'inline-block', fontSize: 9, }} className='p-2'>
+                          { `${item.estudiante.apellidoprimero} ${item.estudiante.apellidosegundo} ${item.estudiante.nombreprincipal} ${item.estudiante.nombreadicional}` }
+                        </div>
+                        { item.arrayAsistenciaCurso.map( (data, index) => {
+                          return (
+                            <div style={{ width: 160, display: 'inline-block', }} key={index}>
+                              <div className='d-flex'>
+                                <div style={{ width: 40, height: 20, }}>
+                                  <RadioComponent 
+                                    color="success"
+                                    checked={data.asistencia === 'A'}
+                                    onChange={ () => {
+                                      data.asistencia = 'A';
+                                      props.onChange(asistenciaCurso);
+                                    } }
+                                  />
+                                </div>
+                                <div style={{ width: 40, height: 20, }}>
+                                  <RadioComponent 
+                                    color="warning"
+                                    checked={data.asistencia === 'L'}
+                                    onChange={ () => {
+                                      data.asistencia = 'L';
+                                      props.onChange(asistenciaCurso);
+                                    } }
+                                  />
+                                </div>
+                                <div style={{ width: 40, height: 20, }}>
+                                  <RadioComponent 
+                                    color="error"
+                                    checked={data.asistencia === 'F'}
+                                    onChange={ () => {
+                                      data.asistencia = 'F';
+                                      props.onChange(asistenciaCurso);
+                                    } }
+                                  />
+                                </div>
+                                <div style={{ width: 33, height: 20, }}>
+                                  <RadioComponent 
+                                    color="default"
+                                    checked={data.asistencia === 'R'}
+                                    onChange={ () => {
+                                      data.asistencia = 'R';
+                                      props.onChange(asistenciaCurso);
+                                    } }
+                                  />
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      } ) }
-                    </div>
-                  );
-                } ) }
-                <div>
-                  <div style={{ width: 120, display: 'inline-block', }}></div>
-                  <div style={{ width: 200, display: 'inline-block', }}></div>
-                  { onComponentButtonAsistencia() }
+                          );
+                        } ) }
+                      </div>
+                    );
+                  } ) }
+                  <EmptyComponent 
+                    data={asistenciaCurso.arrayEstudianteInscrito} 
+                    text='Sin estudiantes registrados.'
+                  />
+                  <div>
+                    <div style={{ width: 120, display: 'inline-block', }}></div>
+                    <div style={{ width: 200, display: 'inline-block', }}></div>
+                    { onComponentButtonAsistencia() }
+                  </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
         </CardComponent>
