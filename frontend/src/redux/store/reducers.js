@@ -67,6 +67,7 @@ import { AsignarRolReducer } from '../reducers/seguridad/asignarrol.reducer';
 import { AsistenciaGrupoReducer } from '../reducers/nota/asistenciagrupo.reducer';
 import { AsistenciaCursoReducer } from '../reducers/nota/asistenciacurso.reducer';
 import { NotaCursoReducer } from '../reducers/nota/notacurso.reducer';
+import { NotaGrupoReducer } from '../reducers/nota/notagrupo.reducer';
 
 const RootReducer = combineReducers( {
     Login: LoginReducer,
@@ -143,6 +144,7 @@ const RootReducer = combineReducers( {
     AsistenciaGrupo: AsistenciaGrupoReducer,
     AsistenciaCurso: AsistenciaCursoReducer,
     NotaCurso: NotaCursoReducer,
+    NotaGrupo: NotaGrupoReducer,
 } );
 
 export default RootReducer;

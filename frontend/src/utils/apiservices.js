@@ -406,6 +406,7 @@ const apiServices = {
     apiinscripcioninscripcioncurso_delete: `${module.parametros}/inscripcioncurso/delete`,
 
     apiinscripciongrupo_findestudianteformateria:  `${module.parametros}/inscripciongrupo/findestudianteformateria`,
+    apiinscripciongrupo_findestudianteforparametrocalificacion:  `${module.parametros}/inscripciongrupo/findestudianteforparametrocalificacion`,
     apiinscripcioninscripciongrupo_index:  `${module.parametros}/inscripciongrupo/index`,
     apiinscripcioninscripciongrupo_create: `${module.parametros}/inscripciongrupo/create`,
     apiinscripcioninscripciongrupo_store:  `${module.parametros}/inscripciongrupo/store`,
@@ -435,6 +436,7 @@ const apiServices = {
     apinotaasistenciacurso_update: `${module.nota}/asistenciacurso/update`,
 
     apinotanotacurso_update: `${module.nota}/notacurso/update`,
+    apinotanotagrupo_update: `${module.nota}/notagrupo/update`,
 };
 
 export default apiServices;

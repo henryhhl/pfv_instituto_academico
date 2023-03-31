@@ -66,6 +66,7 @@ import { AsignarrolModule } from './module/seguridad/asignarrol/asignarrol.modul
 import { AsistenciagrupoModule } from './module/nota/asistenciagrupo/asistenciagrupo.module';
 import { AsistenciacursoModule } from './module/nota/asistenciacurso/asistenciacurso.module';
 import { NotacursoModule } from './module/nota/notacurso/notacurso.module';
+import { NotagrupoModule } from './module/nota/notagrupo/notagrupo.module';
 
 // npm i -g @nestjs/cli
 // nest new project-name 
@@ -122,7 +123,7 @@ import { NotacursoModule } from './module/nota/notacurso/notacurso.module';
     TipoResultadoModule, AsistenciagrupoModule, InscripcionProgramaModule, InscripcionGrupoModule, InscripcioncursoModule, 
     ProfileModule, BitacoraModule, DateModule, ParametroCalificacionModule, CalendarioacademicoModule,
     AsignarrolModule, 
-    AuthModule, AsistenciacursoModule, NotacursoModule,
+    AuthModule, AsistenciacursoModule, NotacursoModule, NotagrupoModule,
   ],
   controllers: [],
   providers: [],

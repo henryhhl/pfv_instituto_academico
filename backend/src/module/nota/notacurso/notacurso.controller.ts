@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/
 import { NotacursoService } from './notacurso.service';
 import { CreateNotaCursoDto } from './dto/create-notacurso.dto';
 import { UpdateNotacursoDto } from './dto/update-notacurso.dto';
+import { Auth } from '../../auth/decorators/auth.decorator';
 
 @Controller('notacurso')
 export class NotacursoController {
@@ -29,7 +30,7 @@ export class NotacursoController {
   }
 
   @Put('/update')
-  // @Auth( /**  N Permissions */ )
+  @Auth( /**  N Permissions */ )
   updatePut(@Body() createNotaCursoDto: CreateNotaCursoDto) {
     return this.notacursoService.update(createNotaCursoDto);
   }

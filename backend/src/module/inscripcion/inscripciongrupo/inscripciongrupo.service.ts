@@ -17,6 +17,7 @@ import { InscripcionGrupoPaginationDto } from './dto/pagination.dto';
 import { FindEstudianteForMateriaDto } from './dto/findestudianteformateria.dto';
 import { DocenteService } from '../../persona/docente/docente.service';
 import { AsistenciagrupoService } from '../../nota/asistenciagrupo/asistenciagrupo.service';
+import { NotagrupoService } from '../../nota/notagrupo/notagrupo.service';
 
 @Injectable()
 export class InscripcionGrupoService {
@@ -37,6 +38,7 @@ export class InscripcionGrupoService {
     private readonly unidadAdministrativaService: UnidadAdministrativaService,
     private readonly docenteService: DocenteService,
     private readonly asistenciaGrupoService: AsistenciagrupoService,
+    private readonly notaGrupoService: NotagrupoService,
   ) {}
 
   async findAll( paginationDto: InscripcionGrupoPaginationDto ) {
@@ -85,6 +87,52 @@ export class InscripcionGrupoService {
           total: totalPagination,
         },
       };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        resp: -1, error: true,
+        message: 'Hubo conflictos al consultar información con el servidor.',
+      };
+    }
+  }
+
+  async findEstudianteForParametroCalificacion(fkidgrupopensumdetalle: number) {
+    try {
+      
+      let list = [];
+      let total = 0;
+
+      [list, total] = await this.inscripcionGrupoRepository.findAndCount( {
+        relations: {
+          estudiante: true,
+          arrayNotaGrupo: {
+            parametroCalificacion: true,
+          },
+        },
+        where: {
+          grupoMateriaDetalle: {
+            idgrupopensumdetalle: fkidgrupopensumdetalle,
+          },
+        },
+        order: {  
+          estudiante: {
+            apellidoprimero: 'ASC',
+          },
+          arrayNotaGrupo: {
+            created_at: 'ASC',
+          },
+        },
+      } );
+      
+      return {
+        resp: 1, error: false,
+        message: 'Servicio realizado exitosamente.',
+        arrayEstudianteInscrito: list,
+        pagination: {
+          total: total,
+        },
+      };
+      
     } catch (error) {
       this.logger.error(error);
       return {
@@ -348,6 +396,15 @@ export class InscripcionGrupoService {
         }
         const dateNext = new Date(parseInt(year), parseInt(month), 1);
         fechaInicio = `${dateNext.getFullYear()}-${dateNext.getMonth()+1<10?`0${dateNext.getMonth()+1}`:dateNext.getMonth()+1}-01`
+      }
+
+      for (let index = 0; index < grupoDetalle.arrayGrupoMateriaCalificacionDetalle.length; index++) {
+        const detalle = grupoDetalle.arrayGrupoMateriaCalificacionDetalle[index];
+        await this.notaGrupoService.storeNotaDefaultForInscripcionGrupo(
+          inscripcionGrupoCreate.idinscripciongrupo,
+          detalle.parametroCalificacion.idparametrocalificacion,
+          detalle.valorporcentaje,
+        );
       }
 
       return {

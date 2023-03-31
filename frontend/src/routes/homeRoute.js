@@ -235,12 +235,15 @@ import EditParametroCalificacion from '../screens/modules/nota/parametrocalifica
 import ShowParametroCalificacion from '../screens/modules/nota/parametrocalificacion/parametrocalificacion.show';
 
 import IndexCalendarioAcademico from '../screens/modules/nota/calendarioacademico/calendarioacademico.index';
+
 import IndexAsistenciaGrupo from '../screens/modules/nota/asistenciagrupo/asistenciagrupo.index';
 import IndexAsistenciaCurso from '../screens/modules/nota/asistencuacurso/asistenciacurso.index';
 
+import IndexNotaCurso from '../screens/modules/nota/notacurso/notacurso.index';
+import IndexNotaGrupo from '../screens/modules/nota/notagrupo/notagrupo.index';
+
 import LoginPage from '../screens/auth/login.page';
 import ProfilePage from '../screens/profile/profile.screen';
-import IndexNotaCurso from '../screens/modules/nota/notacurso/notacurso.index';
 
 const HomeRoute = (props) => {
     return (
@@ -482,9 +485,12 @@ const HomeRoute = (props) => {
                     <Route index path="/parametrocalificacion/show/:idparametrocalificacion" element={ <ShowParametroCalificacion { ...props } /> }  />
 
                     <Route index path="/calendarioacademico/index" element={ <IndexCalendarioAcademico { ...props } /> }  />
+
                     <Route index path="/asistenciagrupo/index" element={ <IndexAsistenciaGrupo { ...props } /> }  />
                     <Route index path="/asistenciacurso/index" element={ <IndexAsistenciaCurso { ...props } /> }  />
+
                     <Route index path="/notacurso/index" element={ <IndexNotaCurso { ...props } /> }  />
+                    <Route index path="/notagrupo/index" element={ <IndexNotaGrupo { ...props } /> }  />
 
                     <Route
                         path='*'

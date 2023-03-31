@@ -64,6 +64,7 @@ const setFkIDDocente = (asistenciaGrupo, docente) => {
         asistenciaGrupo.fkiddocente = docente.iddocente;
         asistenciaGrupo.docente = `${docente.apellidoprimero} ${docente.apellidosegundo} ${docente.nombreprincipal} ${docente.nombreadicional} `;
 
+        asistenciaGrupo.arrayEstudianteInscrito = [];
         asistenciaGrupo.fkidgrupopensumdetalle = '';
 
         asistenciaGrupo.fkidunidadacademica = '';

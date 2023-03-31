@@ -1,25 +1,25 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { CreateNotaGrupoDto } from './dto/create-notagrupo.dto';
+import { UpdateNotagrupoDto } from './dto/update-notagrupo.dto';
+import { NotaGrupo } from './entities/notagrupo.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable, Logger } from '@nestjs/common';
-import { NotaCurso } from './entities/notacurso.entity';
-import { CreateNotaCursoDto } from './dto/create-notacurso.dto';
-import { UpdateNotacursoDto } from './dto/update-notacurso.dto';
 
 @Injectable()
-export class NotacursoService {
-  private readonly logger = new Logger('NotaCursoService');
+export class NotagrupoService {
+  private readonly logger = new Logger('NotaGrupoService');
 
   constructor(
-    @InjectRepository(NotaCurso)
-    private readonly notaCursoRepository: Repository<NotaCurso>,
+    @InjectRepository(NotaGrupo)
+    private readonly notaGrupoRepository: Repository<NotaGrupo>,
   ) {}
 
-  create(createNotacursoDto: CreateNotaCursoDto) {
-    return 'This action adds a new notacurso';
+  create(createNotagrupoDto: CreateNotaGrupoDto) {
+    return 'This action adds a new notagrupo';
   }
 
   findAll() {
-    return `This action returns all notacurso`;
+    return `This action returns all notagrupo`;
   }
 
   private getDateTime() {
@@ -43,13 +43,13 @@ export class NotacursoService {
     return `${year}-${month}-${day} ${hour}:${minutes}:${segundos}:${milliSeconds}`;
   }
 
-  async storeNotaDefaultForInscripcionCurso( 
-    fkidinscripcioncurso: string, fkidparametrocalificacion: string, valorporcentaje: number,
+  async storeNotaDefaultForInscripcionGrupo( 
+    fkidinscripciongrupo: string, fkidparametrocalificacion: string, valorporcentaje: number,
   ) {
     try {
-      const notaCursoCreate = this.notaCursoRepository.create( {
-        inscripcionCurso: {
-          idinscripcioncurso: fkidinscripcioncurso,
+      const notaGrupoCreate = this.notaGrupoRepository.create( {
+        inscripcionGrupo: {
+          idinscripciongrupo: fkidinscripciongrupo,
         },
         parametroCalificacion: {
           idparametrocalificacion: fkidparametrocalificacion,
@@ -57,7 +57,7 @@ export class NotacursoService {
         valorporcentaje,
         created_at: this.getDateTime(),
       } );
-      return await this.notaCursoRepository.save( notaCursoCreate );
+      return await this.notaGrupoRepository.save( notaGrupoCreate );
       
     } catch (error) {
       this.logger.error(error);
@@ -65,33 +65,32 @@ export class NotacursoService {
     }
   }
 
-  async findOne(idnotacurso: string) {
+  async findOne(idnotagrupo: string) {
     try {
-      if ( idnotacurso === null ) return null;
-      const notaCurso = await this.notaCursoRepository.findOne( {
-        where: { idnotacurso: idnotacurso, },
+      if ( idnotagrupo === null ) return null;
+      return await this.notaGrupoRepository.findOne( {
+        where: { idnotagrupo: idnotagrupo, },
       } );
-      return notaCurso;
     } catch (error) {
       return null;
     }
   }
 
-  async update(request: CreateNotaCursoDto) {
+  async update(request: CreateNotaGrupoDto) {
     try {
-      if ( Array.isArray( request.arrayNotaCurso ) ) {
+      if ( Array.isArray( request.arrayNotaGrupo ) ) {
         let pos = 0;
-        for (let index = 0; index < request.arrayNotaCurso.length; index++) {
-          const element = request.arrayNotaCurso[index];
+        for (let index = 0; index < request.arrayNotaGrupo.length; index++) {
+          const element = request.arrayNotaGrupo[index];
 
-          const notaCursoPreLoad = await this.notaCursoRepository.preload( {
-            idnotacurso: element.idnotacurso,
+          const notaGrupoPreLoad = await this.notaGrupoRepository.preload( {
+            idnotagrupo: element.idnotagrupo,
             nota: element.nota,
             updated_at: this.getDateTime(),
           } );
 
-          if ( notaCursoPreLoad !== null ) {
-            await this.notaCursoRepository.save( notaCursoPreLoad );
+          if ( notaGrupoPreLoad !== null ) {
+            await this.notaGrupoRepository.save( notaGrupoPreLoad );
             pos++;
           }
         }
@@ -116,17 +115,17 @@ export class NotacursoService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} notacurso`;
+    return `This action removes a #${id} notagrupo`;
   }
 
-  async delete(idnotacurso: string) {
+  async delete(idnotagrupo: string) {
     try {
-      let notaCursoFirst = await this.findOne(idnotacurso);
-      if ( notaCursoFirst === null ) {
+      let notaGrupoFirst = await this.findOne(idnotagrupo);
+      if ( notaGrupoFirst === null ) {
         return false;
       }
-      const notaCursoDelete = await this.notaCursoRepository.remove( notaCursoFirst );
-      if ( notaCursoDelete ) {
+      const notaGrupoDelete = await this.notaGrupoRepository.remove( notaGrupoFirst );
+      if ( notaGrupoDelete ) {
         return true;
       }
       return false;
@@ -136,16 +135,16 @@ export class NotacursoService {
     }
   }
 
-  async getEstudianteInscrito( fkidinscripcioncurso: string ) {
+  async getEstudianteInscrito( fkidinscripciongrupo: string ) {
     try {
-      if ( fkidinscripcioncurso === null ) return [];
-      return await this.notaCursoRepository.find( {
+      if ( fkidinscripciongrupo === null ) return [];
+      return await this.notaGrupoRepository.find( {
         relations: {
           parametroCalificacion: true,
         },
         where: {
-          inscripcionCurso: {
-            idinscripcioncurso: fkidinscripcioncurso,
+          inscripcionGrupo: {
+            idinscripciongrupo: fkidinscripciongrupo,
           },
         },
         order: { created_at: "DESC", },
@@ -154,5 +153,4 @@ export class NotacursoService {
       return [];
     }
   }
-
 }

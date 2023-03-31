@@ -22,6 +22,12 @@ export class InscripcionGrupoController {
     return this.inscripciongrupoService.FindEstudianteForMateriaDto(paginationDto);
   }
 
+  @Get('/findestudianteforparametrocalificacion/:fkidgrupopensumdetalle')
+  @Auth( /**  N Permissions */ )
+  findEstudianteforparametrocalificacion( @Param('fkidgrupopensumdetalle') fkidgrupopensumdetalle: string ) {
+    return this.inscripciongrupoService.findEstudianteForParametroCalificacion(+fkidgrupopensumdetalle);
+  }
+
   @Post('/store')
   @Auth( /**  N Permissions */ )
   store(@Body() createInscripciongrupoDto: CreateInscripcionGrupoDto) {

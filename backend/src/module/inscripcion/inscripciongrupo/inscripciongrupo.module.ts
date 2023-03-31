@@ -15,6 +15,7 @@ import { GestionPeriodoModule } from '../../estructurainstitucional/gestionperio
 import { UnidadAdministrativaModule } from '../../estructuraacademica/unidadadministrativa/unidadadministrativa.module';
 import { DocenteModule } from '../../persona/docente/docente.module';
 import { AsistenciagrupoModule } from '../../nota/asistenciagrupo/asistenciagrupo.module';
+import { NotagrupoModule } from '../../nota/notagrupo/notagrupo.module';
 
 @Module({
   controllers: [InscripcionGrupoController],
@@ -36,6 +37,7 @@ import { AsistenciagrupoModule } from '../../nota/asistenciagrupo/asistenciagrup
     GrupoModule,
     DocenteModule,
     AsistenciagrupoModule,
+    NotagrupoModule,
   ],
 })
 export class InscripcionGrupoModule {}

@@ -496,10 +496,26 @@ export class GrupoService {
     try {
       return await this.grupoDetalleRepository.findOne( {
         where: { idgrupopensumdetalle: idgrupomateriadetalle, },
-        relations: { arrayGrupoMateriaDiaDetalle: {
-          dia: true,
-          arrayGrupoMateriaDiaHorario: true,
-        } }
+        relations: { 
+          arrayGrupoMateriaDiaDetalle: {
+            dia: true,
+            arrayGrupoMateriaDiaHorario: true,
+          }, 
+          arrayGrupoMateriaCalificacionDetalle: {
+            parametroCalificacion: true,
+          },
+        },
+        order: {
+          arrayGrupoMateriaCalificacionDetalle: {
+            created_at: 'ASC',
+          },
+          arrayGrupoMateriaDiaDetalle: {
+            created_at: 'ASC',
+            arrayGrupoMateriaDiaHorario: {
+              created_at: 'ASC',
+            },
+          },
+        },
       } );
     } catch (error) {
       return null;

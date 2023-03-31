@@ -1,23 +1,23 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, JoinColumn, Column } from 'typeorm';
-import { InscripcionCurso } from '../../../inscripcion/inscripcioncurso/entities/inscripcioncurso.entity';
+import { InscripcionGrupo } from '../../../inscripcion/inscripciongrupo/entities/inscripciongrupo.entity';
 import { ParametroCalificacion } from '../../parametrocalificacion/entities/parametrocalificacion.entity';
 
-@Entity('notacurso')
-export class NotaCurso {
+@Entity('notagrupo')
+export class NotaGrupo {
 
-    @PrimaryGeneratedColumn( 'uuid' )
-    idnotacurso: string;
+    @PrimaryGeneratedColumn('uuid')
+    idnotagrupo: string;
 
     @ManyToOne(
-        ( ) => InscripcionCurso,
-        ( item ) => item.arrayNotaCurso,
+        ( ) => InscripcionGrupo,
+        ( item ) => item.arrayNotaGrupo,
     )
-    @JoinColumn({ name: 'fkidinscripcioncurso', })
-    inscripcionCurso: InscripcionCurso;
+    @JoinColumn({ name: 'fkidinscripciongrupo', })
+    inscripcionGrupo: InscripcionGrupo;
 
     @ManyToOne(
         ( ) => ParametroCalificacion,
-        ( item ) => item.arrayNotaCurso,
+        ( item ) => item.arrayNotaGrupo,
     )
     @JoinColumn({ name: 'fkidparametrocalificacion', })
     parametroCalificacion: ParametroCalificacion;

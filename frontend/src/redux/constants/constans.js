@@ -380,6 +380,9 @@ const Constants = {
     notacurso_onChange: "[ON CHANGE] Nota Curso",
     notacurso_onLimpiar: "[ON LIMPIAR] Nota Curso",
 
+    notagrupo_onChange: "[ON CHANGE] Nota Grupo",
+    notagrupo_onLimpiar: "[ON LIMPIAR] Nota Grupo",
+
 };
 
 export default Constants;

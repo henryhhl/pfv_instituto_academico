@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { GrupoMateriaCalificacionDetalle } from 'src/module/ofertaacademica/grupo/entities/grupomateriacalificacion.entity';
 import { CursoParametroCalificacion } from '../../../ofertaacademica/curso/entities/cursoparametrocalificacion.entity';
 import { NotaCurso } from '../../notacurso/entities/notacurso.entity';
+import { NotaGrupo } from '../../notagrupo/entities/notagrupo.entity';
 
 @Entity('parametrocalificacion')
 export class ParametroCalificacion {
@@ -15,6 +16,12 @@ export class ParametroCalificacion {
         ( item ) => item.parametroCalificacion,
     )
     arrayNotaCurso?: NotaCurso[];
+
+    @OneToMany(
+        () => NotaGrupo,
+        ( item ) => item.parametroCalificacion,
+    )
+    arrayNotaGrupo?: NotaGrupo[];
 
 
     @OneToMany(

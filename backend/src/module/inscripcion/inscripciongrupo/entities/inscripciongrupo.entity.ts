@@ -11,12 +11,19 @@ import { UnidadAdministrativa } from '../../../estructuraacademica/unidadadminis
 import { Docente } from '../../../persona/docente/entities/docente.entity';
 import { GrupoMateriaDetalle } from '../../../ofertaacademica/grupo/entities/grupomateriadetalle.entity';
 import { AsistenciaGrupo } from '../../../nota/asistenciagrupo/entities/asistenciagrupo.entity';
+import { NotaGrupo } from 'src/module/nota/notagrupo/entities/notagrupo.entity';
 
 @Entity('inscripciongrupo')
 export class InscripcionGrupo {
 
     @PrimaryGeneratedColumn('uuid')
     idinscripciongrupo: string;
+
+    @OneToMany(
+        () => NotaGrupo,
+        ( item ) => item.inscripcionGrupo,
+    )
+    arrayNotaGrupo?: NotaGrupo[];
 
     @ManyToOne(
         ( ) => UnidadAdministrativa,
