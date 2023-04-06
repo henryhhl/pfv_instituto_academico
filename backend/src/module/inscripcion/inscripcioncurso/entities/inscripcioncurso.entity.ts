@@ -19,12 +19,14 @@ export class InscripcionCurso {
     @OneToMany(
         () => NotaCurso,
         ( item ) => item.inscripcionCurso,
+        { cascade: true, },
     )
     arrayNotaCurso?: NotaCurso[];
 
     @OneToMany(
         () => AsistenciaCurso,
         ( item ) => item.inscripcionCurso,
+        { cascade: true, },
     )
     arrayAsistenciaCurso?: AsistenciaCurso[];
 

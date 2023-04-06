@@ -6,11 +6,12 @@ import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
 import { UpdateCierreCursoDto } from './dto/update-cierre.dto';
 import { PaginationDto } from '../../../common/dtos/pagination.dto';
+import { MateriaForDocenteCursoDto } from './dto/materia-docente.dto';
+import { DocenteService } from '../../persona/docente/docente.service';
 import { CursoDocenteDetalle } from './entities/cursodocentedetalle.entity';
 import { UpdateAperturaCierreCursoDto } from './dto/update-aperturacierre.dto';
 import { CursoParametroCalificacion } from './entities/cursoparametrocalificacion.entity';
-import { MateriaForDocenteCursoDto } from './dto/materia-docente.dto';
-import { DocenteService } from '../../persona/docente/docente.service';
+import { NotaCurso } from '../../nota/notacurso/entities/notacurso.entity';
 
 @Injectable()
 export class CursoService {
@@ -26,9 +27,13 @@ export class CursoService {
     @InjectRepository(CursoParametroCalificacion)
     private readonly cursoParametroCalificacionRepository: Repository<CursoParametroCalificacion>,
 
+    @InjectRepository(NotaCurso)
+    private readonly notaCursoRepository: Repository<NotaCurso>,
+
     private readonly dataSource: DataSource,
 
     private readonly docenteService: DocenteService,
+
   ) {}
 
   async findAll( paginationDto: PaginationDto ) {
@@ -270,10 +275,21 @@ export class CursoService {
           arrayCursoParametroCalificacion: {
             parametroCalificacion: true,
           },
+          arrayinscripcioncurso: {
+            arrayNotaCurso: {
+              parametroCalificacion: true,
+            },
+            arrayAsistenciaCurso: true,
+          },
         },
         order: {
           arrayCursoParametroCalificacion: {
             created_at: 'ASC',
+          },
+          arrayinscripcioncurso: {
+            arrayAsistenciaCurso: {
+              created_at: 'ASC',
+            },
           },
         },
       } );
@@ -392,25 +408,11 @@ export class CursoService {
         inversionbase: toUpdate.inversionbase,
         prerequisito: toUpdate.prerequisito,
         objetivo: toUpdate.objetivo,
-        arrayCursoParametroCalificacion: [],
+        arrayCursoParametroCalificacion: curso.arrayCursoParametroCalificacion,
+        arrayinscripcioncurso: curso.arrayinscripcioncurso,
         concurrencia: curso.concurrencia + 1,
         updated_at: this.getDateTime(),
       } );
-
-      if ( Array.isArray(toUpdate.arrayparametrocalificacion) ) {
-        await queryRunner.manager.delete( CursoParametroCalificacion, { curso: { idcurso: idcurso } } );
-        for (let pos = 0; pos < toUpdate.arrayparametrocalificacion.length; pos++) {
-          const calificacion = toUpdate.arrayparametrocalificacion[pos];
-          const cursoCalificacionCreate = this.cursoParametroCalificacionRepository.create( {
-            parametroCalificacion: {
-              idparametrocalificacion: calificacion.fkidparametrocalificacion,
-            },
-            valorporcentaje: calificacion.valorporcentaje,
-            created_at: this.getDateTime(),
-          } );
-          cursoPreLoad.arrayCursoParametroCalificacion = [ ...cursoPreLoad.arrayCursoParametroCalificacion, cursoCalificacionCreate ];
-        }
-      }
 
       if ( cursoPreLoad === null ) {
         await queryRunner.rollbackTransaction();
@@ -420,6 +422,82 @@ export class CursoService {
           message: 'Curso no existe.',
         };
       }
+
+      const fechaInicio = curso.fechainicio;
+      const fechafinal = curso.fechafinal;
+
+      if ( Array.isArray(toUpdate.arrayparametrocalificacion) ) {
+        // await queryRunner.manager.delete( CursoParametroCalificacion, { curso: { idcurso: idcurso } } );
+        for (let pos = 0; pos < toUpdate.arrayparametrocalificacion.length; pos++) {
+          const calificacion = toUpdate.arrayparametrocalificacion[pos];
+
+          if ( calificacion.idcursoparametrocalificacion === null ) {
+
+            const cursoCalificacionCreate = this.cursoParametroCalificacionRepository.create( {
+              parametroCalificacion: {
+                idparametrocalificacion: calificacion.fkidparametrocalificacion,
+              },
+              valorporcentaje: calificacion.valorporcentaje,
+              created_at: this.getDateTime(),
+            } );
+
+            const cursoCalificacionUpdate = await this.cursoParametroCalificacionRepository.save( cursoCalificacionCreate );
+
+            cursoPreLoad.arrayCursoParametroCalificacion = [ ...cursoPreLoad.arrayCursoParametroCalificacion, cursoCalificacionUpdate ];
+
+            for (let index = 0; index < cursoPreLoad.arrayinscripcioncurso.length; index++) {
+              const inscripcionCurso = cursoPreLoad.arrayinscripcioncurso[index];
+
+              inscripcionCurso.arrayNotaCurso = [ 
+                ...inscripcionCurso.arrayNotaCurso, 
+                this.notaCursoRepository.create( {
+                  fkidcursoparametrocalificacion: cursoCalificacionUpdate.idcursoparametrocalificacion,
+                  inscripcionCurso: {
+                    idinscripcioncurso: inscripcionCurso.idinscripcioncurso,
+                  },
+                  parametroCalificacion: {
+                    idparametrocalificacion: calificacion.fkidparametrocalificacion,
+                  },
+                  valorporcentaje: calificacion.valorporcentaje,
+                  created_at: this.getDateTime(),
+                } ),
+              ];
+            }
+
+          } else {
+
+            for (let index = 0; index < cursoPreLoad.arrayCursoParametroCalificacion.length; index++) {
+              let item = cursoPreLoad.arrayCursoParametroCalificacion[index];
+
+              if ( item.idcursoparametrocalificacion === calificacion.idcursoparametrocalificacion ) {
+                item.parametroCalificacion.idparametrocalificacion = calificacion.fkidparametrocalificacion;
+                item.valorporcentaje = calificacion.valorporcentaje;
+                item.updated_at = this.getDateTime();
+              }
+            }
+
+            for (let index = 0; index < cursoPreLoad.arrayinscripcioncurso.length; index++) {
+              const inscripcionCurso = cursoPreLoad.arrayinscripcioncurso[index];
+
+              for (let index = 0; index < inscripcionCurso.arrayNotaCurso.length; index++) {
+                const notaCurso = inscripcionCurso.arrayNotaCurso[index];
+                
+                if ( notaCurso.fkidcursoparametrocalificacion === calificacion.idcursoparametrocalificacion ) {
+
+                  notaCurso.parametroCalificacion.idparametrocalificacion = calificacion.fkidparametrocalificacion;
+                  notaCurso.valorporcentaje = calificacion.valorporcentaje;
+                  notaCurso.fkidcursoparametrocalificacion = calificacion.idcursoparametrocalificacion;
+                  notaCurso.calificacion = 0;
+                  notaCurso.nota = 0;
+                  notaCurso.updated_at = this.getDateTime();
+                }
+              }
+            }
+
+          }
+        }
+      }
+
       if ( arraydocente ) {
         await queryRunner.manager.delete( CursoDocenteDetalle, { curso: { idcurso: idcurso } } );
         cursoPreLoad.arraydocente = arraydocente.filter( 
@@ -438,6 +516,65 @@ export class CursoService {
       const cursoUpdate = await queryRunner.manager.save( cursoPreLoad );
       await queryRunner.commitTransaction();
       await queryRunner.release();
+
+      if ( Array.isArray(toUpdate.arrayparametrocalificaciondelete) ) {
+        for (let pos = 0; pos < toUpdate.arrayparametrocalificaciondelete.length; pos++) {
+          const calificacion = toUpdate.arrayparametrocalificaciondelete[pos];
+
+          for (let index = 0; index < cursoUpdate.arrayinscripcioncurso.length; index++) {
+            const inscripcionCurso = cursoUpdate.arrayinscripcioncurso[index];
+
+            // inscripcionCurso.arrayNotaCurso = inscripcionCurso.arrayNotaCurso.filter( (item) => {
+            //   return ( item.fkidcursoparametrocalificacion !== calificacion.idcursoparametrocalificacion );
+            // } );
+
+            for (let index = 0; index < inscripcionCurso.arrayNotaCurso.length; index++) {
+              const notaCurso = inscripcionCurso.arrayNotaCurso[index];
+              
+              if ( notaCurso.fkidcursoparametrocalificacion === calificacion.idcursoparametrocalificacion ) {
+                await this.notaCursoRepository.remove( notaCurso );
+              }
+            }
+
+          }
+
+          for (let index = 0; index < cursoUpdate.arrayCursoParametroCalificacion.length; index++) {
+            const cursoCalificacion = cursoUpdate.arrayCursoParametroCalificacion[index];
+
+            if ( cursoCalificacion.idcursoparametrocalificacion === calificacion.idcursoparametrocalificacion ) {
+              await this.cursoParametroCalificacionRepository.remove( cursoCalificacion );
+            }
+          }
+
+          // cursoPreLoad.arrayCursoParametroCalificacion = cursoPreLoad.arrayCursoParametroCalificacion.filter( (item) => {
+          //   return ( item.idcursoparametrocalificacion !== calificacion.idcursoparametrocalificacion );
+          // } );
+        }
+      }
+
+      if ( fechaInicio !== cursoUpdate.fechainicio) {
+
+      }
+
+      // const dateStringFinish = this.convertDMYForYMD(cursoUpdate.fechafinal);
+      // let dateInit = this.convertStringforDate(cursoUpdate.fechainicio);
+
+      // while ( this.convertDateToString(dateInit) <= dateStringFinish ) {
+      //   for (let index = 0; index < cursoUpdate.arrayinscripcioncurso.length; index++) {
+      //     const inscripcionCurso = cursoUpdate.arrayinscripcioncurso[index];
+      //     let existsDate = false;
+      //     for (let index = 0; index < inscripcionCurso.arrayAsistenciaCurso.length; index++) {
+      //       const asistenciaCurso = inscripcionCurso.arrayAsistenciaCurso[index];
+      //       if ( asistenciaCurso.fechaasistencia === this.convertDateToDMYString(dateInit) ) {
+      //         existsDate = true;
+      //         index = inscripcionCurso.arrayAsistenciaCurso.length;
+      //       }
+      //     }
+      //     if ( existsDate ) {}
+      //   }
+      //   dateInit.setDate( dateInit.getDate() + 1 );
+      // }
+
       return {
         resp: 1, error: false,
         message: 'Curso actualizado éxitosamente.',
@@ -447,11 +584,45 @@ export class CursoService {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
       this.logger.error(error);
+
       return {
         resp: -1, error: true,
         message: 'Hubo conflictos al consultar información con el servidor.',
       };
     }
+  }
+
+  convertStringforDate(dateToString = "") {
+    const [day, month, year] = dateToString.split('/');
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+
+  convertDMYForYMD(dateToString = "") {
+    if ( dateToString.split('/').length < 3 ) return null;
+    const [day, month, year] = dateToString.split('/');
+    return `${year}-${month}-${day}`;
+  }
+
+  convertDateToString( date = new Date(), separator = '-' ) {
+    let year  = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day   = date.getDate();
+
+    let monthString = month < 10 ? `0${month}` : month;
+    let daySatring = day < 10 ? `0${day}` : day;
+
+    return year + separator + monthString + separator + daySatring;
+  }
+
+  convertDateToDMYString( date = new Date() ) {
+    let year  = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day   = date.getDate();
+
+    let monthString = month < 10 ? `0${month}` : month;
+    let daySatring = day < 10 ? `0${day}` : day;
+
+    return `${daySatring}/${monthString}/${year}`
   }
 
   async delete(idcurso: string) {

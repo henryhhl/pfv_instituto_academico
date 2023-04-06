@@ -44,6 +44,7 @@ export class Curso {
     @OneToMany(
         () => InscripcionCurso,
         ( inscripcionCurso ) => inscripcionCurso.curso,
+        { cascade: true, },
     )
     arrayinscripcioncurso?: InscripcionCurso[];
 

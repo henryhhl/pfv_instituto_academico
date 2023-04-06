@@ -4,6 +4,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { NotaCurso } from './entities/notacurso.entity';
 import { CreateNotaCursoDto } from './dto/create-notacurso.dto';
 import { UpdateNotacursoDto } from './dto/update-notacurso.dto';
+import { CursoParametroCalificacion } from '../../ofertaacademica/curso/entities/cursoparametrocalificacion.entity';
 
 @Injectable()
 export class NotacursoService {
@@ -44,17 +45,18 @@ export class NotacursoService {
   }
 
   async storeNotaDefaultForInscripcionCurso( 
-    fkidinscripcioncurso: string, fkidparametrocalificacion: string, valorporcentaje: number,
+    fkidinscripcioncurso: string, detalle: CursoParametroCalificacion,
   ) {
     try {
       const notaCursoCreate = this.notaCursoRepository.create( {
+        fkidcursoparametrocalificacion: detalle.idcursoparametrocalificacion,
         inscripcionCurso: {
           idinscripcioncurso: fkidinscripcioncurso,
         },
         parametroCalificacion: {
-          idparametrocalificacion: fkidparametrocalificacion,
+          idparametrocalificacion: detalle.parametroCalificacion.idparametrocalificacion,
         },
-        valorporcentaje,
+        valorporcentaje: detalle.valorporcentaje,
         created_at: this.getDateTime(),
       } );
       return await this.notaCursoRepository.save( notaCursoCreate );

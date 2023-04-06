@@ -262,10 +262,10 @@ export class InscripcionCursoService {
 
       for (let index = 0; index < curso.arrayCursoParametroCalificacion.length; index++) {
         const detalle = curso.arrayCursoParametroCalificacion[index];
+        console.log(detalle)
         await this.notaCursoService.storeNotaDefaultForInscripcionCurso(
           inscripcionCursoCreate.idinscripcioncurso,
-          detalle.parametroCalificacion.idparametrocalificacion,
-          detalle.valorporcentaje,
+          detalle,
         );
       }
 
@@ -426,4 +426,24 @@ export class InscripcionCursoService {
       };
     }
   }
+
+  async getEstudianteInscrito( fkidcurso: string ) {
+    try {
+      if ( fkidcurso === null ) return [];
+      return await this.inscripcionCursoRepository.find( {
+        relations: {
+          curso: true,
+        },
+        where: {
+          curso: {
+            idcurso: fkidcurso,
+          },
+        },
+        order: { created_at: "ASC", },
+      } );
+    } catch (error) {
+      return [];
+    }
+  }
+
 }

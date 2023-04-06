@@ -1,8 +1,11 @@
 
 import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsInt, Min } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, Min, IsOptional } from 'class-validator';
 
 export class CreateCursoParametroCalificacionDto {
+
+    @IsOptional()
+    readonly idcursoparametrocalificacion?: string;
 
     @IsNotEmpty( { message: 'Campo fkidparametrocalificacion es requerido.', } )
     @IsString( { message: 'Campo fkidparametrocalificacion solo permitido tipo STRING.', } )

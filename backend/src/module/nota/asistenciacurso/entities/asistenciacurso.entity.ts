@@ -10,6 +10,7 @@ export class AsistenciaCurso {
     @ManyToOne(
         ( ) => InscripcionCurso,
         ( item ) => item.arrayAsistenciaCurso,
+        { onDelete: 'CASCADE', }
     )
     @JoinColumn({ name: 'fkidinscripcioncurso', })
     inscripcionCurso: InscripcionCurso;

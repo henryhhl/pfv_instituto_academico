@@ -11,6 +11,7 @@ export class NotaCurso {
     @ManyToOne(
         ( ) => InscripcionCurso,
         ( item ) => item.arrayNotaCurso,
+        { onDelete: 'CASCADE', }
     )
     @JoinColumn({ name: 'fkidinscripcioncurso', })
     inscripcionCurso: InscripcionCurso;
@@ -21,6 +22,11 @@ export class NotaCurso {
     )
     @JoinColumn({ name: 'fkidparametrocalificacion', })
     parametroCalificacion: ParametroCalificacion;
+
+    @Column( 'text', {
+        nullable: true,
+    } )
+    fkidcursoparametrocalificacion?: string;
 
     @Column( 'int', {
         default: 0,

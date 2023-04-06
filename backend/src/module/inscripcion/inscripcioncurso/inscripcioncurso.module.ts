@@ -18,6 +18,7 @@ import { UnidadAdministrativaModule } from '../../estructuraacademica/unidadadmi
 @Module({
   controllers: [InscripcionCursoController],
   providers: [InscripcionCursoService],
+  exports: [InscripcionCursoService],
   imports: [
     TypeOrmModule.forFeature( [
       InscripcionCurso,
