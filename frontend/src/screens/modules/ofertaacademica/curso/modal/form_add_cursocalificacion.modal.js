@@ -71,20 +71,17 @@ const FormAddCursoCalificacion = ( props ) => {
                 actions={
                     props.disabled === true ? null : 
                     <ButtonComponent
-                        onClick={ () => {
-                            curso.arrayparametrocalificacion = [ ...curso.arrayparametrocalificacion, {
-                                fkidparametrocalificacion: null,
-                                parametrocalificacion: null,
-                                valorporcentaje: null,
-                            } ];
-                            props.onChange(curso);
-                        } }
+                        onClick={ props.onAddRow }
                     >
                         Agregar Calificación
                     </ButtonComponent>
                 }
             >
-                <div className="row">
+                <div className="row pt-2" 
+                    style={{ 
+                        maxHeight: 400, overflowX: 'hidden', overflowY: 'auto', backgroundColor: 'rgb(235, 236, 240)', 
+                    }}
+                >
                     { curso.arrayparametrocalificacion.map( ( item, key ) => {
                         promedioTotal += item.valorporcentaje === null ? 0 : parseInt(item.valorporcentaje);
                         return (
@@ -98,12 +95,7 @@ const FormAddCursoCalificacion = ( props ) => {
                                                 fontSize: 12, fontWeight: 'bold', boxShadow: '0 0 5px 0 #222',
                                                 cursor: 'pointer', marginTop: 8, marginRight: 5,
                                             } }
-                                            onClick={() => {
-                                                curso.arrayparametrocalificacion = curso.arrayparametrocalificacion.filter( 
-                                                    (item, pos) => ( pos !== key )
-                                                );
-                                                props.onChange(curso);
-                                            } }
+                                            onClick={ () =>  props.onDeleteRow(key) }
                                         />
                                     }
                                     <div className="card-body p-1">
@@ -198,6 +190,8 @@ const mapStateToProps = ( state ) => ( {
 
 const mapDispatchToProps = {
     onChange: CursoActions.onChange,
+    onAddRow: CursoActions.onAddRowParametroCalificacion,
+    onDeleteRow: CursoActions.onDeleteRowParametroCalificacion,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)( FormAddCursoCalificacion );

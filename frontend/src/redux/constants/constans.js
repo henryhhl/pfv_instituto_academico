@@ -254,6 +254,8 @@ const Constants = {
     curso_onCreate: "[ON CREATE] Curso",
     curso_onShow: "[ON SHOW] Curso",
     curso_onLimpiar: "[ON LIMPIAR] Curso",
+    curso_onAddRowParametroCalificacion: "[ON ADD ROW PARAMETRO CALIFICACION] Curso",
+    curso_onDeleteRowParametroCalificacion: "[ON DELETE ROW PARAMETRO CALIFICACION] Curso",
     curso_onAddRowDocente: "[ON ADD ROW DOCENTE] Curso",
     curso_onDeleteRowDocente: "[ON DELETE ROW DOCENTE] Curso",
 

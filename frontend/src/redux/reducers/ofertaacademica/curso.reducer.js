@@ -34,6 +34,28 @@ export const CursoReducer = ( state = inititalState, action ) => {
             state = Object.assign( {}, state );
             return state;
 
+        case Constants.curso_onAddRowParametroCalificacion:
+            let arrayParametroCalificacion = state.arrayparametrocalificacion;
+            state.arrayparametrocalificacion = [ ...arrayParametroCalificacion, {
+                idcursoparametrocalificacion: null,
+                fkidparametrocalificacion: null,
+                parametrocalificacion: null,
+                valorporcentaje: null,
+            } ];
+            state = Object.assign( {}, state );
+            return state;
+
+        case Constants.curso_onDeleteRowParametroCalificacion:
+            const parametroCalificacion = state.arrayparametrocalificacion[action.payload];
+            if ( action.payload.idcursoparametrocalificacion !== null ) {
+                state.arrayparametrocalificaciondelete = [ ...state.arrayparametrocalificaciondelete, parametroCalificacion ];
+            }
+            state.arrayparametrocalificacion = state.arrayparametrocalificacion.filter( 
+                (item, index) => action.payload !== index 
+            );
+            state = Object.assign( {}, state );
+            return state;
+
         case Constants.curso_onAddRowDocente:
             let arrayDocente = state.arraydocente;
             state.arraydocente = [ ...arrayDocente, onDefaultDocente() ];
@@ -124,6 +146,7 @@ const onSetData = ( state = inititalState, curso ) => {
 
     state.arrayparametrocalificacion = curso.arrayCursoParametroCalificacion.map( (item) => {
         return {
+            idcursoparametrocalificacion: item.idcursoparametrocalificacion,
             fkidparametrocalificacion: item.parametroCalificacion.idparametrocalificacion,
             parametrocalificacion: item.parametroCalificacion.descripcion,
             valorporcentaje: item.valorporcentaje,

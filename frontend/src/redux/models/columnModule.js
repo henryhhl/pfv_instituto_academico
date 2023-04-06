@@ -1086,12 +1086,6 @@ const ColumnModules = {
             state: false,
         },
         {
-            id: 'materia',
-            label: 'Materia',
-            object: true,
-            value: 'nombrelargo',
-        },
-        {
             id: 'modalidadAcademica',
             label: 'Modalidad',
             object: true,

@@ -164,6 +164,7 @@ const onUpdate = async (body) => {
         } ),
 
         arrayparametrocalificacion: body.arrayparametrocalificacion,
+        arrayparametrocalificaciondelete: body.arrayparametrocalificaciondelete,
 
         sigla: body.sigla,
         descripcion: body.descripcion,

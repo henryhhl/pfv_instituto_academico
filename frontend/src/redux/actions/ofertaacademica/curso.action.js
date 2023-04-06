@@ -20,6 +20,15 @@ const onChange = ( data ) => ( {
     payload: data,
 } );
 
+const onAddRowParametroCalificacion = ( ) => ( {
+    type: Constants.curso_onAddRowParametroCalificacion,
+} );
+
+const onDeleteRowParametroCalificacion = ( index ) => ( {
+    type: Constants.curso_onDeleteRowParametroCalificacion,
+    payload: index,
+} );
+
 const onAddRowDocente = ( ) => ( {
     type: Constants.curso_onAddRowDocente,
 } );
@@ -794,6 +803,7 @@ export const CursoActions = {
     initData, onPageCurso, getAllCurso,
     setShowData,
     onLimpiar, onChange,
+    onAddRowParametroCalificacion, onDeleteRowParametroCalificacion,
     onAddRowDocente, onDeleteRowDocente,
     setFKIDUnidadAcademica,
     setFKIDModalidadAcademica,

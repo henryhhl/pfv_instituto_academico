@@ -4,6 +4,7 @@ const Curso = {
 
     arraydocente: [],
     arrayparametrocalificacion: [],
+    arrayparametrocalificaciondelete: [],
 
     horainicio: "",
     horafinal: "",
